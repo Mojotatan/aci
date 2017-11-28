@@ -14,7 +14,7 @@ module.exports = db => db.define('Guarantee', {
     type: Sequelize.STRING
   },
   dateOfBirth: {
-    type: Sequelize.DATEONLY
+    type: Sequelize.DATEONLY // stored as plaintext 'YYYY-MM-DD'
   }
 }, {
   getterMethods: {

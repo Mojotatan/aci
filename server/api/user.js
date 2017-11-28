@@ -1,5 +1,6 @@
 const Op = require('sequelize').Op
-const {User, Company, Region, Branch, Application, Guarantee} = require('./db').models
+const {User, Company, Region, Branch, Application, Guarantee} = require('../db').db.models
+
 
 module.exports = require('express').Router()
 // todo: auth filter
@@ -9,7 +10,8 @@ module.exports = require('express').Router()
   //     res.send(data)
   //   })
   // })
-  .get('/:id', (req, res) => {
+
+  .get('/apps/:id', (req, res) => {
     return User.findOne({
       attributes: ['level', 'companyId', 'regionId', 'branchId'],
       where: {
@@ -63,3 +65,9 @@ module.exports = require('express').Router()
       res.send(data)
     })
   })
+
+  // put user
+
+  // post user
+
+  // delete = set user to inactive

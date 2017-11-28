@@ -30,7 +30,7 @@ module.exports = db => db.define('Application', {
     defaultValue: 0
   },
   expiry: {
-    type: Sequelize.DATEONLY
+    type: Sequelize.DATEONLY // stored as plaintext 'YYYY-MM-DD'
   },
   term: {
     type: Sequelize.INTEGER // in months

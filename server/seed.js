@@ -1,5 +1,6 @@
-const db = require('./db')
+const {db, associations} = require('./db')
 const {User, Company, Region, Branch, Application, Guarantee} = db.models
+const bcrypt = require('bcrypt')
 
 let userGuy, bbranch, rregion, manager, rival, impact
 
@@ -33,7 +34,7 @@ db.sync({force: true})
 
 .then(() => {
   return User.create({
-    firstName: 'branch manager', lastName: 'ted', level: 'branchManager', email: 'bob@bob.bob'
+    firstName: 'branch manager', lastName: 'ted', level: 'branchManager', email: 'bob@bob.bob', password: 'bob'
   })
 })
 .then((data) => {
@@ -59,7 +60,7 @@ db.sync({force: true})
 
 .then(() => {
   return User.create({
-    firstName: 'rep', lastName: 'ned', level: 'rep', email: 'bob@bob.bob'
+    firstName: 'rep', lastName: 'ned', level: 'rep', email: 'bob@bob.bob', password: 'bob'
   })
 })
 .then((data) => {
@@ -94,7 +95,7 @@ db.sync({force: true})
 })
 .then(() => {
   return Application.create({
-    customerName: 'some other dude', amount: 20, term: 12, advanced_payments: '0', end_of_term: '9%', comments: 'NO'
+    customerName: 'some other dude', amount: 20, term: 12, advanced_payments: '0', end_of_term: '9%', comments: 'NO', expiry: '2018-05-19'
   })
 })
 .then((app) => {

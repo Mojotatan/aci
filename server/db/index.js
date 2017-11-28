@@ -5,12 +5,12 @@ let db = new Sequelize(dbUrl, {logging: false})
 
 // Import tables
 const models = [
-  require('./user'),
-  require('./company'),
-  require('./region'),
-  require('./branch'),
-  require('./application'),
-  require('./guarantee')
+  require('./user-model'),
+  require('./company-model'),
+  require('./region-model'),
+  require('./branch-model'),
+  require('./application-model'),
+  require('./guarantee-model')
 ]
 
 models.forEach(model => {
@@ -20,18 +20,20 @@ models.forEach(model => {
 // Associations
 let {User, Company, Region, Branch, Application, Guarantee} = db.models
 
-User.belongsTo(Company, {as: 'company'})
-User.belongsTo(Region, {as: 'region'})
-User.belongsTo(Branch, {as: 'branch'})
+// let associations = {}
+  User.belongsTo(Company, {as: 'company'})
+  User.belongsTo(Region, {as: 'region'})
+  User.belongsTo(Branch, {as: 'branch'})
 
-Branch.belongsTo(Region, {as: 'region'})
-Branch.belongsTo(Company, {as: 'company'})
+  Branch.belongsTo(Region, {as: 'region'})
+  // Branch.belongsTo(Company, {as: 'company'})
 
-Region.belongsTo(Company, {as: 'company'})
+  Region.belongsTo(Company, {as: 'company'})
 
-Application.belongsTo(User, {as: 'rep'})
-Application.belongsTo(Guarantee, {as: 'app'})
+  Application.belongsTo(User, {as: 'rep'})
+
+  Guarantee.belongsTo(Application, {as: 'app'})
 
 
 // Export db
-module.exports = db
+module.exports = {db}

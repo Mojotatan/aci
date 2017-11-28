@@ -2,7 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
-const db = require('./db')
+const db = require('./db').db
 
 let port = process.env.PORT || '3000'
 const app = express()
@@ -19,7 +19,7 @@ db.sync()
     .use(express.static('public'))
 
     // Routes
-    .use('/api', require('./api'))
+    .use('/api', require('./api/api'))
 
     .get('*', (req, res) => {
       res.sendFile('/public/index.html')
