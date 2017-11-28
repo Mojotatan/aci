@@ -23,7 +23,7 @@ db.sync()
     .use('/api', require('./api/api'))
 
     .get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, 'public/index.html'))
+      res.sendFile(path.resolve(__dirname, '../public/index.html'))
     })
 })
 .catch(err => console.error(err))
