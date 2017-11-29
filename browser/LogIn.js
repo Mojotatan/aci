@@ -1,5 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {logInToken} from './store/login-reducer'
+
+import axios from 'axios'
 
 class LogInContainer extends React.Component {
   constructor(props) {
@@ -11,6 +14,12 @@ class LogInContainer extends React.Component {
   logMeIn(e) {
     // e.preventDefault()
     console.log('yeeeeeeeee')
+    axios.post('/api/login', {id: 2})
+    .then((res) => {
+      console.log('promise achieved', res.data)
+      this.props.logInToken(res.data)
+    })
+    .catch(err => console.error(err))
   }
 
   render() {
@@ -24,11 +33,10 @@ class LogInContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state)
   return {}
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {}
-}
+const mapDispatchToProps = {logInToken}
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogInContainer)
