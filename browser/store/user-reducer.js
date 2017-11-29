@@ -1,19 +1,19 @@
 import axios from 'axios'
 
 // initial state
-const initialState = {}
+const initialState = {name: null}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
   let newState = Object.assign({}, prevState)
   switch (action.type) {
-    // case BLAH:
     default:
       return newState
   }
 }
 
 // constants and action creators
+
 
 // thunks
 

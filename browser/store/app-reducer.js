@@ -10,6 +10,9 @@ const reducer = (prevState = initialState, action) => {
     case LOAD_APPS:
       newState.apps = action.apps
       return newState
+    case FLUSH_APPS:
+      newState.apps = []
+      return newState
     default:
       return newState
   }
@@ -21,6 +24,20 @@ export const loadApps = (apps) => {
   return {type: LOAD_APPS, apps}
 }
 
+const FLUSH_APPS = 'FLUSH_APPS'
+export const flushApps = () => {
+  return {type: FLUSH_APPS}
+}
+
 // thunks
+export const loadAppsThunk = (token) => {
+  return dispatch => {
+    return axios.post('/api/apps', {token})
+    .then(res => {
+      dispatch(loadApps(res.data))
+    })
+    .catch(err => console.error(err))
+  }
+}
 
 export default reducer

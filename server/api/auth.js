@@ -25,4 +25,4 @@ const isAdmin = message => (req, res, next) => {
 //   return jwt.verify(token, cert).level === level
 // }
 
-module.exports = {isLoggedIn, isAdmin}
+module.exports = {isLoggedIn, isAdmin, whoAmI}

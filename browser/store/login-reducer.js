@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // initial state
-const initialState = {token: null}
+const initialState = {token: null, user: null}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -10,9 +10,13 @@ const reducer = (prevState = initialState, action) => {
     // case BLAH:
     case LOG_IN:
       newState.token = action.token
+      newState.user = {
+        name: action.name
+      }
       return newState
     case LOG_OUT:
       newState.token = null
+      newState.user = null
       return newState
     default:
       return newState
@@ -21,8 +25,8 @@ const reducer = (prevState = initialState, action) => {
 
 // constants and action creators
 const LOG_IN = 'LOG_IN'
-export const logInToken = (token) => {
-  return {type: LOG_IN, token}
+export const logInToken = (token, name) => {
+  return {type: LOG_IN, token, name}
 }
 
 const LOG_OUT = 'LOG_OUT'

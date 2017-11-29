@@ -4,6 +4,7 @@ const Op = require('sequelize').Op
 const {User, Company, Region, Branch, Application, Guarantee} = require('../db').db.models
 const jwt = require('jsonwebtoken')
 const {isAdmin} = require('./auth')
+const bcrypt = require('bcrypt')
 
 const cert = fs.readFileSync('.reamde')
 
@@ -12,24 +13,31 @@ module.exports = require('express').Router()
 // todo: auth filter
 
   .post('*', (req, res) => {
-    return User.findOne({
+    let account
+    User.findOne({
       where: {
-        id: {
-          [Op.eq]: req.body.id
+        email: {
+          [Op.eq]: req.body.u
         }
       },
       include: ['company']
     })
-    .then((data) => {
-      console.log(data.company)
+    .then(data => {
+      if (!data) res.send('Incorrect username')
+      else if (!data.active) res.send('That user is not active')
+      account = data
+      return bcrypt.compare(req.body.pw, account.pwHash)
+    })
+    .then(match => {
+      if (!match) res.send('Incorrect username or password')
       return jwt.sign({
-        id: 7,
-        name: data.fullName,
-        level: 'rep',
-        company: 'impact'
+        id: account.id,
+        level: account.level,
+        company: account.company.id
       }, cert)
     })
-    .then((data) => {
-      res.send(data)
+    .then(token => {
+      res.send({token, name: account.fullName})
     })
+    .catch(err => console.error(err))
   })

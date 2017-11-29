@@ -9,7 +9,7 @@ module.exports = db => db.define('User', {
     type: Sequelize.STRING
   },
   level: {
-    type: Sequelize.ENUM('admin', 'regionManager', 'branchManager', 'rep'),
+    type: Sequelize.ENUM('admin', 'boss', 'regionManager', 'branchManager', 'rep'),
     defaultValue: 'rep'
   },
   active: {
@@ -18,9 +18,10 @@ module.exports = db => db.define('User', {
   },
   email: {
     type: Sequelize.STRING,
+    unique: true,
     allowNull: false,
     validate: {
-      isEmail: true
+      isEmail: true,
     }
   },
   phone: {

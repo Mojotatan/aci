@@ -34,7 +34,7 @@ db.sync({force: true})
 
 .then(() => {
   return User.create({
-    firstName: 'branch manager', lastName: 'ted', level: 'branchManager', email: 'bob@bob.bob', password: 'bob'
+    firstName: 'branch manager', lastName: 'ted', level: 'branchManager', email: 'ted@bob.bob', password: 'bob'
   })
 })
 .then((data) => {
@@ -47,7 +47,7 @@ db.sync({force: true})
 
 .then(() => {
   return User.create({
-    firstName: 'region manager', lastName: 'fred', level: 'regionManager', email: 'bob@bob.bob'
+    firstName: 'region manager', lastName: 'fred', level: 'regionManager', email: 'fred@bob.bob', password: 'bob'
   })
 })
 .then((data) => {
@@ -60,7 +60,7 @@ db.sync({force: true})
 
 .then(() => {
   return User.create({
-    firstName: 'rep', lastName: 'ned', level: 'rep', email: 'bob@bob.bob', password: 'bob'
+    firstName: 'rep', lastName: 'ned', level: 'rep', email: 'ned@bob.bob', password: 'bob'
   })
 })
 .then((data) => {
@@ -73,7 +73,7 @@ db.sync({force: true})
 
 .then(() => {
   return User.create({
-    firstName: 'test', lastName: 'testerson', phone: '1234567891', email: 'bob@bob.bob',
+    firstName: 'test', lastName: 'testerson', phone: '1234567891', email: 'test@bob.bob', password: 'bob'
   })
 })
 .then((data) => {
