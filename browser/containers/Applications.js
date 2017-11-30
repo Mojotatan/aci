@@ -1,12 +1,25 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import {focusApp} from '../store/app-reducer'
+
 import axios from 'axios'
 
 class ApplicationsContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(e) {
+    this.props.focusApp(Number(e.target.id))
+    this.props.history.push('/edit-application')
+  }
+
+  componentWillMount() {
+    if (!this.props.token) this.props.history.push('/')
   }
 
   render() {
@@ -25,7 +38,7 @@ class ApplicationsContainer extends React.Component {
               <td>rep</td>
               <td>options</td>
             </tr>
-            {this.props.apps.map(app => {
+            {this.props.apps.map((app, index) => {
               return (
                 <tr key={app.id}>
                   <td>{app.date}</td>
@@ -35,7 +48,7 @@ class ApplicationsContainer extends React.Component {
                   <td>{app.status}</td>
                   <td>{app.expiry}</td>
                   <td>{app.rep.fullName}</td>
-                  <td>Edit</td>
+                  <td id={index} onClick={this.handleClick}>Edit</td>
                 </tr>
               )
             })}
@@ -53,6 +66,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {focusApp}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationsContainer)

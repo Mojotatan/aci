@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // initial state
-const initialState = {apps: []}
+const initialState = {apps: [], focus: null}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -10,8 +10,12 @@ const reducer = (prevState = initialState, action) => {
     case LOAD_APPS:
       newState.apps = action.apps
       return newState
+    case FOCUS_APP:
+      newState.focus = action.index
+      return newState
     case FLUSH_APPS:
       newState.apps = []
+      newState.focus = null
       return newState
     default:
       return newState
@@ -22,6 +26,11 @@ const reducer = (prevState = initialState, action) => {
 const LOAD_APPS = 'LOAD_APPS'
 export const loadApps = (apps) => {
   return {type: LOAD_APPS, apps}
+}
+
+const FOCUS_APP = 'FOCUS_APP'
+export const focusApp = (index) => {
+  return {type: FOCUS_APP, index}
 }
 
 const FLUSH_APPS = 'FLUSH_APPS'

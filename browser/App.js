@@ -3,6 +3,7 @@ import {Route, Link} from 'react-router-dom'
 
 import LogIn from './containers/LogIn'
 import Applications from './containers/Applications'
+import Application from './containers/Application'
 
 
 const App = () => (
@@ -10,6 +11,7 @@ const App = () => (
     <main>
       <LogIn />
       <Route path="/applications" component={Applications} />
+      <Route path="/edit-application" component={Application} />
     </main>
   </div>
 )
