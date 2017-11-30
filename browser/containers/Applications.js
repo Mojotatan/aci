@@ -42,8 +42,8 @@ class ApplicationsContainer extends React.Component {
               return (
                 <tr key={app.id}>
                   <td>{app.date}</td>
-                  <td>{app.customerName}</td>
-                  <td>{app.customerAddress}</td>
+                  <td>{(app.customer) ? app.customer.name : ''}</td>
+                  <td>{(app.customer) ? app.customer.address : ''}</td>
                   <td>{app.amount}</td>
                   <td>{app.status}</td>
                   <td>{app.expiry}</td>

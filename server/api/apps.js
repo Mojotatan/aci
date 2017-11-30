@@ -53,7 +53,7 @@ module.exports = require('express').Router()
             [Op.or]: query
           }
         },
-        include: ['rep']
+        include: ['rep', 'guarantee', 'customer']
       })
     })
     .then((data) => {

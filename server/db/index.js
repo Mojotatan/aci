@@ -10,7 +10,8 @@ const models = [
   require('./region-model'),
   require('./branch-model'),
   require('./application-model'),
-  require('./guarantee-model')
+  require('./guarantee-model'),
+  require('./customer-model')
 ]
 
 models.forEach(model => {
@@ -18,7 +19,7 @@ models.forEach(model => {
 })
 
 // Associations
-let {User, Company, Region, Branch, Application, Guarantee} = db.models
+let {User, Company, Region, Branch, Application, Guarantee, Customer} = db.models
 
 // let associations = {}
   User.belongsTo(Company, {as: 'company'})
@@ -31,8 +32,11 @@ let {User, Company, Region, Branch, Application, Guarantee} = db.models
   Region.belongsTo(Company, {as: 'company'})
 
   Application.belongsTo(User, {as: 'rep'})
+  Application.belongsTo(Guarantee, {as: 'guarantee'})
+  Application.belongsTo(Customer, {as: 'customer'})
 
-  Guarantee.belongsTo(Application, {as: 'app'})
+  Customer.belongsTo(User, {as: 'rep'})
+
 
 
 // Export db
