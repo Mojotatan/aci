@@ -1,17 +1,14 @@
 const Sequelize = require('sequelize')
 
 module.exports = db => db.define('Lease', {
-  status: {
-    type: Sequelize.ENUM('pending', 'approved', 'expired', 'working', 'new', 'hold', 'ordered', 'declined'),
-    defaultValue: 'new'
+  number: {
+    type: Sequelize.BIGINT
   },
-  date: {
-    type: Sequelize.DATEONLY
+  company: {
+    type: Sequelize.STRING
   },
-
-  comments: {
-    type: Sequelize.STRING,
-    defaultValue: ''
-  }
+  amount: {
+    type: Sequelize.DECIMAL(9, 2) // overflows at 10 million
+  },
 
 })

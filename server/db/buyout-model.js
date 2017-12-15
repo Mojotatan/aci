@@ -15,6 +15,9 @@ module.exports = db => db.define('Buyout', {
   comments: {
     type: Sequelize.STRING,
     defaultValue: ''
+  },
+  pdf: {
+    type: Sequelize.STRING // expect url to file
   }
-
+  
 })

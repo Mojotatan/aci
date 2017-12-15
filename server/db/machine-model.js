@@ -1,17 +1,17 @@
 const Sequelize = require('sequelize')
 
 module.exports = db => db.define('Machine', {
-  status: {
-    type: Sequelize.ENUM('pending', 'approved', 'expired', 'working', 'new', 'hold', 'ordered', 'declined'),
-    defaultValue: 'new'
+  serial: {
+    type: Sequelize.STRING
   },
-  date: {
-    type: Sequelize.DATEONLY
+  make: {
+    type: Sequelize.STRING
   },
-
-  comments: {
-    type: Sequelize.STRING,
-    defaultValue: ''
+  model: {
+    type: Sequelize.STRING
+  },
+  location: {
+    type: Sequelize.STRING
   }
 
 })
