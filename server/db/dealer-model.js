@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize')
 
-module.exports = db => db.define('Customer', {
+module.exports = db => db.define('Dealer', {
   name: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   phone: {
     type: Sequelize.STRING,
@@ -12,14 +13,5 @@ module.exports = db => db.define('Customer', {
   },
   address: {
     type: Sequelize.JSON // expect {street, city, state, zip}
-  },
-  email: {
-    type: Sequelize.STRING,
-    validate: {
-      isEmail: true,
-    }
-  },
-  taxID: {
-    type: Sequelize.INTEGER
-  },
+  }
 })

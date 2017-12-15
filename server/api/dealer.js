@@ -1,12 +1,12 @@
 const Op = require('sequelize').Op
-const {User, Company, Region, Branch, Application, Guarantee} = require('../db').db.models
+const {User, Dealer, Region, Branch, Application, Guarantee} = require('../db').db.models
 
 
 module.exports = require('express').Router()
 // todo: auth filter
 
   .get('/:id', (req, res) => {
-    return Company.findOne({
+    return Dealer.findOne({
       where: {
         id: {
           [Op.eq]: req.params.id}

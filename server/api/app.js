@@ -1,5 +1,5 @@
 const Op = require('sequelize').Op
-const {User, Company, Region, Branch, Application, Guarantee, Customer} = require('../db').db.models
+const {User, Dealer, Region, Branch, Application, Guarantee, Customer} = require('../db').db.models
 
 
 module.exports = require('express').Router()

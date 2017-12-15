@@ -1,5 +1,5 @@
 const Op = require('sequelize').Op
-const {User, Company, Region, Branch, Application, Guarantee} = require('../db').db.models
+const {User, Dealer, Region, Branch, Application, Guarantee} = require('../db').db.models
 const {isLoggedIn, whoAmI} = require('./auth')
 
 module.exports = require('express').Router()
@@ -7,7 +7,7 @@ module.exports = require('express').Router()
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     return User.findOne({
-      attributes: ['id', 'level', 'companyId', 'regionId', 'branchId'],
+      attributes: ['id', 'level', 'dealerId', 'regionId', 'branchId'],
       where: {
         id: {
           [Op.eq]: me.id}
@@ -36,8 +36,8 @@ module.exports = require('express').Router()
         return User.findAll({
           attributes: ['id'],
           where: {
-            companyId: {
-              [Op.eq]: data.companyId
+            dealerId: {
+              [Op.eq]: data.dealerId
             }
           }
         })

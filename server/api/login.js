@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const Op = require('sequelize').Op
-const {User, Company, Region, Branch, Application, Guarantee} = require('../db').db.models
+const {User, Dealer, Region, Branch, Application, Guarantee} = require('../db').db.models
 const jwt = require('jsonwebtoken')
 const {isAdmin} = require('./auth')
 const bcrypt = require('bcrypt')
@@ -20,7 +20,7 @@ module.exports = require('express').Router()
           [Op.eq]: req.body.u
         }
       },
-      include: ['company']
+      include: ['dealer']
     })
     .then(data => {
       if (!data) res.send('Incorrect username')
@@ -33,7 +33,7 @@ module.exports = require('express').Router()
       return jwt.sign({
         id: account.id,
         level: account.level,
-        company: account.company.id
+        dealer: account.dealer.id
       }, cert)
     })
     .then(token => {

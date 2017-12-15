@@ -9,8 +9,8 @@ module.exports = db => db.define('User', {
     type: Sequelize.STRING
   },
   level: {
-    type: Sequelize.ENUM('admin', 'boss', 'regionManager', 'branchManager', 'rep'),
-    defaultValue: 'rep'
+    type: Sequelize.ENUM('Admin', 'Senior Manager', 'Region Manager', 'Branch Manager', 'Sales Rep'),
+    defaultValue: 'Sales Rep'
   },
   active: {
     type: Sequelize.BOOLEAN,

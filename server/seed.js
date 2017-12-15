@@ -1,5 +1,5 @@
 const {db, associations} = require('./db')
-const {User, Company, Region, Branch, Application, Guarantee, Customer} = db.models
+const {User, Dealer, Region, Branch, Application, Guarantee, Customer} = db.models
 
 let userGuy, bbranch, rregion, manager, rival, impact, cushtomer
 
@@ -23,7 +23,7 @@ const generateUsers = () => {
 
   builder('ned', 'rep', 'rep', 'ned@bob.bob', '#123456789', 'bob')
 
-  builder('ed', 'boss', 'boss', 'ed@bob.bob', '#123456789', 'bob')
+  builder('ed', 'boss', 'seniorManager', 'ed@bob.bob', '#123456789', 'bob')
 
   builder('jed', 'rep', 'rep', 'jed@bob.bob', '#123456789', 'bob')
 
@@ -69,11 +69,11 @@ const generateRegions = () => {
   return arr
 }
 
-const generateCompanies = () => {
+const generateDealers = () => {
   let arr = []
   
   const builder = (name) => {
-    arr.push(Company.build({
+    arr.push(Dealer.build({
       'name': name
     }))
   }
@@ -90,7 +90,7 @@ const generateCompanies = () => {
 const generateApplications = () => {
   let arr = []
   
-  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, comments) => {
+  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, notes) => {
     arr.push(Application.build({
       'status': status,
       'date': date,
@@ -99,7 +99,7 @@ const generateApplications = () => {
       'term': term,
       'advancedPayments': advancedPayments,
       'endOfTerm': endOfTerm,
-      'comments': comments
+      'notes': notes
     }))
   }
 
@@ -166,8 +166,8 @@ const createRegions = () => {
   return Promise.all(generateRegions().map(region => { return region.save() }))
 }
 
-const createCompanies = () => {
-  return Promise.all(generateCompanies().map(company => { return company.save() }))
+const createDealers = () => {
+  return Promise.all(generateDealers().map(dealer => { return dealer.save() }))
 }
 
 const createApplications = () => {
@@ -198,10 +198,10 @@ db.sync({force: true})
 })
 .then((regions) => {
   seedData.regions = regions
-  return createCompanies()
+  return createDealers()
 })
-.then((companies) => {
-  seedData.companies = companies
+.then((dealers) => {
+  seedData.dealers = dealers
   return createApplications()
 })
 .then((applications) => {
@@ -216,12 +216,12 @@ db.sync({force: true})
   seedData.customers = customers
 
   return Promise.all([
-    seedData.users[0].setCompany(seedData.companies[1]),
-    seedData.users[1].setCompany(seedData.companies[1]),
-    seedData.users[2].setCompany(seedData.companies[1]),
-    seedData.users[3].setCompany(seedData.companies[1]),
-    seedData.users[4].setCompany(seedData.companies[1]),
-    seedData.users[5].setCompany(seedData.companies[2]),
+    seedData.users[0].setDealer(seedData.dealers[1]),
+    seedData.users[1].setDealer(seedData.dealers[1]),
+    seedData.users[2].setDealer(seedData.dealers[1]),
+    seedData.users[3].setDealer(seedData.dealers[1]),
+    seedData.users[4].setDealer(seedData.dealers[1]),
+    seedData.users[5].setDealer(seedData.dealers[2]),
   ])
 })
 .then(() => {
@@ -253,9 +253,9 @@ db.sync({force: true})
 })
 .then(() => {
   return Promise.all([
-    seedData.regions[0].setCompany(seedData.companies[1]),
-    seedData.regions[1].setCompany(seedData.companies[1]),
-    seedData.regions[2].setCompany(seedData.companies[2]),
+    seedData.regions[0].setDealer(seedData.dealers[1]),
+    seedData.regions[1].setDealer(seedData.dealers[1]),
+    seedData.regions[2].setDealer(seedData.dealers[2]),
   ])
 })
 .then(() => {

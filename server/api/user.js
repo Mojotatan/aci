@@ -1,5 +1,5 @@
 const Op = require('sequelize').Op
-const {User, Company, Region, Branch, Application, Guarantee} = require('../db').db.models
+const {User, Dealer, Region, Branch, Application, Guarantee} = require('../db').db.models
 
 
 module.exports = require('express').Router()
@@ -13,7 +13,7 @@ module.exports = require('express').Router()
 
   .get('/apps/:id', (req, res) => {
     return User.findOne({
-      attributes: ['level', 'companyId', 'regionId', 'branchId'],
+      attributes: ['level', 'dealerId', 'regionId', 'branchId'],
       where: {
         id: {
           [Op.eq]: req.params.id}
@@ -42,8 +42,8 @@ module.exports = require('express').Router()
         return User.findAll({
           attributes: ['id'],
           where: {
-            companyId: {
-              [Op.eq]: data.companyId
+            dealerId: {
+              [Op.eq]: data.dealerId
             }
           }
         })

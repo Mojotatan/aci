@@ -6,7 +6,7 @@ let db = new Sequelize(dbUrl, {logging: false})
 // Import tables
 const models = [
   require('./user-model'),
-  require('./company-model'),
+  require('./dealer-model'),
   require('./region-model'),
   require('./branch-model'),
   require('./application-model'),
@@ -19,20 +19,19 @@ models.forEach(model => {
 })
 
 // Associations
-let {User, Company, Region, Branch, Application, Guarantee, Customer} = db.models
+let {User, Dealer, Region, Branch, Application, Guarantee, Customer} = db.models
 
-// let associations = {}
-  User.belongsTo(Company, {as: 'company'})
+  User.belongsTo(Dealer, {as: 'dealer'})
   User.belongsTo(Region, {as: 'region'})
   User.belongsTo(Branch, {as: 'branch'})
 
   Branch.belongsTo(Region, {as: 'region'})
-  // Branch.belongsTo(Company, {as: 'company'})
+  // Branch.belongsTo(Dealer, {as: 'dealer'})
 
-  Region.belongsTo(Company, {as: 'company'})
+  Region.belongsTo(Dealer, {as: 'dealer'})
 
   Application.belongsTo(User, {as: 'rep'})
-  Application.belongsTo(Guarantee, {as: 'guarantee'})
+  Application.belongsTo(Guarantee, {as: 'guarantee'}) // Note: guarantees are not currently being implemented on the front end
   Application.belongsTo(Customer, {as: 'customer'})
 
   Customer.belongsTo(User, {as: 'rep'})
