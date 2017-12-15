@@ -39,6 +39,7 @@ class LogInContainer extends React.Component {
         this.props.logInToken(res.data.token, res.data.name)
         this.props.loadAppsThunk(res.data.token)
         // document.cookie = res.data.token
+        this.props.history.push('/home')
       }
     })
     .catch(err => console.error(err))

@@ -1,14 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import EditApplication from '../components/EditApplication'
+import EditAccount from '../components/EditAccount'
 
 import axios from 'axios'
 
-class ApplicationContainer extends React.Component {
+class AccountContainer extends React.Component {
   constructor(props) {
     super(props)
-    this.state = Object.assign({}, props.app)
+    this.state = {}
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -23,7 +23,7 @@ class ApplicationContainer extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     
-    this.props.history.push('/applications')
+    this.props.history.push('/home')
   }
 
   componentWillMount() {
@@ -33,7 +33,7 @@ class ApplicationContainer extends React.Component {
   render() {
     return(
       <div>
-        <EditApplication values={this.state} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
+        <EditAccount values={this.state} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
       </div>
     )
   }
@@ -48,4 +48,4 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ApplicationContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(AccountContainer)

@@ -2,7 +2,7 @@ import React from 'react'
 
 export default ({values, handleChange, handleSubmit}) => (
   <div>
-    <h2>Edit this app</h2>
+    <h2>Edit yo account</h2>
     <form onSubmit={handleSubmit}>
       {/* <input 
         onChange={handleChange}
