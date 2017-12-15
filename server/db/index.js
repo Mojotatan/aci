@@ -43,9 +43,11 @@ let {User, Dealer, Region, Branch, Application, Guarantee, Customer, Buyout, Lea
   Buyout.belongsTo(Guarantee, {as: 'guarantee'}) // phase 2
   Buyout.belongsTo(Customer, {as: 'customer'})
 
+  // Buyout.hasMany(Lease, {as: 'leases'})
   Lease.belongsTo(Buyout, {as: 'buyout'})
   
-  Machine.belongsTo(Lease, {as: 'lease'})
+  Lease.hasMany(Machine, {as: 'machines'})
+  // Machine.belongsTo(Lease, {as: 'lease'})
 
 
 

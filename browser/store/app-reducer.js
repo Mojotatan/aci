@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import {loadByos} from './buyout-reducer'
+
 // initial state
 const initialState = {apps: [], focus: null}
 
@@ -43,7 +45,10 @@ export const loadAppsThunk = (token) => {
   return dispatch => {
     return axios.post('/api/apps', {token})
     .then(res => {
-      dispatch(loadApps(res.data))
+      dispatch(loadApps(res.data.applications))
+      dispatch(loadByos(res.data.buyouts.map((elem, index) => {
+        return Object.assign(elem, {leases: res.data.leases})
+      })))
     })
     .catch(err => console.error(err))
   }

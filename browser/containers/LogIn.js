@@ -31,7 +31,6 @@ class LogInContainer extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     console.log('u: ' + this.state.username, 'p: ' + this.state.password)
-
     axios.post('/api/login', {u: this.state.username, pw: this.state.password})
     .then((res) => {
       console.log('promise achieved', res.data)
@@ -39,7 +38,7 @@ class LogInContainer extends React.Component {
         this.props.logInToken(res.data.token, res.data.name)
         this.props.loadAppsThunk(res.data.token)
         // document.cookie = res.data.token
-        this.props.history.push('/home')
+        this.props.history.push('/applications')
       }
     })
     .catch(err => console.error(err))

@@ -192,6 +192,8 @@ const generateLeases = () => {
 
   builder(1234456789, 'Wells Fargo', 45345.12)
 
+  builder(1234456789, 'Wells Fargo', 45345.12)
+
   return arr
 }
 
@@ -210,6 +212,10 @@ const generateMachines = () => {
   builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', "Under Ted's Desk")
 
   builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', "Under Ted's Other Desk")
+
+  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', 'In the street')
+
+  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', 'Under the Black Sun')
 
   return arr
 }
@@ -364,26 +370,28 @@ db.sync({force: true})
 })
 .then(() => {
   return Promise.all([
-    seedData.customers[0].setRep(seedData.users[0]),
+    seedData.customers[0].setRep(seedData.users[2]),
     seedData.customers[1].setRep(seedData.users[1])
   ])
 })
 .then(() => {
   return Promise.all([
-    seedData.buyouts[0].setRep(seedData.users[0]),
-    seedData.buyouts[1].setRep(seedData.users[0])
+    seedData.buyouts[0].setRep(seedData.users[2]),
+    seedData.buyouts[1].setRep(seedData.users[2])
   ])
 })
 .then(() => {
   return Promise.all([
     seedData.leases[0].setBuyout(seedData.buyouts[0]),
     seedData.leases[1].setBuyout(seedData.buyouts[1]),
+    seedData.leases[2].setBuyout(seedData.buyouts[1])
   ])
 })
 .then(() => {
   return Promise.all([
-    seedData.machines[0].setLease(seedData.leases[1]),
-    seedData.machines[1].setLease(seedData.leases[1])
+    seedData.leases[0].setMachines(seedData.machines[2]),
+    seedData.leases[1].setMachines([seedData.machines[0], seedData.machines[1]]),
+    seedData.leases[2].setMachines(seedData.machines[3])
   ])
 })
 .then(() => {

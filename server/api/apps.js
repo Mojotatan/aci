@@ -1,11 +1,12 @@
 const Op = require('sequelize').Op
-const {User, Dealer, Region, Branch, Application, Guarantee} = require('../db').db.models
+const {User, Application, Buyout, Lease, Machine} = require('../db').db.models
 const {isLoggedIn, whoAmI} = require('./auth')
 
 module.exports = require('express').Router()
 
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
+    let toBeSent = {}
     return User.findOne({
       attributes: ['id', 'level', 'dealerId', 'regionId', 'branchId'],
       where: {
@@ -47,16 +48,46 @@ module.exports = require('express').Router()
       let query = data.map(elem => {
         return elem.id
       })
-      return Application.findAll({
-        where: {
-          repId: {
-            [Op.or]: query
-          }
-        },
-        include: ['rep', 'guarantee', 'customer']
-      })
+      return Promise.all([
+        Application.findAll({
+          where: {
+            repId: {
+              [Op.or]: query
+            }
+          },
+          include: ['rep', 'guarantee', 'customer']
+        }),
+        Buyout.findAll({
+          where: {
+            repId: {
+              [Op.or]: query
+            }
+          },
+          include: ['rep', 'guarantee', 'customer']
+        })
+      ])
     })
-    .then((data) => {
-      res.send(data)
+    .then(([appData, byoData]) => {
+      toBeSent.applications = appData
+      toBeSent.buyouts = byoData
+
+      return Promise.all(byoData.map(byo => {
+        return Lease.findAll({
+          where: {
+            buyoutId: {
+              [Op.eq]: byo.id
+            }
+          },
+          include: ['machines']
+        })
+      }))
+    })
+    .then((leases) => {
+      // leases.forEach((lease, index) => {
+      //   toBeSent.buyouts[index].leases = lease
+      // })
+      toBeSent.leases = leases
+
+      res.send(toBeSent)
     })
   })

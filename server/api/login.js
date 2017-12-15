@@ -10,7 +10,6 @@ const cert = fs.readFileSync('.reamde')
 
 
 module.exports = require('express').Router()
-// todo: auth filter
 
   .post('*', (req, res) => {
     let account
