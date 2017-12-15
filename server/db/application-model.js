@@ -55,7 +55,8 @@ module.exports = db => db.define('Application', {
   // },
 
   bank: {
-    type: Sequelize.JSON // expect {bankName: 'Y' || 'N', ...}
+    type: Sequelize.JSON, // expect {bankName: 'Y' || 'N', ...}
+    defaultValue: JSON.stringify({})
   },
   comments: {
     type: Sequelize.STRING,

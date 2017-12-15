@@ -3,7 +3,8 @@ const Sequelize = require('sequelize')
 module.exports = db => db.define('Dealer', {
   name: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true,
   },
   phone: {
     type: Sequelize.STRING,

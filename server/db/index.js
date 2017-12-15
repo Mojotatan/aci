@@ -10,8 +10,11 @@ const models = [
   require('./region-model'),
   require('./branch-model'),
   require('./application-model'),
-  require('./guarantee-model'),
-  require('./customer-model')
+  require('./guarantee-model'), // phase 2
+  require('./customer-model'),
+  require('./buyout-model'),
+  require('./lease-model'),
+  require('./machine-model')
 ]
 
 models.forEach(model => {
@@ -19,7 +22,7 @@ models.forEach(model => {
 })
 
 // Associations
-let {User, Dealer, Region, Branch, Application, Guarantee, Customer} = db.models
+let {User, Dealer, Region, Branch, Application, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
   User.belongsTo(Dealer, {as: 'dealer'})
   User.belongsTo(Region, {as: 'region'})
@@ -31,10 +34,18 @@ let {User, Dealer, Region, Branch, Application, Guarantee, Customer} = db.models
   Region.belongsTo(Dealer, {as: 'dealer'})
 
   Application.belongsTo(User, {as: 'rep'})
-  Application.belongsTo(Guarantee, {as: 'guarantee'}) // Note: guarantees are not currently being implemented on the front end
+  Application.belongsTo(Guarantee, {as: 'guarantee'}) // phase 2
   Application.belongsTo(Customer, {as: 'customer'})
 
   Customer.belongsTo(User, {as: 'rep'})
+
+  Buyout.belongsTo(User, {as: 'rep'})
+  Buyout.belongsTo(Guarantee, {as: 'guarantee'}) // phase 2
+  Buyout.belongsTo(Customer, {as: 'customer'})
+
+  Lease.belongsTo(Buyout, {as: 'buyout'})
+  
+  Machine.belongsTo(Lease, {as: 'lease'})
 
 
 

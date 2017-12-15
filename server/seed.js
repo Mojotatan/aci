@@ -1,5 +1,5 @@
 const {db, associations} = require('./db')
-const {User, Dealer, Region, Branch, Application, Guarantee, Customer} = db.models
+const {User, Dealer, Region, Branch, Application, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
 let userGuy, bbranch, rregion, manager, rival, impact, cushtomer
 
@@ -17,17 +17,17 @@ const generateUsers = () => {
     }))
   }
 
-  builder('ted', 'branch', 'branchManager', 'ted@bob.bob', '#123456789', 'bob')
+  builder('ted', 'branch', 'Branch Manager', 'ted@bob.bob', '#123456789', 'bob')
 
-  builder('fred', 'region', 'regionManager', 'fred@bob.bob', '#123456789', 'bob')
+  builder('fred', 'region', 'Region Manager', 'fred@bob.bob', '#123456789', 'bob')
 
-  builder('ned', 'rep', 'rep', 'ned@bob.bob', '#123456789', 'bob')
+  builder('ned', 'rep', 'Sales Rep', 'ned@bob.bob', '#123456789', 'bob')
 
-  builder('ed', 'boss', 'seniorManager', 'ed@bob.bob', '#123456789', 'bob')
+  builder('ed', 'boss', 'Senior Manager', 'ed@bob.bob', '#123456789', 'bob')
 
-  builder('jed', 'rep', 'rep', 'jed@bob.bob', '#123456789', 'bob')
+  builder('jed', 'rep', 'Sales Rep', 'jed@bob.bob', '#123456789', 'bob')
 
-  builder('nate', 'rep', 'rep', 'nate@bob.bob', '#123456789', 'bob')
+  builder('nate', 'rep', 'Sales Rep', 'nate@bob.bob', '#123456789', 'bob')
 
   return arr
 }
@@ -35,18 +35,17 @@ const generateUsers = () => {
 const generateBranches = () => {
   let arr = []
   
-  const builder = (name, address) => {
+  const builder = (name) => {
     arr.push(Branch.build({
-      'name': name,
-      'address': JSON.stringify(address)
+      'name': name
     }))
   }
 
-  builder('Downtown', {street: '104 E Funky Town'})
+  builder('Downtown')
 
-  builder('Uptown', {street: '104 W Funky Town'})
+  builder('Uptown')
 
-  builder('Midtown', {city: 'Lamesburg'})
+  builder('Midtown')
 
   return arr
 }
@@ -72,17 +71,17 @@ const generateRegions = () => {
 const generateDealers = () => {
   let arr = []
   
-  const builder = (name) => {
+  const builder = (name, phone, address) => {
     arr.push(Dealer.build({
-      'name': name
+      'name': name,
+      'phone': phone,
+      'address': JSON.stringify(address)
     }))
   }
 
-  builder('ACI')
+  builder('Impact', '#123456789', {street: '101 Real Street', city: 'Chicago', state: 'Illinois', zip: '60610'})
 
-  builder('Impact')
-
-  builder('ATN')
+  builder('ATN', '#123456789', {street: '420 Exists Plaza', city: 'Chicago', state: 'Illinois', zip: '60610'})
 
   return arr
 }
@@ -90,7 +89,7 @@ const generateDealers = () => {
 const generateApplications = () => {
   let arr = []
   
-  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, notes) => {
+  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, type, currentLeaseCompany, erp, bank, comments) => {
     arr.push(Application.build({
       'status': status,
       'date': date,
@@ -99,19 +98,23 @@ const generateApplications = () => {
       'term': term,
       'advancedPayments': advancedPayments,
       'endOfTerm': endOfTerm,
-      'notes': notes
+      'type': type,
+      'currentLeaseCompany': currentLeaseCompany,
+      'erp': erp,
+      'bank': JSON.stringify(bank),
+      'comments': comments
     }))
   }
 
-  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'no comment')
+  builder('draft', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {}, 'no comment')
 
-  builder('new', '1998-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'no comment')
+  builder('new', '1998-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', 12345, {}, 'no comment')
 
-  builder('pending', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'no comment')
+  builder('pending', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {GE: 'N', UnifiFRED: 'Y'}, 'no comment')
 
-  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'no comment')
+  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {}, 'no comment')
 
-  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'no comment')
+  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {}, 'no comment')
 
   return arr
 }
@@ -137,22 +140,79 @@ const generateGuarantees = () => {
 const generateCustomers = () => {
   let arr = []
   
-  const builder = (name, phone, address, taxID) => {
+  const builder = (name, phone, address, email, taxID) => {
     arr.push(Customer.build({
       'name': name,
       'phone': phone,
       'address': JSON.stringify(address),
+      'email': email,
       'taxID': taxID
     }))
   }
 
-  builder('roderick"s construction', '#123456789', {street: '201 Davide Ave'}, 12)
+  builder('roderick"s construction', '#123456789', {street: '201 Davide Ave'}, 'arnold@palmer.net', 12)
 
-  builder('steve"s construction', '#123456789', {street: '203 Davide Ave'}, 12)
+  builder('steve"s construction', '#123456789', {street: '203 Davide Ave'}, 'arnold@palmer.net', 12)
 
   return arr
 }
 
+const generateBuyouts = () => {
+  let arr = []
+  
+  const builder = (status, date, quote, comments, pdf) => {
+    arr.push(Buyout.build({
+      'status': status,
+      'date': date,
+      'quote': quote,
+      'comments': comments,
+      'pdf': pdf,
+    }))
+  }
+
+  builder('draft', '2017-12-15', 'full', 'no comment', '')
+
+  builder('new', '2017-12-16', 'partial', 'no comment', '')
+
+  return arr
+}
+
+const generateLeases = () => {
+  let arr = []
+  
+  const builder = (number, company, amount) => {
+    arr.push(Lease.build({
+      'number': number,
+      'company': company,
+      'amount': amount
+    }))
+  }
+
+  builder(1234456789, 'Wells Fargo', 45345.12)
+
+  builder(1234456789, 'Wells Fargo', 45345.12)
+
+  return arr
+}
+
+const generateMachines = () => {
+  let arr = []
+  
+  const builder = (serial, make, model, location) => {
+    arr.push(Machine.build({
+      'serial': serial,
+      'make': make,
+      'model': model,
+      'location': location
+    }))
+  }
+
+  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', "Under Ted's Desk")
+
+  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', "Under Ted's Other Desk")
+
+  return arr
+}
 
 const createUsers = () => {
   return Promise.all(generateUsers().map(user => { return user.save() }))
@@ -180,6 +240,18 @@ const createGuarantees = () => {
 
 const createCustomers = () => {
   return Promise.all(generateCustomers().map(customer => { return customer.save() }))
+}
+
+const createBuyouts = () => {
+  return Promise.all(generateBuyouts().map(buyout => { return buyout.save() }))
+}
+
+const createLeases = () => {
+  return Promise.all(generateLeases().map(lease => { return lease.save() }))
+}
+
+const createMachines = () => {
+  return Promise.all(generateMachines().map(machine => { return machine.save() }))
 }
 
 let seedData = {}
@@ -214,6 +286,18 @@ db.sync({force: true})
 })
 .then((customers) => {
   seedData.customers = customers
+  return createBuyouts()
+})
+.then((buyouts) => {
+  seedData.buyouts = buyouts
+  return createLeases()
+})
+.then((leases) => {
+  seedData.leases = leases
+  return createMachines()
+})
+.then((machines) => {
+  seedData.machines = machines
 
   return Promise.all([
     seedData.users[0].setDealer(seedData.dealers[1]),
@@ -282,6 +366,24 @@ db.sync({force: true})
   return Promise.all([
     seedData.customers[0].setRep(seedData.users[0]),
     seedData.customers[1].setRep(seedData.users[1])
+  ])
+})
+.then(() => {
+  return Promise.all([
+    seedData.buyouts[0].setRep(seedData.users[0]),
+    seedData.buyouts[1].setRep(seedData.users[0])
+  ])
+})
+.then(() => {
+  return Promise.all([
+    seedData.leases[0].setBuyout(seedData.buyouts[0]),
+    seedData.leases[1].setBuyout(seedData.buyouts[1]),
+  ])
+})
+.then(() => {
+  return Promise.all([
+    seedData.machines[0].setLease(seedData.leases[1]),
+    seedData.machines[1].setLease(seedData.leases[1])
   ])
 })
 .then(() => {
