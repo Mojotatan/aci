@@ -13,6 +13,7 @@ class ApplicationContainer extends React.Component {
     this.state = Object.assign({}, props.app)
 
     this.handleChange = this.handleChange.bind(this)
+    this.handleSave = this.handleSave.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -22,14 +23,18 @@ class ApplicationContainer extends React.Component {
     })
   }
 
-  handleSubmit(e, status) {
+  handleSave(e) {
     e.preventDefault()
-    if (status) this.setState({status: status})
-    console.log(this.state)
-    
+
     this.props.saveAppThunk(this.props.token, this.state)
 
     // this.props.history.push('/applications')
+  }
+
+  handleSubmit(e) {
+    this.setState({
+      status: 'new'
+    })
   }
 
   componentWillMount() {
@@ -39,7 +44,7 @@ class ApplicationContainer extends React.Component {
   render() {
     return(
       <div>
-        <EditApplication values={this.state} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
+        <EditApplication values={this.state} handleChange={this.handleChange} handleSave={this.handleSave} handleSubmit={this.handleSubmit} />
       </div>
     )
   }

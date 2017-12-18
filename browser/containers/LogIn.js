@@ -4,7 +4,8 @@ import {connect} from 'react-redux'
 
 import {logInToken, flushToken} from '../store/login-reducer'
 import {loadAppsThunk, flushApps} from '../store/app-reducer'
-import {loadByosThunk, flushByos} from '../store/byo-reducer'
+import {loadByosThunk, flushByos} from '../store/buyout-reducer'
+import {loadDealersThunk, flushDealers} from '../store/dealer-reducer'
 
 import Header from '../components/Header'
 import LogInForm from '../components/LogInForm'
@@ -39,6 +40,7 @@ class LogInContainer extends React.Component {
         this.props.logInToken(res.data.token, res.data.name)
         this.props.loadAppsThunk(res.data.token)
         this.props.loadByosThunk(res.data.token)
+        this.props.loadDealersThunk(res.data.token)
         // document.cookie = res.data.token
         this.props.history.push('/applications')
       }
@@ -74,6 +76,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {logInToken, flushToken, loadAppsThunk, flushApps, loadByosThunk, flushByos}
+const mapDispatchToProps = {
+  logInToken, flushToken,
+  loadAppsThunk, flushApps,
+  loadByosThunk, flushByos,
+  loadDealersThunk, flushDealers
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LogInContainer))
