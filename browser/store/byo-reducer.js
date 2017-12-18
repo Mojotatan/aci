@@ -39,5 +39,16 @@ export const flushByos = () => {
 }
 
 // thunks
+export const loadByosThunk = (token) => {
+  return dispatch => {
+    return axios.post('/api/byos', {token})
+    .then(res => {
+      dispatch(loadByos(res.data.buyouts.map((elem, index) => {
+        return Object.assign(elem, {leases: res.data.leases[index]})
+      })))
+    })
+    .catch(err => console.error(err))
+  }
+}
 
 export default reducer
