@@ -1,6 +1,6 @@
 const Op = require('sequelize').Op
-const {User, Application} = require('../db').db.models
-const {isLoggedIn, whoAmI} = require('./auth')
+const {User, Application, Customer} = require('../db').db.models
+const {isLoggedIn, whoAmI, mayI} = require('./auth')
 
 module.exports = require('express').Router()
 
@@ -14,7 +14,7 @@ module.exports = require('express').Router()
       }
     })
     .then(data => {
-      if (data.level === 'branchManager') {
+      if (data.level === 'Branch Manager') {
         return User.findAll({
           attributes: ['id'],
           where: {
@@ -23,7 +23,7 @@ module.exports = require('express').Router()
             }
           }
         })
-      } else if (data.level === 'regionManager') {
+      } else if (data.level === 'Region Manager') {
         return User.findAll({
           attributes: ['id'],
           where: {
@@ -32,7 +32,7 @@ module.exports = require('express').Router()
             }
           }
         })
-      } else if (data.level === 'boss') {
+      } else if (data.level === 'Senior Manager') {
         return User.findAll({
           attributes: ['id'],
           where: {
@@ -53,10 +53,48 @@ module.exports = require('express').Router()
             [Op.or]: query
           }
         },
-        include: ['rep', 'guarantee', 'customer']
+        include: ['rep', /*'guarantee',*/ 'customer']
       })
     })
     .then((appData) => {
       res.send(appData)
+    })
+  })
+
+  .put('/', isLoggedIn, (req, res) => {
+    // mayI(req.body.token, req.body.app.id)
+    let returning
+    return Application.update({
+      status: req.body.app.status,
+      amount: req.body.app.amount,
+      expiry: req.body.app.expiry,
+      term: req.body.app.term,
+      advancedPayments: req.body.app.advancedPayments,
+      endOfTerm: req.body.app.endOfTerm,
+      type: req.body.app.type,
+      currentLeaseCompany: req.body.app.currentLeaseCompany,
+      erp: req.body.app.erp,
+      bank: JSON.stringify(req.body.app.bank),
+      comments: req.body.app.comments,
+    }, {
+      where: {
+        id: {
+          [Op.eq]: req.body.app.id
+        }
+      },
+      returning: true
+    })
+    .then(data => {
+      // returning.app = data
+      // return Customer.update({
+      //   where: {
+      //     id
+      //   }
+      // })
+
+      // console.log(data)
+      // res.send(data[1][0])
+
+      res.send('success, reloading apps')
     })
   })

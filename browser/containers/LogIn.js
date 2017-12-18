@@ -49,6 +49,7 @@ class LogInContainer extends React.Component {
   logOut(e) {
     this.props.flushToken()
     this.props.flushApps()
+    this.props.flushByos()
     this.props.history.push('/')
   }
 

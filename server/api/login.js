@@ -19,7 +19,7 @@ module.exports = require('express').Router()
           [Op.eq]: req.body.u
         }
       },
-      include: ['dealer']
+      include: ['dealer', 'region', 'branch']
     })
     .then(data => {
       if (!data) res.send('Incorrect username')
@@ -32,6 +32,8 @@ module.exports = require('express').Router()
       return jwt.sign({
         id: account.id,
         level: account.level,
+        branch: account.branch.id,
+        region: account.region.id,
         dealer: account.dealer.id
       }, cert)
     })

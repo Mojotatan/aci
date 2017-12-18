@@ -1,6 +1,8 @@
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
 
+const {User, Application} = require('../db').db.models
+
 const cert = fs.readFileSync('.reamde')
 
 const whoAmI = (token) => {
@@ -21,8 +23,15 @@ const isAdmin = message => (req, res, next) => {
   next()
 }
 
+// unfinished
+const mayI = (token, appId) => {
+  let me = whoAmI(token)
+  if (me.level === 'Admin') return true
+
+}
+
 // const clearance = (token, level) => {
 //   return jwt.verify(token, cert).level === level
 // }
 
-module.exports = {isLoggedIn, isAdmin, whoAmI}
+module.exports = {isLoggedIn, isAdmin, whoAmI, mayI}

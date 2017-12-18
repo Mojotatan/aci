@@ -13,6 +13,9 @@ const reducer = (prevState = initialState, action) => {
     case FOCUS_APP:
       newState.focus = action.index
       return newState
+    // case UPDATE_APP:
+    //   newState.apps[focus] = Object.assign({}, newState.apps[focus], action.newValues)
+    //   return newState
     case FLUSH_APPS:
       newState.apps = []
       newState.focus = null
@@ -33,6 +36,11 @@ export const focusApp = (index) => {
   return {type: FOCUS_APP, index}
 }
 
+// const UPDATE_APP = 'UPDATE_APP'
+// export const updateApp = (newValues) => {
+//   return {type: UPDATE_APP, newValues}
+// }
+
 const FLUSH_APPS = 'FLUSH_APPS'
 export const flushApps = () => {
   return {type: FLUSH_APPS}
@@ -44,6 +52,16 @@ export const loadAppsThunk = (token) => {
     return axios.post('/api/apps', {token})
     .then(res => {
       dispatch(loadApps(res.data))
+    })
+    .catch(err => console.error(err))
+  }
+}
+
+export const saveAppThunk = (token, app) => {
+  return dispatch => {
+    return axios.put('/api/apps', {token, app})
+    .then(res => {
+      dispatch(loadAppsThunk(token))
     })
     .catch(err => console.error(err))
   }

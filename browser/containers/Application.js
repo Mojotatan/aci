@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 
 import EditApplication from '../components/EditApplication'
 
+import {saveAppThunk} from '../store/app-reducer'
+
 import axios from 'axios'
 
 class ApplicationContainer extends React.Component {
@@ -20,10 +22,14 @@ class ApplicationContainer extends React.Component {
     })
   }
 
-  handleSubmit(e) {
+  handleSubmit(e, status) {
     e.preventDefault()
+    if (status) this.setState({status: status})
+    console.log(this.state)
     
-    this.props.history.push('/applications')
+    this.props.saveAppThunk(this.props.token, this.state)
+
+    // this.props.history.push('/applications')
   }
 
   componentWillMount() {
@@ -46,6 +52,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {saveAppThunk}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationContainer)

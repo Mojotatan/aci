@@ -51,4 +51,14 @@ export const loadByosThunk = (token) => {
   }
 }
 
+export const saveByoThunk = (token, byo) => {
+  return dispatch => {
+    return axios.put('/api/byos', {token, byo})
+    .then(res => {
+      dispatch(loadByosThunk(token))
+    })
+    .catch(err => console.error(err))
+  }
+}
+
 export default reducer

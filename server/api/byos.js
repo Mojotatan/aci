@@ -54,7 +54,7 @@ module.exports = require('express').Router()
             [Op.or]: query
           }
         },
-        include: ['rep', 'guarantee', 'customer']
+        include: ['rep', /*'guarantee',*/ 'customer']
       })
     })
     .then((byoData) => {
