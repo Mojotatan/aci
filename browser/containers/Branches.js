@@ -17,7 +17,9 @@ class BranchContainer extends React.Component {
       street: '',
       city: '',
       state: '',
-      zip: ''}
+      zip: '',
+      dealerName: '',
+      regionName: ''}
     )
 
     this.handleChange = this.handleChange.bind(this)
@@ -44,7 +46,9 @@ class BranchContainer extends React.Component {
         street: this.state.street,
         city: this.state.city,
         state: this.state.state,
-        zip: this.state.zip
+        zip: this.state.zip,
+        dealerName: this.state.dealerName,
+        regionName: this.state.regionName
       })
     } else {
       this.setState({create: false})
@@ -55,13 +59,15 @@ class BranchContainer extends React.Component {
         street: this.state.street,
         city: this.state.city,
         state: this.state.state,
-        zip: this.state.zip
+        zip: this.state.zip,
+        dealerName: this.state.dealerName,
+        regionName: this.state.regionName
       })
     }
   }
 
   handleCancel(e) {
-    this.setState({create: false})
+    this.setState({create: false, dealerName: '', regionName: ''})
     this.props.focusBranch(null)
     this.props.loadBranchesThunk(this.props.token)
   }
@@ -87,7 +93,9 @@ class BranchContainer extends React.Component {
       street: '',
       city: '',
       state: '',
-      zip: ''
+      zip: '',
+      dealerName: '',
+      regionName: ''
     })
     this.props.createBranch({
       name: '',
@@ -95,7 +103,9 @@ class BranchContainer extends React.Component {
       street: '',
       city: '',
       state: '',
-      zip: ''
+      zip: '',
+      dealerName: '',
+      regionName: ''
     })
   }
 
@@ -120,7 +130,18 @@ class BranchContainer extends React.Component {
             state: this.state.state,
             zip: this.state.zip
           }}
-          dropdowns={{}}
+          dropdowns={{
+            dealerName: {
+              values: this.props.dealers.map(dlr => dlr.name),
+              match: ['dealer', 'name'],
+              select: this.state.dealerName
+            },
+            regionName: {
+              values: this.props.regions.filter(reg => {if (reg.dealer) {return reg.dealer.name === this.state.dealerName} else return false}).map(reg => reg.name),
+              match: ['region', 'name'],
+              select: this.state.regionName
+            }
+          }}
           rows={this.props.branches}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
@@ -137,7 +158,9 @@ const mapStateToProps = (state) => {
   return {
     token: state.login.token,
     branches: state.branch.branches,
-    focus: state.branch.focus
+    focus: state.branch.focus,
+    dealers: state.dlr.dealers,
+    regions: state.region.regions
   }
 }
 

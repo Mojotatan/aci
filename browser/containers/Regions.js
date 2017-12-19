@@ -49,7 +49,7 @@ class RegionContainer extends React.Component {
   }
 
   handleCancel(e) {
-    this.setState({create: false})
+    this.setState({create: false, dealerName: ''})
     this.props.focusRegion(null)
     this.props.loadRegionsThunk(this.props.token)
   }
@@ -79,12 +79,11 @@ class RegionContainer extends React.Component {
     if (!this.props.token) this.props.history.push('/')
   }
 
-  componentWillReceiveProps() {
-    console.log('props received', this.state, this.props)
-  }
+  // componentWillReceiveProps() {
+  //   console.log('props received', this.state, this.props)
+  // }
 
   render() {
-    console.log(this.props.regions)
     return(
       <div>
         <EditFields
