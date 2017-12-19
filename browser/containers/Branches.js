@@ -11,7 +11,6 @@ class BranchContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = Object.assign({},
-      props.branches,
       {create: false,
       name: '',
       phone: '',
@@ -121,6 +120,7 @@ class BranchContainer extends React.Component {
             state: this.state.state,
             zip: this.state.zip
           }}
+          dropdowns={{}}
           rows={this.props.branches}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}

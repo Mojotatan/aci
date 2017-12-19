@@ -11,7 +11,6 @@ class DealerContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = Object.assign({},
-      props.dlrs,
       {create: false,
       name: '',
       phone: '',
@@ -121,6 +120,7 @@ class DealerContainer extends React.Component {
             state: this.state.state,
             zip: this.state.zip
           }}
+          dropdowns={{}}
           rows={this.props.dealers}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}

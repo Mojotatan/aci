@@ -11,9 +11,9 @@ class RegionContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = Object.assign({},
-      props.region,
       {create: false,
-      name: ''}
+      name: '',
+      dealerName: ''}
     )
 
     this.handleChange = this.handleChange.bind(this)
@@ -35,13 +35,15 @@ class RegionContainer extends React.Component {
     e.preventDefault()
     if (this.state.create) {
       this.props.createRegionThunk(this.props.token, {
-        name: this.state.name
+        name: this.state.name,
+        dealerName: this.state.dealerName
       })
     } else {
       this.setState({create: false})
       this.props.saveRegionThunk(this.props.token, {
         id: this.props.regions[this.props.focus].id,
-        name: this.state.name
+        name: this.state.name,
+        dealerName: this.state.dealerName
       })
     }
   }
@@ -56,7 +58,8 @@ class RegionContainer extends React.Component {
     // this.setState({focus: e.target.value})
     this.props.focusRegion(e.target.value)
     this.setState({
-      name: this.props.regions[e.target.value].name
+      name: this.props.regions[e.target.value].name,
+      dealerName: this.props.regions[e.target.value].dealerName
     })
   }
 
@@ -64,9 +67,11 @@ class RegionContainer extends React.Component {
     this.setState({
       create: true,
       name: '',
+      dealerName: ''
     })
     this.props.createRegion({
       name: '',
+      dealerName: ''
     })
   }
 
@@ -75,16 +80,24 @@ class RegionContainer extends React.Component {
   }
 
   componentWillReceiveProps() {
-    console.log('props received', this.state)
+    console.log('props received', this.state, this.props)
   }
 
   render() {
+    console.log(this.props.regions)
     return(
       <div>
         <EditFields
           controller={this.props.focus}
           fields={{
             name: this.state.name,
+          }}
+          dropdowns={{
+            dealerName: {
+              values: this.props.dealers.map(dlr => dlr.name),
+              match: ['dealer', 'name'],
+              select: this.state.dealerName
+            }
           }}
           rows={this.props.regions}
           handleChange={this.handleChange}
@@ -102,7 +115,8 @@ const mapStateToProps = (state) => {
   return {
     token: state.login.token,
     regions: state.region.regions,
-    focus: state.region.focus
+    focus: state.region.focus,
+    dealers: state.dlr.dealers
   }
 }
 
