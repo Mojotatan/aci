@@ -13,6 +13,9 @@ const reducer = (prevState = initialState, action) => {
     case FOCUS_DEALER:
       newState.focus = action.index
       return newState
+    case UPDATE_DEALER:
+      newState.dealers[action.index][action.field] = action.value
+      return newState
     case FLUSH_DEALERS:
       newState.dealers = []
       newState.focus = null
@@ -29,8 +32,13 @@ export const loadDealers = (dealers) => {
 }
 
 const FOCUS_DEALER = 'FOCUS_DEALER'
-export const focusDealers = (index) => {
+export const focusDealer = (index) => {
   return {type: FOCUS_DEALER, index}
+}
+
+const UPDATE_DEALER = 'UPDATE_DEALER'
+export const updateDealer = (index, field, value) => {
+  return {type: UPDATE_DEALER, index, field, value}
 }
 
 const FLUSH_DEALERS = 'FLUSH_DEALERS'

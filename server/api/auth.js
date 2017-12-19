@@ -17,9 +17,9 @@ const isLoggedIn = (req, res, next) => {
   next()
 }
 
-const isAdmin = message => (req, res, next) => {
+const isAdmin = (req, res, next) => {
   let me = whoAmI(req.body.token)
-  if (me.level !== 'admin') res.send(message)
+  if (me.level !== 'Admin') res.send('Admin access required')
   next()
 }
 

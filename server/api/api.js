@@ -5,7 +5,7 @@ api
   .use('/apps', require('./apps'))
   .use('/byos', require('./byos'))
   .use('/user', require('./user'))
-  .use('/dealer', require('./dealer'))
+  .use('/dealers', require('./dealers'))
   .use('/login', require('./login'))
 
 api.use((req, res) => res.status(404).end())
