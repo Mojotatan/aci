@@ -21,7 +21,7 @@ const generateUsers = () => {
 
   builder('fred', 'region', 'Region Manager', 'fred@bob.bob', '#123456789', 'bob')
 
-  builder('ned', 'rep', 'Sales Rep', 'ned@bob.bob', '#123456789', 'bob')
+  builder('ned', 'rep', 'Admin', 'ned@bob.bob', '#123456789', 'bob')
 
   builder('ed', 'boss', 'Senior Manager', 'ed@bob.bob', '#123456789', 'bob')
 
@@ -71,17 +71,20 @@ const generateRegions = () => {
 const generateDealers = () => {
   let arr = []
   
-  const builder = (name, phone, address) => {
+  const builder = (name, phone, street, city, state, zip) => {
     arr.push(Dealer.build({
       'name': name,
       'phone': phone,
-      'address': JSON.stringify(address)
+      'street': street,
+      'city': city,
+      'state': state,
+      'zip': zip
     }))
   }
 
-  builder('Impact', '#123456789', {street: '101 Real Street', city: 'Chicago', state: 'Illinois', zip: '60610'})
+  builder('Impact', '#123456789', '101 Real Street', 'Chicago', 'Illinois', '60610')
 
-  builder('ATN', '#123456789', {street: '420 Exists Plaza', city: 'Chicago', state: 'Illinois', zip: '60610'})
+  builder('ATN', '#123456789', '420 Exists Plaza', 'Chicago', 'Illinois', '60610')
 
   return arr
 }
@@ -122,17 +125,20 @@ const generateApplications = () => {
 const generateGuarantees = () => {
   let arr = []
   
-  const builder = (firstName, lastName, address, title, dateOfBirth) => {
+  const builder = (firstName, lastName, street, city, state, zip, title, dateOfBirth) => {
     arr.push(Guarantee.build({
       'firstName': firstName,
       'lastName': lastName,
-      'address': JSON.stringify(address),
+      'street': street,
+      'city': city,
+      'state': state,
+      'zip': zip,
       'title': title,
       'dateOfBirth': dateOfBirth
     }))
   }
 
-  builder('dave', 'davey', {street: '200 Davide Ave'}, 'daver', '1804-10-16')
+  builder('dave', 'davey', '200 Davide Ave', 'daver', '1804-10-16')
 
   return arr
 }
@@ -140,19 +146,22 @@ const generateGuarantees = () => {
 const generateCustomers = () => {
   let arr = []
   
-  const builder = (name, phone, address, email, taxID) => {
+  const builder = (name, phone, street, city, state, zip, email, taxID) => {
     arr.push(Customer.build({
       'name': name,
       'phone': phone,
-      'address': JSON.stringify(address),
+      'street': street,
+      'city': city,
+      'state': state,
+      'zip': zip,
       'email': email,
       'taxID': taxID
     }))
   }
 
-  builder('roderick"s construction', '#123456789', {street: '201 Davide Ave'}, 'arnold@palmer.net', 12)
+  builder('roderick"s construction', '#123456789', '201 Davide Ave', 'arnold@palmer.net', 12)
 
-  builder('steve"s construction', '#123456789', {street: '203 Davide Ave'}, 'arnold@palmer.net', 12)
+  builder('steve"s construction', '#123456789', '203 Davide Ave', 'arnold@palmer.net', 12)
 
   return arr
 }

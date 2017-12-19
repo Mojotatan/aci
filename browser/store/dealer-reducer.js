@@ -13,8 +13,10 @@ const reducer = (prevState = initialState, action) => {
     case FOCUS_DEALER:
       newState.focus = action.index
       return newState
-    case UPDATE_DEALER:
-      newState.dealers[action.index][action.field] = action.value
+    case CREATE_DEALER:
+      newState.dealers.push(action.dealer)
+      newState.focus = newState.dealers.length - 1
+      newState.dealers[newState.focus].id = 'new'
       return newState
     case FLUSH_DEALERS:
       newState.dealers = []
@@ -36,9 +38,9 @@ export const focusDealer = (index) => {
   return {type: FOCUS_DEALER, index}
 }
 
-const UPDATE_DEALER = 'UPDATE_DEALER'
-export const updateDealer = (index, field, value) => {
-  return {type: UPDATE_DEALER, index, field, value}
+const CREATE_DEALER = 'CREATE_DEALER'
+export const createDealer = (dealer) => {
+  return {type: CREATE_DEALER, dealer}
 }
 
 const FLUSH_DEALERS = 'FLUSH_DEALERS'
@@ -62,6 +64,18 @@ export const saveDealerThunk = (token, dealer) => {
     return axios.put('/api/dealers', {token, dealer})
     .then(res => {
       dispatch(loadDealersThunk(token))
+      dispatch(focusDealer(null))
+    })
+    .catch(err => console.error(err))
+  }
+}
+
+export const createDealerThunk = (token, dealer) => {
+  return dispatch => {
+    return axios.post('/api/dealers/new', {token, dealer})
+    .then(res => {
+      dispatch(loadDealersThunk(token))
+      dispatch(focusDealer(null))
     })
     .catch(err => console.error(err))
   }

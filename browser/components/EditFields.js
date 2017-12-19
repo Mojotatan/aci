@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({controller, fields, rows, handleChange, handleSubmit, handleCancel, handleController}) => (
+export default ({controller, fields, rows, handleChange, handleSubmit, handleCancel, handleController, handleCreate}) => (
   <div>
     {rows.map((row, index) => {
       return (
@@ -32,5 +32,9 @@ export default ({controller, fields, rows, handleChange, handleSubmit, handleCan
         </form>
       )
     })}
+    {(!controller) ?
+      <button onClick={handleCreate}>New</button>
+      : null
+    }
   </div>
 )

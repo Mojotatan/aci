@@ -3,19 +3,29 @@ import {connect} from 'react-redux'
 
 import EditFields from '../components/EditFields'
 
-import {loadDealersThunk, saveDealerThunk, updateDealer, focusDealer} from '../store/dealer-reducer'
+import {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, focusDealer} from '../store/dealer-reducer'
 
 import axios from 'axios'
 
 class DealerContainer extends React.Component {
   constructor(props) {
     super(props)
-    this.state = Object.assign({}, props.dlrs, {name: ''}, {phone: ''})
+    this.state = Object.assign({},
+      props.dlrs,
+      {create: false,
+      name: '',
+      phone: '',
+      street: '',
+      city: '',
+      state: '',
+      zip: ''}
+    )
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleController = this.handleController.bind(this)
+    this.handleCreate = this.handleCreate.bind(this)
   }
 
   handleChange(e) {
@@ -35,11 +45,32 @@ class DealerContainer extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    //thunk
+    if (this.state.create) {
+      this.props.createDealerThunk(this.props.token, {
+        id: this.props.dealers[this.props.focus].id,
+        name: this.state.name,
+        phone: this.state.phone,
+        street: this.state.street,
+        city: this.state.city,
+        state: this.state.state,
+        zip: this.state.zip
+      })
+    } else {
+      this.setState({create: false})
+      this.props.saveDealerThunk(this.props.token, {
+        id: this.props.dealers[this.props.focus].id,
+        name: this.state.name,
+        phone: this.state.phone,
+        street: this.state.street,
+        city: this.state.city,
+        state: this.state.state,
+        zip: this.state.zip
+      })
+    }
   }
 
   handleCancel(e) {
-    // this.setState({focus: null})
+    this.setState({create: false})
     this.props.focusDealer(null)
     this.props.loadDealersThunk(this.props.token)
   }
@@ -49,7 +80,31 @@ class DealerContainer extends React.Component {
     this.props.focusDealer(e.target.value)
     this.setState({
       name: this.props.dealers[e.target.value].name,
-      phone: this.props.dealers[e.target.value].phone
+      phone: this.props.dealers[e.target.value].phone,
+      street: this.props.dealers[e.target.value].street,
+      city: this.props.dealers[e.target.value].city,
+      state: this.props.dealers[e.target.value].state,
+      zip: this.props.dealers[e.target.value].zip
+    })
+  }
+
+  handleCreate(e) {
+    this.setState({
+      create: true,
+      name: '',
+      phone: '',
+      street: '',
+      city: '',
+      state: '',
+      zip: ''
+    })
+    this.props.createDealer({
+      name: '',
+      phone: '',
+      street: '',
+      city: '',
+      state: '',
+      zip: ''
     })
   }
 
@@ -57,17 +112,29 @@ class DealerContainer extends React.Component {
     if (!this.props.token) this.props.history.push('/')
   }
 
+  componentWillReceiveProps() {
+    console.log('props received', this.state)
+  }
+
   render() {
     return(
       <div>
         <EditFields
           controller={this.props.focus}
-          fields={{name: this.state.name, phone: this.state.phone}}
+          fields={{
+            name: this.state.name,
+            phone: this.state.phone,
+            street: this.state.street,
+            city: this.state.city,
+            state: this.state.state,
+            zip: this.state.zip
+          }}
           rows={this.props.dealers}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           handleCancel={this.handleCancel}
           handleController={this.handleController}
+          handleCreate={this.handleCreate}
         />
       </div>
     )
@@ -82,6 +149,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {loadDealersThunk, saveDealerThunk, updateDealer, focusDealer}
+const mapDispatchToProps = {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, focusDealer}
 
 export default connect(mapStateToProps, mapDispatchToProps)(DealerContainer)

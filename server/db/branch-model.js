@@ -8,4 +8,16 @@ module.exports = db => db.define('Branch', {
   // address: {
   //   type: Sequelize.JSON // expect {street, city, state, zip}
   // }
+  street: {
+    type: Sequelize.STRING
+  },
+  city: {
+    type: Sequelize.STRING
+  },
+  state: {
+    type: Sequelize.STRING
+  },
+  zip: {
+    type: Sequelize.STRING
+  }
 })

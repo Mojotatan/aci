@@ -12,7 +12,19 @@ module.exports = db => db.define('Dealer', {
       len: [10, 10]
     }
   },
-  address: {
-    type: Sequelize.JSON // expect {street, city, state, zip}
+  // address: {
+  //   type: Sequelize.JSON // expect {street, city, state, zip}
+  // }
+  street: {
+    type: Sequelize.STRING
+  },
+  city: {
+    type: Sequelize.STRING
+  },
+  state: {
+    type: Sequelize.STRING
+  },
+  zip: {
+    type: Sequelize.STRING
   }
 })
