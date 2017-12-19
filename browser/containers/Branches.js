@@ -3,15 +3,15 @@ import {connect} from 'react-redux'
 
 import EditFields from '../components/EditFields'
 
-import {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, focusDealer} from '../store/dealer-reducer'
+import {loadBranchesThunk, saveBranchThunk, createBranchThunk, createBranch, focusBranch} from '../store/branch-reducer'
 
 import axios from 'axios'
 
-class DealerContainer extends React.Component {
+class BranchContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = Object.assign({},
-      props.dlrs,
+      props.branches,
       {create: false,
       name: '',
       phone: '',
@@ -39,7 +39,7 @@ class DealerContainer extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     if (this.state.create) {
-      this.props.createDealerThunk(this.props.token, {
+      this.props.createBranchThunk(this.props.token, {
         name: this.state.name,
         phone: this.state.phone,
         street: this.state.street,
@@ -49,8 +49,8 @@ class DealerContainer extends React.Component {
       })
     } else {
       this.setState({create: false})
-      this.props.saveDealerThunk(this.props.token, {
-        id: this.props.dealers[this.props.focus].id,
+      this.props.saveBranchThunk(this.props.token, {
+        id: this.props.branches[this.props.focus].id,
         name: this.state.name,
         phone: this.state.phone,
         street: this.state.street,
@@ -63,20 +63,20 @@ class DealerContainer extends React.Component {
 
   handleCancel(e) {
     this.setState({create: false})
-    this.props.focusDealer(null)
-    this.props.loadDealersThunk(this.props.token)
+    this.props.focusBranch(null)
+    this.props.loadBranchesThunk(this.props.token)
   }
 
   handleController(e) {
     // this.setState({focus: e.target.value})
-    this.props.focusDealer(e.target.value)
+    this.props.focusBranch(e.target.value)
     this.setState({
-      name: this.props.dealers[e.target.value].name,
-      phone: this.props.dealers[e.target.value].phone,
-      street: this.props.dealers[e.target.value].street,
-      city: this.props.dealers[e.target.value].city,
-      state: this.props.dealers[e.target.value].state,
-      zip: this.props.dealers[e.target.value].zip
+      name: this.props.branches[e.target.value].name,
+      phone: this.props.branches[e.target.value].phone,
+      street: this.props.branches[e.target.value].street,
+      city: this.props.branches[e.target.value].city,
+      state: this.props.branches[e.target.value].state,
+      zip: this.props.branches[e.target.value].zip
     })
   }
 
@@ -90,7 +90,7 @@ class DealerContainer extends React.Component {
       state: '',
       zip: ''
     })
-    this.props.createDealer({
+    this.props.createBranch({
       name: '',
       phone: '',
       street: '',
@@ -121,7 +121,7 @@ class DealerContainer extends React.Component {
             state: this.state.state,
             zip: this.state.zip
           }}
-          rows={this.props.dealers}
+          rows={this.props.branches}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           handleCancel={this.handleCancel}
@@ -136,11 +136,11 @@ class DealerContainer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     token: state.login.token,
-    dealers: state.dlr.dealers,
-    focus: state.dlr.focus
+    branches: state.branch.branches,
+    focus: state.branch.focus
   }
 }
 
-const mapDispatchToProps = {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, focusDealer}
+const mapDispatchToProps = {loadBranchesThunk, saveBranchThunk, createBranchThunk, createBranch, focusBranch}
 
-export default connect(mapStateToProps, mapDispatchToProps)(DealerContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(BranchContainer)

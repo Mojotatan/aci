@@ -10,5 +10,7 @@ export default ({user, logOut}) => (
     </div>
     <Link to='/applications'><h4>Applications</h4></Link>
     <Link to='/dealers'><h4>Dealers</h4></Link>
+    <Link to='/branches'><h4>Branches</h4></Link>
+    <Link to='/regions'><h4>Regions</h4></Link>
   </header>
 )

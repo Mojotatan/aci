@@ -29,7 +29,7 @@ let {User, Dealer, Region, Branch, Application, Guarantee, Customer, Buyout, Lea
   User.belongsTo(Branch, {as: 'branch'})
 
   Branch.belongsTo(Region, {as: 'region'})
-  // Branch.belongsTo(Dealer, {as: 'dealer'})
+  Branch.belongsTo(Dealer, {as: 'dealer'})
 
   Region.belongsTo(Dealer, {as: 'dealer'})
 

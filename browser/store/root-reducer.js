@@ -5,7 +5,9 @@ const rootReducer = combineReducers({
   user: require('./user-reducer').default,
   app: require('./app-reducer').default,
   byo: require('./buyout-reducer').default,
-  dlr: require('./dealer-reducer').default
+  dlr: require('./dealer-reducer').default,
+  branch: require('./branch-reducer').default,
+  region: require('./region-reducer').default
 })
 
 export default rootReducer

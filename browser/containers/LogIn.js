@@ -6,6 +6,8 @@ import {logInToken, flushToken} from '../store/login-reducer'
 import {loadAppsThunk, flushApps} from '../store/app-reducer'
 import {loadByosThunk, flushByos} from '../store/buyout-reducer'
 import {loadDealersThunk, flushDealers} from '../store/dealer-reducer'
+import {loadBranchesThunk, flushBranches} from '../store/branch-reducer'
+import {loadRegionsThunk, flushRegions} from '../store/region-reducer'
 
 import Header from '../components/Header'
 import LogInForm from '../components/LogInForm'
@@ -41,6 +43,8 @@ class LogInContainer extends React.Component {
         this.props.loadAppsThunk(res.data.token)
         this.props.loadByosThunk(res.data.token)
         this.props.loadDealersThunk(res.data.token)
+        this.props.loadBranchesThunk(res.data.token)
+        this.props.loadRegionsThunk(res.data.token)
         // document.cookie = res.data.token
         this.props.history.push('/applications')
       }
@@ -52,6 +56,9 @@ class LogInContainer extends React.Component {
     this.props.flushToken()
     this.props.flushApps()
     this.props.flushByos()
+    this.props.flushDealers()
+    this.props.flushBranches()
+    this.props.flushRegions()
     this.props.history.push('/')
   }
 
@@ -80,7 +87,9 @@ const mapDispatchToProps = {
   logInToken, flushToken,
   loadAppsThunk, flushApps,
   loadByosThunk, flushByos,
-  loadDealersThunk, flushDealers
+  loadDealersThunk, flushDealers,
+  loadBranchesThunk, flushBranches,
+  loadRegionsThunk, flushRegions
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LogInContainer))

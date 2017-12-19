@@ -7,6 +7,8 @@ import Application from './containers/Application'
 import Buyouts from './containers/Buyouts'
 import Buyout from './containers/Buyout'
 import Dealers from './containers/Dealers'
+import Branches from './containers/Branches'
+import Regions from './containers/Regions'
 
 
 const App = () => (
@@ -18,6 +20,8 @@ const App = () => (
       {/* <Route path="/buyouts" component={Buyouts} />
       <Route path="/edit-buyout" component={Buyout} /> */}
       <Route path="/dealers" component={Dealers} />
+      <Route path="/branches" component={Branches} />
+      <Route path="/regions" component={Regions} />
     </main>
   </div>
 )
