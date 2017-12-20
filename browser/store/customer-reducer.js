@@ -40,24 +40,24 @@ export const loadCustomersThunk = (token) => {
   }
 }
 
-export const saveCustomerThunk = (token, customer) => {
-  return dispatch => {
-    return axios.put('/api/customers', {token, customer})
-    .then(res => {
-      dispatch(loadCustomersThunk(token))
-    })
-    .catch(err => console.error(err))
-  }
-}
+// export const saveCustomerThunk = (token, customer) => {
+//   return dispatch => {
+//     return axios.put('/api/customers', {token, customer})
+//     .then(res => {
+//       dispatch(loadCustomersThunk(token))
+//     })
+//     .catch(err => console.error(err))
+//   }
+// }
 
-export const createCustomerThunk = (token, customer) => {
-  return dispatch => {
-    return axios.post('/api/customers/new', {token, customer})
-    .then(res => {
-      dispatch(loadCustomersThunk(token))
-    })
-    .catch(err => console.error(err))
-  }
-}
+// export const createCustomerThunk = (token, customer) => {
+//   return dispatch => {
+//     return axios.post('/api/customers/new', {token, customer})
+//     .then(res => {
+//       dispatch(loadCustomersThunk(token))
+//     })
+//     .catch(err => console.error(err))
+//   }
+// }
 
 export default reducer

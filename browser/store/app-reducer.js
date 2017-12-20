@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import {loadCustomersThunk} from './customer-reducer'
+
 // initial state
 const initialState = {apps: [], focus: null}
 
@@ -13,9 +15,11 @@ const reducer = (prevState = initialState, action) => {
     case FOCUS_APP:
       newState.focus = action.index
       return newState
-    // case UPDATE_APP:
-    //   newState.apps[focus] = Object.assign({}, newState.apps[focus], action.newValues)
-    //   return newState
+    case CREATE_APP:
+      newState.apps.push(action.app)
+      newState.focus = newState.apps.length - 1
+      newState.apps[newState.focus].id = 'new'
+      return newState
     case FLUSH_APPS:
       newState.apps = []
       newState.focus = null
@@ -36,10 +40,10 @@ export const focusApp = (index) => {
   return {type: FOCUS_APP, index}
 }
 
-// const UPDATE_APP = 'UPDATE_APP'
-// export const updateApp = (newValues) => {
-//   return {type: UPDATE_APP, newValues}
-// }
+const CREATE_APP = 'CREATE_APP'
+export const createApp = (app) => {
+  return {type: CREATE_APP, app}
+}
 
 const FLUSH_APPS = 'FLUSH_APPS'
 export const flushApps = () => {
@@ -57,14 +61,28 @@ export const loadAppsThunk = (token) => {
   }
 }
 
-export const saveAppThunk = (token, app) => {
+export const saveAppThunk = (token, app, customer) => {
+  let appArgs = Object.assign({}, ...app)
+  let cusArgs = Object.assign({}, ...customer)
   return dispatch => {
-    return axios.put('/api/apps', {token, app})
+    return axios.put('/api/apps', {token, app: appArgs, customer: cusArgs})
     .then(res => {
       dispatch(loadAppsThunk(token))
+      dispatch(loadCustomersThunk(token))
     })
     .catch(err => console.error(err))
   }
 }
+
+// export const createAppThunk = (token, ...app) => {
+//   let args = Object.assign({}, ...app)
+//   return dispatch => {
+//     return axios.post('/api/apps/new', {token, args})
+//     .then(res => {
+//       dispatch(loadAppsThunk(token))
+//     })
+//     .catch(err => console.error(err))
+//   }
+// }
 
 export default reducer

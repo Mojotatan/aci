@@ -109,15 +109,15 @@ const generateApplications = () => {
     }))
   }
 
-  builder('draft', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {}, 'no comment')
+  builder('draft', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
 
-  builder('new', '1998-11-26', 20.20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', 12345, {}, 'no comment')
+  builder('new', '1998-11-26', 20.20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', '12345', {}, 'no comment')
 
-  builder('pending', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {GE: 'N', UnifiFRED: 'Y'}, 'no comment')
+  builder('pending', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {GE: 'N', UnifiFRED: 'Y'}, 'no comment')
 
-  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {}, 'no comment')
+  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
 
-  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {}, 'no comment')
+  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
 
   return arr
 }
@@ -159,9 +159,9 @@ const generateCustomers = () => {
     }))
   }
 
-  builder("roderick's construction", '#123456789', '201 Davide Ave', 'city', 'state', 'zip', 'arnold@palmer.net', 12)
+  builder("roderick's construction", '#123456789', '201 Davide Ave', 'city', 'state', 'zip', 'arnold@palmer.net', '12')
 
-  builder("steve's construction", '#123456789', '203 Davide Ave', 'city', 'state', 'zip', 'arnold@palmer.net', 12)
+  builder("steve's construction", '#123456789', '203 Davide Ave', 'city', 'state', 'zip', 'arnold@palmer.net', '12')
 
   return arr
 }

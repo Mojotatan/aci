@@ -32,6 +32,6 @@ module.exports = db => db.define('Customer', {
     }
   },
   taxID: {
-    type: Sequelize.INTEGER
+    type: Sequelize.STRING
   },
 })

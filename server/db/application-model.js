@@ -32,7 +32,7 @@ module.exports = db => db.define('Application', {
     type: Sequelize.STRING
   },
   erp: {
-    type: Sequelize.INTEGER
+    type: Sequelize.STRING
   },
 
   // admin only fields

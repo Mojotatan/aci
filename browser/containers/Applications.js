@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {focusApp} from '../store/app-reducer'
+import {focusApp, createApp} from '../store/app-reducer'
 
 import axios from 'axios'
 
@@ -11,10 +11,30 @@ class ApplicationsContainer extends React.Component {
     this.state = {}
 
     this.handleClick = this.handleClick.bind(this)
+    this.handleNewApp = this.handleNewApp.bind(this)
   }
 
   handleClick(e) {
     this.props.focusApp(Number(e.target.id))
+    this.props.history.push('/edit-application')
+  }
+
+  handleNewApp(e) {
+    let now = new Date()
+    this.props.createApp({
+      id: 'new',
+      status: 'draft',
+      date: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
+      // amount: '',
+      // expiry: '',
+      // // advancedPayments: '',
+      // // endOfTerm: '',
+      // type: '',
+      // // currentLeaseCompany: '',
+      // erp: '',
+      // bank: '',
+      // comments: '',
+    })
     this.props.history.push('/edit-application')
   }
 
@@ -26,6 +46,7 @@ class ApplicationsContainer extends React.Component {
     return(
       <div>
         <h2>Applications</h2>
+        <button onClick={this.handleNewApp}>Create new application</button>
         <table>
           <tbody>
             <tr key="head">
@@ -66,6 +87,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {focusApp}
+const mapDispatchToProps = {focusApp, createApp}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationsContainer)

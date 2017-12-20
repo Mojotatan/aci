@@ -3,8 +3,7 @@ import {connect} from 'react-redux'
 
 import EditApplication from '../components/EditApplication'
 
-import {saveAppThunk} from '../store/app-reducer'
-import {saveCustomerThunk, createCustomerThunk} from '../store/customer-reducer'
+import {saveAppThunk, createApp} from '../store/app-reducer'
 
 import axios from 'axios'
 
@@ -47,20 +46,23 @@ class ApplicationContainer extends React.Component {
     e.preventDefault()
 
     if (this.state.customerCreate) {
-      this.props.createCustomerThunk(this.props.token, this.state.customer)
+      this.props.saveAppThunk(this.props.token, [this.state], [this.state.customer, {id: 'new'}])
     } else {
-      this.props.saveCustomerThunk(this.props.token, this.state.customer)
+      this.props.saveAppThunk(this.props.token, [this.state], [this.state.customer])
     }
 
-    // this.props.saveAppThunk(this.props.token, this.state)
   }
 
   handleSubmit(e) {
-    this.setState({
-      status: 'new'
-    })
+    e.preventDefault()
 
-    // this.props.history.push('/applications')
+    if (this.state.customerCreate) {
+      this.props.saveAppThunk(this.props.token, [this.state, {status: 'new'}], [this.state.customer, {id: 'new'}])
+    } else {
+      this.props.saveAppThunk(this.props.token, [this.state, {status: 'new'}], [this.state.customer])
+    }
+
+    this.props.history.push('/applications')
   }
 
   handleChangeCustomer(e) {
@@ -124,6 +126,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {saveAppThunk, saveCustomerThunk, createCustomerThunk}
+const mapDispatchToProps = {saveAppThunk, createApp}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationContainer)
