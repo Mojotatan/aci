@@ -159,9 +159,9 @@ const generateCustomers = () => {
     }))
   }
 
-  builder('roderick"s construction', '#123456789', '201 Davide Ave', 'arnold@palmer.net', 12)
+  builder("roderick's construction", '#123456789', '201 Davide Ave', 'city', 'state', 'zip', 'arnold@palmer.net', 12)
 
-  builder('steve"s construction', '#123456789', '203 Davide Ave', 'arnold@palmer.net', 12)
+  builder("steve's construction", '#123456789', '203 Davide Ave', 'city', 'state', 'zip', 'arnold@palmer.net', 12)
 
   return arr
 }

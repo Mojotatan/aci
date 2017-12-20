@@ -6,6 +6,7 @@ api
   .use('/dealers', require('./dealers'))
   .use('/branches', require('./branches'))
   .use('/regions', require('./regions'))
+  .use('/customers', require('./customers'))
   .use('/login', require('./login'))
 
 api.use((req, res) => res.status(404).end())

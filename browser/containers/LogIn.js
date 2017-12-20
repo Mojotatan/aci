@@ -8,6 +8,7 @@ import {loadByosThunk, flushByos} from '../store/buyout-reducer'
 import {loadDealersThunk, flushDealers} from '../store/dealer-reducer'
 import {loadBranchesThunk, flushBranches} from '../store/branch-reducer'
 import {loadRegionsThunk, flushRegions} from '../store/region-reducer'
+import {loadCustomersThunk, flushCustomers} from '../store/customer-reducer'
 
 import Header from '../components/Header'
 import LogInForm from '../components/LogInForm'
@@ -45,6 +46,7 @@ class LogInContainer extends React.Component {
         this.props.loadDealersThunk(res.data.token)
         this.props.loadBranchesThunk(res.data.token)
         this.props.loadRegionsThunk(res.data.token)
+        this.props.loadCustomersThunk(res.data.token)
         // document.cookie = res.data.token
         this.props.history.push('/applications')
       }
@@ -59,6 +61,7 @@ class LogInContainer extends React.Component {
     this.props.flushDealers()
     this.props.flushBranches()
     this.props.flushRegions()
+    this.props.flushCustomers()
     this.props.history.push('/')
   }
 
@@ -89,7 +92,8 @@ const mapDispatchToProps = {
   loadByosThunk, flushByos,
   loadDealersThunk, flushDealers,
   loadBranchesThunk, flushBranches,
-  loadRegionsThunk, flushRegions
+  loadRegionsThunk, flushRegions,
+  loadCustomersThunk, flushCustomers
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LogInContainer))

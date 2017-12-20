@@ -1,7 +1,15 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-export default ({values, handleChange, handleSave, handleSubmit}) => (
+export default ({
+  values,
+  customers,
+  handleChange,
+  handleChangeInCustomer,
+  handleSave,
+  handleSubmit,
+  handleChangeCustomer
+}) => (
   <div className="row">
     <h2>Edit this app</h2>
 
@@ -89,12 +97,28 @@ export default ({values, handleChange, handleSave, handleSubmit}) => (
           <h3>Customer Information</h3>
 
           <div className="row">
+            <div className="col-sm-12">
+              <label>Load a Customer</label>
+              <select
+                onChange={handleChangeCustomer}
+                name="customer"
+                value={(values.customer) ? values.customer.name || 'new' : 'new'}
+              >
+                <option value="new" key="customer-new">New</option>
+                {customers.map((customer, index) => (
+                  <option name={index} value={customer} key={`customer-${index}`}>{customer}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="row">
             <div className="col-sm-6">
               <label>Customer</label>
               <input
-                onChange={handleChange}
-                // name={'amount'}
-                value={(values.customer) ? values.customer.name : ''}
+                onChange={handleChangeInCustomer}
+                name={'name'}
+                value={(values.customer) ? values.customer.name || '' : ''}
               />
             </div>
           </div>
@@ -109,9 +133,37 @@ export default ({values, handleChange, handleSave, handleSubmit}) => (
           </div> */}
 
           <div className="row">
-            <div className="col-sm-12">
+            <div className="col-sm-6">
               <label>Address</label>
-              <input />
+              <input
+                onChange={handleChangeInCustomer}
+                name={'street'}
+                value={(values.customer) ? values.customer.street || '' : ''}
+              />
+            </div>
+            <div className="col-sm-6">
+              <label>City</label>
+              <input
+                onChange={handleChangeInCustomer}
+                name={'city'}
+                value={(values.customer) ? values.customer.city || '' : ''}
+              />
+            </div>
+            <div className="col-sm-6">
+              <label>State</label>
+              <input
+                onChange={handleChangeInCustomer}
+                name={'state'}
+                value={(values.customer) ? values.customer.state || '' : ''}
+              />
+            </div>
+            <div className="col-sm-6">
+              <label>Zip Code</label>
+              <input
+                onChange={handleChangeInCustomer}
+                name={'zip'}
+                value={(values.customer) ? values.customer.zip || '' : ''}
+              />
             </div>
           </div>
 
@@ -119,9 +171,9 @@ export default ({values, handleChange, handleSave, handleSubmit}) => (
             <div className="col-sm-6">
               <label>Phone</label>
               <input
-                onChange={handleChange}
-                // name={'amount'}
-                value={(values.customer) ? values.customer.phone : ''}
+                onChange={handleChangeInCustomer}
+                name={'phone'}
+                value={(values.customer) ? values.customer.phone || '' : ''}
               />
             </div>
           </div>
@@ -130,9 +182,9 @@ export default ({values, handleChange, handleSave, handleSubmit}) => (
             <div className="col-sm-6">
               <label>Customer Email</label>
               <input 
-                onChange={handleChange}
-                // name={'amount'}
-                value={(values.customer) ? values.customer.email : ''}
+                onChange={handleChangeInCustomer}
+                name={'email'}
+                value={(values.customer) ? values.customer.email || '' : ''}
               />
             </div>
           </div>
@@ -141,9 +193,9 @@ export default ({values, handleChange, handleSave, handleSubmit}) => (
             <div className="col-sm-6">
               <label>Tax ID</label>
               <input
-                onChange={handleChange}
-                // name={'amount'}
-                value={(values.customer) ? values.customer.taxID : ''}
+                onChange={handleChangeInCustomer}
+                name={'taxID'}
+                value={(values.customer) ? values.customer.taxID || '' : ''}
               />
             </div>
           </div>
