@@ -53,7 +53,7 @@ class ApplicationsContainer extends React.Component {
               )
             })}
           </tbody>
-          </table>
+        </table>
       </div>
     )
   }

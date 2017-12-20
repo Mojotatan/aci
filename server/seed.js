@@ -111,7 +111,7 @@ const generateApplications = () => {
 
   builder('draft', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {}, 'no comment')
 
-  builder('new', '1998-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', 12345, {}, 'no comment')
+  builder('new', '1998-11-26', 20.20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', 12345, {}, 'no comment')
 
   builder('pending', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', 12345, {GE: 'N', UnifiFRED: 'Y'}, 'no comment')
 

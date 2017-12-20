@@ -10,7 +10,7 @@ import axios from 'axios'
 class ApplicationContainer extends React.Component {
   constructor(props) {
     super(props)
-    this.state = Object.assign({}, props.app)
+    this.state = Object.assign({}, this.props.app)
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSave = this.handleSave.bind(this)
@@ -18,6 +18,8 @@ class ApplicationContainer extends React.Component {
   }
 
   handleChange(e) {
+    console.log('state', this.state)
+    console.log('props', this.props)
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -40,6 +42,11 @@ class ApplicationContainer extends React.Component {
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
   }
+
+  // componentWillReceiveProps() {
+    // console.log('state', this.state)
+    // console.log('props', this.props)
+  // }
 
   render() {
     return(
