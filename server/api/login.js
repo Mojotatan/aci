@@ -38,7 +38,7 @@ module.exports = require('express').Router()
       }, cert)
     })
     .then(token => {
-      res.send({token, name: account.fullName})
+      res.send({token, name: account.fullName, level: account.level})
     })
     .catch(err => console.error(err))
   })

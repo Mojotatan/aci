@@ -19,42 +19,42 @@ module.exports = require('express').Router()
     })
   })
 
-  .put('/', isLoggedIn, (req, res) => {
-    return Customer.update({
-      name: req.body.customer.name,
-      phone: req.body.customer.phone,
-      email: req.body.customer.email,
-      street: req.body.customer.street,
-      city: req.body.customer.city,
-      state: req.body.customer.state,
-      zip: req.body.customer.zip,
-      taxID: req.body.customer.taxID
-    }, {
-      where: {
-        id: {
-          [Op.eq]: req.body.customer.id
-        }
-      }
-    })
-    .then(data => {
-      res.send('success')
-    })
-  })
+  // .put('/', isLoggedIn, (req, res) => {
+  //   return Customer.update({
+  //     name: req.body.customer.name,
+  //     phone: req.body.customer.phone,
+  //     email: req.body.customer.email,
+  //     street: req.body.customer.street,
+  //     city: req.body.customer.city,
+  //     state: req.body.customer.state,
+  //     zip: req.body.customer.zip,
+  //     taxID: req.body.customer.taxID
+  //   }, {
+  //     where: {
+  //       id: {
+  //         [Op.eq]: req.body.customer.id
+  //       }
+  //     }
+  //   })
+  //   .then(data => {
+  //     res.send('success')
+  //   })
+  // })
 
-  .post('/new', isLoggedIn, (req, res) => {
-    return Customer.create({
-      name: req.body.customer.name,
-      phone: req.body.customer.phone,
-      email: req.body.customer.email,
-      street: req.body.customer.street,
-      city: req.body.customer.city,
-      state: req.body.customer.state,
-      zip: req.body.customer.zip,
-      taxID: req.body.customer.taxID,
-    }, {
+  // .post('/new', isLoggedIn, (req, res) => {
+  //   return Customer.create({
+  //     name: req.body.customer.name,
+  //     phone: req.body.customer.phone,
+  //     email: req.body.customer.email,
+  //     street: req.body.customer.street,
+  //     city: req.body.customer.city,
+  //     state: req.body.customer.state,
+  //     zip: req.body.customer.zip,
+  //     taxID: req.body.customer.taxID,
+  //   }, {
 
-    })
-    .then(newCustomer => {
-      res.send(newCustomer)
-    })
-  })
+  //   })
+  //   .then(newCustomer => {
+  //     res.send(newCustomer)
+  //   })
+  // })

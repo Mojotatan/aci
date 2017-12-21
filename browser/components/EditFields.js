@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {match} from '../utility'
+
 export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit, handleCancel, handleController, handleCreate}) => (
   <div>
     {rows.map((row, index) => {
@@ -18,11 +20,6 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
             )
           })}
           {Object.keys(dropdowns).map(key => {
-            let match = (arr, obj) => {
-              if (!obj) return ''
-              else if (arr.length === 1) return obj[arr[0]]
-              else return match(arr.slice(1), obj[arr[0]])
-            }
             return(
               <select
                 disabled = {!(controller == index)}

@@ -109,15 +109,15 @@ const generateApplications = () => {
     }))
   }
 
-  builder('draft', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
+  builder('Draft', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
 
-  builder('new', '1998-11-26', 20.20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', '12345', {}, 'no comment')
+  builder('Submitted', '1998-11-26', 20.20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', '12345', {}, 'no comment')
 
-  builder('pending', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {GE: 'N', UnifiFRED: 'Y'}, 'no comment')
+  builder('Hold', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {GE: 'N', UnifiFRED: 'Y'}, 'no comment')
 
-  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
+  builder('Approved', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
 
-  builder('pending', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
+  builder('Declined', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
 
   return arr
 }
@@ -179,9 +179,9 @@ const generateBuyouts = () => {
     }))
   }
 
-  builder('draft', '2017-12-15', 'full', 'no comment', '')
+  builder('Draft', '2017-12-15', 'full', 'no comment', '')
 
-  builder('new', '2017-12-16', 'partial', 'no comment', '')
+  builder('Submitted', '2017-12-16', 'partial', 'no comment', '')
 
   return arr
 }

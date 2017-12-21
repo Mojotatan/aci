@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {focusApp, createApp} from '../store/app-reducer'
+import {focusApp, createApp, sortApps} from '../store/app-reducer'
 
-import axios from 'axios'
+import {getDate} from '../utility'
 
 class ApplicationsContainer extends React.Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class ApplicationsContainer extends React.Component {
 
     this.handleClick = this.handleClick.bind(this)
     this.handleNewApp = this.handleNewApp.bind(this)
+    this.handleSort = this.handleSort.bind(this)
   }
 
   handleClick(e) {
@@ -20,22 +21,17 @@ class ApplicationsContainer extends React.Component {
   }
 
   handleNewApp(e) {
-    let now = new Date()
     this.props.createApp({
       id: 'new',
-      status: 'draft',
-      date: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
-      // amount: '',
-      // expiry: '',
-      // // advancedPayments: '',
-      // // endOfTerm: '',
-      // type: '',
-      // // currentLeaseCompany: '',
-      // erp: '',
-      // bank: '',
-      // comments: '',
+      status: 'Draft',
+      date: getDate(),
     })
     this.props.history.push('/edit-application')
+  }
+
+  handleSort(e) {
+    this.props.sortApps(e.target.id.split('-'))
+    this.setState({sortingBy: e.target.id})
   }
 
   componentWillMount() {
@@ -45,36 +41,53 @@ class ApplicationsContainer extends React.Component {
   render() {
     return(
       <div>
-        <h2>Applications</h2>
-        <button onClick={this.handleNewApp}>Create new application</button>
-        <table>
-          <tbody>
-            <tr key="head">
-              <td>date</td>
-              <td>customer name</td>
-              <td>customer address</td>
-              <td>amount</td>
-              <td>status</td>
-              <td>expiry</td>
-              <td>rep</td>
-              <td>options</td>
-            </tr>
-            {this.props.apps.map((app, index) => {
-              return (
-                <tr key={app.id}>
-                  <td>{app.date}</td>
-                  <td>{(app.customer) ? app.customer.name : ''}</td>
-                  <td>{(app.customer) ? app.customer.address : ''}</td>
-                  <td>{app.amount}</td>
-                  <td>{app.status}</td>
-                  <td>{app.expiry}</td>
-                  <td>{app.rep.fullName}</td>
-                  <td id={index} onClick={this.handleClick}>Edit</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+        <h2>Current Applications</h2>
+        <button onClick={this.handleNewApp}>Start New Application</button>
+        <div className="col-sm-12">
+          <table>
+            <tbody>
+              <tr key="head">
+                <td id="date" onClick={this.handleSort}>Date Submitted</td>
+                <td>Customer Name</td>
+                <td>Address</td>
+                <td>Amount</td>
+                <td id="status" onClick={this.handleSort}>Status</td>
+                <td>Expires</td>
+                <td id="rep-fullName" onClick={this.handleSort}>Rep Name</td>
+              </tr>
+              {this.props.apps.map((app, index) => {
+                return (
+                  <tr key={app.id}>
+                    <td>{app.date}</td>
+                    <td>{(app.customer) ? app.customer.name : ''}</td>
+                    <td>{(app.customer) ? app.customer.street : ''}</td>
+                    <td>{app.amount}</td>
+                    <td>{app.status}</td>
+                    <td>{app.expiry}</td>
+                    <td>{(app.rep) ? app.rep.fullName : ''}</td>
+                    <td id={index} onClick={this.handleClick}>
+                      {(this.props.user.level === 'Admin' || app.status === 'Draft') ?
+                        'Edit' : 'View'
+                      }
+                    </td>
+                    {/* <td>
+                      {(app.pdf) ?
+                        <a href={app.pdf} download>PDF</a>
+                        : ''
+                      }
+                    </td> */}
+
+                    {/* <td onClick={(app.status === "Expired") ?
+                      console.log('resubmit!') : ''}>
+                      {(app.status === "Expired") ?
+                        'Resubmit' : ''}
+                    </td> */}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     )
   }
@@ -83,10 +96,11 @@ class ApplicationsContainer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     token: state.login.token,
+    user: state.login.user,
     apps: state.app.apps
   }
 }
 
-const mapDispatchToProps = {focusApp, createApp}
+const mapDispatchToProps = {focusApp, createApp, sortApps}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationsContainer)

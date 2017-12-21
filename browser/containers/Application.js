@@ -5,7 +5,7 @@ import EditApplication from '../components/EditApplication'
 
 import {saveAppThunk, createApp} from '../store/app-reducer'
 
-import axios from 'axios'
+import {getDate} from '../utility'
 
 class ApplicationContainer extends React.Component {
   constructor(props) {
@@ -57,9 +57,9 @@ class ApplicationContainer extends React.Component {
     e.preventDefault()
 
     if (this.state.customerCreate) {
-      this.props.saveAppThunk(this.props.token, [this.state, {status: 'new'}], [this.state.customer, {id: 'new'}])
+      this.props.saveAppThunk(this.props.token, [this.state, {status: 'Submitted', date: getDate()}], [this.state.customer, {id: 'new'}])
     } else {
-      this.props.saveAppThunk(this.props.token, [this.state, {status: 'new'}], [this.state.customer])
+      this.props.saveAppThunk(this.props.token, [this.state, {status: 'Submitted', date: getDate()}], [this.state.customer])
     }
 
     this.props.history.push('/applications')
@@ -121,6 +121,7 @@ class ApplicationContainer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     token: state.login.token,
+    user: state.login.user,
     app: state.app.apps[state.app.focus],
     customers: state.customer.customers
   }

@@ -11,7 +11,8 @@ const reducer = (prevState = initialState, action) => {
     case LOG_IN:
       newState.token = action.token
       newState.user = {
-        name: action.name
+        name: action.name,
+        level: action.level
       }
       return newState
     case LOG_OUT:
@@ -25,8 +26,8 @@ const reducer = (prevState = initialState, action) => {
 
 // constants and action creators
 const LOG_IN = 'LOG_IN'
-export const logInToken = (token, name) => {
-  return {type: LOG_IN, token, name}
+export const logInToken = (token, name, level) => {
+  return {type: LOG_IN, token, name, level}
 }
 
 const LOG_OUT = 'LOG_OUT'

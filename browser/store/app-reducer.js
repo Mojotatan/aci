@@ -2,6 +2,8 @@ import axios from 'axios'
 
 import {loadCustomersThunk} from './customer-reducer'
 
+import {sortBy} from '../utility'
+
 // initial state
 const initialState = {apps: [], focus: null}
 
@@ -19,6 +21,9 @@ const reducer = (prevState = initialState, action) => {
       newState.apps.push(action.app)
       newState.focus = newState.apps.length - 1
       newState.apps[newState.focus].id = 'new'
+      return newState
+    case SORT_APPS:
+      newState.apps.sort(sortBy(action.field))
       return newState
     case FLUSH_APPS:
       newState.apps = []
@@ -43,6 +48,11 @@ export const focusApp = (index) => {
 const CREATE_APP = 'CREATE_APP'
 export const createApp = (app) => {
   return {type: CREATE_APP, app}
+}
+
+const SORT_APPS = 'SORT_APPS'
+export const sortApps = (field) => {
+  return {type: SORT_APPS, field}
 }
 
 const FLUSH_APPS = 'FLUSH_APPS'
@@ -73,16 +83,5 @@ export const saveAppThunk = (token, app, customer) => {
     .catch(err => console.error(err))
   }
 }
-
-// export const createAppThunk = (token, ...app) => {
-//   let args = Object.assign({}, ...app)
-//   return dispatch => {
-//     return axios.post('/api/apps/new', {token, args})
-//     .then(res => {
-//       dispatch(loadAppsThunk(token))
-//     })
-//     .catch(err => console.error(err))
-//   }
-// }
 
 export default reducer

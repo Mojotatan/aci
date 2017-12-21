@@ -14,7 +14,11 @@ module.exports = require('express').Router()
       }
     })
     .then(data => {
-      if (data.level === 'Branch Manager') {
+      if (data.level === 'Admin') {
+        return User.findAll({
+          attributes: ['id'],
+        })
+      } else if (data.level === 'Branch Manager') {
         return User.findAll({
           attributes: ['id'],
           where: {

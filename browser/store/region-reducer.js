@@ -44,7 +44,7 @@ export const createRegion = (region) => {
 }
 
 const FLUSH_REGIONS = 'FLUSH_REGIONS'
-export const flushRegion = () => {
+export const flushRegions = () => {
   return {type: FLUSH_REGIONS}
 }
 

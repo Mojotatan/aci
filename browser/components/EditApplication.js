@@ -347,7 +347,7 @@ export default ({
           )
         })} */}
         <div className="row">
-          <Link to='/applications'><button>Cancel</button></Link>
+          <Link to='/applications'><div>Cancel</div></Link>
           <button type="submit">Save</button>
           <button onClick={handleSubmit} type="submit">Submit</button>
         </div>

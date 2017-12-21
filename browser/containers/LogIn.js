@@ -35,12 +35,12 @@ class LogInContainer extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    console.log('u: ' + this.state.username, 'p: ' + this.state.password)
+    // console.log('u: ' + this.state.username, 'p: ' + this.state.password)
     axios.post('/api/login', {u: this.state.username, pw: this.state.password})
     .then((res) => {
-      console.log('promise achieved', res.data)
+      // console.log('promise achieved', res.data)
       if (typeof res.data !== 'string') {
-        this.props.logInToken(res.data.token, res.data.name)
+        this.props.logInToken(res.data.token, res.data.name, res.data.level)
         this.props.loadAppsThunk(res.data.token)
         this.props.loadByosThunk(res.data.token)
         this.props.loadDealersThunk(res.data.token)
@@ -68,7 +68,7 @@ class LogInContainer extends React.Component {
   render() {
     if (this.props.token) {
       return (
-        <Header user={this.props.user.name} logOut={this.logOut} />
+        <Header user={this.props.user} logOut={this.logOut} />
       )
     }
     else {
