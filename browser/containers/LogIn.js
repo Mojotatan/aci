@@ -40,7 +40,7 @@ class LogInContainer extends React.Component {
     .then((res) => {
       // console.log('promise achieved', res.data)
       if (typeof res.data !== 'string') {
-        this.props.logInToken(res.data.token, res.data.name, res.data.level)
+        this.props.logInToken(res.data.token, res.data.user)
         this.props.loadAppsThunk(res.data.token)
         this.props.loadByosThunk(res.data.token)
         this.props.loadDealersThunk(res.data.token)

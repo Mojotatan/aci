@@ -38,7 +38,18 @@ module.exports = require('express').Router()
       }, cert)
     })
     .then(token => {
-      res.send({token, name: account.fullName, level: account.level})
+      res.send({
+        token,
+        user: {
+          fullName: account.fullName,
+          level: account.level,
+          email: account.email,
+          phone: account.phone,
+          branch: (account.branch) ? account.branch.name : null,
+          region: (account.region) ? account.region.name : null,
+          dealer: (account.dealer) ? account.dealer.name : null
+        }
+      })
     })
     .catch(err => console.error(err))
   })

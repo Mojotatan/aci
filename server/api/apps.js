@@ -6,6 +6,7 @@ module.exports = require('express').Router()
 
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
+    let appsToReturn, branchesToReturn
     return User.findOne({
       attributes: ['id', 'level', 'dealerId', 'regionId', 'branchId'],
       where: {
@@ -60,9 +61,35 @@ module.exports = require('express').Router()
         include: ['rep', /*'guarantee',*/ 'customer']
       })
     })
-    .then((appData) => {
-      res.send(appData)
+    .then(appData => {
+      appsToReturn = appData
+      return Promise.all(appsToReturn.map(app => app.rep.getBranch()))
     })
+    .then(branchData => {
+      branchesToReturn = branchData
+      return Promise.all(appsToReturn.map(app => app.rep.getDealer()))
+    })
+    .then(appDealers => {
+      res.send({
+        apps: appsToReturn,
+        branches: branchesToReturn,
+        dealers: appDealers
+      })
+    })
+    // .then(appData => {
+    //   appsToReturn = appData
+    //   return Promise.all(appData.map(app => app.rep.getBranch()))
+    // .then(branchData => {
+    //   branchesToReturn = branchData
+    //   return Promise.all(appsToReturn.map(app => app.rep.getDealer()))
+    // })
+    // .then(appDealers => {
+    //   res.send({
+    //     apps: appsToReturn,
+    //     branches: branchesToReturn,
+    //     dealers: appDealers
+    //   })
+    // })
   })
 
   .put('/', isLoggedIn, (req, res) => {

@@ -65,7 +65,17 @@ export const loadAppsThunk = (token) => {
   return dispatch => {
     return axios.post('/api/apps', {token})
     .then(res => {
-      dispatch(loadApps(res.data))
+      // expecting res to have a list of applications
+      // and a list of branch + dealer associations through rep
+      res.data.apps.forEach((app, index) => {
+        if (res.data.dealers[index]) {
+          app.dealer = res.data.dealers[index].name
+        }
+        if (res.data.branches[index]) {
+          app.branch = res.data.branches[index].name
+        }
+      })
+      dispatch(loadApps(res.data.apps))
     })
     .catch(err => console.error(err))
   }

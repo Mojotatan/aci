@@ -25,6 +25,7 @@ class ApplicationsContainer extends React.Component {
       id: 'new',
       status: 'Draft',
       date: getDate(),
+      rep: this.props.user
     })
     this.props.history.push('/edit-application')
   }
