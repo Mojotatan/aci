@@ -13,6 +13,7 @@ class ApplicationsContainer extends React.Component {
     this.handleClick = this.handleClick.bind(this)
     this.handleNewApp = this.handleNewApp.bind(this)
     this.handleSort = this.handleSort.bind(this)
+    this.handleResubmit = this.handleResubmit.bind(this)
   }
 
   handleClick(e) {
@@ -33,6 +34,24 @@ class ApplicationsContainer extends React.Component {
   handleSort(e) {
     this.props.sortApps(e.target.id.split('-'))
     this.setState({sortingBy: e.target.id})
+  }
+
+  handleResubmit(e) {
+    let app = this.props.apps[e.target.id]
+    this.props.createApp({
+      id: 'new',
+      status: 'Draft',
+      date: getDate(),
+      rep: this.props.user,
+      type: app.type,
+      erp: app.erp,
+      amount: app.amount,
+      term: app.term,
+      advancedPayments: app.advancedPayments,
+      endOfTerm: app.endOfTerm,
+      comments: app.comments
+    })
+    this.props.history.push('/edit-application')
   }
 
   componentWillMount() {
@@ -78,11 +97,11 @@ class ApplicationsContainer extends React.Component {
                       }
                     </td> */}
 
-                    {/* <td onClick={(app.status === "Expired") ?
-                      console.log('resubmit!') : ''}>
+                    <td id={index} onClick={(app.status === "Expired") ?
+                      this.handleResubmit : function(){}}>
                       {(app.status === "Expired") ?
                         'Resubmit' : ''}
-                    </td> */}
+                    </td>
                   </tr>
                 )
               })}
