@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import axios from 'axios'
 
 import EditApplication from '../components/EditApplication'
 
@@ -12,7 +13,8 @@ class ApplicationContainer extends React.Component {
     super(props)
     this.state = Object.assign({},
       {
-        customerCreate: (this.props.app && this.props.app.customer) ? false : true
+        customerCreate: (this.props.app && this.props.app.customer) ? false : true,
+        notifyRep: false
       },
       this.props.app,
     )
@@ -21,6 +23,8 @@ class ApplicationContainer extends React.Component {
     this.handleChangeInCustomer = this.handleChangeInCustomer.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+
+    this.handleCheckbox = this.handleCheckbox.bind(this)
 
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
   }
@@ -51,6 +55,14 @@ class ApplicationContainer extends React.Component {
       this.props.saveAppThunk(this.props.token, [this.state], [this.state.customer])
     }
 
+    if (this.state.notifyRep) {
+      console.log('notifying rep!')
+      // axios.post('/api/apps/email', {token: this.props.token, rep: this.state.rep, customer: this.state.customer})
+      // .then(res => {
+      //   console.log('mail sent', res.data)
+      // })
+    }
+
   }
 
   handleSubmit(e) {
@@ -63,6 +75,10 @@ class ApplicationContainer extends React.Component {
     }
 
     this.props.history.push('/applications')
+  }
+
+  handleCheckbox(e) {
+    this.setState({notifyRep: !this.state.notifyRep})
   }
 
   handleChangeCustomer(e) {
@@ -114,6 +130,7 @@ class ApplicationContainer extends React.Component {
           handleSave={this.handleSave}
           handleSubmit={this.handleSubmit}
           handleChangeCustomer={this.handleChangeCustomer}
+          handleCheckbox={this.handleCheckbox}
         />
       </div>
     )

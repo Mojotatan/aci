@@ -10,6 +10,7 @@ export default ({
   handleChangeInCustomer,
   handleSave,
   handleSubmit,
+  handleCheckbox,
   handleChangeCustomer
 }) => (
   <div className="row">
@@ -67,6 +68,18 @@ export default ({
               <p>{values.status}</p>
             }
           </div>
+          {(admin) ?
+            <div>
+              <input
+                type="checkbox"
+                onChange={handleCheckbox}
+                name="notifyRep"
+                // value={values.notifyRep}
+              />
+              <label>Notify Rep</label>
+            </div>
+            : null
+          }
         </div>
 
         <div className="col-sm-12">
@@ -438,6 +451,13 @@ export default ({
           }
         </div>
       </form>
+      {(admin) ?
+        <form onSubmit={function(e) {e.preventDefault()}} action="fileupload" method="post" encType="multipart/form-data">
+          <input type="file" name="filetoupload" />
+          <input type="submit" />
+        </form>
+        : null
+      }
     </div>
   </div>
 )

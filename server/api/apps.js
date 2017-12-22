@@ -1,6 +1,8 @@
 const Op = require('sequelize').Op
+const formidable = require('formidable')
+
 const {User, Application, Customer} = require('../db').db.models
-const {isLoggedIn, whoAmI, mayI} = require('./auth')
+const {isLoggedIn, whoAmI, isAdmin, mayI, transporter} = require('./auth')
 
 module.exports = require('express').Router()
 
@@ -171,5 +173,21 @@ module.exports = require('express').Router()
     .then((data) => {
 
       res.send('success, reloading apps')
+    })
+  })
+
+  .post('/pdf', isLoggedIn, (req, res) => {
+    
+  })
+
+  .post('/email', isLoggedIn, isAdmin, (req, res) => {
+    transporter.sendMail({
+      from: 'tatan42@gmail.com',
+      to: 'tatan42@gmail.com', /* req.body.rep.email, */
+      subject: '[myAdmin Central] One of your applications has changed',
+      text: `Your application for ${req.body.customer.name} has changed. Please sign in to aci for more information.`
+    })
+    .then(res => {
+      console.log('mail sent?', res)
     })
   })

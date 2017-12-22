@@ -1,5 +1,6 @@
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 
 const {User, Application} = require('../db').db.models
 
@@ -34,4 +35,12 @@ const mayI = (token, appId) => {
 //   return jwt.verify(token, cert).level === level
 // }
 
-module.exports = {isLoggedIn, isAdmin, whoAmI, mayI}
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'tatan42@gmail.com',
+    pass: 'Mojotattat42'
+  }
+})
+
+module.exports = {isLoggedIn, isAdmin, whoAmI, mayI, transporter}
