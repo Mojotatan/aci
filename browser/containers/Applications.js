@@ -72,7 +72,7 @@ class ApplicationsContainer extends React.Component {
                 <td>Address</td>
                 <td>Amount</td>
                 <td id="status" onClick={this.handleSort}>Status</td>
-                <td>Expires</td>
+                <td id="expiry" onClick={this.handleSort}>Expires</td>
                 <td id="rep-fullName" onClick={this.handleSort}>Rep Name</td>
               </tr>
               {this.props.apps.map((app, index) => {

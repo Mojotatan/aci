@@ -9,6 +9,7 @@ export default ({user, logOut}) => (
       <button onClick={logOut}>Log Out</button>
     </div>
     <Link to='/applications'><h4>Applications</h4></Link>
+    <Link to='/buyouts'><h4>Buyouts</h4></Link>
 
     {(user.level === 'Admin') ? 
     <Link to='/dealers'><h4>Dealers</h4></Link>

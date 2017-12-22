@@ -17,8 +17,8 @@ const App = () => (
       <LogIn />
       <Route path="/applications" component={Applications} />
       <Route path="/edit-application" component={Application} />
-      {/* <Route path="/buyouts" component={Buyouts} />
-      <Route path="/edit-buyout" component={Buyout} /> */}
+      <Route path="/buyouts" component={Buyouts} />
+      <Route path="/edit-buyout" component={Buyout} />
       <Route path="/dealers" component={Dealers} />
       <Route path="/branches" component={Branches} />
       <Route path="/regions" component={Regions} />

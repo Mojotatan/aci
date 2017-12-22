@@ -78,20 +78,6 @@ module.exports = require('express').Router()
         dealers: appDealers
       })
     })
-    // .then(appData => {
-    //   appsToReturn = appData
-    //   return Promise.all(appData.map(app => app.rep.getBranch()))
-    // .then(branchData => {
-    //   branchesToReturn = branchData
-    //   return Promise.all(appsToReturn.map(app => app.rep.getDealer()))
-    // })
-    // .then(appDealers => {
-    //   res.send({
-    //     apps: appsToReturn,
-    //     branches: branchesToReturn,
-    //     dealers: appDealers
-    //   })
-    // })
   })
 
   .put('/', isLoggedIn, (req, res) => {

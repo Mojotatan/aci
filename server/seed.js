@@ -180,19 +180,20 @@ const generateCustomers = () => {
 const generateBuyouts = () => {
   let arr = []
   
-  const builder = (status, date, quote, comments, pdf) => {
+  const builder = (status, date, expiry, quote, comments, pdf) => {
     arr.push(Buyout.build({
       'status': status,
       'date': date,
+      'expiry': expiry,
       'quote': quote,
       'comments': comments,
       'pdf': pdf,
     }))
   }
 
-  builder('Draft', '2017-12-15', 'full', 'no comment', '')
+  builder('Draft', '2017-12-15', '2018-09-23', 'Full', 'no comment', '')
 
-  builder('Submitted', '2017-12-16', 'partial', 'no comment', '')
+  builder('Submitted', '2017-12-16', '2042-01-05', 'Partial', 'no comment', '')
 
   return arr
 }

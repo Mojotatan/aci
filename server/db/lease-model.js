@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 
 module.exports = db => db.define('Lease', {
   number: {
-    type: Sequelize.BIGINT
+    type: Sequelize.STRING
   },
   company: {
     type: Sequelize.STRING

@@ -14,7 +14,7 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                 key={`${row.id}-${key}`}
                 onChange={handleChange}
                 name={`${index}-${key}`}
-                placeholder={`${key}...`}
+                placeholder={`${key}`}
                 value={(controller == index) ? fields[key] : row[key] || ''}
               />
             )
