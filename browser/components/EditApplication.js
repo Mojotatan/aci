@@ -276,7 +276,132 @@ export default ({
 
         <div className="col-sm-12">
           <h3>Current Lease Company</h3>
-          {/* radio buttons suck */}
+          {(admin || values.status === 'Draft') ?
+            <div className="radio-div">
+              <input
+                type="radio"
+                id="currentLeaseCompany-0"
+                onChange={handleChange}
+                name="currentLeaseCompany"
+                value="EverBank"
+                checked={(values.currentLeaseCompany === 'EverBank') ?
+                  true : false
+                }
+              />
+              <label>EverBank</label>
+
+              <input
+                type="radio"
+                id="currentLeaseCompany-0"
+                onChange={handleChange}
+                name="currentLeaseCompany"
+                value="DLL"
+                checked={(values.currentLeaseCompany === 'DLL') ?
+                  true : false
+                }
+              />
+              <label>DLL</label>
+
+              <input
+                type="radio"
+                id="currentLeaseCompany-0"
+                onChange={handleChange}
+                name="currentLeaseCompany"
+                value="Martin"
+                checked={(values.currentLeaseCompany === 'Martin') ?
+                  true : false
+                }
+              />
+              <label>Martin</label>
+
+              <input
+                type="radio"
+                id="currentLeaseCompany-0"
+                onChange={handleChange}
+                name="currentLeaseCompany"
+                value="Balboa"
+                checked={(values.currentLeaseCompany === 'Balboa') ?
+                  true : false
+                }
+              />
+              <label>Balboa</label>
+
+              <input
+                type="radio"
+                id="currentLeaseCompany-0"
+                onChange={handleChange}
+                name="currentLeaseCompany"
+                value="Wells Fargo"
+                checked={(values.currentLeaseCompany === 'Wells Fargo') ?
+                  true : false
+                }
+              />
+              <label>Wells Fargo</label>
+
+              <input
+                type="radio"
+                id="currentLeaseCompany-0"
+                onChange={handleChange}
+                name="currentLeaseCompany"
+                value="CIT"
+                checked={(values.currentLeaseCompany === 'CIT') ?
+                  true : false
+                }
+              />
+              <label>CIT</label>
+
+              <input
+                type="radio"
+                id="currentLeaseCompany-0"
+                onChange={handleChange}
+                name="currentLeaseCompany"
+                value="Leaf"
+                checked={(values.currentLeaseCompany === 'Leaf') ?
+                  true : false
+                }
+              />
+              <label>Leaf</label>
+
+              <input
+                type="radio"
+                id="currentLeaseCompany-0"
+                onChange={handleChange}
+                name="currentLeaseCompany"
+                value="Other"
+                checked={(
+                  values.currentLeaseCompany !== 'EverBank'
+                  && values.currentLeaseCompany !== 'DLL'
+                  && values.currentLeaseCompany !== 'Martin'
+                  && values.currentLeaseCompany !== 'Balboa'
+                  && values.currentLeaseCompany !== 'Wells Fargo'
+                  && values.currentLeaseCompany !== 'CIT'
+                  && values.currentLeaseCompany !== 'Leaf'
+                ) ?
+                  true : false
+                }
+              />
+              <label>Other</label>
+              {(
+                values.currentLeaseCompany !== 'EverBank'
+                && values.currentLeaseCompany !== 'DLL'
+                && values.currentLeaseCompany !== 'Martin'
+                && values.currentLeaseCompany !== 'Balboa'
+                && values.currentLeaseCompany !== 'Wells Fargo'
+                && values.currentLeaseCompany !== 'CIT'
+                && values.currentLeaseCompany !== 'Leaf'
+              ) ?
+                <input
+                  onChange={handleChange}
+                  name="currentLeaseCompany"
+                  value={values.currentLeaseCompany}
+                />
+                : null
+              }
+
+            </div>
+            :
+            <p>{values.curentLeaseCompany || ''}</p>
+          }
 
           <div className="row">
             <div className="col-sm-6">
@@ -416,32 +541,171 @@ export default ({
 
             </div>
           </div>
-          <div className="row">
-            <div className="col-sm-12">
-              <label>Comments</label>
-              {(admin || values.status === 'Draft') ?
-                <input
-                  onChange={handleChange}
-                  name={'comments'}
-                  value={values.comments || ''}
-                />
-                :
-                <p>{values.comments || ''}</p>
-              }
+
+          {/* Admin only section of app */}
+          {(admin) ?
+            <div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <label>Comments</label>
+                  <input
+                    onChange={handleChange}
+                    name={'comments'}
+                    value={values.comments || ''}
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-sm-6">
+                  <label>Approval Number</label>
+                  <input
+                    onChange={handleChange}
+                    name={'approvalNumber'}
+                    value={values.approvalNumber || ''}
+                  />
+                </div>
+                <div className="col-sm-6">
+                  <label>Approval Date</label>
+                  <input
+                    onChange={handleChange}
+                    name={'approvalDate'}
+                    value={values.approvalDate || ''}
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-sm-12">
+                  <label>Approval From</label>
+                  <input
+                    onChange={handleChange}
+                    name={'approvalFrom'}
+                    value={values.approvalFrom || ''}
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-sm-6">
+                  <label>Total Funding</label>
+                  <input
+                    onChange={handleChange}
+                    name={'funding'}
+                    value={values.funding || ''}
+                  />
+                </div>
+                <div className="col-sm-6">
+                  <label>Rep Rate</label>
+                  <input
+                    onChange={handleChange}
+                    name={'repRate'}
+                    value={values.repRate || ''}
+                  />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-sm-12 flex-container">
+                  <div className="flex-item">
+                    <label>EverBank</label>
+                    <select
+                      onChange={handleChange}
+                      name="status"
+                      value={values.status}
+                    >
+                      <option value=""></option>
+                      <option value="Y">Y</option>
+                      <option value="N">N</option>
+                      <option value="P">P</option>
+                    </select>
+                  </div>
+                  <div className="flex-item">
+                    <label>GE</label>
+                    <select
+                      onChange={handleChange}
+                      name="ge"
+                      value={values.ge}
+                    >
+                      <option value=""></option>
+                      <option value="Y">Y</option>
+                      <option value="N">N</option>
+                      <option value="P">P</option>
+                    </select>
+                  </div>
+                  <div className="flex-item">
+                    <label>CIT</label>
+                    <select
+                      onChange={handleChange}
+                      name="cit"
+                      value={values.cit}
+                    >
+                      <option value=""></option>
+                      <option value="Y">Y</option>
+                      <option value="N">N</option>
+                      <option value="P">P</option>
+                    </select>
+                  </div>
+                  <div className="flex-item">
+                    <label>UnifiFRED</label>
+                    <select
+                      onChange={handleChange}
+                      name="unifiFred"
+                      value={values.unifiFred}
+                    >
+                      <option value=""></option>
+                      <option value="Y">Y</option>
+                      <option value="N">N</option>
+                      <option value="P">P</option>
+                    </select>
+                  </div>
+                  <div className="flex-item">
+                    <label>DLL</label>
+                    <select
+                      onChange={handleChange}
+                      name="dll"
+                      value={values.dll}
+                    >
+                      <option value=""></option>
+                      <option value="Y">Y</option>
+                      <option value="N">N</option>
+                      <option value="P">P</option>
+                    </select>
+                  </div>
+                  <div className="flex-item">
+                    <label>USB</label>
+                    <select
+                      onChange={handleChange}
+                      name="usb"
+                      value={values.usb}
+                    >
+                      <option value=""></option>
+                      <option value="Y">Y</option>
+                      <option value="N">N</option>
+                      <option value="P">P</option>
+                    </select>
+                  </div>
+                  <div className="flex-item">
+                    <label>EMR</label>
+                    <select
+                      onChange={handleChange}
+                      name="emr"
+                      value={values.emr}
+                    >
+                      <option value=""></option>
+                      <option value="Y">Y</option>
+                      <option value="N">N</option>
+                      <option value="P">P</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
             </div>
-          </div>
+            :
+            null
+          }
         </div>
-        {/* {Object.keys(values).map(key => {
-          return (
-            <input
-              key={key}
-              onChange={handleChange}
-              name={key}
-              placeholder={`${key}...`}
-              value={values[key] || ''}
-            />
-          )
-        })} */}
         <div className="col-sm-12">
           <Link to='/applications'><div>Cancel</div></Link>
           <button type="submit">Save</button>
@@ -451,13 +715,13 @@ export default ({
           }
         </div>
       </form>
-      {(admin) ?
+      {/* {(admin) ?
         <form onSubmit={function(e) {e.preventDefault()}} action="fileupload" method="post" encType="multipart/form-data">
           <input type="file" name="filetoupload" />
           <input type="submit" />
         </form>
         : null
-      }
+      } */}
     </div>
   </div>
 )

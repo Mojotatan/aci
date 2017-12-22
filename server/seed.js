@@ -92,7 +92,7 @@ const generateDealers = () => {
 const generateApplications = () => {
   let arr = []
   
-  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, type, currentLeaseCompany, erp, bank, comments) => {
+  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, type, currentLeaseCompany, erp, approvalNumber, approvalDate, approvalFrom, funding, repRate, everBank, ge, cit, unifiFred, dll, usb, emr, comments) => {
     arr.push(Application.build({
       'status': status,
       'date': date,
@@ -104,20 +104,31 @@ const generateApplications = () => {
       'type': type,
       'currentLeaseCompany': currentLeaseCompany,
       'erp': erp,
-      'bank': JSON.stringify(bank),
+      'approvalNumber': approvalNumber,
+      'approvalDate': approvalDate,
+      'approvalFrom': approvalFrom,
+      'funding': funding,
+      'repRate': repRate,
+      'everBank': everBank,
+      'ge': ge,
+      'cit': cit,
+      'unifiFred': unifiFred,
+      'dll': dll,
+      'usb': usb,
+      'emr': emr,
       'comments': comments
     }))
   }
 
-  builder('Draft', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
+  builder('Draft', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
-  builder('Submitted', '1998-11-26', 20.20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', '12345', {}, 'no comment')
+  builder('Submitted', '1998-11-26', 20.20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
-  builder('Hold', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {GE: 'N', UnifiFRED: 'Y'}, 'no comment')
+  builder('Hold', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
-  builder('Approved', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
+  builder('Approved', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
-  builder('Declined', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', {}, 'no comment')
+  builder('Declined', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
   return arr
 }
