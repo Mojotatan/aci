@@ -182,12 +182,12 @@ module.exports = require('express').Router()
 
   .post('/email', isLoggedIn, isAdmin, (req, res) => {
     transporter.sendMail({
-      from: 'tatan42@gmail.com',
+      from: 'impactpreview@gmail.com',
       to: 'tatan42@gmail.com', /* req.body.rep.email, */
       subject: '[myAdmin Central] One of your applications has changed',
       text: `Your application for ${req.body.customer.name} has changed. Please sign in to aci for more information.`
     })
-    .then(res => {
-      console.log('mail sent?', res)
+    .then(data => {
+      res.send(data)
     })
   })

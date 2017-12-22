@@ -38,8 +38,8 @@ const mayI = (token, appId) => {
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'tatan42@gmail.com',
-    pass: 'Mojotattat42'
+    user: 'impactpreview@gmail.com',
+    pass: 'acitesting'
   }
 })
 

@@ -57,10 +57,10 @@ class ApplicationContainer extends React.Component {
 
     if (this.state.notifyRep) {
       console.log('notifying rep!')
-      // axios.post('/api/apps/email', {token: this.props.token, rep: this.state.rep, customer: this.state.customer})
-      // .then(res => {
-      //   console.log('mail sent', res.data)
-      // })
+      axios.post('/api/apps/email', {token: this.props.token, rep: this.state.rep, customer: this.state.customer})
+      .then(res => {
+        console.log('mail sent', res.data)
+      })
     }
 
   }
