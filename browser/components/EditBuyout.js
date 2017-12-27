@@ -80,6 +80,7 @@ export default ({
                 type="checkbox"
                 onChange={handleCheckbox}
                 name="notifyRep"
+                checked={values.notifyRep}
               />
               <label>Notify Rep</label>
             </div>

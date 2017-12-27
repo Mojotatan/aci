@@ -61,7 +61,7 @@ export const flushByos = () => {
 }
 
 // thunks
-export const loadByosThunk = (token) => {
+export const loadByosThunk = (token, callback) => {
   return dispatch => {
     return axios.post('/api/byos', {token})
     .then(res => {

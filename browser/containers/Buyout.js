@@ -66,6 +66,10 @@ class BuyoutContainer extends React.Component {
       })
     }
 
+    this.setState({
+      notifyRep: false
+    })
+
   }
 
   handleSubmit(e) {
@@ -164,15 +168,20 @@ class BuyoutContainer extends React.Component {
     this.setState({'leases': leases})
   }
 
+
+  componentWillReceiveProps(newProps){
+    console.log('component receiving props')
+    this.setState({
+      customerCreate: (newProps.byo && newProps.byo.customer) ? false : true,
+    })
+    this.setState(newProps.byo)
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     // console.log('state', this.state)
   }
 
-  // componentWillReceiveProps() {
-    // console.log('state', this.state)
-  //   console.log('props', this.props)
-  // }
 
   render() {
     return(

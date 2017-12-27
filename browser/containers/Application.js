@@ -63,6 +63,10 @@ class ApplicationContainer extends React.Component {
       })
     }
 
+    this.setState({
+      notifyRep: false
+    })
+
   }
 
   handleSubmit(e) {
@@ -107,15 +111,20 @@ class ApplicationContainer extends React.Component {
     }
   }
 
+
+  componentWillReceiveProps(newProps){
+    console.log('component receiving props')
+    this.setState({
+      customerCreate: (newProps.app && newProps.app.customer) ? false : true,
+    })
+    this.setState(newProps.app)
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     // console.log('state', this.state)
   }
-
-  // componentWillReceiveProps() {
-    // console.log('state', this.state)
-  //   console.log('props', this.props)
-  // }
+  
 
   render() {
     return(

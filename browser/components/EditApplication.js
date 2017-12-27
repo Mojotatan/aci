@@ -74,7 +74,7 @@ export default ({
                 type="checkbox"
                 onChange={handleCheckbox}
                 name="notifyRep"
-                // value={values.notifyRep}
+                checked={values.notifyRep}
               />
               <label>Notify Rep</label>
             </div>
