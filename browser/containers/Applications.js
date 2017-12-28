@@ -56,7 +56,6 @@ class ApplicationsContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
-    console.log(this.props.apps)
   }
 
   render() {
@@ -83,7 +82,7 @@ class ApplicationsContainer extends React.Component {
               {this.props.apps.map((app, index) => {
 
                 return (
-                  <tr key={app.id}  onLoad="alternate('thetable')" >
+                  <tr key={app.id} className={(index % 2 === 0) ? 'even' : 'odd'} >
                     <td>{app.date}</td>
                     <td>{(app.customer) ? app.customer.name : ''}</td>
                     <td>{(app.customer) ? app.customer.street : ''}</td>
