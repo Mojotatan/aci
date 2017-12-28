@@ -62,12 +62,14 @@ class ApplicationsContainer extends React.Component {
   render() {
     return(
       <div>
-        <h2>Current Applications</h2>
-        <button onClick={this.handleNewApp}>Start New Application</button>
-        <div className="col-sm-12">
-          <table>
+        <div className="col-sm-12 no-gutters app-header-top">
+          <div><h2 className="app-title">Current Applications</h2></div>
+          <div className="newapp"><button className="app-button" onClick={this.handleNewApp}>Start New Application</button></div>
+        </div>
+        <div className="col-sm-12 no-gutters">
+          <table className="app-table" id="thetable">
             <tbody>
-              <tr key="head">
+              <tr className="app-header-bottom" key="head">
                 <td id="date" onClick={this.handleSort}>Date Submitted</td>
                 <td>Customer Name</td>
                 <td>Address</td>
@@ -75,10 +77,13 @@ class ApplicationsContainer extends React.Component {
                 <td id="status" onClick={this.handleSort}>Status</td>
                 <td id="expiry" onClick={this.handleSort}>Expires</td>
                 <td id="rep-fullName" onClick={this.handleSort}>Rep Name</td>
+                <td></td>
+                <td></td>
               </tr>
               {this.props.apps.map((app, index) => {
+
                 return (
-                  <tr key={app.id}>
+                  <tr key={app.id}  onLoad="alternate('thetable')" >
                     <td>{app.date}</td>
                     <td>{(app.customer) ? app.customer.name : ''}</td>
                     <td>{(app.customer) ? app.customer.street : ''}</td>
