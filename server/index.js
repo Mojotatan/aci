@@ -40,7 +40,6 @@ db.sync()
     .use('/api', require('./api/api'))
 
     .get('/auth', (req, res) => {
-      console.log('the fuck')
       res.send(`<a href=${url}>CLICK ME</a>`)
     })
 

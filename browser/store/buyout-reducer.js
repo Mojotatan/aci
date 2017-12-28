@@ -54,7 +54,7 @@ export const createByo = (byo) => {
 }
 
 const SORT_BYOS = 'SORT_BYOS'
-export const sortByos = (field) => {
+export const sortByos = (fieldArg) => {
   let field = (typeof fieldArg === 'string') ? [fieldArg] : fieldArg
   return {type: SORT_BYOS, field}
 }
