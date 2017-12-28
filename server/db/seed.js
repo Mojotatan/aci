@@ -1,4 +1,4 @@
-const {db, associations} = require('./db')
+const {db, associations} = require('./index')
 const {User, Dealer, Region, Branch, Application, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
 let userGuy, bbranch, rregion, manager, rival, impact, cushtomer
@@ -417,5 +417,6 @@ db.sync({force: true})
 })
 .then(() => {
   console.log('Database seed complete')
+  process.exit()
 })
 .catch(err => console.error(err))
