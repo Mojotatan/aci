@@ -5,7 +5,7 @@ const path = require('path')
 
 const db = require('./db').db
 
-let port = process.env.PORT || '1337'
+let port = process.env.PORT || '3000'
 const app = express()
 db.sync()
 .then(() => {

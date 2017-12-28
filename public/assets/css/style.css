@@ -1,4 +1,232 @@
 /* Main Stylesheet */
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700');
 
 body {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+h2 {
+	color: #354052;
+	font-family: "Source Sans Pro";
+	font-size: 26px;
+	line-height: 36px;
+}
+h3 {
+	color: #354052;
+	font-family: "Source Sans Pro";
+	font-size: 22px;
+	line-height: 32px;
+	margin: 0px;
+}
+
+/* Applications List */
+.app-header-top {
+	position: relative;
+	background-color: #f0f7fb;
+	border-top: solid #1991EB;
+	border-left: solid #1991EB;
+	border-right: solid #1991EB;
+	border-width: 1px 1px 0px 1px;
+}
+.app-header-top div {
+	display: inline-block;
+}
+.app-header-bottom {
+	background-color: #f0f7fb;
+	border-bottom: solid #000;
+	border-left: solid #1991EB;
+	border-right: solid #1991EB;
+	border-width: 0px 1px 1px 1px;
+	width: calc(100% - 2px);
+}
+.app-header-bottom td {
+	font-weight: bold;
+}
+.app-table {
+	width: 100%;
+	border-bottom: solid #1991EB;
+	border-left: solid #1991EB;
+	border-right: solid #1991EB;
+	border-width: 1px;
+}
+.app-table tr {
+	width: 100%;
+}
+.app-table td {
+	padding: 15px 0px 15px 25px;
+}
+.no-gutters {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.newapp {
+	margin-top: 15px;
+	margin-right: 15px;
+	float: right;
+}
+.app-title {
+	margin-top:15px;
+	margin-left: 25px;
+	margin-bottom: 10px;
+}
+.app-button {
+	height: 36px;
+	width: 190px;
+	border: 1px solid rgba(0,0,0,0.15);
+	border-radius: 4px;
+	color: #fff;
+	background-color: #1991EB;
+}
+.odd{
+  background-color: white;
+} 
+.even{
+  background-color: gray;
+}
+/* Edit Applications Pages */
+.edit-apps-page h3 {
+	color: #354052;
+	font-family: "Source Sans Pro";
+	font-size: 22px;
+	line-height: 32px;
+	margin-bottom: 10px;
+}
+.edit-apps-page label {
+	color: #354052;
+	font-family: "Source Sans Pro";
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 21px;
+}
+.edit-apps-page select {
+	-webkit-appearance: none;
+	background: url(../img/arrow.svg);
+	background-position-x: right;
+    background-position-y: center;
+	background-size: 30px;
+	background-repeat: no-repeat;
+	padding-left: 10px;
+	height: 36px;
+	background-color: #fff;
+	border: 1px solid #CED0DA;
+	border-radius: 4px;
+}
+.agent-box {
+	background-color: #F1F4F8;
+	padding: 20px;
+}
+.edit-base {
+	margin-left: 30px;
+}
+.app-bg {
+	background-color: #edf5fd;
+	margin-top: 30px;
+	padding-top: 25px;
+	padding-left: 25px;
+	padding-bottom: 35px;
+	padding-right: 25px;
+}
+.rowed-items {
+	display: inline-block;
+	margin-right: 30px;
+}
+.rad-btns {
+}
+.rad-btns input {
+	margin-right: 10px;
+}
+.rad-btns label {
+	width: 80px;
+	margin-top: 5px;
+	margin-right: 15px;
+}
+.type-rad-btns {
+}
+.type-rad-btns input {
+	margin-right: 10px;
+}
+.type-rad-btns label {
+	margin-right: 15px;
+}
+.deal-rad-btns {
+}
+.deal-rad-btns input {
+	margin-right: 10px;
+}
+.deal-rad-btns label {
+	margin-top: 5px;
+	margin-right: 15px;
+}
+#other-label {
+	width: 40px;	
+}
+.field-label {
+	margin-top: 15px;
+}
+.field-box input {
+	width: 100%;
+	height: 36px;
+	border: 1px solid #CED0DA;
+	border-radius: 4px;
+}
+.field-desc textarea {
+	width: 100%;
+	height: 110px;
+	border: 1px solid #CED0DA;
+	border-radius: 4px;
+}
+.field-dropd {
+}
+.field-dropd select {
+	width: 50px;
+}
+#date-started p {
+	margin-top: 6px;
+	margin-bottom: 20px;
+}
+.status select {
+	height: 36px;
+	width: 140px;
+	background-color: #E2E7EE;
+}
+#cancel-button {
+	color: #354052;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 24px;
+	text-align: center;
+}
+#save-button {
+	height: 46px;
+	width: 165px;
+	border: 1px solid rgba(0,0,0,0.15);
+	border-radius: 4px;
+	color: #FFFFFF;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 24px;
+	background-color: #293141;
+}
+#submit-button {
+	height: 46px;
+	width: 165px;
+	border: 1px solid rgba(0,0,0,0.15);
+	border-radius: 4px;
+	color: #FFFFFF;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 24px;
+	background-color: #4490e4;
+}
+.buttons {
+	margin-top: 30px;
+	margin-bottom: 90px;
+}
+.buttons button{
+	margin-left: 30px;
+}
+.custom-length select {
+	width: 100%;
 }
