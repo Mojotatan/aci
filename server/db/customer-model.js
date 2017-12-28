@@ -6,13 +6,7 @@ module.exports = db => db.define('Customer', {
   },
   phone: {
     type: Sequelize.STRING,
-    validate: {
-      len: [10, 10]
-    }
   },
-  // address: {
-  //   type: Sequelize.JSON // expect {street, city, state, zip}
-  // },
   street: {
     type: Sequelize.STRING
   },
@@ -34,4 +28,10 @@ module.exports = db => db.define('Customer', {
   taxID: {
     type: Sequelize.STRING
   },
+}, {
+  getterMethods: {
+    address() {
+      return `${this.street}\n${this.city}, ${this.state} ${this.zip}`
+    }
+  }
 })

@@ -12,6 +12,7 @@ module.exports = require('express').Router()
     .then(branches => {
       res.send(branches)
     })
+    .catch(err => console.error(err))
   })
 
   .put('/', isLoggedIn, isAdmin, (req, res) => {
@@ -63,6 +64,7 @@ module.exports = require('express').Router()
     .then(data => {
       res.send('success')
     })
+    .catch(err => res.send({err}))
   })
 
   .post('/new', isLoggedIn, isAdmin, (req, res) => {
@@ -79,4 +81,5 @@ module.exports = require('express').Router()
     .then(newBranch => {
       res.send(newBranch)
     })
+    .catch(err => res.send({err}))
   })

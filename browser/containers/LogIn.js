@@ -9,6 +9,7 @@ import {loadDealersThunk, flushDealers} from '../store/dealer-reducer'
 import {loadBranchesThunk, flushBranches} from '../store/branch-reducer'
 import {loadRegionsThunk, flushRegions} from '../store/region-reducer'
 import {loadCustomersThunk, flushCustomers} from '../store/customer-reducer'
+import {throwError} from '../store/error-reducer'
 
 import Header from '../components/Header'
 import LogInForm from '../components/LogInForm'
@@ -49,6 +50,9 @@ class LogInContainer extends React.Component {
         this.props.loadCustomersThunk(res.data.token)
         // document.cookie = res.data.token
         this.props.history.push('/applications')
+      }
+      else {
+        this.props.throwError('red', res.data)
       }
     })
     .catch(err => console.error(err))
@@ -93,7 +97,8 @@ const mapDispatchToProps = {
   loadDealersThunk, flushDealers,
   loadBranchesThunk, flushBranches,
   loadRegionsThunk, flushRegions,
-  loadCustomersThunk, flushCustomers
+  loadCustomersThunk, flushCustomers,
+  throwError
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LogInContainer))

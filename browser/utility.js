@@ -12,8 +12,18 @@ export const getDate = () => {
 
 export const sortBy = field => {
   return (a, b) => {
+    // handle cases where a field is empty
+    if (!match(field, a) && !match(field, b)) return a.id - b.id
+    if (!match(field, b)) return -1
+    if (!match(field, a)) return 1
+
+    // sort based on field array
     if (match(field, a) > match(field, b)) return 1
     if (match(field, a) < match(field, b)) return -1
+
+    // tiebreaker
+    return a.id - b.id
+
     return 0
   }
 }

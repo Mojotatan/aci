@@ -26,9 +26,6 @@ module.exports = db => db.define('User', {
   },
   phone: {
     type: Sequelize.STRING,
-    validate: {
-      len: [10, 10]
-    }
   },
   pwHash: {
     type: Sequelize.STRING

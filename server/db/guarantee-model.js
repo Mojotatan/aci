@@ -7,9 +7,6 @@ module.exports = db => db.define('Guarantee', {
   lastName: {
     type: Sequelize.STRING
   },
-  // address: {
-  //   type: Sequelize.JSON // expect {street, city, state, zip}
-  // },
   street: {
     type: Sequelize.STRING
   },
@@ -32,6 +29,9 @@ module.exports = db => db.define('Guarantee', {
   getterMethods: {
     fullName() {
       return `${this.firstName} ${this.lastName}`
+    },
+    address() {
+      return `${this.street}\n${this.city}, ${this.state} ${this.zip}`
     }
   }
 })

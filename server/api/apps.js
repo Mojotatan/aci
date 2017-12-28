@@ -79,6 +79,7 @@ module.exports = require('express').Router()
         dealers: appDealers
       })
     })
+    .catch(err => console.error(err))
   })
 
   .put('/', isLoggedIn, (req, res) => {
@@ -183,6 +184,7 @@ module.exports = require('express').Router()
 
       res.send('success, reloading apps')
     })
+    .catch(err => res.send({err}))
   })
 
   .post('/pdf', isLoggedIn, (req, res) => {

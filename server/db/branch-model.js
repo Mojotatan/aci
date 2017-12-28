@@ -10,9 +10,6 @@ module.exports = db => db.define('Branch', {
   // }
   phone: {
     type: Sequelize.STRING,
-    validate: {
-      len: [10, 10]
-    }
   },
   street: {
     type: Sequelize.STRING
@@ -25,5 +22,11 @@ module.exports = db => db.define('Branch', {
   },
   zip: {
     type: Sequelize.STRING
+  }
+}, {
+  getterMethods: {
+    address() {
+      return `${this.street}\n${this.city}, ${this.state} ${this.zip}`
+    }
   }
 })

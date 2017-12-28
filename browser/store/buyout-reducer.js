@@ -1,11 +1,12 @@
 import axios from 'axios'
 
 import {loadCustomersThunk} from './customer-reducer'
+import {throwError} from './error-reducer'
 
 import {sortBy} from '../utility'
 
 // initial state
-const initialState = {byos: [], focus: null}
+const initialState = {byos: [], focus: null, sort: ['id']}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -13,6 +14,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_BYOS:
       newState.byos = action.byos
+      if (newState.sort) newState.byos.sort(sortBy(newState.sort))
       return newState
     case FOCUS_BYO:
       newState.focus = action.index
@@ -23,6 +25,7 @@ const reducer = (prevState = initialState, action) => {
       newState.byos[newState.focus].id = 'new'
       return newState
     case SORT_BYOS:
+      newState.sort = action.field
       newState.byos.sort(sortBy(action.field))
       return newState
     case FLUSH_BYOS:
@@ -52,6 +55,7 @@ export const createByo = (byo) => {
 
 const SORT_BYOS = 'SORT_BYOS'
 export const sortByos = (field) => {
+  let field = (typeof fieldArg === 'string') ? [fieldArg] : fieldArg
   return {type: SORT_BYOS, field}
 }
 
@@ -89,8 +93,15 @@ export const saveByoThunk = (token, byo, customer) => {
   return dispatch => {
     return axios.put('/api/byos', {token, byo: byoArgs, customer: cusArgs})
     .then(res => {
-      dispatch(loadByosThunk(token))
-      dispatch(loadCustomersThunk(token))
+      if (res.data.err) dispatch(throwError('red', 'There was an error with your buyout'))
+      else {
+        dispatch(throwError('green', `Your buyout has been ${(byoArgs.status === 'Submitted') ? 'submitted' : 'saved'}`))
+        if (byoArgs.id === 'new') {
+          dispatch(sortByos(['id']))
+        }
+        dispatch(loadByosThunk(token))
+        dispatch(loadCustomersThunk(token))
+      }
     })
     .catch(err => console.error(err))
   }

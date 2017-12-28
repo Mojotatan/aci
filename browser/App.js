@@ -9,11 +9,13 @@ import Buyout from './containers/Buyout'
 import Dealers from './containers/Dealers'
 import Branches from './containers/Branches'
 import Regions from './containers/Regions'
+import Alerts from './containers/Alerts'
 
 
 const App = () => (
   <div className="app">
     <main>
+      <Alerts />
       <LogIn />
       <Route path="/applications" component={Applications} />
       <Route path="/edit-application" component={Application} />

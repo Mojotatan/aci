@@ -90,6 +90,7 @@ module.exports = require('express').Router()
 
       res.send(toBeSent)
     })
+    .catch(err => console.error(err))
   })
 
   .put('/', isLoggedIn, (req, res) => {
@@ -214,6 +215,7 @@ module.exports = require('express').Router()
     .then(data => {
       res.send('success, reloading byos')
     })
+    .catch(err => res.send({err}))
   })
 
 

@@ -10,6 +10,7 @@ module.exports = require('express').Router()
     .then(dealers => {
       res.send(dealers)
     })
+    .catch(err => console.error(err))
   })
 
   .put('/', isLoggedIn, isAdmin, (req, res) => {
@@ -30,6 +31,7 @@ module.exports = require('express').Router()
     .then(data => {
       res.send('success')
     })
+    .catch(err => res.send({err}))
   })
 
   .post('/new', isLoggedIn, isAdmin, (req, res) => {
@@ -46,4 +48,5 @@ module.exports = require('express').Router()
     .then(newDealer => {
       res.send(newDealer)
     })
+    .catch(err => res.send({err}))
   })

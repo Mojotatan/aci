@@ -124,7 +124,7 @@ class ApplicationContainer extends React.Component {
     if (!this.props.token) this.props.history.push('/')
     // console.log('state', this.state)
   }
-  
+
 
   render() {
     return(

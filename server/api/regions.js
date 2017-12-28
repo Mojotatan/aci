@@ -12,6 +12,7 @@ module.exports = require('express').Router()
     .then(regions => {
       res.send(regions)
     })
+    .catch(err => console.error(err))
   })
 
   .put('/', isLoggedIn, isAdmin, (req, res) => {
@@ -42,6 +43,7 @@ module.exports = require('express').Router()
     .then(data => {
       res.send('success')
     })
+    .catch(err => res.send({err}))
   })
 
   .post('/new', isLoggedIn, isAdmin, (req, res) => {
@@ -55,4 +57,5 @@ module.exports = require('express').Router()
     .then(success => {
       res.send('success')
     })
+    .catch(err => res.send({err}))
   })

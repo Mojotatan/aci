@@ -56,6 +56,7 @@ class ApplicationsContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
+    console.log(this.props.apps)
   }
 
   render() {
