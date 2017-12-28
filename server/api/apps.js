@@ -3,6 +3,7 @@ const formidable = require('formidable')
 
 const {User, Application, Customer} = require('../db').db.models
 const {isLoggedIn, whoAmI, isAdmin, mayI, transporter} = require('./auth')
+var oauth2Client = require('../oauth')
 
 module.exports = require('express').Router()
 
@@ -197,5 +198,9 @@ module.exports = require('express').Router()
     })
     .then(data => {
       res.send(data)
+    })
+    .catch(err => {
+      console.error(err)
+      res.send('everything is burning')
     })
   })

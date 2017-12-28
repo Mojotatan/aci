@@ -231,4 +231,8 @@ module.exports = require('express').Router()
     .then(data => {
       res.send(data)
     })
+    .catch(err => {
+      console.error(err)
+      res.send('everything is burning')
+    })
   })

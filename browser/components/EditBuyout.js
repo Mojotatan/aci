@@ -135,7 +135,9 @@ export default ({
                 >
                   <option value="new" key="customer-new">New</option>
                   {customers.map((customer, index) => (
+                    (customer) ?
                     <option name={index} value={customer} key={`customer-${index}`}>{customer}</option>
+                    : null
                   ))}
                 </select>
               </div>

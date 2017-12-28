@@ -15,7 +15,7 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                 onChange={handleChange}
                 name={`${index}-${key}`}
                 placeholder={`${key}`}
-                value={(controller == index) ? fields[key] : row[key] || ''}
+                value={(controller == index) ? fields[key] || '' : row[key] || ''}
               />
             )
           })}
@@ -26,7 +26,7 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                 key={`${row.id}-${key}`}
                 onChange={handleChange}
                 name={`${index}-${key}`}
-                value={(controller == index) ? dropdowns[key].select : match(dropdowns[key].match, row) || ''}
+                value={(controller == index) ? dropdowns[key].select || '' : match(dropdowns[key].match, row) || ''}
               >
                 <option value="" key={`${row.id}-${key}-none`}></option>
                 {dropdowns[key].values.map(val => {

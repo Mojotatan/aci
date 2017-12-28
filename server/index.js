@@ -3,6 +3,23 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const path = require('path')
 
+// var google = require('googleapis');
+// var OAuth2 = google.auth.OAuth2;
+// var oauth2Client = new OAuth2(
+//   '158897282442-6eenteahs6scsi3gddci010jojqpm0gj.apps.googleusercontent.com',
+//   'FF5ZEo3JzYl5Jc-fp0LjYaeO',
+//   'http://localhost:1337/oauth'
+// );
+// var scopes = [
+//   'https://www.googleapis.com/auth/gmail.send'
+// ];
+// var url = oauth2Client.generateAuthUrl({access_type: 'offline', scope: scopes})
+var oauth2Client = require('./oauth')
+var scopes = [
+  'https://www.googleapis.com/auth/gmail.send'
+];
+var url = oauth2Client.generateAuthUrl({access_type: 'offline', scope: scopes})
+
 const db = require('./db').db
 
 let port = process.env.PORT || '1337'
@@ -21,6 +38,19 @@ db.sync()
 
     // Routes
     .use('/api', require('./api/api'))
+
+    .get('/auth', (req, res) => {
+      console.log('the fuck')
+      res.send(`<a href=${url}>CLICK ME</a>`)
+    })
+
+    .get('/oauth', (req, res) => {
+      console.log('YES', req.query)
+      oauth2Client.getToken(req.query.code, (err, tokens) => {
+        console.log('client', oauth2Client)
+      })
+      res.redirect('/')
+    })
 
     .get('*', (req, res) => {
       res.sendFile(path.resolve(__dirname, '../public/index.html'))
