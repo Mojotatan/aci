@@ -1,6 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import Menu from './Menu'
+
 import {focusApp, createApp, sortApps} from '../store/app-reducer'
 
 import {getDate} from '../utility'
@@ -61,6 +63,7 @@ class ApplicationsContainer extends React.Component {
   render() {
     return(
       <div>
+        <Menu />
         <div className="col-sm-12 no-gutters app-header-top">
           <div><h2 className="app-title">Current Applications</h2></div>
           <div className="newapp"><button className="app-button" onClick={this.handleNewApp}>Start New Application</button></div>

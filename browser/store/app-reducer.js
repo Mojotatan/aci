@@ -93,7 +93,7 @@ export const saveAppThunk = (token, app, customer) => {
     .then(res => {
       if (res.data.err) dispatch(throwError('red', 'There was an error with your application'))
       else {
-        dispatch(throwError('green', `Your application has been ${(appArgs.status === 'Submitted') ? 'submitted' : 'saved'}`))
+        dispatch(throwError('green', `Your application has been ${(appArgs.status === 'Submitted' && app[0].status === 'Draft') ? 'submitted' : 'saved'}`))
         if (appArgs.id === 'new') {
           dispatch(sortApps(['id']))
         }

@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import EditFields from '../components/EditFields'
+import Menu from './Menu'
 
 import {loadRegionsThunk, saveRegionThunk, createRegionThunk, createRegion, focusRegion} from '../store/region-reducer'
 
@@ -97,6 +98,7 @@ class RegionContainer extends React.Component {
   render() {
     return(
       <div>
+        <Menu />
         <EditFields
           controller={this.props.focus}
           fields={{

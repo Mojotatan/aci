@@ -1,6 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import Menu from './Menu'
+
 import {focusByo, createByo, sortByos} from '../store/buyout-reducer'
 
 import {getDate} from '../utility'
@@ -58,6 +60,7 @@ class BuyoutsContainer extends React.Component {
   render() {
     return(
       <div>
+        <Menu />
         <div className="col-sm-12 no-gutters app-header-top">
           <div><h2 className="app-title">Current Buyouts</h2></div>
           <div className="newapp"><button className="app-button" onClick={this.handleNewByo}>Start New Buyout</button></div>

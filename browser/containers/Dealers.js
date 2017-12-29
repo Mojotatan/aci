@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import EditFields from '../components/EditFields'
+import Menu from './Menu'
 
 import {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, focusDealer} from '../store/dealer-reducer'
 
@@ -121,6 +122,7 @@ class DealerContainer extends React.Component {
   render() {
     return(
       <div>
+        <Menu />
         <EditFields
           controller={this.props.focus}
           fields={{

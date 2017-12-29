@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import EditFields from '../components/EditFields'
+import Menu from './Menu'
 
 import {loadBranchesThunk, saveBranchThunk, createBranchThunk, createBranch, focusBranch} from '../store/branch-reducer'
 
@@ -133,6 +134,7 @@ class BranchContainer extends React.Component {
   render() {
     return(
       <div>
+        <Menu />
         <EditFields
           controller={this.props.focus}
           fields={{

@@ -57,6 +57,20 @@ export default ({
             <label>Date Started</label>
             <p>{values.date}</p>
           </div>
+          <div className="rowed-items">
+            <label>Expires</label>
+            <div className="field-box">
+              {(admin) ?
+                <input
+                onChange={handleChange}
+                name={'expiry'}
+                value={values.expiry || ''}
+                />
+                :
+                <p>{values.expiry || ''}</p>
+              }
+            </div>
+          </div>
           <div className="rowed-items status">
             <label>Status</label>
             {(admin) ?
