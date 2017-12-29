@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Pending</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M3,8 C3,7.44771525 3.44386482,7 4,7 C4.55228475,7 5,7.44386482 5,8 C5,8.55228475 4.55613518,9 4,9 C3.44771525,9 3,8.55613518 3,8 Z M7,8 C7,7.44771525 7.44386482,7 8,7 C8.55228475,7 9,7.44386482 9,8 C9,8.55228475 8.55613518,9 8,9 C7.44771525,9 7,8.55613518 7,8 Z M11,8 C11,7.44771525 11.4438648,7 12,7 C12.5522847,7 13,7.44386482 13,8 C13,8.55228475 12.5561352,9 12,9 C11.4477153,9 11,8.55613518 11,8 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/Pending">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Combined-Shape"></g>
+            <g id="UI/Color/Flat/Grey-50%" mask="url(#mask-2)" fill="#A8AAB7">
+                <rect id="Base" x="0" y="0" width="16" height="16"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

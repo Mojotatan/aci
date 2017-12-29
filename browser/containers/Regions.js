@@ -21,6 +21,7 @@ class RegionContainer extends React.Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleController = this.handleController.bind(this)
     this.handleCreate = this.handleCreate.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   handleChange(e) {
@@ -59,7 +60,7 @@ class RegionContainer extends React.Component {
     this.props.focusRegion(e.target.value)
     this.setState({
       name: this.props.regions[e.target.value].name,
-      dealerName: this.props.regions[e.target.value].dealerName
+      dealerName: (this.props.regions[e.target.value].dealer) ? this.props.regions[e.target.value].dealer.name : ''
     })
   }
 
@@ -73,6 +74,16 @@ class RegionContainer extends React.Component {
       name: '',
       dealerName: ''
     })
+  }
+
+  handleDelete(e) {
+    e.preventDefault()
+    
+    axios.put('/api/regions/delete', {token: this.props.token, region: e.target.value})
+    .then(res => {
+      this.props.loadRegionsThunk(this.props.token)
+    })
+    .catch(err => console.error(err))
   }
 
   componentWillMount() {
@@ -104,6 +115,7 @@ class RegionContainer extends React.Component {
           handleCancel={this.handleCancel}
           handleController={this.handleController}
           handleCreate={this.handleCreate}
+          handleDelete={this.handleDelete}
         />
       </div>
     )

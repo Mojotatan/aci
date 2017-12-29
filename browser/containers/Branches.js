@@ -27,6 +27,7 @@ class BranchContainer extends React.Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleController = this.handleController.bind(this)
     this.handleCreate = this.handleCreate.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   handleChange(e) {
@@ -81,7 +82,9 @@ class BranchContainer extends React.Component {
       street: this.props.branches[e.target.value].street,
       city: this.props.branches[e.target.value].city,
       state: this.props.branches[e.target.value].state,
-      zip: this.props.branches[e.target.value].zip
+      zip: this.props.branches[e.target.value].zip,
+      dealerName: (this.props.branches[e.target.value].dealer) ? this.props.branches[e.target.value].dealer.name : '',
+      regionName: (this.props.branches[e.target.value].region) ? this.props.branches[e.target.value].region.name : ''
     })
   }
 
@@ -109,12 +112,22 @@ class BranchContainer extends React.Component {
     })
   }
 
+  handleDelete(e) {
+    e.preventDefault()
+    
+    axios.put('/api/branches/delete', {token: this.props.token, branch: e.target.value})
+    .then(res => {
+      this.props.loadBranchesThunk(this.props.token)
+    })
+    .catch(err => console.error(err))
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
   }
 
   componentWillReceiveProps() {
-    console.log('props received', this.state)
+    // console.log('props received', this.state)
   }
 
   render() {
@@ -148,6 +161,7 @@ class BranchContainer extends React.Component {
           handleCancel={this.handleCancel}
           handleController={this.handleController}
           handleCreate={this.handleCreate}
+          handleDelete={this.handleDelete}
         />
       </div>
     )

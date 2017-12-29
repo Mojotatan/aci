@@ -46,6 +46,20 @@ module.exports = require('express').Router()
     .catch(err => res.send({err}))
   })
 
+  .put('/delete', isLoggedIn, isAdmin, (req, res) => {
+    Region.destroy({
+      where: {
+        id: {
+          [Op.eq]: req.body.region
+        }
+      }
+    })
+    .then(() => {
+      res.send('success')
+    })
+    .catch(err => console.error(err))
+  })
+
   .post('/new', isLoggedIn, isAdmin, (req, res) => {
     Promise.all([
       Region.create({name: req.body.region.name}),

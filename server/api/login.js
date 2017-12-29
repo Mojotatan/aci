@@ -32,9 +32,9 @@ module.exports = require('express').Router()
       return jwt.sign({
         id: account.id,
         level: account.level,
-        branch: account.branch.id,
-        region: account.region.id,
-        dealer: account.dealer.id
+        branch: (account.branch) ? account.branch.id : null,
+        region: (account.region) ? account.region.id : null,
+        dealer: (account.dealer) ? account.dealer.id : null
       }, cert)
     })
     .then(token => {

@@ -25,6 +25,7 @@ class DealerContainer extends React.Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleController = this.handleController.bind(this)
     this.handleCreate = this.handleCreate.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   handleChange(e) {
@@ -99,12 +100,22 @@ class DealerContainer extends React.Component {
     })
   }
 
+  handleDelete(e) {
+    e.preventDefault()
+    
+    axios.put('/api/dealers/delete', {token: this.props.token, dealer: e.target.value})
+    .then(res => {
+      this.props.loadDealersThunk(this.props.token)
+    })
+    .catch(err => console.error(err))
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
   }
 
   componentWillReceiveProps() {
-    console.log('props received', this.state)
+    // console.log('props received', this.state)
   }
 
   render() {
@@ -127,6 +138,7 @@ class DealerContainer extends React.Component {
           handleCancel={this.handleCancel}
           handleController={this.handleController}
           handleCreate={this.handleCreate}
+          handleDelete={this.handleDelete}
         />
       </div>
     )

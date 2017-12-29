@@ -22,7 +22,7 @@ var url = oauth2Client.generateAuthUrl({access_type: 'offline', scope: scopes})
 
 const db = require('./db').db
 
-let port = process.env.PORT || '3000'
+let port = process.env.PORT || '1337'
 const app = express()
 db.sync()
 .then(() => {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Denied</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M8,0 C12.418,0 16,3.582 16,8 C16,12.418 12.418,16 8,16 C3.581,16 0,12.418 0,8 C0,3.582 3.581,0 8,0 Z M4,7 L4,9 L12,9 L12,7 L4,7 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/Denied">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Combined-Shape"></g>
+            <g id="UI/Color/Flat/Dark" mask="url(#mask-2)" fill="#273142">
+                <rect id="Base" x="0" y="0" width="16" height="16"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

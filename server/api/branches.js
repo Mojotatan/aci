@@ -67,6 +67,20 @@ module.exports = require('express').Router()
     .catch(err => res.send({err}))
   })
 
+  .put('/delete', isLoggedIn, isAdmin, (req, res) => {
+    Branch.destroy({
+      where: {
+        id: {
+          [Op.eq]: req.body.branch
+        }
+      }
+    })
+    .then(() => {
+      res.send('success')
+    })
+    .catch(err => console.error(err))
+  })
+
   .post('/new', isLoggedIn, isAdmin, (req, res) => {
     return Branch.create({
       name: req.body.branch.name,

@@ -113,9 +113,9 @@ class ApplicationContainer extends React.Component {
 
 
   componentWillReceiveProps(newProps){
-    console.log('component receiving props')
+    // console.log('component receiving props')
     this.setState({
-      customerCreate: (newProps.app && newProps.app.customer) ? false : true,
+      customerCreate: (newProps.app && newProps.app.customer) ? false : true
     })
     this.setState(newProps.app)
   }

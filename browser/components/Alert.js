@@ -8,7 +8,9 @@ export default ({errors, handleClose}) => (
         key={`alert-${index}`}
         onClick={handleClose}
       >
+        <img className="left" src={`/assets/img/${(err.color === 'red') ? 'Cross' : 'Check'}_Circle.svg`}/>
         {err.message}
+        <img className="right" src="/assets/img/Cross_(Error).svg"/>
       </div>
     ))}
   </div>

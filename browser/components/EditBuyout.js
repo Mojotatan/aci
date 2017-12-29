@@ -15,9 +15,11 @@ export default ({
   handleChangeCustomer,
   handleNewLease,
   handleChangeInLease,
+  handleRemoveLease,
   toggleMachines,
   handleNewMachine,
-  handleChangeInMachine
+  handleChangeInMachine,
+  handleRemoveMachine
 }) => (
   <div className="row">
     <h2>Edit this byo</h2>
@@ -268,6 +270,7 @@ export default ({
 
         </div>
 
+{/* Oh boy... */}
         <div className="col-sm-12">
           <h3>Lease Information</h3>
           <div className="col-sm-12 labels">
@@ -276,7 +279,7 @@ export default ({
             <label>Lease Amount</label>
           </div>
           {values.leases.map((lease, index) => {
-            return(
+            return ((!lease.delete) ?
               <div key={`lease-${index}`} className="col-sm-12">
                 <label>{index + 1}</label>
                 {(admin || values.status === 'Draft') ?
@@ -315,6 +318,11 @@ export default ({
                     }
                   </button>
                   : null
+                }
+                {(admin || values.status === 'Draft') ?
+                  <button value={index} onClick={handleRemoveLease}>Remove</button>
+                  :
+                  null
                 }
                 {(values.quote === 'Partial' && lease.displayMachines) ?
                   <div className="col-sm-offset-2 col-sm-10">
@@ -363,6 +371,11 @@ export default ({
                             :
                             <p>{machine.location}</p>
                           }
+                          {(admin || values.status === 'Draft') ?
+                            <button value={`${index}-${mIndex}`} onClick={handleRemoveMachine}>Remove</button>
+                            :
+                            null
+                          }
                         </div>
                       )
                     })}
@@ -372,7 +385,9 @@ export default ({
                   null
                 }
               </div>
-            )
+              :
+              null
+              )
           })
           }
           <button onClick={handleNewLease}>Add Lease</button>
