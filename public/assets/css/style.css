@@ -17,6 +17,75 @@ h3 {
 	line-height: 32px;
 	margin: 0px;
 }
+h4 {
+	color: #1A1919;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	line-height: 24px;
+	text-align: center;
+	margin-top: 12px;
+}
+h5 {
+	color: #354052;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 28px;
+}
+.nav-bottom-bar a {
+	text-decoration: none;
+}
+
+/* Header */
+.header-bar {
+	margin-top: 30px;
+}
+.logo {
+	height: 50px;
+	width: 225px;
+	background: url(../img/myadmin_logo.svg);
+	background-position-x: left;
+    background-position-y: center;
+	background-size: 225px;
+	background-repeat: no-repeat;
+	min-height: none;
+	display: inline-block;
+}
+.contactus {
+	width: 130px;
+	float: right;
+	display: inline-block;
+	background: url(../img/phone.svg);
+	background-position-x: left;
+    background-position-y: center;
+	background-size: 20px;
+	background-repeat: no-repeat;
+}
+.second-header-bar {
+	margin-top: 20px;
+	border-bottom: 2px solid #1066A3;
+	padding-bottom: 10px;
+}
+.second-header-bar h3 {
+	display: inline-block;
+}
+.second-header-bar button {
+	display: inline-block;
+	margin-left: 20px;
+}
+
+/* Menu */
+.nav-bottom-bar {
+	margin-top: 32px;
+	border-bottom: 3px solid #1991EB;
+}
+.menu-item {
+	margin-right: 10px;
+	display: inline-block;
+	height: 53px;
+	border: 1px solid #1991EB;
+	border-radius: 5px 5px 0 0;
+}
 
 /* Error Alerts */
 .alert-box {
@@ -206,6 +275,18 @@ h3 {
 }
 
 /* Edit Fields Styles */
+.app-table-edit {
+	border-bottom: solid #1991EB;
+	border-left: solid #1991EB;
+	border-right: solid #1991EB;
+	border-width: 1px;
+}
+.app-table-edit tr {
+	width: 100%;
+}
+.app-table-edit td {
+	padding: 16px 0px 16px 25px;
+}
 .street {
 	width: 200px !important;
 }
