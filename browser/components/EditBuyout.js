@@ -294,20 +294,21 @@ export default ({
 {/* Oh boy... */}
         <div className="app-bg col-sm-12">
           <h3>Lease Information</h3>
-          <div className="col-sm-12 labels lease-label">
-            <label>Lease Number</label>
-            <label>Lease Company</label>
-            <label>Lease Amount</label>
+          <div className="col-sm-12 no-gutters labels lease-label">
+            <label className="col-sm-3 no-gutters">Lease Number</label>
+            <label className="col-sm-3 no-gutters">Lease Company</label>
+            <label className="col-sm-3 no-gutters">Lease Amount</label>
           </div>
           {values.leases.map((lease, index) => {
             return ((!lease.delete) ?
-              <div key={`lease-${index}`} className="col-sm-12 lease-input">
-                <label>{index + 1}</label>
+              <div key={`lease-${index}`} className="col-sm-12 no-gutters lease-input">
+                <label className="col-sm-1 no-gutters">{index + 1}</label>
                 {(admin || values.status === 'Draft') ?
                   <input
                     onChange={handleChangeInLease}
                     id={`${index}-number`}
                     value={lease.number || ''}
+                    className="col-sm-3 no-gutters"
                   />
                   :
                   <span>{lease.number || ''}</span>
@@ -317,6 +318,7 @@ export default ({
                     onChange={handleChangeInLease}
                     id={`${index}-company`}
                     value={lease.company || ''}
+                    className="col-sm-3 no-gutters"
                   />
                   :
                   <span>{lease.company || ''}</span>
@@ -326,6 +328,7 @@ export default ({
                     onChange={handleChangeInLease}
                     id={`${index}-amount`}
                     value={lease.amount || ''}
+                    className="col-sm-3 no-gutters"
                   />
                   :
                   <span>{lease.amount || ''}</span>
@@ -341,26 +344,27 @@ export default ({
                   : null
                 }
                 {(admin || values.status === 'Draft') ?
-                  <button value={index} onClick={handleRemoveLease}>Remove</button>
+                  <button value={index} onClick={handleRemoveLease} className="col-sm-1" id="remove"></button>
                   :
                   null
                 }
                 {(values.quote === 'Partial' && lease.displayMachines) ?
-                  <div className="col-sm-offset-2 col-sm-10">
-                    <div className="col-sm-12 labels">
-                      <label>Serial Number</label>
-                      <label>Make</label>
-                      <label>Model</label>
-                      <label>Location</label>
+                  <div className="col-sm-12 no-gutters">
+                    <div className="col-sm-12 no-gutters labels machine-label">
+                      <label className="col-sm-2 no-gutters">Serial #</label>
+                      <label className="col-sm-2 no-gutters">Make</label>
+                      <label className="col-sm-2 no-gutters">Model</label>
+                      <label className="col-sm-2 no-gutters">Location</label>
                     </div>
                     {lease.machines.map((machine, mIndex) => {
                       return (
-                        <div key={`lease-${index}-machine-${mIndex}`} className="col-sm-12">
+                        <div key={`lease-${index}-machine-${mIndex}`} className="col-sm-12 no-gutters machine-input">
                           {(admin || values.status === 'Draft') ?
                             <input
                               onChange={handleChangeInMachine}
                               id={`${index}-${mIndex}-serial`}
                               value={machine.serial || ''}
+                              className="col-sm-2"
                             />
                             :
                             <p>{machine.serial}</p>
@@ -370,6 +374,7 @@ export default ({
                               onChange={handleChangeInMachine}
                               id={`${index}-${mIndex}-make`}
                               value={machine.make || ''}
+                              className="col-sm-2"
                             />
                             :
                             <p>{machine.make}</p>
@@ -379,6 +384,7 @@ export default ({
                               onChange={handleChangeInMachine}
                               id={`${index}-${mIndex}-model`}
                               value={machine.model || ''}
+                              className="col-sm-2"
                             />
                             :
                             <p>{machine.model}</p>
@@ -388,12 +394,13 @@ export default ({
                               onChange={handleChangeInMachine}
                               id={`${index}-${mIndex}-location`}
                               value={machine.location || ''}
+                              className="col-sm-2"
                             />
                             :
                             <p>{machine.location}</p>
                           }
                           {(admin || values.status === 'Draft') ?
-                            <button value={`${index}-${mIndex}`} onClick={handleRemoveMachine}>Remove</button>
+                            <button value={`${index}-${mIndex}`} onClick={handleRemoveMachine} id="remove">Remove</button>
                             :
                             null
                           }
