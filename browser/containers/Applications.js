@@ -66,7 +66,7 @@ class ApplicationsContainer extends React.Component {
           <div className="newapp"><button className="app-button" onClick={this.handleNewApp}>Start New Application</button></div>
         </div>
         <div className="col-sm-12 no-gutters">
-          <table className="app-table" id="thetable">
+          <table className="app-table">
             <tbody>
               <tr className="app-header-bottom" key="head">
                 <td id="date" onClick={this.handleSort}>Date Submitted</td>
