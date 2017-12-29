@@ -252,23 +252,57 @@ h5 {
 	border-radius: 4px;
 }
 .lease-label {
-	margin-left: 15px;
 }
 .lease-label label {
-	width: 25%;
-	margin-top: 15px;
 	margin-right: 20px;
 }
 .lease-input input {
-	width: 25%;
 	height: 36px;
 	border: 1px solid #CED0DA;
 	border-radius: 4px;
 	margin-right: 20px;
-	margin-bottom: 20px;
+	padding: 0px 5px;
 }
 .lease-input label {
 	margin-right: 5px;
+}
+.lease-input button {
+	margin-right: 5px;
+	border: none;
+	background: rgba(0, 0, 0, 0);
+	margin-bottom: 20px;
+}
+.machine-label {
+}
+.machine-label label {
+	margin-right: 20px;
+}
+.machine-input input {
+	height: 36px;
+	border: 1px solid #CED0DA;
+	border-radius: 4px;
+	margin-right: 20px;
+	padding: 0px 5px;
+}
+.machine-input label {
+	margin-right: 5px;
+}
+.machine-input button {
+	
+	margin-right: 5px;
+	border: none;
+	background: rgba(0, 0, 0, 0);
+	margin-bottom: 20px;
+}
+#remove {
+	height: 15px;
+	background: url(../img/remove.svg);
+	background-position-x: left;
+    background-position-y: center;
+	background-size: 15px;
+	background-repeat: no-repeat;
+	min-height: none;
+	display: inline-block;
 }
 #byo-desc {
 	margin-top: 30px;
