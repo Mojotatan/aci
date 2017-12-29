@@ -22,7 +22,14 @@ export default ({
   handleRemoveMachine
 }) => (
   <div className="row edit-byo-page">
-    <h2>Edit this byo</h2>
+    
+    <div className="col-sm-12">
+      <div className="col-sm-6"><h2>Buyout</h2></div>
+      <div className="col-sm-6 top-buttons" align="right">
+        <Link to='/buyouts' id="cancel-button">Cancel</Link>
+        <button type="submit" id="save-button" onClick={handleSave}>Save</button>
+      </div>
+    </div>
 
     <div className="agent-box col-sm-3">
       <h3>Agent Information</h3>

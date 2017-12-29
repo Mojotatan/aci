@@ -73,16 +73,12 @@ class LogInContainer extends React.Component {
   }
 
   render() {
-    if (this.props.token) {
-      return (
+    return (
+      <div>
         <Header user={this.props.user} logOut={this.logOut} />
-      )
-    }
-    else {
-      return (
-        <LogInForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
-      )
-    }
+        {(!this.props.token) ? <LogInForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} /> : null}
+      </div>
+    )
   }
 }
 

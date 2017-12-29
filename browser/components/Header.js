@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import { Script } from 'vm';
+import {getPrettyDate} from '../utility'
 
 export default ({user, logOut}) => (
   <header>
@@ -9,8 +9,16 @@ export default ({user, logOut}) => (
       <div className="contactus"><h4>Contact Us</h4></div>
     </div>
     <div className="second-header-bar col-sm-12">
-      <h3>Welcome, {user.fullName}</h3>
-      <button onClick={logOut}>Log Out</button>
+      {(user) ?
+        <div className="col-sm-6">
+          <h3>Welcome, {user.fullName}</h3>
+          <button onClick={logOut}>Log Out</button>
+        </div>
+        : null
+      }
+      <div className={`col-sm-6${(!user) ? ' col-sm-offset-6' : ''}`} align="right">
+        <h3>{getPrettyDate()}</h3>
+      </div>
     </div>
   </header>
 )

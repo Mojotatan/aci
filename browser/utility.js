@@ -10,6 +10,19 @@ export const getDate = () => {
   return `${obj.year}-${obj.month}-${obj.day}`
 }
 
+export const getPrettyDate = () => {
+  let now = new Date()
+  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  let obj = {
+    year: now.getFullYear(),
+    month: months[now.getMonth()],
+    date: now.getDate(),
+    day: days[now.getDay()]
+  }
+  return `${obj.day}, ${obj.month} ${obj.date}, ${obj.year}`
+}
+
 export const sortBy = field => {
   return (a, b) => {
     // handle cases where a field is empty

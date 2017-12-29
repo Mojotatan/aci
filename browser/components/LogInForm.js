@@ -1,20 +1,25 @@
 import React from 'react'
 
 export default ({handleChange, handleSubmit}) => (
-  <div>
-    <h2>Log in plz</h2>
-    <form onSubmit={handleSubmit}>
-      <input 
-        onChange={handleChange}
-        name="username"
-        placeholder="username..."
-      />
-      <input 
-        onChange={handleChange}
-        name="password"
-        placeholder="password..."
-      />
-      <button type="submit">Login</button>
+  <div className="col-sm-8 col-sm-offset-2">
+    <form className="field-label" onSubmit={handleSubmit}>
+      <div className="app-bg">
+        <h3>Agent Login</h3>
+        <div><label>Username</label></div>
+        <input 
+          onChange={handleChange}
+          name="username"
+          placeholder="username..."
+        />
+        <div><label>Password</label></div>
+        <input 
+          onChange={handleChange}
+          name="password"
+          placeholder="password..."
+        />
+      </div>
+      <br />
+      <button align="right" id="submit-button" type="submit">Login</button>
     </form>
   </div>
 )

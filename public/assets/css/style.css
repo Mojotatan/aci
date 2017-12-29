@@ -80,11 +80,22 @@ h5 {
 	border-bottom: 3px solid #1991EB;
 }
 .menu-item {
-	margin-right: 10px;
 	display: inline-block;
 	height: 53px;
 	border: 1px solid #1991EB;
 	border-radius: 5px 5px 0 0;
+	padding-right: 0;
+	padding-left: 0;
+	width: calc((100% - 50px) / 6)
+}
+.menu-item + .menu-item {
+	margin-left: 10px
+}
+.menu-shade {
+	background-color: #1991eb
+}
+.menu-shade h4 {
+	color: #ffffff
 }
 
 /* Error Alerts */
@@ -464,7 +475,10 @@ h5 {
 	margin-top: 30px;
 	margin-bottom: 90px;
 }
-.buttons button{
+.top-buttons {
+	margin-top: 15px
+}
+.buttons button, .top-buttons button {
 	margin-left: 30px;
 }
 .custom-length select {

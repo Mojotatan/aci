@@ -14,7 +14,14 @@ export default ({
   handleChangeCustomer
 }) => (
   <div className="row edit-apps-page">
-    <h2>Edit this app</h2>
+
+    <div className="col-sm-12">
+      <div className="col-sm-6"><h2>Application</h2></div>
+      <div className="col-sm-6 top-buttons" align="right">
+        <Link to='/applications' id="cancel-button">Cancel</Link>
+        <button type="submit" id="save-button" onClick={handleSave}>Save</button>
+      </div>
+    </div>
 
     <div className="agent-box col-sm-3">
       <h3>Agent Information</h3>
