@@ -10,20 +10,20 @@ class MenuContainer extends React.Component {
 
   render() {
     return (
-      <div>
-        <Link to='/applications'><h4>Applications</h4></Link>
-        <Link to='/buyouts'><h4>Buyouts</h4></Link>
+      <div className="col-sm-12 no-gutters nav-bottom-bar">
+        <Link to='/applications' className="menu-item col-sm-2"><h4>Applications</h4></Link>
+        <Link to='/buyouts' className="menu-item col-sm-2"><h4>Buyouts</h4></Link>
     
         {(this.props.user.level === 'Admin') ? 
-        <Link to='/dealers'><h4>Dealers</h4></Link>
+        <Link to='/dealers' className="menu-item col-sm-2"><h4>Dealers</h4></Link>
         : null}
     
         {(this.props.user.level === 'Admin') ? 
-        <Link to='/branches'><h4>Branches</h4></Link>
+        <Link to='/branches' className="menu-item col-sm-2"><h4>Branches</h4></Link>
         : null}
     
         {(this.props.user.level === 'Admin') ? 
-        <Link to='/regions'><h4>Regions</h4></Link>
+        <Link to='/regions' className="menu-item col-sm-2"><h4>Regions</h4></Link>
         : null}
       </div>
     )

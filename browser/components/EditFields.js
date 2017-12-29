@@ -7,7 +7,7 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
     {rows.map((row, index) => {
       return (
         <form key={row.id} onSubmit={handleSubmit}>
-          <table className="app-table">
+          <table className="app-table-edit col-sm-12">
             <tbody>
               <tr className={`${(index % 2 === 0) ? 'even' : 'odd'} ${!(controller == index) ? ' ' : 'highlighted'}`} >
                   {Object.keys(fields).map(key => {
