@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Check</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M12.7235251,5.69212662 L6.99981144,11.7093477 C6.63117826,12.0968841 6.03438848,12.0968841 5.66669809,11.7093477 L3.27576779,9.19680357 C2.9080774,8.80926717 2.9080774,8.1818745 3.27576779,7.7943381 C3.64440097,7.40779285 4.24119075,7.40779285 4.60888114,7.7943381 L6.33325477,9.60713622 L11.3904118,4.2906523 C11.7581022,3.9031159 12.3548919,3.9031159 12.7235251,4.2906523 C13.0921583,4.67719755 13.0921583,5.30459022 12.7235251,5.69212662" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/Check">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Tick"></g>
+            <g id="UI/Color/Flat/Grey-50%" mask="url(#mask-2)" fill="#A8AAB7">
+                <rect id="Base" x="0" y="0" width="16" height="16"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Arrow (Dropdown)</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M11,8 L14.5023012,8 C14.7771727,8 15,8.23193359 15,8.5 C15,8.77614237 14.7851562,9 14.5023012,9 L10.4976988,9 C10.2236139,9 10.0012757,8.76939186 10.0000055,8.50230032 L10,4.49769878 C10,4.22282734 10.2319336,4 10.5,4 C10.7761424,4 11,4.21484375 11,4.49769878 L11,8 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/Arrow-(Dropdown)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Dropdown-Arrow" transform="translate(12.500000, 6.500000) rotate(-45.000000) translate(-12.500000, -6.500000) "></g>
+            <g id="UI/Color/Flat/Grey-50%" mask="url(#mask-2)" fill="#A8AAB7">
+                <rect id="Base" x="0" y="0" width="16" height="16"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

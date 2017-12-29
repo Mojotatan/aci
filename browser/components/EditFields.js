@@ -2,7 +2,7 @@ import React from 'react'
 
 import {match} from '../utility'
 
-export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit, handleCancel, handleController, handleCreate}) => (
+export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit, handleCancel, handleController, handleCreate, handleDelete}) => (
   <div className="edit-fields-box">
     <table className="app-table">
       <tbody>
@@ -53,6 +53,12 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                   </td>
                   : null
                 }
+                {(!controller) ?
+                  <td>
+                    <button value={row.id} onClick={handleDelete}>Delete</button>
+                  </td>
+                  : null
+                }
                 {(controller == index) ?
                   <td>
                     <button onClick={handleCancel}>Cancel</button>
@@ -75,6 +81,5 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
           <button onClick={handleCreate}>New</button>
           : null
         }
-      
   </div>
 )

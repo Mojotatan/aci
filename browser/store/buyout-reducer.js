@@ -95,7 +95,7 @@ export const saveByoThunk = (token, byo, customer) => {
     .then(res => {
       if (res.data.err) dispatch(throwError('red', 'There was an error with your buyout'))
       else {
-        dispatch(throwError('green', `Your buyout has been ${(byoArgs.status === 'Submitted') ? 'submitted' : 'saved'}`))
+        dispatch(throwError('green', `Your buyout has been ${(byoArgs.status === 'Submitted' && byo[0].status === 'Draft') ? 'submitted' : 'saved'}`))
         if (byoArgs.id === 'new') {
           dispatch(sortByos(['id']))
         }

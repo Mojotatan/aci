@@ -18,6 +18,48 @@ h3 {
 	margin: 0px;
 }
 
+/* Error Alerts */
+.alert-box {
+	position: fixed;
+	top: 0;
+	left: 50%;
+	z-index: 10
+}
+.red-alert, .green-alert {
+	position: absolute;
+	height: 36px;
+	width: 350px;
+	transform: translateX(-50%);
+	border: 1px solid rgba(0,0,0,0.15);
+	border-radius: 4px;
+	font-family: "Source Sans Pro";
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	color: #ffffff;
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
+.red-alert {
+	background-color: #f85359
+}
+.green-alert {
+	background-color: #39b54a
+}
+.red-alert .left, .green-alert .left {
+	position: absolute;
+	top: 9px;
+	left: 15px
+}
+.red-alert .right, .green-alert .right {
+	position: absolute;
+	top: 9px;
+	right: 15px
+}
+.red-alert:hover, .green-alert:hover {
+	cursor: pointer
+}
+
 /* Applications List */
 .app-header-top {
 	position: relative;

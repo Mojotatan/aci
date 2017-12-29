@@ -34,6 +34,20 @@ module.exports = require('express').Router()
     .catch(err => res.send({err}))
   })
 
+  .put('/delete', isLoggedIn, isAdmin, (req, res) => {
+    Dealer.destroy({
+      where: {
+        id: {
+          [Op.eq]: req.body.dealer
+        }
+      }
+    })
+    .then((data) => {
+      res.send('success')
+    })
+    .catch(err => console.error(err))
+  })
+
   .post('/new', isLoggedIn, isAdmin, (req, res) => {
     return Dealer.create({
       name: req.body.dealer.name,

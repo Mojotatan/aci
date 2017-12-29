@@ -10,7 +10,7 @@ const reducer = (prevState = initialState, action) => {
       newState.errQueue = [...newState.errQueue, action.err]
       return newState
     case HANDLE_ERROR:
-      newState.errQueue = newState.errQueue.slice(1)
+      newState.errQueue = newState.errQueue.slice(0, -1)
       return newState
     default:
       return newState

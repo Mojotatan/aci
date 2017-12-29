@@ -27,9 +27,11 @@ class BuyoutContainer extends React.Component {
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
     this.handleNewLease = this.handleNewLease.bind(this)
     this.handleChangeInLease = this.handleChangeInLease.bind(this)
+    this.handleRemoveLease = this.handleRemoveLease.bind(this)
     this.toggleMachines = this.toggleMachines.bind(this)
     this.handleNewMachine = this.handleNewMachine.bind(this)
     this.handleChangeInMachine = this.handleChangeInMachine.bind(this)
+    this.handleRemoveMachine = this.handleRemoveMachine.bind(this)
   }
 
   handleChange(e) {
@@ -135,6 +137,14 @@ class BuyoutContainer extends React.Component {
     this.setState({'leases': leases})
   }
 
+  handleRemoveLease(e) {
+    e.preventDefault()
+    let leases = Array.from(this.state.leases)
+    // leases = [...leases.slice(0, e.target.value), ...leases.slice(e.target.value + 1)]
+    leases[e.target.value].delete = true
+    this.setState({'leases': leases})
+  }
+
   toggleMachines(e) {
     e.preventDefault()
     let index = e.target.id.split('-')[0]
@@ -168,6 +178,10 @@ class BuyoutContainer extends React.Component {
     this.setState({'leases': leases})
   }
 
+  handleRemoveMachine(e) {
+    e.preventDefault()
+  }
+
 
   componentWillReceiveProps(newProps){
     console.log('component receiving props')
@@ -199,9 +213,11 @@ class BuyoutContainer extends React.Component {
           handleCheckbox={this.handleCheckbox}
           handleNewLease={this.handleNewLease}
           handleChangeInLease={this.handleChangeInLease}
+          handleRemoveLease={this.handleRemoveLease}
           toggleMachines={this.toggleMachines}
           handleNewMachine={this.handleNewMachine}
           handleChangeInMachine={this.handleChangeInMachine}
+          handleRemoveMachine={this.handleRemoveMachine}
         />
       </div>
     )

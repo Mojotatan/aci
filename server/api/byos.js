@@ -160,15 +160,26 @@ module.exports = require('express').Router()
       theByo = data
 
       return Promise.all(req.body.byo.leases.map(lse => {
-        return (lse.id === 'new') ?
-          Lease.create({
+        if (lse.delete ) {
+          if (lse.id === 'new') return 0
+          else {
+            return Lease.destroy({
+              where: {
+                id: {
+                  [Op.eq]: lse.id
+                }
+              }
+            })
+          }
+        } else if (lse.id === 'new') {
+          return Lease.create({
             number: lse.number,
             company: lse.company,
             amount: lse.amount,
             buyoutId: theByo.id
           })
-          :
-          Lease.update({
+        } else {
+          return Lease.update({
             number: lse.number,
             company: lse.company,
             amount: lse.amount,
@@ -181,10 +192,12 @@ module.exports = require('express').Router()
             },
             returning: true
           })
+        }
       }))
     })
     .then(leases => {
       return Promise.all(leases.map((lse, index) => {
+        if (typeof lse === 'number') return []
         return Promise.all(req.body.byo.leases[index].machines.map((mac, mIndex) => {
           return (mac.id === 'new') ?
             Machine.create({
@@ -215,7 +228,8 @@ module.exports = require('express').Router()
     .then(data => {
       res.send('success, reloading byos')
     })
-    .catch(err => res.send({err}))
+    // .catch(err => res.send({err}))
+    .catch(err => console.error(err))
   })
 
 
