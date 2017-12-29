@@ -9,6 +9,8 @@ import Buyout from './containers/Buyout'
 import Dealers from './containers/Dealers'
 import Branches from './containers/Branches'
 import Regions from './containers/Regions'
+import Users from './containers/Users'
+import User from './containers/User'
 import Alerts from './containers/Alerts'
 
 
@@ -21,6 +23,8 @@ const App = () => (
       <Route path="/edit-application" component={Application} />
       <Route path="/buyouts" component={Buyouts} />
       <Route path="/edit-buyout" component={Buyout} />
+      <Route path="/users" component={Users} />
+      <Route path="/edit-user" component={User} />
       <Route path="/dealers" component={Dealers} />
       <Route path="/branches" component={Branches} />
       <Route path="/regions" component={Regions} />

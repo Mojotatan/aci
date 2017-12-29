@@ -24,4 +24,10 @@ module.exports = db => db.define('Dealer', {
   zip: {
     type: Sequelize.STRING
   }
+}, {
+  getterMethods: {
+    address() {
+      return `${this.street}\n${this.city}, ${this.state} ${this.zip}`
+    }
+  }
 })

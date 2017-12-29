@@ -5,9 +5,6 @@ module.exports = db => db.define('Branch', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  // address: {
-  //   type: Sequelize.JSON // expect {street, city, state, zip}
-  // }
   phone: {
     type: Sequelize.STRING,
   },

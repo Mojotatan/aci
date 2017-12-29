@@ -13,8 +13,8 @@ module.exports = db => db.define('User', {
     defaultValue: 'Sales Rep'
   },
   active: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: true
+    type: Sequelize.ENUM('Active', 'Inactive'),
+    defaultValue: 'Active'
   },
   email: {
     type: Sequelize.STRING,

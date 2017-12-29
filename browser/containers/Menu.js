@@ -25,6 +25,10 @@ class MenuContainer extends React.Component {
         {(this.props.user.level === 'Admin') ? 
         <Link to='/regions'><h4>Regions</h4></Link>
         : null}
+
+        {(this.props.user.level === 'Admin') ? 
+        <Link to='/users'><h4>Users</h4></Link>
+        : null}
       </div>
     )
   }
