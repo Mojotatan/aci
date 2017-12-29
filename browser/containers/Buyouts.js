@@ -58,12 +58,14 @@ class BuyoutsContainer extends React.Component {
   render() {
     return(
       <div>
-        <h2>Current Buyouts</h2>
-        <button onClick={this.handleNewByo}>Start New Buyout</button>
-        <div className="col-sm-12">
-          <table>
+        <div className="col-sm-12 no-gutters app-header-top">
+          <div><h2 className="app-title">Current Buyouts</h2></div>
+          <div className="newapp"><button className="app-button" onClick={this.handleNewByo}>Start New Buyout</button></div>
+        </div>
+        <div className="col-sm-12 no-gutters">
+          <table className="app-table" id="thetable">
             <tbody>
-              <tr key="head">
+              <tr className="app-header-bottom" key="head">
                 <td id="date" onClick={this.handleSort}>Date Submitted</td>
                 <td>Customer Name</td>
                 <td>Address</td>
@@ -71,10 +73,12 @@ class BuyoutsContainer extends React.Component {
                 <td id="status" onClick={this.handleSort}>Status</td>
                 <td id="expiry" onClick={this.handleSort}>Expires</td>
                 <td id="rep-fullName" onClick={this.handleSort}>Rep Name</td>
+                <td></td>
+                <td></td>
               </tr>
               {this.props.byos.map((byo, index) => {
                 return (
-                  <tr key={byo.id}>
+                  <tr key={byo.id} className={(index % 2 === 0) ? 'even' : 'odd'} >
                     <td>{byo.date}</td>
                     <td>{(byo.customer) ? byo.customer.name : ''}</td>
                     <td>{(byo.customer) ? byo.customer.street : ''}</td>

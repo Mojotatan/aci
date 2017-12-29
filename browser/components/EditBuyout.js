@@ -19,10 +19,10 @@ export default ({
   handleNewMachine,
   handleChangeInMachine
 }) => (
-  <div className="row">
+  <div className="row edit-byo-page">
     <h2>Edit this byo</h2>
 
-    <div className="col-sm-3">
+    <div className="agent-box col-sm-3">
       <h3>Agent Information</h3>
       <div>
         <label>Agent Name</label>
@@ -48,14 +48,14 @@ export default ({
       </div>
     </div>
 
-    <div className="col-sm-6">
+    <div className="edit-base col-sm-7">
       <form onSubmit={handleSave}>
         <div className="col-sm-12">
-          <div>
+          <div className="rowed-items" id="date-started">
             <label>Date Started</label>
             <p>{values.date}</p>
           </div>
-          <div>
+          <div className="rowed-items status">
             <label>Status</label>
             {(admin) ?
               <select
@@ -75,7 +75,7 @@ export default ({
             }
           </div>
           {(admin) ?
-            <div>
+            <div className="rad-btns">
               <input
                 type="checkbox"
                 onChange={handleCheckbox}
@@ -90,7 +90,7 @@ export default ({
 
         <div className="col-sm-12">
           {(admin || values.status === 'Draft') ?
-            <div className="radio-div">
+            <div className="radio-div type-rad-btns">
               <input
                 type="radio"
                 id="quote-0"
@@ -121,12 +121,12 @@ export default ({
 
         </div>
 
-        <div className="col-sm-12">
+        <div className="app-bg col-sm-12">
           <h3>Customer Information</h3>
 
           {(iAmAuthor && values.status === 'Draft') ?
             <div className="row">
-              <div className="col-sm-12">
+              <div className="col-sm-6 field-label">
                 <label>Load a Customer</label>
                 <select
                   onChange={handleChangeCustomer}
@@ -147,7 +147,7 @@ export default ({
           }
 
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-6 field-label">
               <label>Customer</label>
               {(admin || values.status === 'Draft') ?
                 <input
@@ -171,7 +171,7 @@ export default ({
           </div> */}
 
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-6 field-label">
               <label>Address</label>
               {(admin || values.status === 'Draft') ?
                 <input
@@ -183,7 +183,7 @@ export default ({
                 <p>{(values.customer) ? values.customer.street || '' : ''}</p>
               }
             </div>
-            <div className="col-sm-6">
+            <div className="col-sm-6 field-label">
               <label>City</label>
               {(admin || values.status === 'Draft') ?
                 <input
@@ -195,7 +195,7 @@ export default ({
                 <p>{(values.customer) ? values.customer.city || '' : ''}</p>
               }
             </div>
-            <div className="col-sm-6">
+            <div className="col-sm-6 field-label">
               <label>State</label>
               {(admin || values.status === 'Draft') ?
                 <input
@@ -207,7 +207,7 @@ export default ({
                 <p>{(values.customer) ? values.customer.state || '' : ''}</p>
               }
             </div>
-            <div className="col-sm-6">
+            <div className="col-sm-6 field-label">
               <label>Zip Code</label>
               {(admin || values.status === 'Draft') ?
                 <input
@@ -222,7 +222,7 @@ export default ({
           </div>
 
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-6 field-label">
               <label>Phone</label>
               {(admin || values.status === 'Draft') ?
                 <input
@@ -237,7 +237,7 @@ export default ({
           </div>
 
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-6 field-label">
               <label>Customer Email</label>
               {(admin || values.status === 'Draft') ?
                 <input 
@@ -252,7 +252,7 @@ export default ({
           </div>
 
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-6 field-label">
               <label>Tax ID</label>
               {(admin || values.status === 'Draft') ?
                 <input
@@ -268,16 +268,16 @@ export default ({
 
         </div>
 
-        <div className="col-sm-12">
+        <div className="app-bg col-sm-12">
           <h3>Lease Information</h3>
-          <div className="col-sm-12 labels">
+          <div className="col-sm-12 labels lease-label">
             <label>Lease Number</label>
             <label>Lease Company</label>
             <label>Lease Amount</label>
           </div>
           {values.leases.map((lease, index) => {
             return(
-              <div key={`lease-${index}`} className="col-sm-12">
+              <div key={`lease-${index}`} className="col-sm-12 lease-input">
                 <label>{index + 1}</label>
                 {(admin || values.status === 'Draft') ?
                   <input
@@ -378,20 +378,20 @@ export default ({
           <button onClick={handleNewLease}>Add Lease</button>
         </div>
 
-        <div className="col-sm-12">
+        <div className="col-sm-12 field-desc" id="byo-desc">
           <label>Comments</label>
-          <input
+          <textarea
             onChange={handleChange}
             name={'comments'}
             value={values.comments || ''}
           />
         </div>
 
-        <div className="col-sm-12">
-          <Link to='/buyouts'><div>Cancel</div></Link>
-          <button type="submit">Save</button>
+        <div className="col-sm-12 buttons" align="right">
+          <Link to='/buyouts' id="cancel-button">Cancel</Link>
+          <button type="submit" id="save-button">Save</button>
           {(values.status === 'Draft') ?
-            <button onClick={handleSubmit} type="submit">Submit</button>
+            <button onClick={handleSubmit} type="submit" id="submit-button">Submit</button>
             : null
           }
         </div>
