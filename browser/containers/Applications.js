@@ -93,7 +93,7 @@ class ApplicationsContainer extends React.Component {
                     <td>{app.status}</td>
                     <td>{app.expiry}</td>
                     <td>{(app.rep) ? app.rep.fullName : ''}</td>
-                    <td id={index} onClick={this.handleClick}>
+                    <td id={index} onClick={this.handleClick} className="edit">
                       {(this.props.user.level === 'Admin' || app.status === 'Draft') ?
                         'Edit' : 'View'
                       }

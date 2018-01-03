@@ -82,7 +82,7 @@ export default ({
               <div className="field-label">
                 <label>Level</label>
               </div>
-              <div className="field-dropd">
+              <div className="field-dropd-full">
                 <select
                 onChange={handleChange}
                 name="level"
@@ -100,7 +100,7 @@ export default ({
               <div className="field-label">
                 <label>Active</label>
               </div>
-              <div className="field-dropd">
+              <div className="field-dropd-full">
                 <select
                 onChange={handleChange}
                 name="active"
@@ -118,7 +118,7 @@ export default ({
               <div className="field-label">
                 <label>Dealer</label>
               </div>
-              <div className="field-dropd">
+              <div className="field-dropd-full">
                 <select
                 onChange={handleChange}
                 name="dealerId"
@@ -135,7 +135,7 @@ export default ({
               <div className="field-label">
                 <label>Region</label>
               </div>
-              <div className="field-dropd">
+              <div className="field-dropd-full">
                 <select
                 onChange={handleChange}
                 name="regionId"
@@ -154,7 +154,7 @@ export default ({
               <div className="field-label">
                 <label>Branch</label>
               </div>
-              <div className="field-dropd">
+              <div className="field-dropd-full">
                 <select
                 onChange={handleChange}
                 name="branchId"

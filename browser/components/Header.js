@@ -12,7 +12,7 @@ export default ({user, logOut}) => (
       {(user) ?
         <div className="col-sm-6">
           <h3>Welcome, {user.fullName}</h3>
-          <button onClick={logOut}>Log Out</button>
+          <button onClick={logOut} className="logout-button">Log Out</button>
         </div>
         : null
       }

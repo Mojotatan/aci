@@ -49,7 +49,7 @@ export default ({
       </div>
     </div>
 
-    <div className="edit-base col-sm-7">
+    <div className="edit-base col-sm-8">
       <form onSubmit={handleSave}>
         <div className="col-sm-12">
           <div className="rowed-items" id="date-started">

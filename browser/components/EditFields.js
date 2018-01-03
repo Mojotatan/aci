@@ -9,7 +9,7 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
         <form key={row.id} onSubmit={handleSubmit}>
           <table className="app-table-edit col-sm-12">
             <tbody>
-              <tr className={`${(index % 2 === 0) ? 'even' : 'odd'} ${!(controller == index) ? ' ' : 'highlighted'}`} >
+              <tr className={`tr-padding ${(index % 2 === 0) ? 'even' : 'odd'} ${!(controller == index) ? ' ' : 'highlighted'}`} >
                   {Object.keys(fields).map(key => {
                     return(
                       <td key={`${row.id}-${key}`}>
@@ -19,7 +19,7 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                           name={`${index}-${key}`}
                           placeholder={`${key}`}
                           value={(controller == index) ? fields[key] || '' : row[key] || ''}
-                          className={`${key} ${!(controller == index) ? 'clear' : 'white'}`} 
+                          className={!(controller == index) ? 'clear' : 'white'}
                         />
                       </td>
                     )
@@ -47,25 +47,25 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                   })}
                   {(!controller) ?
                     <td>
-                      <button value={index} onClick={handleController}>Edit</button>
+                      <button value={index} onClick={handleController} className ="fields-button">Edit</button>
                     </td>
                     : null
                   }
                   {(!controller) ?
                     <td>
-                      <button value={row.id} onClick={handleDelete}>Delete</button>
+                      <button value={row.id} onClick={handleDelete} className ="fields-button right-margin">Delete</button>
                     </td>
                     : null
                   }
                   {(controller == index) ?
                     <td>
-                      <button onClick={handleCancel}>Cancel</button>
+                      <button onClick={handleCancel} className ="fields-button">Cancel</button>
                     </td>
                     : null
                   }
                   {(controller == index) ?
                     <td>
-                      <button type="submit">Save</button>
+                      <button type="submit" className ="fields-button right-margin">Save</button>
                     </td>
                     : null
                   }
@@ -76,7 +76,7 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
       )
     })}
     {(!controller) ?
-      <button onClick={handleCreate}>New</button>
+      <button onClick={handleCreate} className="new-button">New</button>
       : null
     }
   </div>
