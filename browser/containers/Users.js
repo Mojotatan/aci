@@ -62,7 +62,7 @@ class UsersContainer extends React.Component {
                     <td>{user.email}</td>
                     <td>{user.level}</td>
                     <td>{user.active}</td>
-                    <td id={index} onClick={this.handleClick}>Edit</td>
+                    <td id={index} onClick={this.handleClick} className="edit">Edit</td>
                   </tr>
                 )
               })}
