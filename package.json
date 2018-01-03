@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server/index.js",
+    "start-dev": "nodemon server/index.js",
+    "start": "DATABASE_URL='mysql://impact_myadmin:LongWayFromHere@mysql.myadmindev.xyz:5432' node server/db/index.js",
     "build": "webpack -w",
     "seed-dev": "node server/db/seed-dev.js",
     "seed": "node server/db/seed.js"
@@ -25,6 +26,7 @@
     "googleapis": "^23.0.0",
     "jsonwebtoken": "^8.1.0",
     "morgan": "^1.9.0",
+    "mysql2": "^1.5.1",
     "nodemailer": "^4.4.1",
     "nodemon": "^1.14.2",
     "pg": "^6.4.2",

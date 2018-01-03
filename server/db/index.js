@@ -1,6 +1,6 @@
 // Define db
 const Sequelize = require('sequelize')
-const dbUrl = process.env.DATABASE_URL || 'postgres://localhost:5432/aci'
+const dbUrl = process.env.DATABASE_URL || 'mysql://root:root@localhost:8889/aci' /*'postgres://localhost:5432/aci'*/
 let db = new Sequelize(dbUrl, {logging: false})
 
 // Import tables
