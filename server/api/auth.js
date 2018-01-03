@@ -54,7 +54,7 @@ const mayI = (token, appId) => {
 
 // console.log(google.options.auth.getToken())
 
-let oauth = JSON.parse(fs.readFileSync('key.json'))
+let oauth = JSON.parse(fs.readFileSync('key.json')) || {}
 
 const transporter = nodemailer.createTransport({
   // service: 'gmail.com',
