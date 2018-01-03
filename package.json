@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "nodemon server/index.js",
     "start": "DATABASE_URL='mysql://impact_myadmin:LongWayFromHere@mysql.myadmindev.xyz:5432' node server/db/index.js",
-    "build": "webpack -w",
+    "build-dev": "webpack -w",
+    "build": "webpack",
     "seed-dev": "node server/db/seed-dev.js",
     "seed": "node server/db/seed.js"
   },
