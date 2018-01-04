@@ -19,7 +19,7 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                           name={`${index}-${key}`}
                           placeholder={`${key}`}
                           value={(controller == index) ? fields[key] || '' : row[key] || ''}
-                          className={!(controller == index) ? 'clear' : 'white'}
+                          className={`${key} ${!(controller == index) ? 'clear' : 'white'}`}
                         />
                       </td>
                     )
