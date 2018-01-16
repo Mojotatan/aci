@@ -46,3 +46,20 @@ export const match = (arr, obj) => {
   else if (arr.length === 1) return obj[arr[0]]
   else return match(arr.slice(1), obj[arr[0]])
 }
+
+
+// Password must consist of at least 8 characters with at least 1 letter and 1 number
+
+// let pwCheck = (pw) => {
+//   if (typeof pw !== 'string') return false 
+//   if (length < 8) return false
+//   let checkChars = {letters: 0, numbers: 0}
+//   let notAllowed = ['@$\.,/']
+//   pw.split('').forEach(char => {
+//     if (notAllowed.includes(char)) return false
+//     else if (Number(char)) checkChars.numbers++
+//     else checkChars.letters++
+//   })
+//   if (checkChars.letters > 0 && checkChars.numbers > 0) return true
+//   else return false
+// }
