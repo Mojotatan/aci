@@ -2,7 +2,7 @@ const api = module.exports = require('express').Router()
 
 api
   .use('/apps', require('./apps'))
-  .use('/byos', require('./byos'))
+  .use('/byos', require('./buyouts'))
   .use('/dealers', require('./dealers'))
   .use('/branches', require('./branches'))
   .use('/regions', require('./regions'))

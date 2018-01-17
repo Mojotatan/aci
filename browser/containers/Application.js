@@ -131,9 +131,9 @@ class ApplicationContainer extends React.Component {
       <div>
         <EditApplication
           values={this.state}
-          iAmAuthor={this.props.user.email === this.state.rep.email}
-          admin={this.props.user.level === 'Admin'}
-          customers={this.props.customers.map(customer => customer.name)}
+          iAmAuthor={(this.props.user) ? this.props.user.email === this.state.rep.email : false}
+          admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
+          customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
           handleChange={this.handleChange}
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={this.handleSave}

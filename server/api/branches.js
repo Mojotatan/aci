@@ -7,7 +7,8 @@ module.exports = require('express').Router()
 
   .post('/', isLoggedIn, isAdmin, (req, res) => {
     return Branch.findAll({
-      include: ['region', 'dealer']
+      include: ['region', 'dealer'],
+      order: [['createdAt', 'ASC']]
     })
     .then(branches => {
       res.send(branches)

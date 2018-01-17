@@ -24,6 +24,7 @@ export const getPrettyDate = () => {
 }
 
 export const reformatDate = (date) => {
+  if (!date) return ''
   // expecting date in form of 'YYYY-MM-DD'
   let dateArr = date.split('-')
   return `${dateArr[1]}-${dateArr[2]}-${dateArr[0].slice(2)}` // returns 'MM-DD-YY'

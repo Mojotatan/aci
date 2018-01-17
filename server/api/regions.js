@@ -7,7 +7,8 @@ module.exports = require('express').Router()
 
   .post('/', isLoggedIn, isAdmin, (req, res) => {
     return Region.findAll({
-      include: ['dealer']
+      include: ['dealer'],
+      order: [['createdAt', 'ASC']]
     })
     .then(regions => {
       res.send(regions)

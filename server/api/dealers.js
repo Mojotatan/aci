@@ -6,7 +6,9 @@ const {isLoggedIn, isAdmin} = require('./auth')
 module.exports = require('express').Router()
 
   .post('/', isLoggedIn, isAdmin, (req, res) => {
-    return Dealer.findAll()
+    return Dealer.findAll({
+      order: [['createdAt', 'ASC']]
+    })
     .then(dealers => {
       res.send(dealers)
     })

@@ -37,6 +37,11 @@ module.exports = db => db.define('Application', {
     type: Sequelize.STRING
   },
 
+  comments: {
+    type: Sequelize.STRING,
+    defaultValue: ''
+  },
+
   // admin only fields
 
   approvalNumber: {
@@ -87,11 +92,6 @@ module.exports = db => db.define('Application', {
   },
   emr: {
     type: Sequelize.ENUM('Y', 'N', 'P', ''),
-    defaultValue: ''
-  },
-
-  comments: {
-    type: Sequelize.STRING,
     defaultValue: ''
   }
 

@@ -81,7 +81,8 @@ module.exports = require('express').Router()
               [Op.eq]: byo.id
             }
           },
-          include: ['machines']
+          include: ['machines'],
+          order: [['createdAt', 'ASC'], ['machines', 'createdAt', 'ASC']],
         })
       }))
     })
@@ -160,7 +161,7 @@ module.exports = require('express').Router()
       theByo = data
 
       return Promise.all(req.body.byo.leases.map(lse => {
-        if (lse.delete ) {
+        if (lse.delete) {
           if (lse.id === 'new') return 0
           else {
             return Lease.destroy({
@@ -199,6 +200,18 @@ module.exports = require('express').Router()
       return Promise.all(leases.map((lse, index) => {
         if (typeof lse === 'number') return []
         return Promise.all(req.body.byo.leases[index].machines.map((mac, mIndex) => {
+          if (mac.delete) {
+            if (mac.id === 'new') return 0
+            else {
+              return Machine.destroy({
+                where: {
+                  id: {
+                    [Op.eq]: mac.id
+                  }
+                }
+              })
+            }
+          } else {
           return (mac.id === 'new') ?
             Machine.create({
               serial: mac.serial,
@@ -222,6 +235,7 @@ module.exports = require('express').Router()
               },
               returning: true
             })
+          }
         }))
       }))
     })

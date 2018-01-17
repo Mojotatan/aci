@@ -180,6 +180,10 @@ class BuyoutContainer extends React.Component {
 
   handleRemoveMachine(e) {
     e.preventDefault()
+    let index = e.target.value.split('-')
+    let leases = Array.from(this.state.leases)
+    leases[index[0]].machines[index[1]].delete = true
+    this.setState({'leases': leases})
   }
 
 
@@ -202,9 +206,10 @@ class BuyoutContainer extends React.Component {
       <div>
         <EditBuyout
           values={this.state}
-          iAmAuthor={this.props.user.email === this.state.rep.email}
-          admin={this.props.user.level === 'Admin'}
-          customers={this.props.customers.map(customer => customer.name)}
+          iAmAuthor={(this.props.user) ? this.props.user.email === this.state.rep.email : false}
+          admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
+          customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
+          count={1} // for numbering leases
           handleChange={this.handleChange}
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={this.handleSave}

@@ -7,6 +7,7 @@ export default ({
   iAmAuthor,
   admin,
   customers,
+  count,
   handleChange,
   handleChangeInCustomer,
   handleSave,
@@ -292,6 +293,7 @@ export default ({
         </div>
 
 {/* Oh boy... */}
+        {(values.leases) ?
         <div className="app-bg col-sm-12">
           <h3>Lease Information</h3>
           <div className="col-sm-12 no-gutters labels lease-label">
@@ -302,7 +304,7 @@ export default ({
           {values.leases.map((lease, index) => {
             return ((!lease.delete) ?
               <div key={`lease-${index}`} className="col-sm-12 no-gutters lease-input">
-                <label className="index-number">{index + 1}</label>
+                <label className="index-number">{count++}</label>
                 {(admin || values.status === 'Draft') ?
                   <input
                     onChange={handleChangeInLease}
@@ -358,7 +360,7 @@ export default ({
                       <label className="col-sm-2 no-gutters">Location</label>
                     </div>
                     {lease.machines.map((machine, mIndex) => {
-                      return (
+                      return ((!machine.delete) ?
                         <div key={`lease-${index}-machine-${mIndex}`} className="col-sm-12 no-gutters machine-input">
                           {(admin || values.status === 'Draft') ?
                             <input
@@ -406,6 +408,7 @@ export default ({
                             null
                           }
                         </div>
+                        : null
                       )
                     })}
                     <button id={`${index}-newMachine`} onClick={handleNewMachine} className="col-sm-offset-1 add-button">Add Machine</button>
@@ -421,6 +424,8 @@ export default ({
           }
           <button onClick={handleNewLease} className="add-lease-button">Add Lease</button>
         </div>
+        : null
+        }
 
         <div className="col-sm-12 field-desc" id="byo-desc">
           <label>Comments</label>
@@ -440,13 +445,6 @@ export default ({
           }
         </div>
       </form>
-      {/* {(admin) ?
-        <form onSubmit={function(e) {e.preventDefault()}} action="fileupload" method="post" encType="multipart/form-data">
-          <input type="file" name="filetoupload" />
-          <input type="submit" />
-        </form>
-        : null
-      } */}
     </div>
   </div>
 )

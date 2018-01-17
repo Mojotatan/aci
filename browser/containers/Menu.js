@@ -27,25 +27,25 @@ class MenuContainer extends React.Component {
           `col-sm-2 menu-item${this.whereAmI('buyouts')}`
         }><h4>Buyouts</h4></Link>
     
-        {(this.props.user.level === 'Admin') ? 
+        {(this.props.user && this.props.user.level === 'Admin') ? 
         <Link to='/dealers' className={
           `col-sm-2 menu-item${this.whereAmI('dealers')}`
         }><h4>Dealers</h4></Link>
         : null}
     
-        {(this.props.user.level === 'Admin') ? 
+        {(this.props.user && this.props.user.level === 'Admin') ? 
         <Link to='/regions' className={
           `col-sm-2 menu-item${this.whereAmI('regions')}`
         }><h4>Regions</h4></Link>
         : null}
     
-        {(this.props.user.level === 'Admin') ? 
+        {(this.props.user && this.props.user.level === 'Admin') ? 
         <Link to='/branches' className={
           `col-sm-2 menu-item${this.whereAmI('branches')}`
         }><h4>Branches</h4></Link>
         : null}
 
-        {(this.props.user.level === 'Admin') ? 
+        {(this.props.user && this.props.user.level === 'Admin') ? 
         <Link to='/users' className={
           `col-sm-2 menu-item${this.whereAmI('users')}`
         }><h4>Users</h4></Link>
