@@ -14,13 +14,14 @@ const path = require('path')
 //   'https://www.googleapis.com/auth/gmail.send'
 // ];
 // var url = oauth2Client.generateAuthUrl({access_type: 'offline', scope: scopes})
-var oauth2Client = require('./oauth')
-var scopes = [
-  'https://www.googleapis.com/auth/gmail.send'
-];
-var url = oauth2Client.generateAuthUrl({access_type: 'offline', scope: scopes})
+// --break--
+// var oauth2Client = require('./server/oauth')
+// var scopes = [
+//   'https://www.googleapis.com/auth/gmail.send'
+// ];
+// var url = oauth2Client.generateAuthUrl({access_type: 'offline', scope: scopes})
 
-const db = require('./db').db
+const db = require('./server/db').db
 
 let port = process.env.PORT || '1337'
 const app = express()
@@ -37,7 +38,7 @@ db.sync()
     .use(express.static('public'))
 
     // Routes
-    .use('/api', require('./api/api'))
+    .use('/api', require('./server/api/api'))
 
     .get('/auth', (req, res) => {
       res.send(`<a href=${url}>CLICK ME</a>`)
@@ -52,7 +53,7 @@ db.sync()
     })
 
     .get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, '../public/index.html'))
+      res.sendFile(path.resolve(__dirname, './public/index.html'))
     })
 })
 .catch(err => console.error(err))
