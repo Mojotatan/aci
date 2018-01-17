@@ -5,8 +5,8 @@ import {getPrettyDate} from '../utility'
 export default ({user, logOut}) => (
   <header>
     <div className="header-bar col-sm-12">
-      <div className="logo"></div>
-      <div className="contactus"><h4>Contact Us</h4></div>
+    <Link to='/applications'><div className="logo"></div></Link>
+      <div className="contactus"><a href="tel:660-263-1029"><h4>Contact Us</h4></a></div>
     </div>
     <div className="second-header-bar col-sm-12">
       {(user) ?

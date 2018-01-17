@@ -13,6 +13,7 @@ export default ({handleChange, handleSubmit}) => (
         />
         <div><label>Password</label></div>
         <input 
+          type="password"
           onChange={handleChange}
           name="password"
           placeholder="password..."
