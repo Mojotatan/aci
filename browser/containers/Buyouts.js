@@ -5,7 +5,7 @@ import Menu from './Menu'
 
 import {focusByo, createByo, sortByos} from '../store/buyout-reducer'
 
-import {getDate} from '../utility'
+import {getDate, reformatDate} from '../utility'
 
 class BuyoutsContainer extends React.Component {
   constructor(props) {
@@ -82,24 +82,18 @@ class BuyoutsContainer extends React.Component {
               {this.props.byos.map((byo, index) => {
                 return (
                   <tr key={byo.id} className={(index % 2 === 0) ? 'even' : 'odd'} >
-                    <td>{byo.date}</td>
+                    <td>{reformatDate(byo.date)}</td>
                     <td>{(byo.customer) ? byo.customer.name : ''}</td>
                     <td>{(byo.customer) ? byo.customer.street : ''}</td>
                     <td>{/*Deliberately Blank*/}</td>
                     <td>{byo.status}</td>
-                    <td>{byo.expiry}</td>
+                    <td>{reformatDate(byo.expiry)}</td>
                     <td>{(byo.rep) ? byo.rep.fullName : ''}</td>
                     <td id={index} onClick={this.handleClick} className="edit">
                       {(this.props.user.level === 'Admin' || byo.status === 'Draft') ?
                         'Edit' : 'View'
                       }
                     </td>
-                    {/* <td>
-                      {(byo.pdf) ?
-                        <a href={byo.pdf} download>PDF</a>
-                        : ''
-                      }
-                    </td> */}
 
                     <td id={index} onClick={(byo.status === "Expired") ?
                       this.handleResubmit : function(){}}>

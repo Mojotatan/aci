@@ -5,7 +5,7 @@ import Menu from './Menu'
 
 import {focusApp, createApp, sortApps} from '../store/app-reducer'
 
-import {getDate} from '../utility'
+import {getDate, reformatDate} from '../utility'
 
 class ApplicationsContainer extends React.Component {
   constructor(props) {
@@ -28,7 +28,10 @@ class ApplicationsContainer extends React.Component {
       id: 'new',
       status: 'Draft',
       date: getDate(),
-      rep: this.props.user
+      rep: this.props.user,
+      advancedPayments: '2',
+      endOfTerm: 'FMV'
+
     })
     this.props.history.push('/edit-application')
   }
@@ -86,24 +89,18 @@ class ApplicationsContainer extends React.Component {
 
                 return (
                   <tr key={app.id} className={(index % 2 === 0) ? 'even' : 'odd'} >
-                    <td>{app.date}</td>
+                    <td>{reformatDate(app.date)}</td>
                     <td>{(app.customer) ? app.customer.name : ''}</td>
                     <td>{(app.customer) ? app.customer.street : ''}</td>
                     <td>{app.amount}</td>
                     <td>{app.status}</td>
-                    <td>{app.expiry}</td>
+                    <td>{reformatDate(app.expiry)}</td>
                     <td>{(app.rep) ? app.rep.fullName : ''}</td>
                     <td id={index} onClick={this.handleClick} className="edit">
                       {(this.props.user.level === 'Admin' || app.status === 'Draft') ?
                         'Edit' : 'View'
                       }
                     </td>
-                    {/* <td>
-                      {(app.pdf) ?
-                        <a href={app.pdf} download>PDF</a>
-                        : ''
-                      }
-                    </td> */}
 
                     <td id={index} onClick={(app.status === "Expired") ?
                       this.handleResubmit : function(){}}>

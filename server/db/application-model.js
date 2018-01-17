@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 
 module.exports = db => db.define('Application', {
   status: {
-    type: Sequelize.ENUM('Draft', 'Submitted', 'Approved', 'Expired', 'Hold', 'Declined'),
+    type: Sequelize.ENUM('Draft', 'New', 'Working', 'Approved', 'Expired', 'Hold', 'Declined'),
     defaultValue: 'Draft'
   },
   date: {
@@ -18,10 +18,12 @@ module.exports = db => db.define('Application', {
     type: Sequelize.INTEGER // in months
   },
   advancedPayments: {
-    type: Sequelize.ENUM('0', '1', '2')
+    type: Sequelize.ENUM('0', '1', '2'),
+    defaultValue: '2'
   },
   endOfTerm: {
-    type: Sequelize.ENUM('FMV', '1$ out', '9%')
+    type: Sequelize.ENUM('FMV', '1$ out', '9%'),
+    defaultValue: 'FMV'
   },
   type: {
     type: Sequelize.ENUM('New Customer', 'Existing Customer Addition', 'Existing Customer Upgrade')

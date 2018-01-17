@@ -13,7 +13,7 @@ export const getDate = () => {
 export const getPrettyDate = () => {
   let now = new Date()
   let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-  let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   let obj = {
     year: now.getFullYear(),
     month: months[now.getMonth()],
@@ -21,6 +21,12 @@ export const getPrettyDate = () => {
     day: days[now.getDay()]
   }
   return `${obj.day}, ${obj.month} ${obj.date}, ${obj.year}`
+}
+
+export const reformatDate = (date) => {
+  // expecting date in form of 'YYYY-MM-DD'
+  let dateArr = date.split('-')
+  return `${dateArr[1]}-${dateArr[2]}-${dateArr[0].slice(2)}` // returns 'MM-DD-YY'
 }
 
 export const sortBy = field => {

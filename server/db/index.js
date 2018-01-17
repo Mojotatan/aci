@@ -1,6 +1,6 @@
 // Define db
 const Sequelize = require('sequelize')
-const dbUrl = process.env.DATABASE_URL || 'postgres://localhost:5432/aci'
+let dbUrl = process.env.DATABASE_URL || 'postgres://localhost:5432/aci'
 // production
 // dbUrl = 'postgres://impact_myadmin:BlueMountain21@localhost:5432/aci'
 let db = new Sequelize(dbUrl, {logging: false})
