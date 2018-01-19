@@ -75,13 +75,13 @@ class ApplicationsContainer extends React.Component {
           <table className="app-table">
             <tbody>
               <tr className="app-header-bottom" key="head">
-                <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : ''} onClick={this.handleSort}>Date Submitted</td>
+                <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</td>
                 <td>Customer Name</td>
                 <td>Address</td>
                 <td>Amount</td>
-                <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : ''} onClick={this.handleSort}>Status</td>
-                <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : ''} onClick={this.handleSort}>Expires</td>
-                <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : ''} onClick={this.handleSort}>Rep Name</td>
+                <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</td>
+                <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expires</td>
+                <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</td>
                 <td></td>
                 <td></td>
               </tr>

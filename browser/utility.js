@@ -54,6 +54,13 @@ export const match = (arr, obj) => {
   else return match(arr.slice(1), obj[arr[0]])
 }
 
+export const cleanHeader = key => {
+  let clean = key
+  clean = clean[0].toUpperCase() + clean.slice(1)
+  if (clean.slice(-4) === 'Name' && clean.length > 4) clean = clean.slice(0, -4) + ' ' + clean.slice(-4)
+  return clean
+}
+
 
 // Password must consist of at least 8 characters with at least 1 letter and 1 number
 

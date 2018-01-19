@@ -176,6 +176,7 @@ export default ({
                 onChange={handleChange}
                 name={'password'}
                 value={values.password || ''}
+                type="password"
                 />
               </div>
             </div>

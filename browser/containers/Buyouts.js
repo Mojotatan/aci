@@ -69,13 +69,12 @@ class BuyoutsContainer extends React.Component {
           <table className="app-table" id="thetable">
             <tbody>
               <tr className="app-header-bottom" key="head">
-                <td id="date" onClick={this.handleSort}>Date Submitted</td>
+                <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</td>
                 <td>Customer Name</td>
                 <td>Address</td>
-                <td>{/*Deliberately Blank*/}</td>
-                <td id="status" onClick={this.handleSort}>Status</td>
-                <td id="expiry" onClick={this.handleSort}>Expires</td>
-                <td id="rep-fullName" onClick={this.handleSort}>Rep Name</td>
+                <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</td>
+                <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expires</td>
+                <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</td>
                 <td></td>
                 <td></td>
               </tr>
@@ -85,7 +84,6 @@ class BuyoutsContainer extends React.Component {
                     <td>{reformatDate(byo.date)}</td>
                     <td>{(byo.customer) ? byo.customer.name : ''}</td>
                     <td>{(byo.customer) ? byo.customer.street : ''}</td>
-                    <td>{/*Deliberately Blank*/}</td>
                     <td>{byo.status}</td>
                     <td>{reformatDate(byo.expiry)}</td>
                     <td>{(byo.rep) ? byo.rep.fullName : ''}</td>
@@ -115,7 +113,8 @@ const mapStateToProps = (state) => {
   return {
     token: state.login.token,
     user: state.login.user,
-    byos: state.byo.byos
+    byos: state.byo.byos,
+    sort: state.byo.sort
   }
 }
 

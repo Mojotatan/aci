@@ -1,9 +1,25 @@
 import React from 'react'
 
-import {match} from '../utility'
+import {match, cleanHeader} from '../utility'
 
+// Fair warning, this code is ugly... turn back now with your sanity
 export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit, handleCancel, handleController, handleCreate, handleDelete}) => (
   <div className="edit-fields-box">
+    <table className="app-table-edit col-sm-12">
+      <tbody>
+        <tr className="app-header-bottom">
+          {[...Object.keys(fields), ...Object.keys(dropdowns)].map(key => {
+            return(
+              <td key={key}>
+                {cleanHeader(key)}
+              </td>
+            )
+          })}
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
     {rows.map((row, index) => {
       return (
         <form key={row.id} onSubmit={handleSubmit}>
@@ -14,7 +30,7 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                     return(
                       <td key={`${row.id}-${key}`}>
                         <input
-                          disabled = {!(controller == index)}
+                          disabled={!(controller == index)}
                           onChange={handleChange}
                           name={`${index}-${key}`}
                           placeholder={`${key}`}
@@ -25,10 +41,11 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                     )
                   })}
                   {Object.keys(dropdowns).map(key => {
-                    return(
+                    return (controller == index) ?
+                    (
                       <td key={`${row.id}-${key}`}>
                         <select
-                          disabled = {!(controller == index)}
+                          disabled={!(controller == index)}
                           onChange={handleChange}
                           name={`${index}-${key}`}
                           value={(controller == index) ? dropdowns[key].select || '' : match(dropdowns[key].match, row) || ''}
@@ -44,6 +61,17 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                         </select>
                       </td>
                     )
+                    :
+                    (
+                      <td key={`${row.id}-${key}`}>
+                        <input
+                          disabled={true}
+                          name={`${index}-${key}`}
+                          value={match(dropdowns[key].match, row) || ''}
+                          className={'clear'}
+                        />
+                      </td>
+                    )
                   })}
                   {(!controller) ?
                     <td>
@@ -57,15 +85,21 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                     </td>
                     : null
                   }
-                  {(controller == index) ?
+                  {(controller) ?
                     <td>
-                      <button onClick={handleCancel} className ="fields-button">Cancel</button>
+                      {(controller == index) ?
+                        <button onClick={handleCancel} className ="fields-button">Cancel</button>
+                        : null
+                      }
                     </td>
                     : null
                   }
-                  {(controller == index) ?
+                  {(controller) ?
                     <td>
-                      <button type="submit" className ="fields-button right-margin">Save</button>
+                      {(controller == index) ?
+                        <button type="submit" className ="fields-button right-margin">Save</button>
+                        : null
+                      }
                     </td>
                     : null
                   }

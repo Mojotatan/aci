@@ -168,17 +168,20 @@ input {
 .sorting {
 	text-decoration: underline
 }
-.app-header-bottom > td::after {
+/* .sortable::after {
 	content: url(../img/drop-triangle.svg);
 	position: absolute;
 	width: 10px;
 	height: 10px;
-}
-.app-header-bottom > .sorting::after {
-	content: url(../img/drop-triangle-fill.svg);
+} */
+.sorting::after {
+	content: url(../img/Arrow_Down.svg);
 	position: absolute;
 	width: 10px;
 	height: 10px;
+}
+.sortable:hover, .sorting:hover {
+	cursor: pointer
 }
 .app-header-top {
 	position: relative;
