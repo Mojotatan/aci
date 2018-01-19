@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 // initial state
 const initialState = {token: null, user: null}
 

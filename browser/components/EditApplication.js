@@ -156,187 +156,6 @@ export default ({
         </div>
 
         <div className="app-bg col-sm-12">
-          <h3>Customer Information</h3>
-
-          {(iAmAuthor && values.status === 'Draft') ?
-            <div className="row">
-              <div className="col-sm-6">
-                <div className="field-label">
-                  <label>Load a Customer</label>
-                </div>
-                <div className="field-box custom-length">
-                  <select
-                    onChange={handleChangeCustomer}
-                    name="customer"
-                    value={(values.customer) ? values.customer.name || 'new' : 'new'}
-                  >
-                    <option value="new" key="customer-new">New</option>
-                    {customers.map((customer, index) => (
-                      <option name={index} value={customer} key={`customer-${index}`}>{customer}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-            :
-            null
-          }
-
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Customer</label>
-              </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input
-                    onChange={handleChangeInCustomer}
-                    name={'name'}
-                    value={(values.customer) ? values.customer.name || '' : ''}
-                  />
-                  :
-                  <p>{(values.customer) ? values.customer.name || '' : ''}</p>
-                }
-              </div>
-            </div>
-          </div>
-
-          {/* <div className="row">
-            <div className="col-sm-6">
-              <label>First Name</label>
-              <input />
-              <label>Last Name</label>
-              <input />
-            </div>
-          </div> */}
-
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="field-label">
-                  <label>Address</label>
-                </div>
-                <div className="field-box">
-                  {(admin || values.status === 'Draft') ?
-                    <input
-                      onChange={handleChangeInCustomer}
-                      name={'street'}
-                      value={(values.customer) ? values.customer.street || '' : ''}
-                    />
-                    :
-                    <p>{(values.customer) ? values.customer.street || '' : ''}</p>
-                  }
-                </div>
-            </div>
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>City</label>
-              </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input
-                    onChange={handleChangeInCustomer}
-                    name={'city'}
-                    value={(values.customer) ? values.customer.city || '' : ''}
-                  />
-                  :
-                  <p>{(values.customer) ? values.customer.city || '' : ''}</p>
-                }
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>State</label>
-              </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input
-                    onChange={handleChangeInCustomer}
-                    name={'state'}
-                    value={(values.customer) ? values.customer.state || '' : ''}
-                  />
-                  :
-                  <p>{(values.customer) ? values.customer.state || '' : ''}</p>
-                }
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Zip Code</label>
-              </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input
-                    onChange={handleChangeInCustomer}
-                    name={'zip'}
-                    value={(values.customer) ? values.customer.zip || '' : ''}
-                  />
-                  :
-                  <p>{(values.customer) ? values.customer.zip || '' : ''}</p>
-                }
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Phone</label>
-              </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input
-                    onChange={handleChangeInCustomer}
-                    name={'phone'}
-                    value={(values.customer) ? values.customer.phone || '' : ''}
-                  />
-                  :
-                  <p>{(values.customer) ? values.customer.phone || '' : ''}</p>
-                }
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Customer Email</label>
-              </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input 
-                    onChange={handleChangeInCustomer}
-                    name={'email'}
-                    value={(values.customer) ? values.customer.email || '' : ''}
-                  />
-                  :
-                  <p>{(values.customer) ? values.customer.email || '' : ''}</p>
-                }
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Tax ID</label>
-              </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input
-                    onChange={handleChangeInCustomer}
-                    name={'taxID'}
-                    value={(values.customer) ? values.customer.taxID || '' : ''}
-                  />
-                  :
-                  <p>{(values.customer) ? values.customer.taxID || '' : ''}</p>
-                }
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div className="app-bg col-sm-12">
           <h3>Current Lease Company</h3>
           {(admin || values.status === 'Draft') ?
             <div className="radio-div">
@@ -489,6 +308,187 @@ export default ({
         </div>
 
         <div className="app-bg col-sm-12">
+          <h3>Customer Information</h3>
+
+          {(iAmAuthor && values.status === 'Draft') ?
+            <div className="row">
+              <div className="col-sm-6">
+                <div className="field-label">
+                  <label>Load a Customer</label>
+                </div>
+                <div className="field-box custom-length">
+                  <select
+                    onChange={handleChangeCustomer}
+                    name="customer"
+                    value={(values.customer) ? values.customer.name || 'new' : 'new'}
+                  >
+                    <option value="new" key="customer-new">New</option>
+                    {customers.map((customer, index) => (
+                      <option name={index} value={customer} key={`customer-${index}`}>{customer}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            :
+            null
+          }
+
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label className="required">Customer</label>
+              </div>
+              <div className="field-box">
+                {(admin || values.status === 'Draft') ?
+                  <input
+                    onChange={handleChangeInCustomer}
+                    name={'name'}
+                    value={(values.customer) ? values.customer.name || '' : ''}
+                  />
+                  :
+                  <p>{(values.customer) ? values.customer.name || '' : ''}</p>
+                }
+              </div>
+            </div>
+          </div>
+
+          {/* <div className="row">
+            <div className="col-sm-6">
+              <label>First Name</label>
+              <input />
+              <label>Last Name</label>
+              <input />
+            </div>
+          </div> */}
+
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="field-label">
+                  <label>Address</label>
+                </div>
+                <div className="field-box">
+                  {(admin || values.status === 'Draft') ?
+                    <input
+                      onChange={handleChangeInCustomer}
+                      name={'street'}
+                      value={(values.customer) ? values.customer.street || '' : ''}
+                    />
+                    :
+                    <p>{(values.customer) ? values.customer.street || '' : ''}</p>
+                  }
+                </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>City</label>
+              </div>
+              <div className="field-box">
+                {(admin || values.status === 'Draft') ?
+                  <input
+                    onChange={handleChangeInCustomer}
+                    name={'city'}
+                    value={(values.customer) ? values.customer.city || '' : ''}
+                  />
+                  :
+                  <p>{(values.customer) ? values.customer.city || '' : ''}</p>
+                }
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>State</label>
+              </div>
+              <div className="field-box">
+                {(admin || values.status === 'Draft') ?
+                  <input
+                    onChange={handleChangeInCustomer}
+                    name={'state'}
+                    value={(values.customer) ? values.customer.state || '' : ''}
+                  />
+                  :
+                  <p>{(values.customer) ? values.customer.state || '' : ''}</p>
+                }
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>Zip Code</label>
+              </div>
+              <div className="field-box">
+                {(admin || values.status === 'Draft') ?
+                  <input
+                    onChange={handleChangeInCustomer}
+                    name={'zip'}
+                    value={(values.customer) ? values.customer.zip || '' : ''}
+                  />
+                  :
+                  <p>{(values.customer) ? values.customer.zip || '' : ''}</p>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>Phone</label>
+              </div>
+              <div className="field-box">
+                {(admin || values.status === 'Draft') ?
+                  <input
+                    onChange={handleChangeInCustomer}
+                    name={'phone'}
+                    value={(values.customer) ? values.customer.phone || '' : ''}
+                  />
+                  :
+                  <p>{(values.customer) ? values.customer.phone || '' : ''}</p>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>Customer Email</label>
+              </div>
+              <div className="field-box">
+                {(admin || values.status === 'Draft') ?
+                  <input 
+                    onChange={handleChangeInCustomer}
+                    name={'email'}
+                    value={(values.customer) ? values.customer.email || '' : ''}
+                  />
+                  :
+                  <p>{(values.customer) ? values.customer.email || '' : ''}</p>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>Tax ID</label>
+              </div>
+              <div className="field-box">
+                {(admin || values.status === 'Draft') ?
+                  <input
+                    onChange={handleChangeInCustomer}
+                    name={'taxID'}
+                    value={(values.customer) ? values.customer.taxID || '' : ''}
+                  />
+                  :
+                  <p>{(values.customer) ? values.customer.taxID || '' : ''}</p>
+                }
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div className="app-bg col-sm-12">
           <h3>Deal Information</h3>
           <div className="row">
             <div className="col-sm-6">
@@ -622,25 +622,25 @@ export default ({
 
             </div>
           </div>
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="field-label">
+                <label>Comments</label>
+              </div>
+              <div className="field-desc">
+                <textarea
+                  onChange={handleChange}
+                  name={'comments'}
+                  value={values.comments || ''}
+                  disabled={(admin && !iAmAuthor) ? true : false}
+                />
+              </div>
+            </div>
+          </div>
 
           {/* Admin only section of app */}
           {(admin) ?
             <div>
-              <div className="row">
-                <div className="col-sm-12">
-                  <div className="field-label">
-                    <label>Comments</label>
-                  </div>
-                  <div className="field-desc">
-                    <textarea
-                      onChange={handleChange}
-                      name={'comments'}
-                      value={values.comments || ''}
-                    />
-                  </div>
-                </div>
-              </div>
-
               <div className="row">
                 <div className="col-sm-6">
                   <div className="field-label">

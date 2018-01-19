@@ -75,13 +75,13 @@ class ApplicationsContainer extends React.Component {
           <table className="app-table">
             <tbody>
               <tr className="app-header-bottom" key="head">
-                <td id="date" onClick={this.handleSort}>Date Submitted</td>
+                <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : ''} onClick={this.handleSort}>Date Submitted</td>
                 <td>Customer Name</td>
                 <td>Address</td>
                 <td>Amount</td>
-                <td id="status" onClick={this.handleSort}>Status</td>
-                <td id="expiry" onClick={this.handleSort}>Expires</td>
-                <td id="rep-fullName" onClick={this.handleSort}>Rep Name</td>
+                <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : ''} onClick={this.handleSort}>Status</td>
+                <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : ''} onClick={this.handleSort}>Expires</td>
+                <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : ''} onClick={this.handleSort}>Rep Name</td>
                 <td></td>
                 <td></td>
               </tr>
@@ -92,7 +92,7 @@ class ApplicationsContainer extends React.Component {
                     <td>{reformatDate(app.date)}</td>
                     <td>{(app.customer) ? app.customer.name : ''}</td>
                     <td>{(app.customer) ? app.customer.street : ''}</td>
-                    <td>{app.amount}</td>
+                    <td>{(app.amount) ? `$${app.amount}` : ''}</td>
                     <td>{app.status}</td>
                     <td>{reformatDate(app.expiry)}</td>
                     <td>{(app.rep) ? app.rep.fullName : ''}</td>
@@ -102,7 +102,7 @@ class ApplicationsContainer extends React.Component {
                       }
                     </td>
 
-                    <td id={index} onClick={(app.status === "Expired") ?
+                    <td id={index} className="edit" onClick={(app.status === "Expired") ?
                       this.handleResubmit : function(){}}>
                       {(app.status === "Expired") ?
                         'Resubmit' : ''}
@@ -122,7 +122,8 @@ const mapStateToProps = (state) => {
   return {
     token: state.login.token,
     user: state.login.user,
-    apps: state.app.apps
+    apps: state.app.apps,
+    sort: state.app.sort
   }
 }
 

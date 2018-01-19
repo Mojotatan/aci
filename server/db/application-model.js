@@ -3,7 +3,11 @@ const Sequelize = require('sequelize')
 module.exports = db => db.define('Application', {
   status: {
     type: Sequelize.ENUM('Draft', 'New', 'Working', 'Approved', 'Expired', 'Hold', 'Declined'),
-    defaultValue: 'Draft'
+    defaultValue: 'Draft',
+    get() {
+      return (this.getDataValue('expiry') > getDate() || !this.getDataValue('expiry')) ?
+        this.getDataValue('status') : 'Expired'
+    }
   },
   date: {
     type: Sequelize.DATEONLY
@@ -96,3 +100,16 @@ module.exports = db => db.define('Application', {
   }
 
 })
+
+// Utility func to get current date and return as 'YYYY-MM-DD'
+const getDate = () => {
+  let now = new Date()
+  let obj = {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    day: now.getDate()
+  }
+  if (obj.month.toString().length === 1) obj.month = `0${obj.month}`
+  if (obj.day.toString().length === 1) obj.day = `0${obj.day}`
+  return `${obj.year}-${obj.month}-${obj.day}`
+}

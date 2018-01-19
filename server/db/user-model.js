@@ -22,6 +22,12 @@ module.exports = db => db.define('User', {
     allowNull: false,
     validate: {
       isEmail: true,
+    },
+    get() {
+      return this.getDataValue('email').toLowerCase()
+    },
+    set(val) {
+      return this.setDataValue('email', val.toLowerCase())
     }
   },
   phone: {

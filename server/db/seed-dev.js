@@ -1,3 +1,5 @@
+const fs = require('fs')
+const path = require('path')
 const {db, associations} = require('./index')
 const {User, Dealer, Region, Branch, Application, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
@@ -416,7 +418,97 @@ db.sync({force: true})
   ])
 })
 .then(() => {
-  console.log('Database seed complete')
-  process.exit()
+  console.log('Dummy seeding complete, reading csv...')
+  let rows
+  let regs = []
+  let brans = []
+  let bob = fs.createReadStream(path.resolve(__dirname, './seed-dev-data.csv'), 'utf8')
+    // .pipe()
+    .on('data', (chunk) => {
+      let raw = chunk.split('\r').map(row => {
+        return row.split(',')
+      })
+      let key = raw.shift()
+      function Person(arr) {
+        this.firstName = arr[1]
+        this.lastName = arr[2]
+        this.title = arr[3]
+        this.email = arr[4]
+        this.region = arr[5].slice(0, 2)
+        this.branch = arr[5]
+        this.department = arr[6]
+        this.phone = arr[7]
+      }
+      rows = raw.map(row => {
+        return new Person(row)
+      })
+      rows = rows.filter(row => {
+        return row.department === 'Sales'
+      })
+      rows.forEach(row => {
+        if (row.title === 'Sales Manager' || row.title === 'Account Manager') {
+          row.level = 'Sales Rep'
+        } else if (row.title === 'Senior Account Manager') {
+          row.level = 'Branch Manager'
+        }
+      })
+      rows = rows.filter(row => {
+        return row.level
+      })
+      rows.forEach(row => {
+        if (!regs.includes(row.region)) regs.push(row.region)
+        if (!brans.includes(row.branch)) brans.push(row.branch)
+      })
+    })
+    .on('end', () => {
+      console.log('csv parsed...')
+      regs = regs.map(reg => {
+        return Region.build({
+          name: reg,
+          dealerId: 1
+        })
+      })
+      Promise.all(regs.map(reg => reg.save()))
+      .then((data) => {
+        regs = {}
+        data.forEach(reg => {
+          regs[reg.name] = reg.id
+        })
+        brans = brans.map(bran => {
+          return Branch.build({
+            name: bran.slice(3),
+            dealerId: 1,
+            regionId: regs[bran.slice(0, 2)]
+          })
+        })
+        return Promise.all(brans.map(bran => bran.save()))
+      })
+      .then((data) => {
+        brans = {}
+        data.forEach(bran => {
+          brans[bran.name] = bran.id
+        })
+        let builds = rows.map(ppl => {
+          return User.build({
+            firstName: ppl.firstName,
+            lastName: ppl.lastName,
+            level: ppl.level,
+            email: ppl.email,
+            phone: ppl.phone,
+            password: 'bob',
+            dealerId: 1,
+            regionId: regs[ppl.region.slice(0, 2)],
+            branchId: brans[ppl.branch.slice(3)]
+          })
+        })
+        return Promise.all(builds.map(build => build.save()))
+      })
+      .then(() => {
+        console.log('Database seed complete')
+        console.log(regs)
+        console.log(brans)
+        process.exit()
+      })
+    })
 })
 .catch(err => console.error(err))

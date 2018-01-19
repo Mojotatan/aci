@@ -38,7 +38,7 @@ class LogInContainer extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     // console.log('u: ' + this.state.username, 'p: ' + this.state.password)
-    axios.post('/api/login', {u: this.state.username, pw: this.state.password})
+    axios.post('/api/login', {u: this.state.username.toLowerCase(), pw: this.state.password})
     .then((res) => {
       // console.log('promise achieved', res.data)
       if (typeof res.data !== 'string') {
@@ -69,6 +69,10 @@ class LogInContainer extends React.Component {
     this.props.flushRegions()
     this.props.flushCustomers()
     this.props.flushUsers()
+    this.setState({
+      username: "",
+      password: ""
+    })
     this.props.history.push('/')
   }
 

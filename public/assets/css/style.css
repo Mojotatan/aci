@@ -48,6 +48,9 @@ h5 {
 input {
 	padding-left: 5px;
 }
+.required::after {
+	content: "*"
+}
 
 /* Header */
 .header-bar {
@@ -162,6 +165,21 @@ input {
 }
 
 /* Applications List */
+.sorting {
+	text-decoration: underline
+}
+.app-header-bottom > td::after {
+	content: url(../img/drop-triangle.svg);
+	position: absolute;
+	width: 10px;
+	height: 10px;
+}
+.app-header-bottom > .sorting::after {
+	content: url(../img/drop-triangle-fill.svg);
+	position: absolute;
+	width: 10px;
+	height: 10px;
+}
 .app-header-top {
 	position: relative;
 	background-color: #f0f7fb;
@@ -450,9 +468,9 @@ input {
 .app-table-edit td {
 	padding: 16px 0px 16px 25px;
 }
-.street {
+/* .street {
 	width: 200px !important;
-}
+} */
 .highlighted {
 	height: 57px;
 	width: 100%;
