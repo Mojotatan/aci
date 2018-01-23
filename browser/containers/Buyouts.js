@@ -46,7 +46,6 @@ class BuyoutsContainer extends React.Component {
       status: 'Draft',
       date: getDate(),
       rep: this.props.user,
-      quote: byo.quote,
       comments: byo.comments,
       // Machine???
     })

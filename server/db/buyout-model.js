@@ -11,10 +11,6 @@ module.exports = db => db.define('Buyout', {
   expiry: {
     type: Sequelize.DATEONLY // stored as plaintext 'YYYY-MM-DD'
   },
-  quote: {
-    type: Sequelize.ENUM('Full', 'Partial'),
-    defaultValue: 'Full'
-  },
   comments: {
     type: Sequelize.STRING,
     defaultValue: ''

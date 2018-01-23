@@ -5,7 +5,7 @@ import Menu from './Menu'
 
 import {focusApp, createApp, sortApps} from '../store/app-reducer'
 
-import {getDate, reformatDate} from '../utility'
+import {getDate, reformatDate, getPrettyNumber} from '../utility'
 
 class ApplicationsContainer extends React.Component {
   constructor(props) {
@@ -77,7 +77,7 @@ class ApplicationsContainer extends React.Component {
             <tbody>
               <tr className="app-header-bottom" key="head">
                 <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</td>
-                <td>Customer Name</td>
+                <td id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Customer Name</td>
                 <td>Address</td>
                 <td>Amount</td>
                 <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</td>
@@ -93,7 +93,7 @@ class ApplicationsContainer extends React.Component {
                     <td>{reformatDate(app.date)}</td>
                     <td>{(app.customer) ? app.customer.name : ''}</td>
                     <td>{(app.customer) ? app.customer.street : ''}</td>
-                    <td>{(app.amount) ? `$${app.amount}` : ''}</td>
+                    <td>{(app.amount) ? getPrettyNumber(app.amount) : ''}</td>
                     <td>{app.status}</td>
                     <td>{reformatDate(app.expiry)}</td>
                     <td>{(app.rep) ? app.rep.fullName : ''}</td>

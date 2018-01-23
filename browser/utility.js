@@ -37,6 +37,27 @@ export const deformatDate = date => {
   return `20${dateArr[2]}-${dateArr[0]}-${dateArr[1]}` // returns 'YYYY-MM-DD
 }
 
+export const getPrettyNumber = num => {
+  let str = String(num)
+  let arr = str.split('.')
+  arr[0] = arr[0].split('')
+  arr[0] = arr[0].map((char, index) => {
+    return (index !== arr[0].length - 1 && (arr[0].length - index) % 3 === 1) ? char + ',' : char
+  }).join('')
+  return `$${arr.join('.')}`
+}
+
+export const checkFor$ = num => {
+  if (typeof num === 'string') {
+    let str = num.split('')
+    str = str.filter(char => {
+      return char !== '$' && char !== ','
+    }).join('')
+    return Number(str)
+  }
+  else return num
+}
+
 export const sortBy = field => {
   return (a, b) => {
     // handle cases where a field is empty
@@ -71,16 +92,16 @@ export const cleanHeader = key => {
 
 // Password must consist of at least 8 characters with at least 1 letter and 1 number
 
-// let pwCheck = (pw) => {
-//   if (typeof pw !== 'string') return false 
-//   if (length < 8) return false
-//   let checkChars = {letters: 0, numbers: 0}
-//   let notAllowed = ['@$\.,/']
-//   pw.split('').forEach(char => {
-//     if (notAllowed.includes(char)) return false
-//     else if (Number(char)) checkChars.numbers++
-//     else checkChars.letters++
-//   })
-//   if (checkChars.letters > 0 && checkChars.numbers > 0) return true
-//   else return false
-// }
+export const pwCheck = (pw) => {
+  if (typeof pw !== 'string') return false 
+  if (pw.length < 8) return false
+  let checkChars = {letters: 0, numbers: 0}
+  let notAllowed = ['@$\.,/']
+  pw.split('').forEach(char => {
+    if (notAllowed.includes(char)) return false
+    else if (Number(char) || Number(char) === 0) checkChars.numbers++
+    else checkChars.letters++
+  })
+  if (checkChars.letters > 0 && checkChars.numbers > 0) return true
+  else return false
+}

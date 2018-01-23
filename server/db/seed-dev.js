@@ -182,20 +182,19 @@ const generateCustomers = () => {
 const generateBuyouts = () => {
   let arr = []
   
-  const builder = (status, date, expiry, quote, comments, pdf) => {
+  const builder = (status, date, expiry, comments, pdf) => {
     arr.push(Buyout.build({
       'status': status,
       'date': date,
       'expiry': expiry,
-      'quote': quote,
       'comments': comments,
       'pdf': pdf,
     }))
   }
 
-  builder('Draft', '2017-12-15', '2018-09-23', 'Full', 'no comment', '')
+  builder('Draft', '2017-12-15', '2018-09-23', 'no comment', '')
 
-  builder('Submitted', '2017-12-16', '2042-01-05', 'Partial', 'no comment', '')
+  builder('Submitted', '2017-12-16', '2042-01-05', 'no comment', '')
 
   return arr
 }
@@ -203,19 +202,20 @@ const generateBuyouts = () => {
 const generateLeases = () => {
   let arr = []
   
-  const builder = (number, company, amount) => {
+  const builder = (number, company, amount, quote) => {
     arr.push(Lease.build({
       'number': number,
       'company': company,
-      'amount': amount
+      'amount': amount,
+      'quote': quote
     }))
   }
 
-  builder(1234456789, 'Wells Fargo', 45345.12)
+  builder(1234456789, 'Wells Fargo', 45345.12, 'Full')
 
-  builder(1234456789, 'Wells Fargo', 45345.12)
+  builder(1234456789, 'Wells Fargo', 45345.12, 'Partial')
 
-  builder(1234456789, 'Wells Fargo', 45345.12)
+  builder(1234456789, 'Wells Fargo', 45345.12, 'Partial')
 
   return arr
 }

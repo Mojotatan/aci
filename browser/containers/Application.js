@@ -6,7 +6,7 @@ import EditApplication from '../components/EditApplication'
 
 import {saveAppThunk, createApp} from '../store/app-reducer'
 
-import {getDate} from '../utility'
+import {getDate, checkFor$} from '../utility'
 
 class ApplicationContainer extends React.Component {
   constructor(props) {
@@ -48,11 +48,10 @@ class ApplicationContainer extends React.Component {
 
   handleSave(e) {
     e.preventDefault()
-
     if (this.state.customerCreate) {
-      this.props.saveAppThunk(this.props.token, [this.state], [this.state.customer, {id: 'new'}])
+      this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], [this.state.customer, {id: 'new'}])
     } else {
-      this.props.saveAppThunk(this.props.token, [this.state], [this.state.customer])
+      this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], [this.state.customer])
     }
 
     if (this.state.notifyRep) {
@@ -73,9 +72,9 @@ class ApplicationContainer extends React.Component {
     e.preventDefault()
 
     if (this.state.customerCreate) {
-      this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate()}], [this.state.customer, {id: 'new'}])
+      this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate(), amount: checkFor$(this.state.amount)}], [this.state.customer, {id: 'new'}])
     } else {
-      this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate()}], [this.state.customer])
+      this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate(), amount: checkFor$(this.state.amount)}], [this.state.customer])
     }
 
     this.props.history.push('/applications')

@@ -58,7 +58,8 @@ module.exports = require('express').Router()
             [Op.or]: query
           }
         },
-        include: ['rep', /*'guarantee',*/ 'customer']
+        include: ['rep', /*'guarantee',*/ 'customer'],
+        order: [['createdAt', 'ASC']]
       })
     })
     .then((byoData) => {
@@ -103,7 +104,6 @@ module.exports = require('express').Router()
         status: req.body.byo.status,
         date: req.body.byo.date,
         expiry: req.body.byo.expiry,
-        quote: req.body.byo.quote,
         comments: req.body.byo.comments,
         repId: me.id
       })
@@ -111,7 +111,6 @@ module.exports = require('express').Router()
       Buyout.update({
         status: req.body.byo.status,
         expiry: req.body.byo.expiry,
-        quote: req.body.byo.quote,
         comments: req.body.byo.comments,
       }, {
       where: {
@@ -177,6 +176,7 @@ module.exports = require('express').Router()
             number: lse.number,
             company: lse.company,
             amount: lse.amount,
+            quote: lse.quote,
             buyoutId: theByo.id
           })
         } else {
@@ -184,6 +184,7 @@ module.exports = require('express').Router()
             number: lse.number,
             company: lse.company,
             amount: lse.amount,
+            quote: lse.quote,
             buyoutId: theByo.id
           }, {
             where: {

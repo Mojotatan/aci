@@ -6,7 +6,7 @@ import {throwError} from './error-reducer'
 import {sortBy} from '../utility'
 
 // initial state
-const initialState = {apps: [], focus: null, sort: ['id']}
+const initialState = {apps: [], focus: null, sort: ['date']}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -91,7 +91,10 @@ export const saveAppThunk = (token, app, customer) => {
   return dispatch => {
     return axios.put('/api/apps', {token, app: appArgs, customer: cusArgs})
     .then(res => {
-      if (res.data.err) dispatch(throwError('red', 'There was an error with your application'))
+      if (res.data.err) {
+        console.error(res.data.err)
+        dispatch(throwError('red', 'There was an error with your application'))
+      }
       else {
         dispatch(throwError('green', `Your application has been ${(appArgs.status === 'Submitted' && app[0].status === 'Draft') ? 'submitted' : 'saved'}`))
         if (appArgs.id === 'new') {

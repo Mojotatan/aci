@@ -62,7 +62,8 @@ module.exports = require('express').Router()
             [Op.or]: query
           }
         },
-        include: ['rep', /*'guarantee',*/ 'customer']
+        include: ['rep', /*'guarantee',*/ 'customer'],
+        order: [['createdAt', 'ASC']]
       })
     })
     .then(appData => {
@@ -97,7 +98,7 @@ module.exports = require('express').Router()
         endOfTerm: req.body.app.endOfTerm,
         type: req.body.app.type,
         currentLeaseCompany: req.body.app.currentLeaseCompany,
-        erp: req.body.app.erp,
+        leaseNumber: req.body.app.leaseNumber,
         approvalNumber: req.body.app.approvalNumber,
         approvalDate: req.body.app.approvalDate,
         approvalFrom: req.body.app.approvalFrom,
@@ -123,7 +124,7 @@ module.exports = require('express').Router()
         endOfTerm: req.body.app.endOfTerm,
         type: req.body.app.type,
         currentLeaseCompany: req.body.app.currentLeaseCompany,
-        erp: req.body.app.erp,
+        leaseNumber: req.body.app.leaseNumber,
         approvalNumber: req.body.app.approvalNumber,
         approvalDate: req.body.app.approvalDate,
         approvalFrom: req.body.app.approvalFrom,

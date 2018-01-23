@@ -116,7 +116,7 @@ export default ({
           } */}
         </div>
 
-        <div className="col-sm-12">
+        {/* <div className="col-sm-12">
           {(admin || values.status === 'Draft') ?
             <div className="radio-div type-rad-btns">
               <input
@@ -153,7 +153,202 @@ export default ({
             <p>{`${values.quote} Quote` || ''}</p>
           }
 
+        </div> */}
+
+
+{/* Oh boy... */}
+        {(values.leases) ?
+        <div className="app-bg col-sm-12">
+          <h3>Lease Information</h3>
+          <div className="col-sm-12 labels lease-label">
+            <div className="col-sm-10 col-sm-offset-1 no-gutters">
+              <label className="col-sm-4" id="lease-margin">Lease Number</label>
+              <label className="col-sm-4">Lease Company</label>
+              <label className="col-sm-4">Lease Amount</label>
+            </div>
+          </div>
+          {values.leases.map((lease, index) => {
+            return ((!lease.delete) ?
+              <div key={`lease-${index}`} className="col-sm-12 lease-input">
+                <div className="col-sm-1"><label className="index-number">{count++}</label></div>
+                <div className="col-sm-10 field-row no-gutters">
+                  <div className="col-sm-4">
+                    {(admin || values.status === 'Draft') ?
+                      <input
+                        onChange={handleChangeInLease}
+                        id={`${index}-number`}
+                        value={lease.number || ''}
+                      />
+                      :
+                      <span>{lease.number || ''}</span>
+                    }
+                  </div>
+                  <div className="col-sm-4">
+                    {(admin || values.status === 'Draft') ?
+                      <input
+                        onChange={handleChangeInLease}
+                        id={`${index}-company`}
+                        value={lease.company || ''}
+                      />
+                      :
+                      <span>{lease.company || ''}</span>
+                    }
+                  </div>
+                  {/* <div className="co" */}
+                  <div className="col-sm-4 monetary">
+                    {(admin || values.status === 'Draft') ?
+                      <input
+                        onChange={handleChangeInLease}
+                        id={`${index}-amount`}
+                        value={lease.amount || ''}
+                      />
+                      :
+                      <span>{lease.amount || ''}</span>
+                    }
+                  </div>
+                </div>
+                <div className="col-sm-1">
+                  {(admin || values.status === 'Draft') ?
+                    <button value={index} onClick={handleRemoveLease} className="remove-button"></button>
+                    :
+                    null
+                  }
+                </div>
+                <div className="col-sm-10 col-sm-offset-1 no-gutters">
+                  <div className="col-sm-4">
+                    <button id={`${index}-machines`} onClick={toggleMachines} className="machine show-button" >
+                      {lease.displayMachines ?
+                        'Hide Machines'
+                        :
+                        'Show Machines'
+                      }
+                    </button>
+                  </div>
+                  <div className="col-sm-8">
+                    {(admin || values.status === 'Draft') ?
+                      <div className="radio-div type-rad-btns">
+                        <input
+                          type="radio"
+                          id={`${index}-quote-0`}
+                          onChange={handleChangeInLease}
+                          name="quote"
+                          value="Full"
+                          className={(lease.quote === 'Full') ?
+                            "on" : ""
+                          }
+                          checked={(lease.quote === 'Full') ?
+                            true : false
+                          }
+                        />
+                        <label htmlFor={`${index}-quote-0`}>Full Quote</label>
+
+                        <input
+                          type="radio"
+                          id={`${index}-quote-1`}
+                          onChange={handleChangeInLease}
+                          name="quote"
+                          value="Partial"
+                          className={(lease.quote === 'Partial') ?
+                            "on" : ""
+                          }
+                          checked={(lease.quote === 'Partial') ?
+                            true : false
+                          }
+                        />
+                        <label htmlFor={`${index}-quote-1`}>Partial Quote</label>
+                      </div>
+                      :
+                      <p>{`${values.quote} Quote` || ''}</p>
+                    }
+                  </div>
+                </div>
+                
+                {(lease.displayMachines) ?
+                  <div className="col-sm-12 no-gutters">
+                    <div className="col-sm-12 no-gutters labels machine-label">
+                      <div className="col-sm-10 col-sm-offset-1 no-gutters">
+                        <label className="col-sm-3">Serial #</label>
+                        <label className="col-sm-3">Make</label>
+                        <label className="col-sm-3">Model</label>
+                        <label className="col-sm-3">Location</label>
+                      </div>
+                    </div>
+                    {lease.machines.map((machine, mIndex) => {
+                      return ((!machine.delete) ?
+                        <div key={`lease-${index}-machine-${mIndex}`} className="col-sm-12 no-gutters machine-input">
+                          <div className="col-sm-offset-1 col-sm-10 field-row no-gutters">
+                            <div className="col-sm-3 condense-gutters">
+                              {(admin || values.status === 'Draft') ?
+                                <input
+                                  onChange={handleChangeInMachine}
+                                  id={`${index}-${mIndex}-serial`}
+                                  value={machine.serial || ''}
+                                />
+                                :
+                                <p>{machine.serial}</p>
+                              }
+                            </div>
+                            <div className="col-sm-3 condense-gutters">
+                              {(admin || values.status === 'Draft') ?
+                                <input
+                                  onChange={handleChangeInMachine}
+                                  id={`${index}-${mIndex}-make`}
+                                  value={machine.make || ''}
+                                />
+                                :
+                                <p>{machine.make}</p>
+                              }
+                            </div>
+                            <div className="col-sm-3 condense-gutters">
+                              {(admin || values.status === 'Draft') ?
+                                <input
+                                  onChange={handleChangeInMachine}
+                                  id={`${index}-${mIndex}-model`}
+                                  value={machine.model || ''}
+                                />
+                                :
+                                <p>{machine.model}</p>
+                              }
+                            </div>
+                            <div className="col-sm-3 condense-gutters">
+                              {(admin || values.status === 'Draft') ?
+                                <input
+                                  onChange={handleChangeInMachine}
+                                  id={`${index}-${mIndex}-location`}
+                                  value={machine.location || ''}
+                                />
+                                :
+                                <p>{machine.location}</p>
+                              }
+                            </div>
+                          </div>
+                          <div className="col-sm-1">
+                            {(admin || values.status === 'Draft') ?
+                              <button value={`${index}-${mIndex}`} onClick={handleRemoveMachine} className="remove-button"></button>
+                              :
+                              null
+                            }
+                          </div>
+                        </div>
+                        : null
+                      )
+                    })}
+                    <div className="col-sm-offset-1"><button id={`${index}-newMachine`} onClick={handleNewMachine} className="machine add-button">Add Machine</button></div>
+                  </div>
+                  :
+                  null
+                }
+              </div>
+              :
+              null
+              )
+          })
+          }
+          <button onClick={handleNewLease} className="add-lease-button">Add Lease</button>
         </div>
+        : null
+        }
+
 
         <div className="app-bg col-sm-12">
           <h3>Customer Information</h3>
@@ -301,163 +496,6 @@ export default ({
           </div> */}
 
         </div>
-
-{/* Oh boy... */}
-        {(values.leases) ?
-        <div className="app-bg col-sm-12">
-          <h3>Lease Information</h3>
-          <div className="col-sm-12 labels lease-label">
-            <div className="col-sm-10 col-sm-offset-1 no-gutters">
-              <label className="col-sm-4" id="lease-margin">Lease Number</label>
-              <label className="col-sm-4">Lease Company</label>
-              <label className="col-sm-4">Lease Amount</label>
-            </div>
-          </div>
-          {values.leases.map((lease, index) => {
-            return ((!lease.delete) ?
-              <div key={`lease-${index}`} className="col-sm-12 lease-input">
-                <div className="col-sm-1"><label className="index-number">{count++}</label></div>
-                <div className="col-sm-10 no-gutters">
-                  <div className="col-sm-4">
-                    {(admin || values.status === 'Draft') ?
-                      <input
-                        onChange={handleChangeInLease}
-                        id={`${index}-number`}
-                        value={lease.number || ''}
-                      />
-                      :
-                      <span>{lease.number || ''}</span>
-                    }
-                  </div>
-                  <div className="col-sm-4">
-                    {(admin || values.status === 'Draft') ?
-                      <input
-                        onChange={handleChangeInLease}
-                        id={`${index}-company`}
-                        value={lease.company || ''}
-                      />
-                      :
-                      <span>{lease.company || ''}</span>
-                    }
-                  </div>
-                  {/* <div className="co" */}
-                  <div className="col-sm-4 monetary">
-                    {(admin || values.status === 'Draft') ?
-                      <input
-                        onChange={handleChangeInLease}
-                        id={`${index}-amount`}
-                        value={lease.amount || ''}
-                      />
-                      :
-                      <span>{lease.amount || ''}</span>
-                    }
-                  </div>
-                </div>
-                <div className="col-sm-1">
-                  {(admin || values.status === 'Draft') ?
-                    <button value={index} onClick={handleRemoveLease} className="remove-button"></button>
-                    :
-                    null
-                  }
-                </div>
-                <div className="col-sm-offset-1">
-                  {(values.quote === 'Partial') ?
-                    <button id={`${index}-machines`} onClick={toggleMachines} className="machine show-button" >
-                      {lease.displayMachines ?
-                        'Hide Machines'
-                        :
-                        'Show Machines'
-                      }
-                    </button>
-                    : null
-                  }
-                </div>
-                
-                {(values.quote === 'Partial' && lease.displayMachines) ?
-                  <div className="col-sm-12 no-gutters">
-                    <div className="col-sm-12 no-gutters labels machine-label">
-                      <div className="col-sm-10 col-sm-offset-1 no-gutters">
-                        <label className="col-sm-3">Serial #</label>
-                        <label className="col-sm-3">Make</label>
-                        <label className="col-sm-3">Model</label>
-                        <label className="col-sm-3">Location</label>
-                      </div>
-                    </div>
-                    {lease.machines.map((machine, mIndex) => {
-                      return ((!machine.delete) ?
-                        <div key={`lease-${index}-machine-${mIndex}`} className="col-sm-12 no-gutters machine-input">
-                          <div className="col-sm-offset-1 col-sm-10 no-gutters">
-                            <div className="col-sm-3 condense-gutters">
-                              {(admin || values.status === 'Draft') ?
-                                <input
-                                  onChange={handleChangeInMachine}
-                                  id={`${index}-${mIndex}-serial`}
-                                  value={machine.serial || ''}
-                                />
-                                :
-                                <p>{machine.serial}</p>
-                              }
-                            </div>
-                            <div className="col-sm-3 condense-gutters">
-                              {(admin || values.status === 'Draft') ?
-                                <input
-                                  onChange={handleChangeInMachine}
-                                  id={`${index}-${mIndex}-make`}
-                                  value={machine.make || ''}
-                                />
-                                :
-                                <p>{machine.make}</p>
-                              }
-                            </div>
-                            <div className="col-sm-3 condense-gutters">
-                              {(admin || values.status === 'Draft') ?
-                                <input
-                                  onChange={handleChangeInMachine}
-                                  id={`${index}-${mIndex}-model`}
-                                  value={machine.model || ''}
-                                />
-                                :
-                                <p>{machine.model}</p>
-                              }
-                            </div>
-                            <div className="col-sm-3 condense-gutters">
-                              {(admin || values.status === 'Draft') ?
-                                <input
-                                  onChange={handleChangeInMachine}
-                                  id={`${index}-${mIndex}-location`}
-                                  value={machine.location || ''}
-                                />
-                                :
-                                <p>{machine.location}</p>
-                              }
-                            </div>
-                          </div>
-                          <div className="col-sm-1">
-                            {(admin || values.status === 'Draft') ?
-                              <button value={`${index}-${mIndex}`} onClick={handleRemoveMachine} className="remove-button"></button>
-                              :
-                              null
-                            }
-                          </div>
-                        </div>
-                        : null
-                      )
-                    })}
-                    <div className="col-sm-offset-1"><button id={`${index}-newMachine`} onClick={handleNewMachine} className="machine add-button">Add Machine</button></div>
-                  </div>
-                  :
-                  null
-                }
-              </div>
-              :
-              null
-              )
-          })
-          }
-          <button onClick={handleNewLease} className="add-lease-button">Add Lease</button>
-        </div>
-        : null
-        }
 
         <div className="col-sm-12 field-desc" id="byo-desc">
           <label>Comments</label>

@@ -6,7 +6,7 @@ import {throwError} from './error-reducer'
 import {sortBy} from '../utility'
 
 // initial state
-const initialState = {byos: [], focus: null, sort: ['id']}
+const initialState = {byos: [], focus: null, sort: ['date']}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
