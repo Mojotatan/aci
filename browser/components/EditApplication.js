@@ -97,7 +97,8 @@ export default ({
               }
             </div>
           </div>
-          {(admin) ?
+          {/* Notify functionality moved to admin workflow section*/}
+          {/* {(admin) ?
             <div className="rad-btns">
               <input
                 type="checkbox"
@@ -108,7 +109,7 @@ export default ({
               <label>Notify Rep</label>
             </div>
             : null
-          }
+          } */}
         </div>
 
         <div className="app-bg col-sm-12">
@@ -267,7 +268,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
-                  <label>Address</label>
+                  <label className="required">Address</label>
                 </div>
                 <div className="field-box">
                   {(admin || values.status === 'Draft') ?
@@ -283,7 +284,7 @@ export default ({
             </div>
             <div className="col-sm-6">
               <div className="field-label">
-                <label>City</label>
+                <label className="required">City</label>
               </div>
               <div className="field-box">
                 {(admin || values.status === 'Draft') ?
@@ -299,7 +300,7 @@ export default ({
             </div>
             <div className="col-sm-6">
               <div className="field-label">
-                <label>State</label>
+                <label className="required">State</label>
               </div>
               <div className="field-box">
                 {(admin || values.status === 'Draft') ?
@@ -315,7 +316,7 @@ export default ({
             </div>
             <div className="col-sm-6">
               <div className="field-label">
-                <label>Zip Code</label>
+                <label className="required">Zip Code</label>
               </div>
               <div className="field-box">
                 {(admin || values.status === 'Draft') ?
@@ -334,7 +335,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
-                <label>Phone</label>
+                <label className="required">Phone</label>
               </div>
               <div className="field-box">
                 {(admin || values.status === 'Draft') ?
@@ -353,7 +354,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
-                <label>Customer Email</label>
+                <label className="required">Customer Email</label>
               </div>
               <div className="field-box">
                 {(admin || values.status === 'Draft') ?
@@ -397,12 +398,12 @@ export default ({
               <div className="field-label">
                 <label>Deal Size</label>
               </div>
-              <div className="field-box">
+              <div className="field-box monetary">
                 {(admin || values.status === 'Draft') ?
                   <input
-                  onChange={handleChange}
-                  name={'amount'}
-                  value={values.amount || ''}
+                    onChange={handleChange}
+                    name={'amount'}
+                    value={values.amount || ''}
                   />
                   :
                   <p>{values.amount || ''}</p>
@@ -559,7 +560,8 @@ export default ({
           </div>
 
           {/* Admin only section of app */}
-          {(admin) ?
+          {/* awaiting rework */}
+          {/* {(admin) ?
             <div>
               <div className="row">
                 <div className="col-sm-6">
@@ -757,7 +759,7 @@ export default ({
             </div>
             :
             null
-          }
+          } */}
         </div>
         <div className="col-sm-12 buttons" align="right">
           <Link to='/applications' id="cancel-button">Cancel</Link>

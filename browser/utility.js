@@ -23,11 +23,18 @@ export const getPrettyDate = () => {
   return `${obj.day}, ${obj.month} ${obj.date}, ${obj.year}`
 }
 
-export const reformatDate = (date) => {
+export const reformatDate = date => {
   if (!date) return ''
   // expecting date in form of 'YYYY-MM-DD'
   let dateArr = date.split('-')
   return `${dateArr[1]}-${dateArr[2]}-${dateArr[0].slice(2)}` // returns 'MM-DD-YY'
+}
+
+export const deformatDate = date => {
+  if (!date) return ''
+  // expecting date in form of 'MM-DD-YY'
+  let dateArr = date.split('-')
+  return `20${dateArr[2]}-${dateArr[0]}-${dateArr[1]}` // returns 'YYYY-MM-DD
 }
 
 export const sortBy = field => {
