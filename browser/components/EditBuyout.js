@@ -91,11 +91,9 @@ export default ({
               value={values.status}
               >
                 <option value="Draft">Draft</option>
-                <option value="Submitted">Submitted</option>
-                <option value="Hold">Hold</option>
-                <option value="Approved">Approved</option>
-                <option value="Declined">Declined</option>
-                <option value="Expired">Expired</option>
+                <option value="New">New</option>
+                <option value="Working">Working</option>
+                <option value="Complete">Complete</option>
               </select>
               :
               <p>{values.status}</p>

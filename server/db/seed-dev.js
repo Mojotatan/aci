@@ -194,7 +194,7 @@ const generateBuyouts = () => {
 
   builder('Draft', '2017-12-15', '2018-09-23', 'no comment', '')
 
-  builder('Submitted', '2017-12-16', '2042-01-05', 'no comment', '')
+  builder('New', '2017-12-16', '2042-01-05', 'no comment', '')
 
   return arr
 }

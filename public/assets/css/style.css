@@ -516,6 +516,7 @@ input, textarea {
 	background-color: #fff;
 }
 .white-dpd {
+	-webkit-appearance: none;
 	padding-left: 4px;
 	padding-right: 4px;
 	height: 36px;
@@ -523,6 +524,11 @@ input, textarea {
 	border: 1px solid #DFE3E9;
 	border-radius: 4px;
 	background-color: #fff;
+	background-image: url(../img/arrow.svg);
+	background-position-x: right;
+	background-position-y: center;
+	background-size: 30px;
+	background-repeat: no-repeat;
 }
 .tr-padding {
 	margin-right: 25px;
@@ -572,6 +578,9 @@ input, textarea {
 	width: 80px;
 	margin-top: 5px;
 	margin-right: 15px;
+}
+.type-rad-btns {
+	margin-top: 15px
 }
 .type-rad-btns input {
 	margin-right: 5px;
@@ -639,6 +648,19 @@ input, textarea {
 	width: 140px;
 	background-color: #E2E7EE;
 	display: block;
+}
+.user-bg select {
+	-webkit-appearance: none;
+	background: url(../img/arrow.svg);
+	background-position-x: right;
+	background-position-y: center;
+	background-size: 30px;
+	background-repeat: no-repeat;
+	padding-left: 10px;
+	height: 36px;
+	background-color: #E2E7EE;
+	border: 1px solid #CED0DA;
+	border-radius: 4px;
 }
 .status label {
 	display: block;
