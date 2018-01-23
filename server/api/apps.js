@@ -14,7 +14,8 @@ module.exports = require('express').Router()
       attributes: ['id', 'level', 'dealerId', 'regionId', 'branchId'],
       where: {
         id: {
-          [Op.eq]: me.id}
+          [Op.eq]: me.id
+        }
       }
     })
     .then(data => {

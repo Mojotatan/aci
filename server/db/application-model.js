@@ -33,11 +33,9 @@ module.exports = db => db.define('Application', {
     type: Sequelize.ENUM('New Customer', 'Existing Customer Addition', 'Existing Customer Upgrade')
   },
   currentLeaseCompany: {
-    // Default options are EverBank, DLL, Marlin, Balboa, Wells Fargo, CIT, and Leaf
-    // But this can't be an ENUM b/c user can pick 'other'
     type: Sequelize.STRING
   },
-  erp: {
+  leaseNumber: {
     type: Sequelize.STRING
   },
 

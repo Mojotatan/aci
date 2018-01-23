@@ -15,12 +15,14 @@ export default ({
 }) => (
   <div className="row edit-apps-page">
 
-    <div className="col-sm-12">
-      {/* <div className="col-sm-6"><h2>Application</h2></div> */}
-      <div className="col-sm-6 top-buttons"><Link to='/applications' id="cancel-button">Back</Link></div>
-      <div className="col-sm-6 top-buttons" align="right">
-        <Link to='/applications' id="cancel-button">Cancel</Link>
-        <button type="submit" id="save-button" onClick={handleSave}>Save</button>
+    <div className="col-sm-12 top">
+      <div className="row">
+        <div className="col-sm-6"><h2>Application</h2></div>
+        {/* <div className="col-sm-3 top-buttons"><Link to='/applications' id="cancel-button" className="top">Back</Link></div> */}
+        <div className="col-sm-6 top-buttons" align="right">
+          <Link to='/applications' id="cancel-button" className="top">Cancel</Link>
+          <button type="submit" id="save-button" className="top" onClick={handleSave}>Save</button>
+        </div>
       </div>
     </div>
 
@@ -109,199 +111,98 @@ export default ({
           }
         </div>
 
-        <div className="col-sm-12">
+        <div className="app-bg col-sm-12">
           <h3>Application Type</h3>
+          <div className="row">
+            <div className="col-sm-12">
+              {(admin || values.status === 'Draft') ?
+                <div className="radio-div type-rad-btns">
+                  <input
+                    type="radio"
+                    id="type-0"
+                    onChange={handleChange}
+                    name="type"
+                    value="New Customer"
+                    className={(values.type === 'New Customer') ?
+                      "on" : ""
+                    }
+                    checked={(values.type === 'New Customer') ?
+                      true : false
+                    }
+                  />
+                  <label htmlFor="type-0">New Customer</label>
 
-          {(admin || values.status === 'Draft') ?
-            <div className="radio-div type-rad-btns">
-              <input
-                type="radio"
-                id="type-0"
-                onChange={handleChange}
-                name="type"
-                value="New Customer"
-                checked={(values.type === 'New Customer') ?
-                  true : false
-                }
-              />
-              <label htmlFor="type-0">New Customer</label>
+                  <input
+                    type="radio"
+                    id="type-1"
+                    onChange={handleChange}
+                    name="type"
+                    value="Existing Customer Addition"
+                    className={(values.type === 'Existing Customer Addition') ?
+                      "on" : ""
+                    }
+                    checked={(values.type === 'Existing Customer Addition') ?
+                      true : false
+                    }
+                  />
+                  <label htmlFor="type-1">Existing Customer Addition</label>
 
-              <input
-                type="radio"
-                id="type-1"
-                onChange={handleChange}
-                name="type"
-                value="Existing Customer Addition"
-                checked={(values.type === 'Existing Customer Addition') ?
-                true : false
+                  <input
+                    type="radio"
+                    id="type-2"
+                    onChange={handleChange}
+                    name="type"
+                    value="Existing Customer Upgrade"
+                    className={(values.type === 'Existing Customer Upgrade') ?
+                      "on" : ""
+                    }
+                    checked={(values.type === 'Existing Customer Upgrade') ?
+                      true : false
+                    }
+                  />
+                  <label htmlFor="type-2">Existing Customer Upgrade</label>
+                </div>
+                :
+                <p>{values.type || ''}</p>
               }
-              />
-              <label htmlFor="type-1">Existing Customer Addition</label>
-
-              <input
-                type="radio"
-                id="type-2"
-                onChange={handleChange}
-                name="type"
-                value="Existing Customer Upgrade"
-                checked={(values.type === 'Existing Customer Upgrade') ?
-                true : false
-              }
-              />
-              <label htmlFor="type-2">Existing Customer Upgrade</label>
             </div>
-            :
-            <p>{values.type || ''}</p>
-          }
+          </div>
 
         </div>
 
         <div className="app-bg col-sm-12">
-          <h3>Current Lease Company</h3>
-          {(admin || values.status === 'Draft') ?
-            <div className="radio-div">
-              <div className="rad-btns">
-                <input
-                  type="radio"
-                  id="currentLeaseCompany-0"
-                  onChange={handleChange}
-                  name="currentLeaseCompany"
-                  value="EverBank"
-                  checked={(values.currentLeaseCompany === 'EverBank') ?
-                    true : false
-                  }
-                />
-                <label>EverBank</label>
-
-                <input
-                  type="radio"
-                  id="currentLeaseCompany-0"
-                  onChange={handleChange}
-                  name="currentLeaseCompany"
-                  value="DLL"
-                  checked={(values.currentLeaseCompany === 'DLL') ?
-                    true : false
-                  }
-                />
-                <label>DLL</label>
-
-                <input
-                  type="radio"
-                  id="currentLeaseCompany-0"
-                  onChange={handleChange}
-                  name="currentLeaseCompany"
-                  value="Martin"
-                  checked={(values.currentLeaseCompany === 'Martin') ?
-                    true : false
-                  }
-                />
-                <label>Martin</label>
-
-                <input
-                  type="radio"
-                  id="currentLeaseCompany-0"
-                  onChange={handleChange}
-                  name="currentLeaseCompany"
-                  value="Balboa"
-                  checked={(values.currentLeaseCompany === 'Balboa') ?
-                    true : false
-                  }
-                />
-                <label>Balboa</label>
-              </div>
-              <div className="rad-btns">
-                <input
-                  type="radio"
-                  id="currentLeaseCompany-0"
-                  onChange={handleChange}
-                  name="currentLeaseCompany"
-                  value="Wells Fargo"
-                  checked={(values.currentLeaseCompany === 'Wells Fargo') ?
-                    true : false
-                  }
-                />
-                <label>Wells Fargo</label>
-
-                <input
-                  type="radio"
-                  id="currentLeaseCompany-0"
-                  onChange={handleChange}
-                  name="currentLeaseCompany"
-                  value="CIT"
-                  checked={(values.currentLeaseCompany === 'CIT') ?
-                    true : false
-                  }
-                />
-                <label>CIT</label>
-
-                <input
-                  type="radio"
-                  id="currentLeaseCompany-0"
-                  onChange={handleChange}
-                  name="currentLeaseCompany"
-                  value="Leaf"
-                  checked={(values.currentLeaseCompany === 'Leaf') ?
-                    true : false
-                  }
-                />
-                <label>Leaf</label>
-
-                <input
-                  type="radio"
-                  id="currentLeaseCompany-0"
-                  onChange={handleChange}
-                  name="currentLeaseCompany"
-                  value="Other"
-                  checked={(
-                    values.currentLeaseCompany !== 'EverBank'
-                    && values.currentLeaseCompany !== 'DLL'
-                    && values.currentLeaseCompany !== 'Martin'
-                    && values.currentLeaseCompany !== 'Balboa'
-                    && values.currentLeaseCompany !== 'Wells Fargo'
-                    && values.currentLeaseCompany !== 'CIT'
-                    && values.currentLeaseCompany !== 'Leaf'
-                  ) ?
-                    true : false
-                  }
-                />
-                <label id="other-label">Other</label>
-                {(
-                  values.currentLeaseCompany !== 'EverBank'
-                  && values.currentLeaseCompany !== 'DLL'
-                  && values.currentLeaseCompany !== 'Martin'
-                  && values.currentLeaseCompany !== 'Balboa'
-                  && values.currentLeaseCompany !== 'Wells Fargo'
-                  && values.currentLeaseCompany !== 'CIT'
-                  && values.currentLeaseCompany !== 'Leaf'
-                ) ?
-                  <input
-                    onChange={handleChange}
-                    name="currentLeaseCompany"
-                    value={values.currentLeaseCompany}
-                  />
-                  : null
-                }
-              </div>
-
-            </div>
-            :
-            <p>{values.curentLeaseCompany || ''}</p>
-          }
-
+          <h3>Lease Information</h3>
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
-                <label>ERP Number</label>
+                <label>Current Lease Company</label>
               </div>
               <div className="field-box">
                 {(admin || values.status === 'Draft') ?
                   <input
                     onChange={handleChange}
-                    name={'erp'}
-                    value={values.erp || ''}
+                    name="currentLeaseCompany"
+                    value={values.currentLeaseCompany || ''}
                   />
                   :
-                  <p>{values.erp || ''}</p>
+                  <p>{values.curentLeaseCompany || ''}</p>
+                }
+              </div>
+            </div>
+
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>Lease Number</label>
+              </div>
+              <div className="field-box">
+                {(admin || values.status === 'Draft') ?
+                  <input
+                    onChange={handleChange}
+                    name={'leaseNumber'}
+                    value={values.leaseNumber || ''}
+                  />
+                  :
+                  <p>{values.leaseNumber || ''}</p>
                 }
               </div>
             </div>
@@ -539,6 +440,9 @@ export default ({
                     onChange={handleChange}
                     name="advancedPayments"
                     value="0"
+                    className={(values.advancedPayments === '0') ?
+                      "on" : ""
+                    }
                     checked={(values.advancedPayments === '0') ?
                       true : false
                     }
@@ -551,6 +455,9 @@ export default ({
                     onChange={handleChange}
                     name="advancedPayments"
                     value="1"
+                    className={(values.advancedPayments === '1') ?
+                      "on" : ""
+                    }
                     checked={(values.advancedPayments === '1') ?
                     true : false
                   }
@@ -563,6 +470,9 @@ export default ({
                     onChange={handleChange}
                     name="advancedPayments"
                     value="2"
+                    className={(values.advancedPayments === '2') ?
+                      "on" : ""
+                    }
                     checked={(values.advancedPayments === '2') ?
                     true : false
                   }
@@ -587,6 +497,9 @@ export default ({
                     onChange={handleChange}
                     name="endOfTerm"
                     value="FMV"
+                    className={(values.endOfTerm === 'FMV') ?
+                      "on" : ""
+                    }
                     checked={(values.endOfTerm === 'FMV') ?
                       true : false
                     }
@@ -599,9 +512,12 @@ export default ({
                     onChange={handleChange}
                     name="endOfTerm"
                     value="1$ out"
+                    className={(values.endOfTerm === '1$ out') ?
+                      "on" : ""
+                    }
                     checked={(values.endOfTerm === '1$ out') ?
-                    true : false
-                  }
+                      true : false
+                    }
                   />
                   <label htmlFor="endOfTerm-1">1$ out</label>
 
@@ -611,9 +527,12 @@ export default ({
                     onChange={handleChange}
                     name="endOfTerm"
                     value="9%"
+                    className={(values.endOfTerm === '9%') ?
+                      "on" : ""
+                    }
                     checked={(values.endOfTerm === '9%') ?
-                    true : false
-                  }
+                      true : false
+                    }
                   />
                   <label htmlFor="endOfTerm-2">9%</label>
                 </div>

@@ -94,7 +94,7 @@ const generateDealers = () => {
 const generateApplications = () => {
   let arr = []
   
-  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, type, currentLeaseCompany, erp, approvalNumber, approvalDate, approvalFrom, funding, repRate, everBank, ge, cit, unifiFred, dll, usb, emr, comments) => {
+  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, type, currentLeaseCompany, leaseNumber, approvalNumber, approvalDate, approvalFrom, funding, repRate, everBank, ge, cit, unifiFred, dll, usb, emr, comments) => {
     arr.push(Application.build({
       'status': status,
       'date': date,
@@ -105,7 +105,7 @@ const generateApplications = () => {
       'endOfTerm': endOfTerm,
       'type': type,
       'currentLeaseCompany': currentLeaseCompany,
-      'erp': erp,
+      'leaseNumber': leaseNumber,
       'approvalNumber': approvalNumber,
       'approvalDate': approvalDate,
       'approvalFrom': approvalFrom,

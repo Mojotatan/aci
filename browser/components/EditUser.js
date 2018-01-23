@@ -12,7 +12,8 @@ export default ({
   <div className="row edit-users-page">
     
     <div className="col-sm-12">
-      <div className="col-sm-6"><h2>User</h2></div>
+      {/* <div className="col-sm-6"><h2>User</h2></div> */}
+      <div className="col-sm-6 top-buttons"><Link to='/users' id="cancel-button">Back</Link></div>
       <div className="col-sm-6 top-buttons" align="right">
         <Link to='/users' id="cancel-button">Cancel</Link>
         <button type="submit" id="save-button" onClick={handleSave}>Save</button>

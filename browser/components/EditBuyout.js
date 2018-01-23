@@ -24,11 +24,14 @@ export default ({
 }) => (
   <div className="row edit-byo-page">
     
-    <div className="col-sm-12">
-      <div className="col-sm-6"><h2>Buyout</h2></div>
-      <div className="col-sm-6 top-buttons" align="right">
-        <Link to='/buyouts' id="cancel-button">Cancel</Link>
-        <button type="submit" id="save-button" onClick={handleSave}>Save</button>
+    <div className="col-sm-12 top">
+      <div className="row">
+        <div className="col-sm-6"><h2>Buyout</h2></div>
+        {/* <div className="col-sm-6 top-buttons"><Link to='/buyouts' id="cancel-button">Back</Link></div> */}
+        <div className="col-sm-6 top-buttons" align="right">
+          <Link to='/buyouts' id="cancel-button">Cancel</Link>
+          <button type="submit" id="save-button" onClick={handleSave}>Save</button>
+        </div>
       </div>
     </div>
 
@@ -121,6 +124,9 @@ export default ({
                 onChange={handleChange}
                 name="quote"
                 value="Full"
+                className={(values.quote === 'Full') ?
+                  "on" : ""
+                }
                 checked={(values.quote === 'Full') ?
                   true : false
                 }
@@ -133,9 +139,12 @@ export default ({
                 onChange={handleChange}
                 name="quote"
                 value="Partial"
+                className={(values.quote === 'Partial') ?
+                  "on" : ""
+                }
                 checked={(values.quote === 'Partial') ?
-                true : false
-              }
+                  true : false
+                }
               />
               <label htmlFor="quote-1">Partial Quote</label>
             </div>

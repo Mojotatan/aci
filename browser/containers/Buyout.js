@@ -188,7 +188,7 @@ class BuyoutContainer extends React.Component {
 
 
   componentWillReceiveProps(newProps){
-    console.log('component receiving props')
+    // console.log('component receiving props')
     this.setState({
       customerCreate: (newProps.byo && newProps.byo.customer) ? false : true,
     })
