@@ -22,12 +22,15 @@ class ApplicationContainer extends React.Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleChangeInCustomer = this.handleChangeInCustomer.bind(this)
+    this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
+
+    this.handleChangeInTerm = this.handleChangeInTerm.bind(this)
+    
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.handleCheckbox = this.handleCheckbox.bind(this)
 
-    this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
   }
 
   handleChange(e) {
@@ -63,6 +66,12 @@ class ApplicationContainer extends React.Component {
         )
       })
     }
+  }
+
+  handleChangeInTerm(e) {
+    this.setState({
+      term: this.state.term.slice(0, 5) + e.target.value
+    })
   }
 
   handleSave(e) {
@@ -126,6 +135,13 @@ class ApplicationContainer extends React.Component {
 
 
   render() {
+    const formatTerm = term => {
+      if (term) {
+        if (term.slice(0, 5) === 'other') return 'Other'
+        else if (term.slice(0, 5) === 'co-te') return 'Co-Term'
+        else return term
+      } else return term
+    }
     return(
       <div>
         <EditApplication
@@ -139,6 +155,8 @@ class ApplicationContainer extends React.Component {
           handleSubmit={this.handleSubmit}
           handleChangeCustomer={this.handleChangeCustomer}
           handleCheckbox={this.handleCheckbox}
+          handleChangeInTerm={this.handleChangeInTerm}
+          formatTerm={formatTerm}
         />
       </div>
     )

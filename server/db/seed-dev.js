@@ -122,15 +122,15 @@ const generateApplications = () => {
     }))
   }
 
-  builder('Draft', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('Draft', '2017-11-26', 20, '2018-02-04', '24', '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
-  builder('New', '1998-11-26', 20.20, '2018-02-04', 24, '1', 'FMV', 'Existing Customer Addition', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('New', '1998-11-26', 20.20, '2018-02-04', '24', '1', 'FMV', 'Existing Customer Addition', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
-  builder('Hold', '2017-11-26', 20, '2024-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('Hold', '2017-11-26', 20, '2024-02-04', '24', '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
-  builder('Approved', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('Approved', '2017-11-26', 20, '2018-02-04', '24', '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
-  builder('Declined', '2017-11-26', 20, '2018-02-04', 24, '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('Declined', '2017-11-26', 20, '2018-02-04', '24', '1', 'FMV', 'New Customer', 'EverBank', '12345', '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
 
   return arr
 }

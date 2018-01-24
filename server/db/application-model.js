@@ -19,7 +19,10 @@ module.exports = db => db.define('Application', {
     type: Sequelize.DATEONLY // stored as plaintext 'YYYY-MM-DD'
   },
   term: {
-    type: Sequelize.INTEGER // in months
+    type: Sequelize.STRING, // expecting either a stringified number (in months)
+    //                        or a string starting with "co-term"
+    defaultValue: '',
+    allowNull: false
   },
   advancedPayments: {
     type: Sequelize.ENUM('0', '1', '2'),

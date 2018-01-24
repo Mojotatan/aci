@@ -11,7 +11,9 @@ export default ({
   handleSave,
   handleSubmit,
   handleCheckbox,
-  handleChangeCustomer
+  handleChangeCustomer,
+  handleChangeInTerm,
+  formatTerm
 }) => (
   <div className="row edit-apps-page">
 
@@ -396,16 +398,44 @@ export default ({
               <div className="field-label">
                 <label>Term</label>
               </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input
+              <div className="col-sm-6 col-md-5 col-lg-4 no-gutters">
+                <div className="field-box">
+                  {(admin || values.status === 'Draft') ?
+                    <select
+                    id="term"
                     onChange={handleChange}
-                    name={'term'}
-                    value={values.term || ''}
-                  />
-                  :
-                  <p>{values.term || ''}</p>
-                }
+                    name="term"
+                    value={(values.term) ? values.term.slice(0, 5) : ''}
+                    >
+                      <option value="63">63</option>
+                      <option value="60">60</option>
+                      <option value="48">48</option>
+                      <option value="42">42</option>
+                      <option value="39">39</option>
+                      <option value="36">36</option>
+                      <option value="24">24</option>
+                      <option value="12">12</option>
+                      <option value="co-te">Co-Term</option>
+                      <option value="other">Other</option>
+                    </select>
+                    :
+                    <p>{formatTerm(values.term) || ''}</p>
+                  }
+                </div>
+              </div>
+              <div className="col-sm-6 col-md-7 col-lg-8 no-gutters">
+                <div className="field-box">
+                  {(values.term && (values.term.slice(0, 5) === 'other' || values.term.slice(0, 5) === 'co-te')) ? 
+                    (admin || values.status === 'Draft') ?
+                      <input
+                        onChange={handleChangeInTerm}
+                        value={values.term.slice(5) || ''}
+                      />
+                      :
+                      <p>{values.term.slice(5) || ''}</p>
+                    : null
+                  }
+                </div>
               </div>
             </div>
           </div>
