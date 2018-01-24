@@ -51,6 +51,24 @@ class BuyoutContainer extends React.Component {
     })
   }
 
+  handleChangeCustomer(e) {
+    let name = e.target.value
+    let fill = this.props.customers.filter(customer => {
+      return customer.name === name
+    })
+    if (fill.length > 0) {
+      this.setState({
+        customer: fill[0]
+      })
+    } else {
+      this.setState({
+        customer: Object.assign(
+          {}, this.state.customer, {name}
+        )
+      })
+    }
+  }
+
   handleSave(e) {
     e.preventDefault()
 
@@ -88,32 +106,6 @@ class BuyoutContainer extends React.Component {
 
   handleCheckbox(e) {
     this.setState({notifyRep: !this.state.notifyRep})
-  }
-
-  handleChangeCustomer(e) {
-    if (e.target.value === 'new') {
-      this.setState({
-        customerCreate: true,
-        customer: {
-          name: '',
-          phone: '',
-          email: '',
-          street: '',
-          city: '',
-          state: '',
-          zip: '',
-          taxID: ''
-        }
-      })
-    } else {
-      let select = this.props.customers.filter(customer => 
-        (customer.name === e.target.value)
-      )[0]
-      this.setState({
-        customerCreate: false,
-        customer: select
-      })
-    }
   }
 
   handleChangeInLease(e) {

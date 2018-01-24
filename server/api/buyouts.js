@@ -120,44 +120,41 @@ module.exports = require('express').Router()
       },
       returning: true
       })
-    let cus = (req.body.customer.id === 'new') ?
-      Customer.create({
-        name: req.body.customer.name,
-        phone: req.body.customer.phone,
-        email: req.body.customer.email,
-        street: req.body.customer.street,
-        city: req.body.customer.city,
-        state: req.body.customer.state,
-        zip: req.body.customer.zip,
-        taxID: req.body.customer.taxID,
-        repId: me.id
-      })
-      :
-      Customer.update({
-        name: req.body.customer.name,
-        phone: req.body.customer.phone,
-        email: req.body.customer.email,
-        street: req.body.customer.street,
-        city: req.body.customer.city,
-        state: req.body.customer.state,
-        zip: req.body.customer.zip,
-        taxID: req.body.customer.taxID
-      }, {
-        where: {
-          id: {
-            [Op.eq]: req.body.customer.id
-          }
-        },
-        returning: true
-      })
+    let cus = Customer.findOrCreate({
+      where: {
+        // Not using [Op] syntax b/c it was trying to create data with object values
+        repId: me.id,
+        name: req.body.customer.name
+      },
+      defaults: {
+
+      }
+    })
     Promise.all([byo, cus])
     .then((data) => {
       let byo = (Array.isArray(data[0])) ? data[0][1][0] : data[0]
-      let cus = (Array.isArray(data[1])) ? data[1][1][0] : data[1]
-      return byo.setCustomer(cus)
+      let cus = data[1][0]
+      if (!cus.name) return Promise.all([byo.setCustomer(null), cus.destroy()])
+      else {
+        return Promise.all([byo.setCustomer(cus), Customer.update({
+          phone: req.body.customer.phone,
+          email: req.body.customer.email,
+          street: req.body.customer.street,
+          city: req.body.customer.city,
+          state: req.body.customer.state,
+          zip: req.body.customer.zip,
+          taxID: req.body.customer.taxID
+        }, {
+          where: {
+            id: {
+              [Op.eq]: cus.id
+            }
+          }
+        })])
+      }
     })
-    .then((data) => {
-      theByo = data
+    .then(data => {
+      theByo = data[0]
 
       return Promise.all(req.body.byo.leases.map(lse => {
         if (lse.delete) {

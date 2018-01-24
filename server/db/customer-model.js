@@ -2,8 +2,8 @@ const Sequelize = require('sequelize')
 
 module.exports = db => db.define('Customer', {
   name: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.STRING // no strict validation but attempting to save a customer with no name thru
+    // api/apps or buyouts will delete any blank customers created
   },
   phone: {
     type: Sequelize.STRING,

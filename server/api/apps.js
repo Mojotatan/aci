@@ -160,7 +160,7 @@ module.exports = require('express').Router()
     .then((data) => {
       let app = (Array.isArray(data[0])) ? data[0][1][0] : data[0]
       let cus = data[1][0]
-      if (cus.name == '') return cus.destroy()
+      if (!cus.name) return cus.destroy()
       else {
         return Promise.all([app.setCustomer(cus), Customer.update({
           phone: req.body.customer.phone,
