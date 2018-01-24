@@ -12,6 +12,9 @@ module.exports = db => db.define('Machine', {
   },
   location: {
     type: Sequelize.STRING
+  },
+  action: {
+    type: Sequelize.ENUM('Release', 'Upgrade to Keep', 'Upgrade to Return', 'Buyout to Keep', 'Buyout to Return', 'Leave on Lease')
   }
 
 })

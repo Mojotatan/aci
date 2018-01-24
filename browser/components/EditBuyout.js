@@ -229,7 +229,7 @@ export default ({
                           type="radio"
                           id={`${index}-quote-0`}
                           onChange={handleChangeInLease}
-                          name="quote"
+                          name={`${index}-quote`}
                           value="Full"
                           className={(lease.quote === 'Full') ?
                             "on" : ""
@@ -244,7 +244,7 @@ export default ({
                           type="radio"
                           id={`${index}-quote-1`}
                           onChange={handleChangeInLease}
-                          name="quote"
+                          name={`${index}-quote`}
                           value="Partial"
                           className={(lease.quote === 'Partial') ?
                             "on" : ""
@@ -264,61 +264,76 @@ export default ({
                 {(lease.displayMachines) ?
                   <div className="col-sm-12 no-gutters">
                     <div className="col-sm-12 no-gutters labels machine-label">
-                      <div className="col-sm-10 col-sm-offset-1 no-gutters">
-                        <label className="col-sm-3">Serial #</label>
-                        <label className="col-sm-3">Make</label>
-                        <label className="col-sm-3">Model</label>
-                        <label className="col-sm-3">Location</label>
-                      </div>
+                      <label className="col-sm-2 col-sm-offset-1 condense-gutters">Serial #</label>
+                      <label className="col-sm-2 condense-gutters">Make</label>
+                      <label className="col-sm-2 condense-gutters">Model</label>
+                      <label className="col-sm-2 condense-gutters">Location</label>
+                      <label className="col-sm-2 condense-gutters">Action</label>
                     </div>
                     {lease.machines.map((machine, mIndex) => {
                       return ((!machine.delete) ?
                         <div key={`lease-${index}-machine-${mIndex}`} className="col-sm-12 no-gutters machine-input">
-                          <div className="col-sm-offset-1 col-sm-10 field-row no-gutters">
-                            <div className="col-sm-3 condense-gutters">
-                              {(admin || values.status === 'Draft') ?
-                                <input
-                                  onChange={handleChangeInMachine}
-                                  id={`${index}-${mIndex}-serial`}
-                                  value={machine.serial || ''}
-                                />
-                                :
-                                <p>{machine.serial}</p>
-                              }
-                            </div>
-                            <div className="col-sm-3 condense-gutters">
-                              {(admin || values.status === 'Draft') ?
-                                <input
-                                  onChange={handleChangeInMachine}
-                                  id={`${index}-${mIndex}-make`}
-                                  value={machine.make || ''}
-                                />
-                                :
-                                <p>{machine.make}</p>
-                              }
-                            </div>
-                            <div className="col-sm-3 condense-gutters">
-                              {(admin || values.status === 'Draft') ?
-                                <input
-                                  onChange={handleChangeInMachine}
-                                  id={`${index}-${mIndex}-model`}
-                                  value={machine.model || ''}
-                                />
-                                :
-                                <p>{machine.model}</p>
-                              }
-                            </div>
-                            <div className="col-sm-3 condense-gutters">
-                              {(admin || values.status === 'Draft') ?
-                                <input
-                                  onChange={handleChangeInMachine}
-                                  id={`${index}-${mIndex}-location`}
-                                  value={machine.location || ''}
-                                />
-                                :
-                                <p>{machine.location}</p>
-                              }
-                            </div>
+                          <div className="col-sm-2 col-sm-offset-1 condense-gutters">
+                            {(admin || values.status === 'Draft') ?
+                              <input
+                                onChange={handleChangeInMachine}
+                                id={`${index}-${mIndex}-serial`}
+                                value={machine.serial || ''}
+                              />
+                              :
+                              <p>{machine.serial}</p>
+                            }
+                          </div>
+                          <div className="col-sm-2 condense-gutters">
+                            {(admin || values.status === 'Draft') ?
+                              <input
+                                onChange={handleChangeInMachine}
+                                id={`${index}-${mIndex}-make`}
+                                value={machine.make || ''}
+                              />
+                              :
+                              <p>{machine.make}</p>
+                            }
+                          </div>
+                          <div className="col-sm-2 condense-gutters">
+                            {(admin || values.status === 'Draft') ?
+                              <input
+                                onChange={handleChangeInMachine}
+                                id={`${index}-${mIndex}-model`}
+                                value={machine.model || ''}
+                              />
+                              :
+                              <p>{machine.model}</p>
+                            }
+                          </div>
+                          <div className="col-sm-2 condense-gutters">
+                            {(admin || values.status === 'Draft') ?
+                              <input
+                                onChange={handleChangeInMachine}
+                                id={`${index}-${mIndex}-location`}
+                                value={machine.location || ''}
+                              />
+                              :
+                              <p>{machine.location}</p>
+                            }
+                          </div>
+                          <div className="col-sm-2 condense-gutters">
+                            {(admin || values.status === 'Draft') ?
+                              <select
+                              onChange={handleChangeInMachine}
+                              id={`${index}-${mIndex}-action`}
+                              value={machine.action || ''}
+                              >
+                                <option value="Release">Release</option>
+                                <option value="Upgrade to Keep">Upgrade to Keep</option>
+                                <option value="Upgrade to Return">Upgrade to Return</option>
+                                <option value="Buyout to Keep">Buyout to Keep</option>
+                                <option value="Buyout to Return">Buyout to Return</option>
+                                <option value="Leave on Lease">Leave on Lease</option>
+                              </select>
+                              :
+                              <p>{machine.action}</p>
+                            }
                           </div>
                           <div className="col-sm-1">
                             {(admin || values.status === 'Draft') ?

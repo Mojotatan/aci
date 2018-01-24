@@ -216,6 +216,7 @@ module.exports = require('express').Router()
               make: mac.make,
               model: mac.model,
               location: mac.location,
+              action: mac.action,
               LeaseId: (Array.isArray(lse)) ? lse[1][0].id : lse.id
             })
             :
@@ -224,6 +225,7 @@ module.exports = require('express').Router()
               make: mac.make,
               model: mac.model,
               location: mac.location,
+              action: mac.action,
               LeaseId: (Array.isArray(lse)) ? lse[1][0].id : lse.id
             },{
               where: {

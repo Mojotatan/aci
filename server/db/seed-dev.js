@@ -223,22 +223,23 @@ const generateLeases = () => {
 const generateMachines = () => {
   let arr = []
   
-  const builder = (serial, make, model, location) => {
+  const builder = (serial, make, model, location, action) => {
     arr.push(Machine.build({
       'serial': serial,
       'make': make,
       'model': model,
-      'location': location
+      'location': location,
+      'action': action
     }))
   }
 
-  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', "Under Ted's Desk")
+  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', "Under Ted's Desk", 'Release')
 
-  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', "Under Ted's Other Desk")
+  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', "Under Ted's Other Desk", 'Release')
 
-  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', 'In the street')
+  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', 'In the street', 'Release')
 
-  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', 'Under the Black Sun')
+  builder('LVK4Z23006', 'KYOCERA ECOSYS', 'FS P21235DN COPIER', 'Under the Black Sun', 'Release')
 
   return arr
 }
