@@ -2,7 +2,8 @@ const Sequelize = require('sequelize')
 
 module.exports = db => db.define('Customer', {
   name: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   },
   phone: {
     type: Sequelize.STRING,
@@ -21,9 +22,10 @@ module.exports = db => db.define('Customer', {
   },
   email: {
     type: Sequelize.STRING,
-    validate: {
-      isEmail: true,
-    }
+    // validation removed because it was causing problems on front end
+    // validate: {
+    //   isEmail: true,
+    // }
   },
   taxID: {
     type: Sequelize.STRING

@@ -213,30 +213,6 @@ export default ({
         <div className="app-bg col-sm-12">
           <h3>Customer Information</h3>
 
-          {(iAmAuthor && values.status === 'Draft') ?
-            <div className="row">
-              <div className="col-sm-6">
-                <div className="field-label">
-                  <label>Load a Customer</label>
-                </div>
-                <div className="field-box custom-length">
-                  <select
-                    onChange={handleChangeCustomer}
-                    name="customer"
-                    value={(values.customer) ? values.customer.name || 'new' : 'new'}
-                  >
-                    <option value="new" key="customer-new">New</option>
-                    {customers.map((customer, index) => (
-                      <option name={index} value={customer} key={`customer-${index}`}>{customer}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-            :
-            null
-          }
-
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
@@ -245,13 +221,19 @@ export default ({
               <div className="field-box">
                 {(admin || values.status === 'Draft') ?
                   <input
-                    onChange={handleChangeInCustomer}
+                    onChange={handleChangeCustomer}
                     name={'name'}
                     value={(values.customer) ? values.customer.name || '' : ''}
+                    list="customers"
                   />
                   :
                   <p>{(values.customer) ? values.customer.name || '' : ''}</p>
                 }
+                <datalist id="customers">
+                  {customers.map((customer, index) => (
+                    <option name={index} value={customer} key={`customer-${index}`}>{customer}</option>
+                  ))}
+                </datalist>
               </div>
             </div>
           </div>

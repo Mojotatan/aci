@@ -5,6 +5,7 @@ import axios from 'axios'
 import EditApplication from '../components/EditApplication'
 
 import {saveAppThunk, createApp} from '../store/app-reducer'
+import {throwError} from '../store/error-reducer'
 
 import {getDate, checkFor$} from '../utility'
 
@@ -46,6 +47,24 @@ class ApplicationContainer extends React.Component {
     })
   }
 
+  handleChangeCustomer(e) {
+    let name = e.target.value
+    let fill = this.props.customers.filter(customer => {
+      return customer.name === name
+    })
+    if (fill.length > 0) {
+      this.setState({
+        customer: fill[0]
+      })
+    } else {
+      this.setState({
+        customer: Object.assign(
+          {}, this.state.customer, {name}
+        )
+      })
+    }
+  }
+
   handleSave(e) {
     e.preventDefault()
     if (this.state.customerCreate) {
@@ -71,43 +90,24 @@ class ApplicationContainer extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
 
-    if (this.state.customerCreate) {
-      this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate(), amount: checkFor$(this.state.amount)}], [this.state.customer, {id: 'new'}])
+    // verification
+    // let required = ['name', 'street', 'city', 'state', 'zip', 'phone', 'email']
+    if (!this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone || !this.state.customer.email) {
+      this.props.throwError('red', 'Please fill in all required fields')
     } else {
-      this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate(), amount: checkFor$(this.state.amount)}], [this.state.customer])
-    }
 
-    this.props.history.push('/applications')
+      if (this.state.customerCreate) {
+        this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate(), amount: checkFor$(this.state.amount)}], [this.state.customer, {id: 'new'}])
+      } else {
+        this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate(), amount: checkFor$(this.state.amount)}], [this.state.customer])
+      }
+
+      this.props.history.push('/applications')
+    }
   }
 
   handleCheckbox(e) {
     this.setState({notifyRep: !this.state.notifyRep})
-  }
-
-  handleChangeCustomer(e) {
-    if (e.target.value === 'new') {
-      this.setState({
-        customerCreate: true,
-        customer: {
-          name: '',
-          phone: '',
-          email: '',
-          street: '',
-          city: '',
-          state: '',
-          zip: '',
-          taxID: ''
-        }
-      })
-    } else {
-      let select = this.props.customers.filter(customer => 
-        (customer.name === e.target.value)
-      )[0]
-      this.setState({
-        customerCreate: false,
-        customer: select
-      })
-    }
   }
 
 
@@ -154,6 +154,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {saveAppThunk, createApp}
+const mapDispatchToProps = {saveAppThunk, createApp, throwError}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationContainer)
