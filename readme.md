@@ -1,56 +1,66 @@
-##Tech Used
-Database is Postgres.
+## Tech Used
+* Database is Postgres.
 * Everything else is Javascript (Node.js)
 * DB Definition: Sequelize
 * Server: Express (+ Passenger via DreamHost)
 * Front End Framework: React-Redux
 
 **Sample Control Flow:**
->User enters username + password and clicks log in
->Server checks database and for a successful u/pw match, sends back an access token
->User receives access token and uses it to make API requests for applications (+buyouts, customers, etc)
->Server checks token and queries database, sending back applications that match User's credentials
->Redux tracks the applications and the access token for as long as User is logged in
->React renders different components which allow User to view and edit applications
+1. User enters username + password and clicks log in
+2. Server checks database and for a successful u/pw match, sends back an access token
+3. User receives access token and uses it to make API requests for applications (+buyouts, customers, etc)
+4. Server checks token and queries database, sending back applications that match the user's credentials
+5. Redux tracks the applications and the access token for as long as the user is logged in
+6. React renders different components which allow the user to view and edit applications
 
-##tl;dr
-<p>| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<- Backend | Frontend ->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |</p>
+**tl;dr**
 <p>Database <-> Server API <-> Redux <-> React <-> Rendered HTML</p>
 
 
+## File Structure
 
-File Structure
-
-~Backend~ | ./server/
---------- | --------
-Database | ./server/db/
+Backend | server/
+------- | ---------
+Database | server/db/
 Server | app.js
-API | ./server/api/
+API | server/api/
 
-~Media~ ./public/
-Styles ./public/assets/css/
-Images ./public/assets/img/
+Frontend | browser/
+-------- | ----------
+Redux Store | browser/store/
+React Containers | browser/containers/ <!-- Containers are aware of state -->
+React Components | browser/components/ <!-- Components are purely for rendering elements -->
 
-~Frontend~ ./browser/
-Redux Store ./browser/store/
-React Containers ./browser/containers/ <!-- Containers are aware of state -->
-React Components ./browser/components/ <!-- Components are purely for rendering elements -->
+Media | public/
+----- | ---------
+Styles | public/assets/css/
+Images | public/assets/img/
 
+
+## Installation
 
 **How to set up a dev environment**
+1. Get the files
 > git clone https://github.com/Mojotatan/aci.git <!-- make sure to find or create secrets -->
 > npm install
-<!-- make sure to create a database named 'aci' in postgress.app -->
+2. Download [postgress.app](https://postgresapp.com/), begin running it on port 5432, and create a database named 'aci'
+3. Seed the database
 > npm run seed-dev
-> npm run build-dev <!-- keep this running in another tab in terminal -->
-> npm run start-dev <!-- default port is 1337; go to localhost:1337 -->
-
+4. Start the webpack compiler and keep it running in a tab in terminal
+> npm run build-dev
+5. Start the server!
+<!-- The default port is 1337 (localhost:1337) but you can change this in app.js -->
+> npm run start-dev
 
 **How to set up on Dreamhost**
-Install PostgresQL <!-- make sure to actually start it, too -->
-Check that Node.js is reasonably up to date <!-- this app was built in v7.8.0 -->
+1. Install and start PostgresQL
+2. Check that Node.js is reasonably up to date
+> node -v
+3. Get the files
 > git clone https://github.com/Mojotatan/aci.git <!-- make sure to find or create secrets -->
 > npm install
+4. Run webpack to compile bundle.js
 > npm run build
-Configure Passenger on cpanel if you haven't already
-Start Passenger
+5. In server/db/index.js, change dbUrl to wherever you set up PostgresQL
+6. Configure Passenger on cpanel if you haven't already
+7. Start Passenger
