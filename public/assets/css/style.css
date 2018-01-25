@@ -220,6 +220,9 @@ input, textarea {
 	border-right: solid #1991EB;
 	border-width: 1px;
 }
+.admin .app-table {
+	border-top: 1px solid #1991EB
+}
 .app-table tr {
 	width: 100%;
 }
@@ -361,6 +364,36 @@ input, textarea {
 }
 .leeses-pieces .lease + .lease{
 	margin-top: 15px
+}
+.flux-table {
+	width: 100%
+}
+.flux-table > div {
+	width: 100%
+}
+.flux-table > .flux-top {
+	background-color: #f0f7fb;
+	border-bottom: 1px solid black
+}
+.flux-table > .flux-top > div {
+	font-weight: bold
+}
+.flux-table > div > div {
+	display: inline-block;
+	width: 8%;
+	padding-top: 16px;
+	padding-bottom: 16px;
+	padding-left: 5px
+	/* padding-right */
+}
+.flux-table > div > .thicc {
+	width: 15%
+}
+.flux-table .notes {
+	display: block;
+	width: 84%;
+	text-align: right;
+	padding-right: 5px
 }
 
 .index-number {
@@ -677,6 +710,9 @@ input, textarea {
 	background-color: #E2E7EE;
 	display: block;
 }
+.admin .status select {
+	background-color: white
+}
 .user-bg select {
 	-webkit-appearance: none;
 	background: url(../img/arrow.svg);
@@ -733,7 +769,7 @@ input, textarea {
 }
 .buttons {
 	margin-top: 30px;
-	margin-bottom: 90px;
+	margin-bottom: 30px;
 }
 .top-buttons {
 	margin-top: 15px
@@ -746,4 +782,8 @@ input, textarea {
 }
 input.on + label {
 	font-weight: 600
+}
+.admin {
+	border-top: 2px solid #1066A3;
+	margin-bottom: 90px
 }

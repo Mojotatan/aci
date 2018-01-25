@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const {db, associations} = require('./index')
-const {User, Dealer, Region, Branch, Application, Guarantee, Customer, Buyout, Lease, Machine} = db.models
+const {User, Dealer, Region, Branch, Application, Action, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
 let userGuy, bbranch, rregion, manager, rival, impact, cushtomer
 
@@ -135,6 +135,27 @@ const generateApplications = () => {
   return arr
 }
 
+const generateActions = () => {
+  let arr = []
+
+  const builder = (activity, date, leasingCompany, appNumber, status, notes) => {
+    arr.push(Action.build({
+      'activity': activity,
+      'date': date,
+      'leasingCompany': leasingCompany,
+      'appNumber': appNumber,
+      'status': status,
+      'notes': notes
+    }))
+  }
+
+  builder('Credit App Submitted', '2018-01-23', 'DLL', 'DFS-8456127', 'Hold', 'Needs more cowbell')
+  builder('Credit App Submitted', '2018-01-23', 'DLL', 'DFS-8456127', 'Approved', 'Needs more cowbell')
+  builder('Credit App Submitted', '2018-01-23', 'DLL', 'DFS-8456127', 'Declined', 'Needs more cowbell')
+
+  return arr
+}
+
 const generateGuarantees = () => {
   let arr = []
   
@@ -264,6 +285,10 @@ const createApplications = () => {
   return Promise.all(generateApplications().map(application => { return application.save() }))
 }
 
+const createActions = () => {
+  return Promise.all(generateActions().map(action => { return action.save() }))
+}
+
 const createGuarantees = () => {
   return Promise.all(generateGuarantees().map(guarantee => { return guarantee.save() }))
 }
@@ -308,6 +333,10 @@ db.sync({force: true})
 })
 .then((applications) => {
   seedData.applications = applications
+  return createActions()
+})
+.then((actions) => {
+  seedData.actions = actions
   return createGuarantees()
 })
 .then((guarantees) => {
@@ -390,6 +419,16 @@ db.sync({force: true})
   return Promise.all([
     seedData.applications[0].setCustomer(seedData.customers[0]),
     seedData.applications[4].setCustomer(seedData.customers[1])
+  ])
+})
+.then(() => {
+  return Promise.all([
+    seedData.actions[0].setAdmin(seedData.users[2]),
+    seedData.actions[0].setApp(seedData.applications[0]),
+    seedData.actions[1].setAdmin(seedData.users[2]),
+    seedData.actions[1].setApp(seedData.applications[0]),
+    seedData.actions[2].setAdmin(seedData.users[2]),
+    seedData.actions[2].setApp(seedData.applications[0])
   ])
 })
 .then(() => {

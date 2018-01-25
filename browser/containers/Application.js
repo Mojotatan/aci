@@ -36,6 +36,8 @@ class ApplicationContainer extends React.Component {
 
     this.handleCheckbox = this.handleCheckbox.bind(this)
 
+    this.handleNote = this.handleNote.bind(this)
+
   }
 
   handleChange(e) {
@@ -153,6 +155,15 @@ class ApplicationContainer extends React.Component {
     this.setState({notifyRep: !this.state.notifyRep})
   }
 
+  // For Admin section
+  handleNote(e) {
+    let actions = Array.from(this.state.actions)
+    actions[Number(e.target.id)].show = (actions[Number(e.target.id)].show) ? false : true
+    this.setState({
+      actions
+    })
+  }
+
 
   componentWillReceiveProps(newProps){
     // console.log('component receiving props')
@@ -193,6 +204,7 @@ class ApplicationContainer extends React.Component {
           handleChangeCustomer={this.handleChangeCustomer}
           handleCheckbox={this.handleCheckbox}
           handleChangeInTerm={this.handleChangeInTerm}
+          handleNote={this.handleNote}
           formatTerm={formatTerm}
         />
       </div>

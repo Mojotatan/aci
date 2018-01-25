@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import {reformatDate} from '../utility'
 
 export default ({
   values,
@@ -16,6 +17,7 @@ export default ({
   handleCheckbox,
   handleChangeCustomer,
   handleChangeInTerm,
+  handleNote,
   formatTerm
 }) => (
   <div className="row edit-apps-page">
@@ -62,7 +64,7 @@ export default ({
         <div className="col-sm-12">
           <div className="rowed-items" id="date-started">
             <label>Date Started</label>
-            <p>{values.date}</p>
+            <p>{reformatDate(values.date)}</p>
           </div>
           <div className="rowed-items">
             <label>Expires</label>
@@ -175,40 +177,6 @@ export default ({
           </div>
 
           {(values.type === 'Existing Customer Upgrade' && values.leaseCompany && values.leaseNumber) ?
-            // <div className="row">
-            //   <div className="col-sm-6">
-            //     <div className="field-label">
-            //       <label>Lease Number</label>
-            //     </div>
-            //     <div className="field-box">
-            //       {(admin || values.status === 'Draft') ?
-            //         <input
-            //           onChange={handleChange}
-            //           name={'leaseNumber'}
-            //           value={values.leaseNumber || ''}
-            //         />
-            //         :
-            //         <p>{values.leaseNumber || ''}</p>
-            //       }
-            //     </div>
-            //   </div>
-            //   <div className="col-sm-6">
-            //     <div className="field-label">
-            //       <label>Lease Company</label>
-            //     </div>
-            //     <div className="field-box">
-            //       {(admin || values.status === 'Draft') ?
-            //         <input
-            //           onChange={handleChange}
-            //           name="leaseCompany"
-            //           value={values.leaseCompany || ''}
-            //         />
-            //         :
-            //         <p>{values.curentLeaseCompany || ''}</p>
-            //       }
-            //     </div>
-            //   </div>
-            // </div>
             <div className="row leeses-pieces">
               <div className="col-sm-12">
                 <div className="col-sm-5 col-sm-offset-1"><label>Lease Number</label></div>
@@ -249,6 +217,7 @@ export default ({
                 <div className="col-sm-1"><button onClick={handleRemoveLease} name={index} className="remove-button"></button></div>
               </div>
             ))}
+            {/* Autofill for Lease Company */}
               <datalist id="leaseCompanies">
                 <option value="EverBank"></option>
                 <option value="DLL"></option>
@@ -704,135 +673,13 @@ export default ({
                 </div>
               </div>
 
-              <div className="row">
-                <div className="col-sm-12 flex-container">
-                  <div className="flex-item rowed-items">
-                    <div className="field-label">
-                      <label>EverBank</label>
-                    </div>
-                    <div className="field-dropd">
-                      <select
-                        onChange={handleChange}
-                        name="status"
-                        value={values.status}
-                      >
-                        <option value=""></option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                        <option value="P">P</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex-item rowed-items">
-                    <div className="field-label">
-                      <label>GE</label>
-                    </div>
-                    <div className="field-dropd">
-                      <select
-                        onChange={handleChange}
-                        name="ge"
-                        value={values.ge}
-                      >
-                        <option value=""></option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                        <option value="P">P</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex-item rowed-items">
-                    <div className="field-label">
-                      <label>CIT</label>
-                    </div>
-                    <div className="field-dropd">
-                      <select
-                        onChange={handleChange}
-                        name="cit"
-                        value={values.cit}
-                      >
-                        <option value=""></option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                        <option value="P">P</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex-item rowed-items">
-                    <div className="field-label">
-                      <label>UnifiFRED</label>
-                    </div>
-                    <div className="field-dropd">
-                      <select
-                        onChange={handleChange}
-                        name="unifiFred"
-                        value={values.unifiFred}
-                      >
-                        <option value=""></option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                        <option value="P">P</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex-item rowed-items">
-                    <div className="field-label">
-                      <label>DLL</label>
-                    </div>
-                    <div className="field-dropd">
-                      <select
-                        onChange={handleChange}
-                        name="dll"
-                        value={values.dll}
-                      >
-                        <option value=""></option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                        <option value="P">P</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex-item rowed-items">
-                    <div className="field-label">
-                      <label>USB</label>
-                    </div>
-                    <div className="field-dropd">
-                      <select
-                        onChange={handleChange}
-                        name="usb"
-                        value={values.usb}
-                      >
-                        <option value=""></option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                        <option value="P">P</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex-item rowed-items">
-                    <div className="field-label">
-                      <label>EMR</label>
-                    </div>
-                    <div className="field-dropd">
-                      <select
-                        onChange={handleChange}
-                        name="emr"
-                        value={values.emr}
-                      >
-                        <option value=""></option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                        <option value="P">P</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
             </div>
             :
             null
           } */}
+
         </div>
+
         <div className="col-sm-12 buttons" align="right">
           <Link to='/applications' id="cancel-button">Cancel</Link>
           <button type="submit" id="save-button">Save</button>
@@ -842,13 +689,79 @@ export default ({
           }
         </div>
       </form>
-      {/* {(admin) ?
-        <form onSubmit={function(e) {e.preventDefault()}} action="fileupload" method="post" encType="multipart/form-data">
-          <input type="file" name="filetoupload" />
-          <input type="submit" />
-        </form>
-        : null
-      } */}
     </div>
+
+    {/* Admin Only */}
+    {(admin) ?
+      <div className="col-sm-12 admin">
+        <div className="col-sm-12 top">
+          <h2>Admin Activity</h2>
+        </div>
+        {/* <div className="row">
+          <div className="col-sm-12">
+            <div className="rowed-items status">
+              <div>
+                <label>Status</label>
+              </div>
+              <div>
+                <select
+                onChange={handleChange}
+                name="status"
+                value={values.status}
+                >
+                  <option value="Draft">Draft</option>
+                  <option value="New">New</option>
+                  <option value="Working">Working</option>
+                  <option value="Hold">Hold</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Declined">Declined</option>
+                  <option value="Expired">Expired</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div> */}
+        <div className="row">
+          <div className="col-sm-12">
+            <form>
+
+            </form>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-12 no-gutters">
+            <div className="flux-table app-table">
+              <div className="flux-top">
+                <div className="thicc">Activity</div>
+                <div className="thicc">User</div>
+                <div>Date</div>
+                <div className="thicc">Leasing Company</div>
+                <div className="thicc">Application Number</div>
+                <div>Status</div>
+                <div>Notes</div>
+                <div></div>
+                <div></div>
+              </div>
+              {values.actions.map((action, index) => (
+                <div key={action.id} className={(index % 2 === 0) ? 'even' : 'odd'}>
+                  <div className="thicc">{action.activity || ''}</div>
+                  <div className="thicc">{action.admin.email || ''}</div>
+                  <div>{reformatDate(action.date) || ''}</div>
+                  <div className="thicc">{action.leasingCompany || ''}</div>
+                  <div className="thicc">{action.appNumber || ''}</div>
+                  <div>{action.status || ''}</div>
+                  <div id={index} onClick={handleNote} className='edit'>{(action.show) ? 'Hide' : 'View'}</div>
+                  <div className='edit'>Edit</div>
+                  <div className='edit'>Delete</div>
+                  {(action.show) ? <div className="notes">{action.notes || ''}</div> : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      :
+      null
+    }
   </div>
 )

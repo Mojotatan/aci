@@ -6,7 +6,7 @@ module.exports = db => db.define('Buyout', {
     defaultValue: 'Draft'
   },
   date: {
-    type: Sequelize.DATEONLY
+    type: Sequelize.DATEONLY // stored as plaintext 'YYYY-MM-DD'
   },
   expiry: {
     type: Sequelize.DATEONLY // stored as plaintext 'YYYY-MM-DD'

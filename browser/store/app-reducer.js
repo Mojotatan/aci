@@ -71,6 +71,7 @@ export const loadAppsThunk = (token) => {
     .then(res => {
       // expecting res to have a list of applications
       // and a list of branch + dealer associations through rep
+      // and a list of admin actions applied to that application
       res.data.apps.forEach((app, index) => {
         if (res.data.dealers[index]) {
           app.dealer = res.data.dealers[index].name
@@ -78,6 +79,7 @@ export const loadAppsThunk = (token) => {
         if (res.data.branches[index]) {
           app.branch = res.data.branches[index].name
         }
+        app.actions = res.data.actions[index]
       })
       dispatch(loadApps(res.data.apps))
     })

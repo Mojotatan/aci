@@ -12,6 +12,7 @@ const models = [
   require('./region-model'),
   require('./branch-model'),
   require('./application-model'),
+  require('./action-model'),
   require('./guarantee-model'), // phase 2
   require('./customer-model'),
   require('./buyout-model'),
@@ -24,7 +25,7 @@ models.forEach(model => {
 })
 
 // Associations
-let {User, Dealer, Region, Branch, Application, Guarantee, Customer, Buyout, Lease, Machine} = db.models
+let {User, Dealer, Region, Branch, Application, Action, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
   User.belongsTo(Dealer, {as: 'dealer'})
   User.belongsTo(Region, {as: 'region'})
@@ -40,6 +41,9 @@ let {User, Dealer, Region, Branch, Application, Guarantee, Customer, Buyout, Lea
   Application.belongsTo(Customer, {as: 'customer'})
 
   Customer.belongsTo(User, {as: 'rep'})
+
+  Action.belongsTo(Application, {as: 'app'})
+  Action.belongsTo(User, {as: 'admin'})
 
   Buyout.belongsTo(User, {as: 'rep'})
   Buyout.belongsTo(Guarantee, {as: 'guarantee'}) // phase 2

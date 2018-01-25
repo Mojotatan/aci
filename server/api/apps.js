@@ -1,7 +1,7 @@
 const Op = require('sequelize').Op
 const formidable = require('formidable')
 
-const {User, Application, Customer} = require('../db').db.models
+const {User, Application, Customer, Action} = require('../db').db.models
 const {isLoggedIn, whoAmI, isAdmin, mayI, transporter} = require('./auth')
 var oauth2Client = require('../oauth')
 
@@ -9,7 +9,8 @@ module.exports = require('express').Router()
 
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
-    let appsToReturn, branchesToReturn
+    // defining variables here for scope purposes
+    let appsToReturn, branchesToReturn, dealersToReturn
     return User.findOne({
       attributes: ['id', 'level', 'dealerId', 'regionId', 'branchId'],
       where: {
@@ -74,11 +75,26 @@ module.exports = require('express').Router()
       branchesToReturn = branchData
       return Promise.all(appsToReturn.map(app => app.rep.getDealer()))
     })
-    .then(appDealers => {
+    .then(dealerData => {
+      dealersToReturn = dealerData
+      return Promise.all(appsToReturn.map(app => {
+        return Action.findAll({
+          where: {
+            appId: {
+              [Op.eq]: app.id
+            }
+          },
+          include: ['admin'],
+          order: [['createdAt', 'DESC']]
+        })
+      }))
+    })
+    .then(appActions => {
       res.send({
         apps: appsToReturn,
         branches: branchesToReturn,
-        dealers: appDealers
+        dealers: dealersToReturn,
+        actions: appActions
       })
     })
     .catch(err => console.error(err))
