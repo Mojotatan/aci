@@ -1,11 +1,11 @@
 ## Tech Used
-* Database is Postgres.
+* Database is Postgres
 * Everything else is Javascript (Node.js)
 * DB Definition: Sequelize
 * Server: Express (+ Passenger via DreamHost)
 * Front End Framework: React-Redux
 
-**Sample Control Flow:**
+**Control Flow:**
 1. User enters username + password and clicks log in
 2. Server checks database and for a successful u/pw match, sends back an access token
 3. User receives access token and uses it to make API requests for applications (+buyouts, customers, etc)
@@ -41,26 +41,36 @@ Images | public/assets/img/
 
 **How to set up a dev environment**
 1. Get the files
-> git clone https://github.com/Mojotatan/aci.git <!-- make sure to find or create secrets -->
-> npm install
+    git clone https://github.com/Mojotatan/aci.git <!-- make sure to find or create secrets -->
+    npm install
+
 2. Download [postgress.app](https://postgresapp.com/), begin running it on port 5432, and create a database named 'aci'
+
 3. Seed the database
-> npm run seed-dev
+    npm run seed-dev
+
 4. Start the webpack compiler and keep it running in a tab in terminal
-> npm run build-dev
+    npm run build-dev
+
 5. Start the server!
 <!-- The default port is 1337 (localhost:1337) but you can change this in app.js -->
-> npm run start-dev
+    npm run start-dev
 
 **How to set up on Dreamhost**
 1. Install and start PostgresQL
+
 2. Check that Node.js is reasonably up to date
-> node -v
+    node -v
+
 3. Get the files
-> git clone https://github.com/Mojotatan/aci.git <!-- make sure to find or create secrets -->
-> npm install
+    git clone https://github.com/Mojotatan/aci.git <!-- make sure to find or create secrets -->
+    npm install
+
 4. Run webpack to compile bundle.js
-> npm run build
+    npm run build
+
 5. In server/db/index.js, change dbUrl to wherever you set up PostgresQL
+
 6. Configure Passenger on cpanel if you haven't already
+
 7. Start Passenger
