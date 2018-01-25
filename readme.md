@@ -13,8 +13,8 @@ Redux tracks the applications and the access token for as long as User is logged
 React renders different components which allow User to view and edit applications
 
 tl;dr
->|             <- Backend | Frontend ->                      |
->Database <-> Server API <-> Redux <-> React <-> Rendered HTML
+<p>|             <- Backend | Frontend ->                      |</p>
+<p>Database <-> Server API <-> Redux <-> React <-> Rendered HTML</p>
 
 
 
