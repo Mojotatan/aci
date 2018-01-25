@@ -722,9 +722,46 @@ export default ({
           </div>
         </div> */}
         <div className="row">
-          <div className="col-sm-12">
+          <div className="app-bg col-sm-8 col-sm-offset-2">
             <form>
-
+              <div className="col-sm-12">
+                <h3>New</h3>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="field-label">
+                    <label>Leasing Company</label>
+                  </div>
+                  <div className="field-box">
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="field-label">
+                    <label>Application Number</label>
+                  </div>
+                  <div className="field-box">
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="field-label">
+                    <label>Status</label>
+                  </div>
+                  <div className="field-box">
+                  </div>
+                </div>
+              </div>
+              {/* Conditional fields based on status */}
+              <div className="row">
+                <div className="col-sm-12">
+                  <div className="field-label">
+                    <label>Notes</label>
+                  </div>
+                  <div className="field-box">
+                  </div>
+                </div>
+              </div>
             </form>
           </div>
         </div>
