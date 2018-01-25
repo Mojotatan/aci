@@ -6,8 +6,11 @@ const reducer = (prevState = initialState, action) => {
   let newState = Object.assign({}, prevState)
   switch (action.type) {
     case THROW_ERROR:
-      // not using push because react doesn't detect the change
-      newState.errQueue = [...newState.errQueue, action.err]
+      // // not using push because react doesn't detect the change
+      // newState.errQueue = [...newState.errQueue, action.err]
+      
+      // changed this from a queue to a single entity, to avoid error stacking; not ideal but fine for now
+      newState.errQueue = [action.err]
       return newState
     case HANDLE_ERROR:
       newState.errQueue = newState.errQueue.slice(0, -1)

@@ -350,6 +350,29 @@ input, textarea {
 	position: absolute;
 	right: 0
 }
+.edit-apps-page .add-lease-button {
+	margin-left: 15px
+}
+.leeses-pieces {
+	margin-top: 15px
+}
+.leeses-pieces .lease {
+	margin-top: 10px
+}
+.leeses-pieces .lease + .lease{
+	margin-top: 15px
+}
+
+.index-number {
+	/* margin-top: 8px;
+	margin-right: 12px !important;
+	display: inline-block;
+	float: left; */
+	line-height: 36px;
+	width: 100%;
+	margin: 0;
+	text-align: center
+}
 
 /* Edit BYO Pages */
 .edit-byo-page h3 {
@@ -416,16 +439,6 @@ input, textarea {
 }
 #byo-desc {
 	margin-top: 30px;
-}
-.edit-byo-page .index-number {
-	/* margin-top: 8px;
-	margin-right: 12px !important;
-	display: inline-block;
-	float: left; */
-	line-height: 36px;
-	width: 100%;
-	margin: 0;
-	text-align: center
 }
 .lease-input + .lease-input {
 	margin-top: 20px

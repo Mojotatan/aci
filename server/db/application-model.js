@@ -33,17 +33,23 @@ module.exports = db => db.define('Application', {
     defaultValue: 'FMV'
   },
   type: {
-    type: Sequelize.ENUM('New Customer', 'Existing Customer Addition', 'Existing Customer Upgrade')
+    type: Sequelize.ENUM('New Customer', 'Existing Customer Addition', 'Existing Customer Upgrade'),
+    defaultValue: 'New Customer'
   },
-  currentLeaseCompany: {
-    type: Sequelize.STRING
+
+  // I didn't see a need for the leases attached to apps to be actual lease entries on the db,
+  // so for now they are just arrays on the app table. This might change in the future.
+  leaseCompany: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+    defaultValue: []
   },
   leaseNumber: {
-    type: Sequelize.STRING
+    type: Sequelize.ARRAY(Sequelize.STRING),
+    defaultValue: []
   },
 
   comments: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     defaultValue: ''
   },
 

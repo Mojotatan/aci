@@ -7,6 +7,9 @@ export default ({
   admin,
   customers,
   handleChange,
+  handleRemoveLease,
+  handleChangeInLease,
+  handleAddLease,
   handleChangeInCustomer,
   handleSave,
   handleSubmit,
@@ -171,45 +174,102 @@ export default ({
             </div>
           </div>
 
-        </div>
-
-        <div className="app-bg col-sm-12">
-          <h3>Lease Information</h3>
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Current Lease Company</label>
+          {(values.type === 'Existing Customer Upgrade' && values.leaseCompany && values.leaseNumber) ?
+            // <div className="row">
+            //   <div className="col-sm-6">
+            //     <div className="field-label">
+            //       <label>Lease Number</label>
+            //     </div>
+            //     <div className="field-box">
+            //       {(admin || values.status === 'Draft') ?
+            //         <input
+            //           onChange={handleChange}
+            //           name={'leaseNumber'}
+            //           value={values.leaseNumber || ''}
+            //         />
+            //         :
+            //         <p>{values.leaseNumber || ''}</p>
+            //       }
+            //     </div>
+            //   </div>
+            //   <div className="col-sm-6">
+            //     <div className="field-label">
+            //       <label>Lease Company</label>
+            //     </div>
+            //     <div className="field-box">
+            //       {(admin || values.status === 'Draft') ?
+            //         <input
+            //           onChange={handleChange}
+            //           name="leaseCompany"
+            //           value={values.leaseCompany || ''}
+            //         />
+            //         :
+            //         <p>{values.curentLeaseCompany || ''}</p>
+            //       }
+            //     </div>
+            //   </div>
+            // </div>
+            <div className="row leeses-pieces">
+              <div className="col-sm-12">
+                <div className="col-sm-5 col-sm-offset-1"><label>Lease Number</label></div>
+                <div className="col-sm-5"><label>Lease Company</label></div>
               </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input
-                    onChange={handleChange}
-                    name="currentLeaseCompany"
-                    value={values.currentLeaseCompany || ''}
-                  />
-                  :
-                  <p>{values.curentLeaseCompany || ''}</p>
-                }
+            {values.leaseCompany.map((lease, index) => (
+              <div className="col-sm-12 lease" key={`lease-${index}`}>
+                <div className="col-sm-1">
+                  <label className="index-number">{index + 1}</label>
+                </div>
+                <div className="col-sm-5">
+                  <div className="field-box">
+                    {(admin || values.status === 'Draft') ?
+                      <input
+                        onChange={handleChangeInLease}
+                        name={`leaseNumber-${index}`}
+                        value={values.leaseNumber[index] || ''}
+                      />
+                      :
+                      <p>{values.leaseNumber[index] || ''}</p>
+                    }
+                  </div>
+                </div>
+                <div className="col-sm-5">
+                  <div className="field-box">
+                    {(admin || values.status === 'Draft') ?
+                      <input
+                        onChange={handleChangeInLease}
+                        name={`leaseCompany-${index}`}
+                        value={lease || ''}
+                        list="leaseCompanies"
+                      />
+                      :
+                      <p>{lease || ''}</p>
+                    }
+                  </div>
+                </div>
+                <div className="col-sm-1"><button onClick={handleRemoveLease} name={index} className="remove-button"></button></div>
+              </div>
+            ))}
+              <datalist id="leaseCompanies">
+                <option value="EverBank"></option>
+                <option value="DLL"></option>
+                <option value="Wells"></option>
+                <option value="USB"></option>
+                <option value="CIT"></option>
+                <option value="Marlin"></option>
+                <option value="Balboa"></option>
+                <option value="EMR"></option>
+                <option value="Leaf"></option>
+                <option value="Great America"></option>
+                <option value="PNC"></option>
+              </datalist>
+              <div className="col-sm-12">
+                <div className="col-sm-offset-1">
+                  <button onClick={handleAddLease} className="add-lease-button">Add Lease</button>
+                </div>
               </div>
             </div>
-
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Lease Number</label>
-              </div>
-              <div className="field-box">
-                {(admin || values.status === 'Draft') ?
-                  <input
-                    onChange={handleChange}
-                    name={'leaseNumber'}
-                    value={values.leaseNumber || ''}
-                  />
-                  :
-                  <p>{values.leaseNumber || ''}</p>
-                }
-              </div>
-            </div>
-          </div>
+            : null
+          }
         </div>
 
         <div className="app-bg col-sm-12">

@@ -49,7 +49,7 @@ class ApplicationsContainer extends React.Component {
       date: getDate(),
       rep: this.props.user,
       type: app.type,
-      currentLeaseCompany: app.currentLeaseCompany,
+      leaseCompany: app.leaseCompany,
       leaseNumber: app.leaseNumber,
       amount: app.amount,
       term: app.term,
@@ -81,6 +81,8 @@ class ApplicationsContainer extends React.Component {
                 <td>Address</td>
                 <td>Amount</td>
                 <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</td>
+                <td>Lease Company</td>
+                <td>Approval Number</td>
                 <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expires</td>
                 <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</td>
                 <td></td>
@@ -95,6 +97,8 @@ class ApplicationsContainer extends React.Component {
                     <td>{(app.customer) ? app.customer.street : ''}</td>
                     <td>{(app.amount) ? getPrettyNumber(app.amount) : ''}</td>
                     <td>{app.status}</td>
+                    <td>{''}</td>
+                    <td>{''}</td>
                     <td>{reformatDate(app.expiry)}</td>
                     <td>{(app.rep) ? app.rep.fullName : ''}</td>
                     <td id={index} onClick={this.handleClick} className="edit">

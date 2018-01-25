@@ -21,6 +21,11 @@ class ApplicationContainer extends React.Component {
     )
 
     this.handleChange = this.handleChange.bind(this)
+
+    this.handleRemoveLease = this.handleRemoveLease.bind(this)
+    this.handleChangeInLease = this.handleChangeInLease.bind(this)
+    this.handleAddLease = this.handleAddLease.bind(this)
+
     this.handleChangeInCustomer = this.handleChangeInCustomer.bind(this)
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
 
@@ -41,6 +46,35 @@ class ApplicationContainer extends React.Component {
     })
   }
 
+  handleChangeInLease(e) {
+    let name = e.target.name.split('-')
+    let leases = Array.from(this.state[name[0]])
+    leases[Number(name[1])] = e.target.value
+    this.setState({
+      [name[0]]: leases
+    })
+  }
+  
+  handleRemoveLease(e) {
+    e.preventDefault()
+
+    let index = Number(e.target.name)
+    
+    this.setState({
+      leaseCompany: [...this.state.leaseCompany.slice(0, index), ...this.state.leaseCompany.slice(index + 1)],
+      leaseNumber: [...this.state.leaseNumber.slice(0, index), ...this.state.leaseNumber.slice(index + 1)]
+    })
+  }
+
+  handleAddLease(e) {
+    e.preventDefault()
+
+    this.setState({
+      leaseCompany: [...this.state.leaseCompany, ''],
+      leaseNumber: [...this.state.leaseNumber, '']
+    })
+  }
+  
   handleChangeInCustomer(e) {
     this.setState({
       customer: Object.assign(
@@ -150,6 +184,9 @@ class ApplicationContainer extends React.Component {
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
           customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
           handleChange={this.handleChange}
+          handleRemoveLease={this.handleRemoveLease}
+          handleChangeInLease={this.handleChangeInLease}
+          handleAddLease={this.handleAddLease}
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={this.handleSave}
           handleSubmit={this.handleSubmit}
