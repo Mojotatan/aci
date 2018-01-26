@@ -611,6 +611,19 @@ input, textarea {
 	color: #fff;
 	background-color: #1991EB;
 }
+.admin .send-button {
+	margin-top: 15px;
+	height: 46px;
+	width: 165px;
+	border: 1px solid rgba(0,0,0,0.15);
+	border-radius: 4px;
+	color: #FFFFFF;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 24px;
+	background-color: #4490e4;
+}
 
 /* Universal */
 .agent-box {

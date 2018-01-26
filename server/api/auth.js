@@ -56,32 +56,39 @@ const mayI = (token, appId) => {
 
 let oauth = JSON.parse(fs.readFileSync('key.json')) || {}
 
-const transporter = nodemailer.createTransport({
-  // service: 'gmail.com',
-  host: 'smtp.gmail.com',
-  secure: true,
-  auth: {
-    // user: 'impactpreview@gmail.com',
-    // pass: 'acitesting'
+// const transporter = nodemailer.createTransport({
+//   // service: 'gmail.com',
+//   host: 'smtp.gmail.com',
+//   secure: true,
+//   auth: {
+//     // user: 'impactpreview@gmail.com',
+//     // pass: 'acitesting'
     
-    type: 'OAuth2',
-    user: 'impactpreview@gmail.com',
-    // pass: 'acitesting',
+//     type: 'OAuth2',
+//     user: 'impactpreview@gmail.com',
+//     // pass: 'acitesting',
 
-    // clientId: '158897282442-6eenteahs6scsi3gddci010jojqpm0gj.apps.googleusercontent.com',
-    // clientSecret: 'FF5ZEo3JzYl5Jc-fp0LjYaeO',
-    // refreshToken: '1/VHtGTGCZp1i6phj3NlXi_i2yl89sJDpkQL68jxG8D1k',
-    // accessToken: 'ya29.GlswBfd4mlRfEm8e7OnazSXFJAUM2aXtwS0AU8hKHdr12H8IytT98dxm2OqdttxE7WhQJzSL49AKjJCiCCU0On48TSQ_6XEyqPMjUm1VIZclhYZgH55SCvOzfQ-4',
-    // expires: 1514411290272
+//     // clientId: '158897282442-6eenteahs6scsi3gddci010jojqpm0gj.apps.googleusercontent.com',
+//     // clientSecret: 'FF5ZEo3JzYl5Jc-fp0LjYaeO',
+//     // refreshToken: '1/VHtGTGCZp1i6phj3NlXi_i2yl89sJDpkQL68jxG8D1k',
+//     // accessToken: 'ya29.GlswBfd4mlRfEm8e7OnazSXFJAUM2aXtwS0AU8hKHdr12H8IytT98dxm2OqdttxE7WhQJzSL49AKjJCiCCU0On48TSQ_6XEyqPMjUm1VIZclhYZgH55SCvOzfQ-4',
+//     // expires: 1514411290272
 
-    serviceClient: oauth.client_id,
-    privateKey: oauth.private_key,
-    accessToken: 'who cares',
-    expires: 1484314697598
-  },
-//   tls: {
-//     rejectUnauthorized: false
-// }
+//     serviceClient: oauth.client_id,
+//     privateKey: oauth.private_key,
+//     accessToken: 'who cares',
+//     expires: 1484314697598
+//   },
+// //   tls: {
+// //     rejectUnauthorized: false
+// // }
+// })
+
+const mailTransporter = nodemailer.createTransport({
+  host: 'sub5.mail.dreamhost.com',
+  auth: {user: 'team@myadmindev.xyz', pass: 'Goldfish^2018'},
+  port: 465,
+  secure: true
 })
 
-module.exports = {isLoggedIn, isAdmin, whoAmI, mayI, transporter}
+module.exports = {isLoggedIn, isAdmin, whoAmI, mayI, mailTransporter}

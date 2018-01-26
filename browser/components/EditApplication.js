@@ -17,8 +17,9 @@ export default ({
   handleCheckbox,
   handleChangeCustomer,
   handleChangeInTerm,
+  formatTerm,
+  handleNotify,
   handleNote,
-  formatTerm
 }) => (
   <div className="row edit-apps-page">
 
@@ -697,11 +698,11 @@ export default ({
         <div className="col-sm-12 top">
           <h2>Admin Activity</h2>
         </div>
-        {/* <div className="row">
+        <div className="row">
           <div className="col-sm-12">
-            <div className="rowed-items status">
+            {/* <div className="rowed-items status">
               <div>
-                <label>Status</label>
+                <label>Update Status</label>
               </div>
               <div>
                 <select
@@ -718,9 +719,56 @@ export default ({
                   <option value="Expired">Expired</option>
                 </select>
               </div>
-            </div>
+            </div> */}
+            {values.rep ?
+              <form onSubmit={handleNotify}>
+                <div className="app-bg col-sm-6">
+                <h3>{`Notify ${values.rep.fullName || 'Rep'}`}</h3>
+
+                  <div className="col-sm-6">
+                    <div className="field-label">
+                      <label>To</label>
+                    </div>
+                    <div className="field-box">
+                      <p>{values.rep.email || ''}</p>
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="field-label">
+                      <label>CC</label>
+                    </div>
+                    <div className="field-box">
+                      <input name="mailCC" onChange={handleChange} value={values.mailCC || ''} />
+                    </div>
+                  </div>
+                  <div className="col-sm-12">
+                    <div className="field-label">
+                      <label>Subject</label>
+                    </div>
+                    <div className="field-box">
+                      <input name="mailSubject" onChange={handleChange} value={values.mailSubject || ''}/>
+                    </div>
+                  </div>
+
+                  <div className="col-sm-12">
+                    <div className="field-label">
+                      <label>Message</label>
+                    </div>
+                    <div className="field-desc">
+                      <textarea name="mailBody" onChange={handleChange} value={values.mailBody || ''}></textarea>
+                    </div>
+                  </div>
+
+                  <div className="col-sm-12" align="right">
+                    <button className="send-button">Send</button>
+                  </div>
+
+                </div>
+              </form>
+              : null
+            }
           </div>
-        </div> */}
+        </div>
         <div className="row">
           <div className="app-bg col-sm-8 col-sm-offset-2">
             <form>

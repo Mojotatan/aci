@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const path = require('path')
+const testTransport = require('./server/api/auth.js').testTransport
 
 // var google = require('googleapis');
 // var OAuth2 = google.auth.OAuth2;
@@ -40,17 +41,35 @@ db.sync()
     // Routes
     .use('/api', require('./server/api/api'))
 
-    .get('/auth', (req, res) => {
-      res.send(`<a href=${url}>CLICK ME</a>`)
-    })
+    // .get('/mail', (req, res) => {
+    //   let message = {
+    //     from: 'team@myadmindev.xyz',
+    //     to: 'tatan42@gmail.com',
+    //     subject: 'YOLO',
+    //     text: 'Seriously tho if this worked, hype'
+    //   }
+    //   testTransport.sendMail(message)
+    //   .then((data) => {
+    //     console.log(data)
+    //     res.send(data)
+    //   })
+    //   .catch(err => {
+    //     console.error(err)
+    //     res.send('error!')
+    //   })
+    // })
 
-    .get('/oauth', (req, res) => {
-      console.log('YES', req.query)
-      oauth2Client.getToken(req.query.code, (err, tokens) => {
-        console.log('client', oauth2Client)
-      })
-      res.redirect('/')
-    })
+    // .get('/auth', (req, res) => {
+    //   res.send(`<a href=${url}>CLICK ME</a>`)
+    // })
+
+    // .get('/oauth', (req, res) => {
+    //   console.log('YES', req.query)
+    //   oauth2Client.getToken(req.query.code, (err, tokens) => {
+    //     console.log('client', oauth2Client)
+    //   })
+    //   res.redirect('/')
+    // })
 
     .get('*', (req, res) => {
       res.sendFile(path.resolve(__dirname, './public/index.html'))

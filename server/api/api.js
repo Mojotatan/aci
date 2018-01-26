@@ -9,5 +9,6 @@ api
   .use('/customers', require('./customers'))
   .use('/login', require('./login'))
   .use('/users', require('./users'))
+  .use('/mail', require('./mail'))
 
 api.use((req, res) => res.status(404).end())

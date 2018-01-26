@@ -40,10 +40,10 @@ Images | public/assets/img/
 ## Installation
 
 **How to set up a dev environment**
-1. Get the files
+1. Get the files <!-- make sure to find or create secrets -->
 
 ```
-git clone https://github.com/Mojotatan/aci.git <!-- make sure to find or create secrets -->
+git clone https://github.com/Mojotatan/aci.git
 npm install
 ```
 
@@ -76,10 +76,10 @@ npm run start-dev
 node -v
 ```
 
-3. Get the files
+3. Get the files <!-- make sure to find or create secrets -->
 
 ```
-git clone https://github.com/Mojotatan/aci.git <!-- make sure to find or create secrets -->
+git clone https://github.com/Mojotatan/aci.git
 npm install
 ```
 

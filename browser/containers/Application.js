@@ -15,7 +15,10 @@ class ApplicationContainer extends React.Component {
     this.state = Object.assign({},
       {
         customerCreate: (this.props.app && this.props.app.customer) ? false : true,
-        notifyRep: false
+        notifyRep: false,
+        mailBody: '',
+        mailSubject: '',
+        mailCC: ''
       },
       this.props.app,
     )
@@ -37,6 +40,8 @@ class ApplicationContainer extends React.Component {
     this.handleCheckbox = this.handleCheckbox.bind(this)
 
     this.handleNote = this.handleNote.bind(this)
+
+    this.handleNotify = this.handleNotify.bind(this)
 
   }
 
@@ -164,6 +169,27 @@ class ApplicationContainer extends React.Component {
     })
   }
 
+  handleNotify(e) {
+    e.preventDefault()
+
+    axios.post('/api/mail', {
+      token: this.props.token,
+      // to: this.state.rep.email,
+      to: 'tatan42@gmail.com',
+      cc: this.state.mailCC,
+      subject: this.state.mailSubject,
+      text: this.state.mailBody
+    })
+    .then(res => {
+      if (res.data.accepted) {
+        this.props.throwError('green', 'Message sent')
+        this.setState({mailSubject: '', mailBody: '', mailCC: ''})
+      }
+      else this.props.throwError('red', 'Message not sent')
+      
+    })
+  }
+
 
   componentWillReceiveProps(newProps){
     // console.log('component receiving props')
@@ -204,8 +230,9 @@ class ApplicationContainer extends React.Component {
           handleChangeCustomer={this.handleChangeCustomer}
           handleCheckbox={this.handleCheckbox}
           handleChangeInTerm={this.handleChangeInTerm}
-          handleNote={this.handleNote}
           formatTerm={formatTerm}
+          handleNote={this.handleNote}
+          handleNotify={this.handleNotify}
         />
       </div>
     )
