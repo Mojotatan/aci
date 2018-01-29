@@ -644,150 +644,170 @@ export default ({
         <div className="col-sm-12 top">
           <h2>Admin Activity</h2>
         </div>
-        <div className="row">
-          <div className="col-sm-12">
-            {/* <div className="rowed-items status">
-              <div>
-                <label>Update Status</label>
-              </div>
-              <div>
-                <select
-                onChange={handleChange}
-                name="status"
-                value={values.status}
-                >
-                  <option value="Draft">Draft</option>
-                  <option value="New">New</option>
-                  <option value="Working">Working</option>
-                  <option value="Hold">Hold</option>
-                  <option value="Approved">Approved</option>
-                  <option value="Declined">Declined</option>
-                  <option value="Expired">Expired</option>
-                </select>
-              </div>
-            </div> */}
-            {values.rep ?
-              <form onSubmit={handleNotify}>
-                <div className="app-bg col-sm-6">
-                <h3>{`Notify ${values.rep.fullName || 'Rep'}`}</h3>
-
+        <div className="row mid-gutter">
+          {/* <div className="rowed-items status">
+            <div>
+              <label>Update Status</label>
+            </div>
+            <div>
+              <select
+              onChange={handleChange}
+              name="status"
+              value={values.status}
+              >
+                <option value="Draft">Draft</option>
+                <option value="New">New</option>
+                <option value="Working">Working</option>
+                <option value="Hold">Hold</option>
+                <option value="Approved">Approved</option>
+                <option value="Declined">Declined</option>
+                <option value="Expired">Expired</option>
+              </select>
+            </div>
+          </div> */}
+          <div className="col-sm-6">
+            <div className="app-bg col-sm-12">
+              <form>
+                <div className="row">
+                  <div className="col-sm-12">
+                    <h3>New</h3>
+                  </div>
+                </div>
+                <div className="row">
                   <div className="col-sm-6">
                     <div className="field-label">
-                      <label>To</label>
+                      <label>Leasing Company</label>
                     </div>
                     <div className="field-box">
-                      <p>{values.rep.email || ''}</p>
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="field-label">
-                      <label>CC</label>
+                      <label>Application Number</label>
                     </div>
                     <div className="field-box">
-                      <input name="mailCC" onChange={handleChange} value={values.mailCC || ''} />
                     </div>
                   </div>
-                  <div className="col-sm-12">
+                </div>
+                <div className="row">
+                  <div className="col-sm-6">
                     <div className="field-label">
-                      <label>Subject</label>
+                      <label>Status</label>
                     </div>
                     <div className="field-box">
-                      <input name="mailSubject" onChange={handleChange} value={values.mailSubject || ''}/>
                     </div>
                   </div>
-
+                </div>
+                {/* Conditional fields based on status */}
+                <div className="row">
                   <div className="col-sm-12">
                     <div className="field-label">
-                      <label>Message</label>
+                      <label>Notes</label>
                     </div>
-                    <div className="field-desc">
-                      <textarea name="mailBody" onChange={handleChange} value={values.mailBody || ''}></textarea>
+                    <div className="field-box">
                     </div>
                   </div>
-
-                  <div className="col-sm-12" align="right">
-                    <button
-                      className={`send-button${(values.mailDisabled) ? ' disabled' : ''}`}
-                      disabled={values.mailDisabled}
-                    >Send</button>
-                  </div>
-
                 </div>
               </form>
-              : null
-            }
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="app-bg col-sm-8 col-sm-offset-2">
-            <form>
-              <div className="col-sm-12">
-                <h3>New</h3>
+
+          {values.rep ?
+            <div className="col-sm-6">
+              <div className="app-bg col-sm-12">
+                <form onSubmit={handleNotify}>
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <h3>{`Notify ${values.rep.fullName || 'Rep'}`}</h3>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="field-label">
+                        <label>To</label>
+                      </div>
+                      <div className="field-box">
+                        <p>{values.rep.email || ''}</p>
+                      </div>
+                    </div>
+                    <div className="col-sm-6">
+                      <div className="field-label">
+                        <label>CC</label>
+                      </div>
+                      <div className="field-box">
+                        <input name="mailCC" onChange={handleChange} value={values.mailCC || ''} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <div className="field-label">
+                        <label>Subject</label>
+                      </div>
+                      <div className="field-box">
+                        <input name="mailSubject" onChange={handleChange} value={values.mailSubject || ''}/>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <div className="field-label">
+                        <label>Message</label>
+                      </div>
+                      <div className="field-desc">
+                        <textarea name="mailBody" onChange={handleChange} value={values.mailBody || ''}></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-sm-12" align="right">
+                      <button
+                        className={`send-button${(values.mailDisabled) ? ' disabled' : ''}`}
+                        disabled={values.mailDisabled}
+                      >Send</button>
+                    </div>
+                  </div>
+
+                </form>
               </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="field-label">
-                    <label>Leasing Company</label>
-                  </div>
-                  <div className="field-box">
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="field-label">
-                    <label>Application Number</label>
-                  </div>
-                  <div className="field-box">
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="field-label">
-                    <label>Status</label>
-                  </div>
-                  <div className="field-box">
-                  </div>
-                </div>
-              </div>
-              {/* Conditional fields based on status */}
-              <div className="row">
-                <div className="col-sm-12">
-                  <div className="field-label">
-                    <label>Notes</label>
-                  </div>
-                  <div className="field-box">
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+            </div>
+            : <p>ERROR: There is no rep associated with this app</p>
+          }
         </div>
         <div className="row">
           <div className="col-sm-12 no-gutters">
             <div className="flux-table app-table">
               <div className="flux-top">
-                <div className="thicc">Activity</div>
-                <div className="thicc">User</div>
-                <div>Date</div>
-                <div className="thicc">Leasing Company</div>
-                <div className="thicc">Application Number</div>
-                <div>Status</div>
-                <div>Notes</div>
-                <div></div>
-                <div></div>
+                <div>
+                  <div className="thicc">Activity</div>
+                  <div className="thicc">User</div>
+                  <div>Date</div>
+                  <div className="thicc">Leasing Company</div>
+                  <div className="thicc">Application Number</div>
+                  <div>Status</div>
+                  <div>Notes</div>
+                  <div></div>
+                  <div></div>
+                </div>
               </div>
               {values.actions.map((action, index) => (
                 <div key={action.id} className={(index % 2 === 0) ? 'even' : 'odd'}>
-                  <div className="thicc">{action.activity || ''}</div>
-                  <div className="thicc">{action.admin.email || ''}</div>
-                  <div>{reformatDate(action.date) || ''}</div>
-                  <div className="thicc">{action.leasingCompany || ''}</div>
-                  <div className="thicc">{action.appNumber || ''}</div>
-                  <div>{action.status || ''}</div>
-                  <div id={index} onClick={handleNote} className='edit'>{(action.show) ? 'Hide' : 'View'}</div>
-                  <div className='edit' onClick={handleChangeAction}>Edit</div>
-                  <div className='edit' onClick={handleDelete}>Delete</div>
-                  {(action.show) ? <div className="notes">{action.notes || ''}</div> : null}
+                  <div className={(action.show) ? 'retracted extended' : 'retracted'}>
+                    <div className="thicc">{action.activity || ''}</div>
+                    <div className="thicc">{action.admin.email || ''}</div>
+                    <div>{reformatDate(action.date) || ''}</div>
+                    <div className="thicc">{action.leasingCompany || ''}</div>
+                    <div className="thicc">{action.appNumber || ''}</div>
+                    <div>{action.status || ''}</div>
+                    <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div>
+                    <div className="edit" onClick={handleChangeAction}>Edit</div>
+                    <div className="edit" onClick={handleDelete}>Delete</div>
+                    <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }>{action.notes || ''}</div>
+                  </div>
                 </div>
               ))}
             </div>

@@ -375,10 +375,10 @@ input, textarea {
 	background-color: #f0f7fb;
 	border-bottom: 1px solid black
 }
-.flux-table > .flux-top > div {
+.flux-table > .flux-top > div > div {
 	font-weight: bold
 }
-.flux-table > div > div {
+.flux-table > div > div > div {
 	display: inline-block;
 	width: 8%;
 	padding-top: 16px;
@@ -386,14 +386,33 @@ input, textarea {
 	padding-left: 5px
 	/* padding-right */
 }
-.flux-table > div > .thicc {
+.flux-table .thicc {
 	width: 15%
 }
 .flux-table .notes {
 	display: block;
-	width: 84%;
+	width: 68%;
+	margin-left: 16%;
 	text-align: right;
-	padding-right: 5px
+	padding-right: 5px;
+	padding-top: 0
+}
+.retracted {
+	width: 100%;
+	height: 54px;
+	overflow-y: hidden
+}
+.retracted.extended {
+	height: auto;
+}
+
+.notes.retracted {
+	transform: scaleY(0);
+	transform-origin: top;
+	transition: transform .15s
+}
+.notes.retracted.extended {
+	transform: scaleY(1)
 }
 
 .index-number {
@@ -627,6 +646,18 @@ input, textarea {
 button.disabled {
 	background-color: #e2e7ee !important;
 	cursor: not-allowed
+}
+.mid-gutter > * {
+	padding-left: 0;
+	padding-right: 15px
+}
+.mid-gutter > * + * {
+	padding-left: 15px;
+	padding-right: 0
+}
+.admin .mid-gutter .app-bg {
+	padding-bottom: 15px;
+	margin-bottom: 30px
 }
 
 /* Universal */
