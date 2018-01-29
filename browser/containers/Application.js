@@ -43,7 +43,7 @@ class ApplicationContainer extends React.Component {
     this.handleNotify = this.handleNotify.bind(this)
     
     this.handleNote = this.handleNote.bind(this)
-    this.handleEdit = this.handleEdit.bind(this)
+    this.handleChangeAction = this.handleChangeAction.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
 
   }
@@ -164,14 +164,6 @@ class ApplicationContainer extends React.Component {
   }
 
   // For Admin section
-  handleNote(e) {
-    let actions = Array.from(this.state.actions)
-    actions[Number(e.target.id)].show = (actions[Number(e.target.id)].show) ? false : true
-    this.setState({
-      actions
-    })
-  }
-
   handleNotify(e) {
     e.preventDefault()
 
@@ -196,6 +188,22 @@ class ApplicationContainer extends React.Component {
       else this.props.throwError('red', 'Message not sent')
       
     })
+  }
+
+  handleNote(e) {
+    let actions = Array.from(this.state.actions)
+    actions[Number(e.target.id)].show = (actions[Number(e.target.id)].show) ? false : true
+    this.setState({
+      actions
+    })
+  }
+
+  handleChangeAction(e) {
+
+  }
+
+  handleDelete(e) {
+
   }
 
 
@@ -241,7 +249,7 @@ class ApplicationContainer extends React.Component {
           formatTerm={formatTerm}
           handleNotify={this.handleNotify}
           handleNote={this.handleNote}
-          handleEdit={this.handleEdit}
+          handleChangeAction={this.handleChangeAction}
           handleDelete={this.handleDelete}
         />
       </div>

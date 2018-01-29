@@ -20,7 +20,7 @@ export default ({
   formatTerm,
   handleNotify,
   handleNote,
-  handleEdit,
+  handleChangeAction,
   handleDelete
 }) => (
   <div className="row edit-apps-page">
@@ -841,7 +841,7 @@ export default ({
                   <div className="thicc">{action.appNumber || ''}</div>
                   <div>{action.status || ''}</div>
                   <div id={index} onClick={handleNote} className='edit'>{(action.show) ? 'Hide' : 'View'}</div>
-                  <div className='edit' onClick={handleEdit}>Edit</div>
+                  <div className='edit' onClick={handleChangeAction}>Edit</div>
                   <div className='edit' onClick={handleDelete}>Delete</div>
                   {(action.show) ? <div className="notes">{action.notes || ''}</div> : null}
                 </div>

@@ -7,9 +7,9 @@ module.exports = db => db.define('Lease', {
   company: {
     type: Sequelize.STRING
   },
-  amount: {
-    type: Sequelize.DECIMAL(9, 2) // overflows at 10 million
-  },
+  // amount: {
+  //   type: Sequelize.DECIMAL(9, 2) // overflows at 10 million
+  // },
   quote: {
     type: Sequelize.ENUM('Full', 'Partial'),
     defaultValue: 'Full'
