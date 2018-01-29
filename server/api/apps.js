@@ -101,7 +101,6 @@ module.exports = require('express').Router()
   })
 
   .put('/', isLoggedIn, (req, res) => {
-    // mayI(req.body.token, req.body.app.id)
     let me = whoAmI(req.body.token)
     let app = (req.body.app.id === 'new') ?
       Application.create({
@@ -113,20 +112,12 @@ module.exports = require('express').Router()
         advancedPayments: req.body.app.advancedPayments,
         endOfTerm: req.body.app.endOfTerm,
         type: req.body.app.type,
+        existingType: req.body.app.existingType,
+        existingCustomer: req.body.app.existingCustomer,
         leaseCompany: req.body.app.leaseCompany,
         leaseNumber: req.body.app.leaseNumber,
-        approvalNumber: req.body.app.approvalNumber,
-        approvalDate: req.body.app.approvalDate,
-        approvalFrom: req.body.app.approvalFrom,
         funding: req.body.app.funding,
         repRate: req.body.app.repRate,
-        everBank: req.body.app.everBank,
-        ge: req.body.app.ge,
-        cit: req.body.app.cit,
-        unifiFred: req.body.app.unifiFred,
-        dll: req.body.app.dll,
-        usb: req.body.app.usb,
-        emr: req.body.app.emr,
         comments: req.body.app.comments,
         repId: me.id
       })
@@ -139,20 +130,12 @@ module.exports = require('express').Router()
         advancedPayments: req.body.app.advancedPayments,
         endOfTerm: req.body.app.endOfTerm,
         type: req.body.app.type,
+        existingType: req.body.app.existingType,
+        existingCustomer: req.body.app.existingCustomer,
         leaseCompany: req.body.app.leaseCompany,
         leaseNumber: req.body.app.leaseNumber,
-        approvalNumber: req.body.app.approvalNumber,
-        approvalDate: req.body.app.approvalDate,
-        approvalFrom: req.body.app.approvalFrom,
         funding: req.body.app.funding,
         repRate: req.body.app.repRate,
-        everBank: req.body.app.everBank,
-        ge: req.body.app.ge,
-        cit: req.body.app.cit,
-        unifiFred: req.body.app.unifiFred,
-        dll: req.body.app.dll,
-        usb: req.body.app.usb,
-        emr: req.body.app.emr,
         comments: req.body.app.comments,
       }, {
       where: {

@@ -94,7 +94,7 @@ const generateDealers = () => {
 const generateApplications = () => {
   let arr = []
   
-  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, type, leaseCompany, leaseNumber, approvalNumber, approvalDate, approvalFrom, funding, repRate, everBank, ge, cit, unifiFred, dll, usb, emr, comments) => {
+  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, type, existingType, existingCustomer, leaseCompany, leaseNumber, funding, repRate, comments) => {
     arr.push(Application.build({
       'status': status,
       'date': date,
@@ -104,33 +104,25 @@ const generateApplications = () => {
       'advancedPayments': advancedPayments,
       'endOfTerm': endOfTerm,
       'type': type,
+      'existingType': existingType,
+      'existingCustomer': existingCustomer,
       'leaseCompany': leaseCompany,
       'leaseNumber': leaseNumber,
-      'approvalNumber': approvalNumber,
-      'approvalDate': approvalDate,
-      'approvalFrom': approvalFrom,
       'funding': funding,
       'repRate': repRate,
-      'everBank': everBank,
-      'ge': ge,
-      'cit': cit,
-      'unifiFred': unifiFred,
-      'dll': dll,
-      'usb': usb,
-      'emr': emr,
       'comments': comments
     }))
   }
 
-  builder('Draft', '2017-11-26', 20, '2018-02-04', '24', '1', 'FMV', 'New Customer', ['EverBank'], ['12345'], '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('Draft', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
 
-  builder('New', '1998-11-26', 20.20, '2018-02-04', '24', '1', 'FMV', 'Existing Customer Addition', ['EverBank'], ['12345'], '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('New', '1998-11-26', 20.20, '2018-02-04', '24', '2', 'FMV', 'Existing', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
 
-  builder('Hold', '2017-11-26', 20, '2024-02-04', '24', '1', 'FMV', 'New Customer', ['EverBank'], ['12345'], '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('Hold', '2017-11-26', 20, '2024-02-04', '24', '2', 'FMV', 'New', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
 
-  builder('Approved', '2017-11-26', 20, '2018-02-04', '24', '1', 'FMV', 'New Customer', ['EverBank'], ['12345'], '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('Approved', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
 
-  builder('Declined', '2017-11-26', 20, '2018-02-04', '24', '1', 'FMV', 'New Customer', ['EverBank'], ['12345'], '2', '2017-12-25', 'bob', 30.45, '2%', '', '', '', '', '', '', '', 'no comment')
+  builder('Declined', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
 
   return arr
 }
@@ -223,20 +215,19 @@ const generateBuyouts = () => {
 const generateLeases = () => {
   let arr = []
   
-  const builder = (number, company, amount, quote) => {
+  const builder = (number, company, quote) => {
     arr.push(Lease.build({
       'number': number,
       'company': company,
-      'amount': amount,
       'quote': quote
     }))
   }
 
-  builder(1234456789, 'Wells Fargo', 45345.12, 'Full')
+  builder(1234456789, 'Wells Fargo', 'Full')
 
-  builder(1234456789, 'Wells Fargo', 45345.12, 'Partial')
+  builder(1234456789, 'Wells Fargo', 'Partial')
 
-  builder(1234456789, 'Wells Fargo', 45345.12, 'Partial')
+  builder(1234456789, 'Wells Fargo', 'Partial')
 
   return arr
 }

@@ -133,11 +133,11 @@ export default ({
                     id="type-0"
                     onChange={handleChange}
                     name="type"
-                    value="New Customer"
-                    className={(values.type === 'New Customer') ?
+                    value="New"
+                    className={(values.type === 'New') ?
                       "on" : ""
                     }
-                    checked={(values.type === 'New Customer') ?
+                    checked={(values.type === 'New') ?
                       true : false
                     }
                   />
@@ -148,30 +148,15 @@ export default ({
                     id="type-1"
                     onChange={handleChange}
                     name="type"
-                    value="Existing Customer Addition"
-                    className={(values.type === 'Existing Customer Addition') ?
+                    value="Existing"
+                    className={(values.type === 'Existing') ?
                       "on" : ""
                     }
-                    checked={(values.type === 'Existing Customer Addition') ?
+                    checked={(values.type === 'Existing') ?
                       true : false
                     }
                   />
-                  <label htmlFor="type-1">Existing Customer Addition</label>
-
-                  <input
-                    type="radio"
-                    id="type-2"
-                    onChange={handleChange}
-                    name="type"
-                    value="Existing Customer Upgrade"
-                    className={(values.type === 'Existing Customer Upgrade') ?
-                      "on" : ""
-                    }
-                    checked={(values.type === 'Existing Customer Upgrade') ?
-                      true : false
-                    }
-                  />
-                  <label htmlFor="type-2">Existing Customer Upgrade</label>
+                  <label htmlFor="type-1">Existing Customer</label>
                 </div>
                 :
                 <p>{values.type || ''}</p>
@@ -179,7 +164,7 @@ export default ({
             </div>
           </div>
 
-          {(values.type === 'Existing Customer Upgrade' && values.leaseCompany && values.leaseNumber) ?
+          {(values.type === 'Existing' && values.leaseCompany && values.leaseNumber) ?
             <div className="row leeses-pieces">
               <div className="col-sm-12">
                 <div className="col-sm-5 col-sm-offset-1"><label>Lease Number</label></div>
@@ -607,47 +592,6 @@ export default ({
           {/* awaiting rework */}
           {/* {(admin) ?
             <div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="field-label">
-                    <label>Approval Number</label>
-                  </div>
-                  <div className="field-box">
-                    <input
-                      onChange={handleChange}
-                      name={'approvalNumber'}
-                      value={values.approvalNumber || ''}
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="field-label">
-                    <label>Approval Date</label>
-                  </div>
-                  <div className="field-box">
-                    <input
-                      onChange={handleChange}
-                      name={'approvalDate'}
-                      value={values.approvalDate || ''}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-sm-12">
-                  <div className="field-label">
-                    <label>Approval From</label>
-                  </div>
-                  <div className="field-box">
-                    <input
-                      onChange={handleChange}
-                      name={'approvalFrom'}
-                      value={values.approvalFrom || ''}
-                    />
-                  </div>
-                </div>
-              </div>
 
               <div className="row">
                 <div className="col-sm-6">

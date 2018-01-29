@@ -34,9 +34,17 @@ module.exports = db => db.define('Application', {
     defaultValue: 'FMV'
   },
   type: {
-    type: Sequelize.ENUM('New Customer', 'Existing Customer Addition', 'Existing Customer Upgrade'),
-    defaultValue: 'New Customer'
+    type: Sequelize.ENUM('New', 'Existing'),
+    defaultValue: 'New'
   },
+  existingType: { // only relevant if type is set to 'Existing'
+    type: Sequelize.ENUM('Addition', 'Upgrade'),
+    defaultValue: 'Addition'
+  },
+  existingCustomer: { // only relevant if type is set to 'Existing'
+    type: Sequelize.STRING
+  },
+  
 
   // I didn't see a need for the leases attached to apps to be actual lease entries on the db,
   // so for now they are just arrays on the app table. This might change in the future.
