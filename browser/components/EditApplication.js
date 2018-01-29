@@ -20,6 +20,8 @@ export default ({
   formatTerm,
   handleNotify,
   handleNote,
+  handleEdit,
+  handleDelete
 }) => (
   <div className="row edit-apps-page">
 
@@ -410,7 +412,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
-                <label>Deal Size</label>
+                <label>Estimated Deal Size</label>
               </div>
               <div className="field-box monetary">
                 {(admin || values.status === 'Draft') ?
@@ -760,7 +762,10 @@ export default ({
                   </div>
 
                   <div className="col-sm-12" align="right">
-                    <button className="send-button">Send</button>
+                    <button
+                      className={`send-button${(values.mailDisabled) ? ' disabled' : ''}`}
+                      disabled={values.mailDisabled}
+                    >Send</button>
                   </div>
 
                 </div>
@@ -836,8 +841,8 @@ export default ({
                   <div className="thicc">{action.appNumber || ''}</div>
                   <div>{action.status || ''}</div>
                   <div id={index} onClick={handleNote} className='edit'>{(action.show) ? 'Hide' : 'View'}</div>
-                  <div className='edit'>Edit</div>
-                  <div className='edit'>Delete</div>
+                  <div className='edit' onClick={handleEdit}>Edit</div>
+                  <div className='edit' onClick={handleDelete}>Delete</div>
                   {(action.show) ? <div className="notes">{action.notes || ''}</div> : null}
                 </div>
               ))}

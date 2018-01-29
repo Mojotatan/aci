@@ -624,6 +624,10 @@ input, textarea {
 	line-height: 24px;
 	background-color: #4490e4;
 }
+button.disabled {
+	background-color: #e2e7ee !important;
+	cursor: not-allowed
+}
 
 /* Universal */
 .agent-box {

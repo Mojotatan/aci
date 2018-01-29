@@ -18,7 +18,8 @@ class ApplicationContainer extends React.Component {
         notifyRep: false,
         mailBody: '',
         mailSubject: '',
-        mailCC: ''
+        mailCC: '',
+        mailDisabled: false
       },
       this.props.app,
     )
@@ -39,9 +40,11 @@ class ApplicationContainer extends React.Component {
 
     this.handleCheckbox = this.handleCheckbox.bind(this)
 
-    this.handleNote = this.handleNote.bind(this)
-
     this.handleNotify = this.handleNotify.bind(this)
+    
+    this.handleNote = this.handleNote.bind(this)
+    this.handleEdit = this.handleEdit.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
 
   }
 
@@ -123,13 +126,13 @@ class ApplicationContainer extends React.Component {
       this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], [this.state.customer])
     }
 
-    if (this.state.notifyRep) {
-      console.log('notifying rep!')
-      axios.post('/api/apps/email', {token: this.props.token, rep: this.state.rep, customer: this.state.customer})
-      .then(res => {
-        console.log('mail sent', res.data)
-      })
-    }
+    // if (this.state.notifyRep) {
+    //   console.log('notifying rep!')
+    //   axios.post('/api/apps/email', {token: this.props.token, rep: this.state.rep, customer: this.state.customer})
+    //   .then(res => {
+    //     console.log('mail sent', res.data)
+    //   })
+    // }
 
     this.setState({
       notifyRep: false
@@ -172,15 +175,20 @@ class ApplicationContainer extends React.Component {
   handleNotify(e) {
     e.preventDefault()
 
+    this.setState({mailDisabled: true})
+
     axios.post('/api/mail', {
       token: this.props.token,
       // to: this.state.rep.email,
       to: 'tatan42@gmail.com',
-      cc: this.state.mailCC,
+      cc: this.state.mailCC.split(', '),
       subject: this.state.mailSubject,
       text: this.state.mailBody
     })
     .then(res => {
+      console.log('accepted:', res.data.accepted)
+      console.log('rejected:', res.data.rejected)
+      this.setState({mailDisabled: false})
       if (res.data.accepted) {
         this.props.throwError('green', 'Message sent')
         this.setState({mailSubject: '', mailBody: '', mailCC: ''})
@@ -231,8 +239,10 @@ class ApplicationContainer extends React.Component {
           handleCheckbox={this.handleCheckbox}
           handleChangeInTerm={this.handleChangeInTerm}
           formatTerm={formatTerm}
-          handleNote={this.handleNote}
           handleNotify={this.handleNotify}
+          handleNote={this.handleNote}
+          handleEdit={this.handleEdit}
+          handleDelete={this.handleDelete}
         />
       </div>
     )
