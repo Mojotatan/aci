@@ -14,7 +14,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_USERS:
       newState.users = action.users
-      if (newState.sort && newState.users) newState.users.sort(sortBy(newState.sort))
+      if (newState.sort && Array.isArray(newState.users)) newState.users.sort(sortBy(newState.sort))
       return newState
     case FOCUS_USER:
       newState.focus = action.index
@@ -26,7 +26,7 @@ const reducer = (prevState = initialState, action) => {
       return newState
     case SORT_USERS:
       newState.sort = action.field
-      if (newState.users) newState.users.sort(sortBy(action.field))
+      if (Array.isArray(newState.users)) newState.users.sort(sortBy(action.field))
       return newState
     case FLUSH_USERS:
       newState.users = []

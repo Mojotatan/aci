@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const Op = require('sequelize').Op
-const {User, Dealer, Region, Branch, Application, Guarantee} = require('../db').db.models
+const {User} = require('../db').db.models
 const jwt = require('jsonwebtoken')
 const {isAdmin, mailTransporter} = require('./auth')
 const bcrypt = require('bcrypt')
@@ -10,17 +10,7 @@ const cert = fs.readFileSync('.reamde')
 
 module.exports = require('express').Router()
 
-  .get('/reset', (req, res) => {
-    let valid = jwt.verify(req.query.access_token, cert)
-    console.log('valid?', valid)
-    if (!valid) {
-      console.error(err)
-      res.send('Invalid token')
-    } else {
-      res.render('reset.html', {user: valid.user})
-    }
-  })
-
+  // 1st step to reset password: trigger email to account which contains an access token
   .post('/forgot', (req, res) => {
     // expecting an email address in req.body
     User.findOne({
@@ -44,7 +34,7 @@ module.exports = require('express').Router()
           to: 'tatan42@gmail.com',
           subject: 'Password Reset',
           // text: usr.email,
-          html: new Buffer(contents)
+          html: contents
         }
         mailTransporter.sendMail(message)
         .then(data => {
@@ -58,6 +48,46 @@ module.exports = require('express').Router()
     .catch(err => console.error(err))
   })
 
+  // 2nd step to reset password: get new password from user
+  .get('/reset', (req, res) => {
+    let valid = jwt.verify(req.query.access_token, cert)
+    console.log('valid?', valid)
+    if (!valid) {
+      console.error(err)
+      res.send('Invalid token')
+    } else {
+      res.render('resetForm.html', {user: valid.user, url: '/api/reset?access_token=' + req.query.access_token})
+    }
+  })
+
+  // 3rd step to reset password: save new password to db
+  .post('/reset', (req, res) => {
+    let valid = jwt.verify(req.query.access_token, cert)
+    if (!valid) {
+      console.error(err)
+      res.send('Invalid token')
+    } else {
+      console.log(valid)
+      User.update({
+        pwHash: bcrypt.hashSync(req.body.new_pw, 10)
+      }, {
+        where: {
+          email: {
+            [Op.eq]: valid.user
+          }
+        }
+      })
+      .then(success => {
+        res.render('resetSuccess.html')
+      })
+      .catch(err => {
+        console.error(err)
+        res.send(`Something went wrong<br>${err}<br>Please try again later<br><a href="/">Home</a>`)
+      })
+    }
+  })
+
+  // login validation
   .post('*', (req, res) => {
     let account
     User.findOne({

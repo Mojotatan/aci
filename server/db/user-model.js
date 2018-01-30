@@ -24,7 +24,9 @@ module.exports = db => db.define('User', {
       isEmail: true,
     },
     get() {
-      return this.getDataValue('email').toLowerCase()
+      let email = this.getDataValue('email')
+      // without ternary this was causing errors on password resets for some reason
+      return (email) ? email.toLowerCase() : email
     },
     set(val) {
       return this.setDataValue('email', val.toLowerCase())
