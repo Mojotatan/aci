@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import Alert from '../components/Alert'
 
-import {handleError} from '../store/error-reducer'
+import {handleAlert} from '../store/alert-reducer'
 
 class AlertContainer extends React.Component {
   constructor(props) {
@@ -15,22 +15,22 @@ class AlertContainer extends React.Component {
   }
 
   handleClose(e) {
-    this.props.handleError()
+    this.props.handleAlert()
   }
 
   render() {
     return(
-      <Alert errors={this.props.errors} handleClose={this.handleClose} />
+      <Alert alerts={this.props.alerts} handleClose={this.handleClose} />
     )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    errors: state.err.errQueue
+    alerts: state.alert.alertQueue
   }
 }
 
-const mapDispatchToProps = {handleError}
+const mapDispatchToProps = {handleAlert}
 
 export default connect(mapStateToProps, mapDispatchToProps)(AlertContainer)

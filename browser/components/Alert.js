@@ -1,16 +1,16 @@
 import React from 'react'
 
-export default ({errors, handleClose}) => (
+export default ({alerts, handleClose}) => (
   <div className="alert-box">
-    {errors.map((err, index) => (
+    {alerts.map((alert, index) => (
       <div
-        className={`${err.color}-alert`}
+        className={`${alert.color}-alert`}
         key={`alert-${index}`}
         onClick={handleClose}
       >
-        <img className="left" src={`/assets/img/${(err.color === 'red') ? 'Cross' : 'Check'}_Circle.svg`}/>
-        {err.message}
-        <img className="right" src="/assets/img/Cross_(Error).svg"/>
+        <img className="left" src={`/assets/img/${(alert.color === 'red') ? 'Cross' : 'Check'}_Circle.svg`}/>
+        {alert.message}
+        <img className="right" src="/assets/img/Cross_(error).svg"/>
       </div>
     ))}
   </div>

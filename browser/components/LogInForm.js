@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default ({handleChange, handleSubmit}) => (
-  <div className="col-sm-8 col-sm-offset-2">
+export default ({handleChange, handleSubmit, handleControl}) => (
+  <div className="login col-sm-8 col-sm-offset-2">
     <form className="field-label" onSubmit={handleSubmit}>
       <div className="app-bg">
         <h3>Agent Login</h3>
@@ -20,7 +20,10 @@ export default ({handleChange, handleSubmit}) => (
         />
       </div>
       <br />
-      <button align="right" id="submit-button" type="submit">Login</button>
+      <div className="bottom-buttons">
+        <span align="left" onClick={handleControl}>I forgot my password</span>
+        <button align="right" id="submit-button" type="submit">Login</button>
+      </div>
     </form>
   </div>
 )

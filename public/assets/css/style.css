@@ -105,6 +105,24 @@ input, textarea {
 	text-decoration: underline !important;
 }
 
+.login .bottom-buttons {
+	width: 100%
+}
+.login .bottom-buttons span {
+	position: absolute;
+	left: 15px;
+	color: #2EA2F8;
+	cursor: pointer
+}
+.login .bottom-buttons span:hover {
+	text-decoration: underline;
+	color: #2EA2F8
+}
+.login .bottom-buttons button {
+	position: absolute;
+	right: 15px
+}
+
 /* Menu */
 .nav-bottom-bar {
 	margin-top: 32px;

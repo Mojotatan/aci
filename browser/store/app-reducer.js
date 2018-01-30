@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import {loadCustomersThunk} from './customer-reducer'
-import {throwError} from './error-reducer'
+import {throwAlert} from './alert-reducer'
 
 import {sortBy} from '../utility'
 
@@ -95,10 +95,10 @@ export const saveAppThunk = (token, app, customer) => {
     .then(res => {
       if (res.data.err) {
         console.error(res.data.err)
-        dispatch(throwError('red', 'There was an error with your application'))
+        dispatch(throwAlert('red', 'There was an error with your application'))
       }
       else {
-        dispatch(throwError('green', `Your application has been ${(appArgs.status === 'Submitted' && app[0].status === 'Draft') ? 'submitted' : 'saved'}`))
+        dispatch(throwAlert('green', `Your application has been ${(appArgs.status === 'Submitted' && app[0].status === 'Draft') ? 'submitted' : 'saved'}`))
         if (appArgs.id === 'new') {
           dispatch(sortApps(['id']))
         }

@@ -5,7 +5,7 @@ import axios from 'axios'
 import EditApplication from '../components/EditApplication'
 
 import {saveAppThunk, createApp} from '../store/app-reducer'
-import {throwError} from '../store/error-reducer'
+import {throwAlert} from '../store/alert-reducer'
 
 import {getDate, checkFor$} from '../utility'
 
@@ -146,7 +146,7 @@ class ApplicationContainer extends React.Component {
     // verification
     // let required = ['name', 'street', 'city', 'state', 'zip', 'phone', 'email']
     if (!this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone || !this.state.customer.email) {
-      this.props.throwError('red', 'Please fill in all required fields')
+      this.props.throwAlert('red', 'Please fill in all required fields')
     } else {
 
       if (this.state.customerCreate) {
@@ -182,10 +182,10 @@ class ApplicationContainer extends React.Component {
       console.log('rejected:', res.data.rejected)
       this.setState({mailDisabled: false})
       if (res.data.accepted) {
-        this.props.throwError('green', 'Message sent')
+        this.props.throwAlert('green', 'Message sent')
         this.setState({mailSubject: '', mailBody: '', mailCC: ''})
       }
-      else this.props.throwError('red', 'Message not sent')
+      else this.props.throwAlert('red', 'Message not sent')
       
     })
   }
@@ -266,6 +266,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {saveAppThunk, createApp, throwError}
+const mapDispatchToProps = {saveAppThunk, createApp, throwAlert}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationContainer)

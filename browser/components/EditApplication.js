@@ -794,22 +794,27 @@ export default ({
                   <div></div>
                 </div>
               </div>
-              {values.actions.map((action, index) => (
-                <div key={action.id} className={(index % 2 === 0) ? 'even' : 'odd'}>
-                  <div className={(action.show) ? 'retracted extended' : 'retracted'}>
-                    <div className="thicc">{action.activity || ''}</div>
-                    <div className="thicc">{action.admin.email || ''}</div>
-                    <div>{reformatDate(action.date) || ''}</div>
-                    <div className="thicc">{action.leasingCompany || ''}</div>
-                    <div className="thicc">{action.appNumber || ''}</div>
-                    <div>{action.status || ''}</div>
-                    <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div>
-                    <div className="edit" onClick={handleChangeAction}>Edit</div>
-                    <div className="edit" onClick={handleDelete}>Delete</div>
-                    <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }>{action.notes || ''}</div>
+              
+              {(values.actions && values.actions.length > 0) ?
+                values.actions.map((action, index) => (
+                  <div key={action.id} className={(index % 2 === 0) ? 'even' : 'odd'}>
+                    <div className={(action.show) ? 'retracted extended' : 'retracted'}>
+                      <div className="thicc">{action.activity || ''}</div>
+                      <div className="thicc">{action.admin.email || ''}</div>
+                      <div>{reformatDate(action.date) || ''}</div>
+                      <div className="thicc">{action.leasingCompany || ''}</div>
+                      <div className="thicc">{action.appNumber || ''}</div>
+                      <div>{action.status || ''}</div>
+                      <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div>
+                      <div className="edit" onClick={handleChangeAction}>Edit</div>
+                      <div className="edit" onClick={handleDelete}>Delete</div>
+                      <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }>{action.notes || ''}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+                :
+                  <div className="even"><div className="retracted"></div></div>
+              }
             </div>
           </div>
         </div>

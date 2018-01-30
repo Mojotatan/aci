@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import {loadCustomersThunk} from './customer-reducer'
-import {throwError} from './error-reducer'
+import {throwAlert} from './alert-reducer'
 
 import {sortBy} from '../utility'
 
@@ -89,9 +89,9 @@ export const saveUserThunk = (token, user) => {
     return axios.put('/api/users', {token, user: filterUser})
     .then(res => {
       console.log(res.data.err)
-      if (res.data.err) dispatch(throwError('red', 'There was an error with your changes'))
+      if (res.data.err) dispatch(throwAlert('red', 'There was an error with your changes'))
       else {
-        dispatch(throwError('green', 'Your changes have been saved'))
+        dispatch(throwAlert('green', 'Your changes have been saved'))
         if (user.id === 'new') {
           dispatch(sortUsers(['id']))
         }

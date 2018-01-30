@@ -30,6 +30,7 @@
     "mysql2": "^1.5.1",
     "nodemailer": "^4.4.1",
     "nodemon": "^1.14.2",
+    "nunjucks": "^3.0.1",
     "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",
     "react": "^16.1.1",

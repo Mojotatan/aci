@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   branch: require('./branch-reducer').default,
   region: require('./region-reducer').default,
   customer: require('./customer-reducer').default,
-  err: require('./error-reducer').default
+  alert: require('./alert-reducer').default
 })
 
 export default rootReducer

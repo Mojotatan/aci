@@ -10,10 +10,11 @@ import {loadBranchesThunk, flushBranches} from '../store/branch-reducer'
 import {loadRegionsThunk, flushRegions} from '../store/region-reducer'
 import {loadCustomersThunk, flushCustomers} from '../store/customer-reducer'
 import {loadUsersThunk, flushUsers} from '../store/users-reducer'
-import {throwError} from '../store/error-reducer'
+import {throwAlert} from '../store/alert-reducer'
 
 import Header from '../components/Header'
 import LogInForm from '../components/LogInForm'
+import ResetForm from '../components/ResetForm'
 
 import axios from 'axios'
 
@@ -21,11 +22,14 @@ class LogInContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: "",
-      password: ""
+      username: '',
+      password: '',
+      reset: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleReset = this.handleReset.bind(this)
+    this.handleControl = this.handleControl.bind(this)
     this.logOut = this.logOut.bind(this)
   }
 
@@ -38,6 +42,7 @@ class LogInContainer extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     // console.log('u: ' + this.state.username, 'p: ' + this.state.password)
+    this.setState({password: ''})
     axios.post('/api/login', {u: this.state.username.toLowerCase(), pw: this.state.password})
     .then((res) => {
       // console.log('promise achieved', res.data)
@@ -54,10 +59,26 @@ class LogInContainer extends React.Component {
         this.props.history.push('/applications')
       }
       else {
-        this.props.throwError('red', res.data)
+        this.props.throwAlert('red', res.data)
       }
     })
     .catch(err => console.error(err))
+  }
+
+  handleControl(e) {
+    e.preventDefault()
+    this.setState({reset: !this.state.reset})
+  }
+
+  handleReset(e) {
+    e.preventDefault()
+
+    axios.post('/api/login/forgot', {email: this.state.username})
+    .then(res => {
+      this.props.throwAlert(...res.data.message)
+    })
+    .catch(err => console.error(err))
+
   }
 
   logOut(e) {
@@ -80,7 +101,21 @@ class LogInContainer extends React.Component {
     return (
       <div>
         <Header user={this.props.user} logOut={this.logOut} />
-        {(!this.props.token) ? <LogInForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} /> : null}
+        {(!this.props.token) ?
+          (this.state.reset) ?
+            <ResetForm
+              handleChange={this.handleChange}
+              handleSubmit={this.handleReset}
+              handleControl={this.handleControl}
+            />
+            :
+            <LogInForm
+              handleChange={this.handleChange}
+              handleSubmit={this.handleSubmit}
+              handleControl={this.handleControl}
+            />
+          : null
+        }
       </div>
     )
   }
@@ -102,7 +137,7 @@ const mapDispatchToProps = {
   loadRegionsThunk, flushRegions,
   loadCustomersThunk, flushCustomers,
   loadUsersThunk, flushUsers,
-  throwError
+  throwAlert
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LogInContainer))

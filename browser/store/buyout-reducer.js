@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import {loadCustomersThunk} from './customer-reducer'
-import {throwError} from './error-reducer'
+import {throwAlert} from './alert-reducer'
 
 import {sortBy} from '../utility'
 
@@ -93,9 +93,9 @@ export const saveByoThunk = (token, byo, customer) => {
   return dispatch => {
     return axios.put('/api/byos', {token, byo: byoArgs, customer: cusArgs})
     .then(res => {
-      if (res.data.err) dispatch(throwError('red', 'There was an error with your buyout'))
+      if (res.data.err) dispatch(throwAlert('red', 'There was an error with your buyout'))
       else {
-        dispatch(throwError('green', `Your buyout has been ${(byoArgs.status === 'Submitted' && byo[0].status === 'Draft') ? 'submitted' : 'saved'}`))
+        dispatch(throwAlert('green', `Your buyout has been ${(byoArgs.status === 'Submitted' && byo[0].status === 'Draft') ? 'submitted' : 'saved'}`))
         if (byoArgs.id === 'new') {
           dispatch(sortByos(['id']))
         }
