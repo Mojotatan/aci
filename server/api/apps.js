@@ -148,7 +148,7 @@ module.exports = require('express').Router()
     let cus = Customer.findOrCreate({
       where: {
         // Not using [Op] syntax b/c it was trying to create data with object values
-        repId: me.id,
+        dealerId: me.dealer,
         name: req.body.customer.name
       },
       defaults: {
@@ -183,24 +183,4 @@ module.exports = require('express').Router()
       res.send('success, reloading apps')
     })
     .catch(err => res.send({err}))
-  })
-
-  .post('/pdf', isLoggedIn, (req, res) => {
-    
-  })
-
-  .post('/email', isLoggedIn, isAdmin, (req, res) => {
-    transporter.sendMail({
-      from: 'impactpreview@gmail.com',
-      to: 'tatan42@gmail.com', /* req.body.rep.email, */
-      subject: '[myAdmin Central] One of your applications has changed',
-      text: `Your application for ${req.body.customer.name} has changed. Please sign in to aci for more information.`
-    })
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => {
-      console.error(err)
-      res.send('everything is burning')
-    })
   })

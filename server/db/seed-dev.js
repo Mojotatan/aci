@@ -350,12 +350,12 @@ db.sync({force: true})
   seedData.machines = machines
 
   return Promise.all([
-    seedData.users[0].setDealer(seedData.dealers[1]),
-    seedData.users[1].setDealer(seedData.dealers[1]),
-    seedData.users[2].setDealer(seedData.dealers[1]),
-    seedData.users[3].setDealer(seedData.dealers[1]),
-    seedData.users[4].setDealer(seedData.dealers[1]),
-    seedData.users[5].setDealer(seedData.dealers[2]),
+    seedData.users[0].setDealer(seedData.dealers[0]),
+    seedData.users[1].setDealer(seedData.dealers[0]),
+    seedData.users[2].setDealer(seedData.dealers[0]),
+    seedData.users[3].setDealer(seedData.dealers[0]),
+    seedData.users[4].setDealer(seedData.dealers[0]),
+    seedData.users[5].setDealer(seedData.dealers[1]),
   ])
 })
 .then(() => {
@@ -424,8 +424,8 @@ db.sync({force: true})
 })
 .then(() => {
   return Promise.all([
-    seedData.customers[0].setRep(seedData.users[2]),
-    seedData.customers[1].setRep(seedData.users[1])
+    seedData.customers[0].setDealer(seedData.dealers[0]),
+    seedData.customers[1].setDealer(seedData.dealers[0])
   ])
 })
 .then(() => {

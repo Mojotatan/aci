@@ -40,7 +40,7 @@ let {User, Dealer, Region, Branch, Application, Action, Guarantee, Customer, Buy
   Application.belongsTo(Guarantee, {as: 'guarantee'}) // phase 2
   Application.belongsTo(Customer, {as: 'customer'})
 
-  Customer.belongsTo(User, {as: 'rep'})
+  Customer.belongsTo(Dealer, {as: 'dealer'})
 
   Action.belongsTo(Application, {as: 'app'})
   Action.belongsTo(User, {as: 'admin'})

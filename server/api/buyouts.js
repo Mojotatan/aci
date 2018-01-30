@@ -123,7 +123,7 @@ module.exports = require('express').Router()
     let cus = Customer.findOrCreate({
       where: {
         // Not using [Op] syntax b/c it was trying to create data with object values
-        repId: me.id,
+        dealerId: me.dealer,
         name: req.body.customer.name
       },
       defaults: {
@@ -172,7 +172,6 @@ module.exports = require('express').Router()
           return Lease.create({
             number: lse.number,
             company: lse.company,
-            amount: lse.amount,
             quote: lse.quote,
             buyoutId: theByo.id
           })
@@ -180,7 +179,6 @@ module.exports = require('express').Router()
           return Lease.update({
             number: lse.number,
             company: lse.company,
-            amount: lse.amount,
             quote: lse.quote,
             buyoutId: theByo.id
           }, {
@@ -244,25 +242,4 @@ module.exports = require('express').Router()
     })
     // .catch(err => res.send({err}))
     .catch(err => console.error(err))
-  })
-
-
-  .post('/pdf', isLoggedIn, (req, res) => {
-    
-  })
-
-  .post('/email', isLoggedIn, isAdmin, (req, res) => {
-    transporter.sendMail({
-      from: 'impactpreview@gmail.com',
-      to: 'tatan42@gmail.com', /* req.body.rep.email, */
-      subject: '[myAdmin Central] One of your buyouts has changed',
-      text: `Your buyout for ${req.body.customer.name} has changed. Please sign in to aci for more information.`
-    })
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => {
-      console.error(err)
-      res.send('everything is burning')
-    })
   })

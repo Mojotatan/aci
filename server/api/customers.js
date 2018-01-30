@@ -9,8 +9,8 @@ module.exports = require('express').Router()
     let me = whoAmI(req.body.token)
     return Customer.findAll({
       where: {
-        repId: {
-          [Op.eq]: me.id
+        dealerId: {
+          [Op.eq]: me.dealer
         }
       }
     })
