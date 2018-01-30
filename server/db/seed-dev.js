@@ -94,7 +94,7 @@ const generateDealers = () => {
 const generateApplications = () => {
   let arr = []
   
-  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, type, existingType, existingCustomer, leaseCompany, leaseNumber, funding, repRate, comments) => {
+  const builder = (status, date, amount, expiry, term, advancedPayments, endOfTerm, type, existingType, existingCustomer, funding, repRate, comments) => {
     arr.push(Application.build({
       'status': status,
       'date': date,
@@ -106,23 +106,21 @@ const generateApplications = () => {
       'type': type,
       'existingType': existingType,
       'existingCustomer': existingCustomer,
-      'leaseCompany': leaseCompany,
-      'leaseNumber': leaseNumber,
       'funding': funding,
       'repRate': repRate,
       'comments': comments
     }))
   }
 
-  builder('Draft', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
+  builder('Draft', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
-  builder('New', '1998-11-26', 20.20, '2018-02-04', '24', '2', 'FMV', 'Existing', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
+  builder('New', '1998-11-26', 20.20, '2018-02-04', '24', '2', 'FMV', 'Existing', 'Addition', '', 30.45, '2%', 'no comment')
 
-  builder('Hold', '2017-11-26', 20, '2024-02-04', '24', '2', 'FMV', 'New', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
+  builder('Hold', '2017-11-26', 20, '2024-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
-  builder('Approved', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
+  builder('Approved', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
-  builder('Declined', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', ['EverBank'], ['12345'], 30.45, '2%', 'no comment')
+  builder('Declined', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
   return arr
 }

@@ -1,7 +1,7 @@
 const Op = require('sequelize').Op
 const formidable = require('formidable')
 
-const {User, Application, Customer, Action} = require('../db').db.models
+const {User, Application, Customer, Lease, Action} = require('../db').db.models
 const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
@@ -9,7 +9,7 @@ module.exports = require('express').Router()
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     // defining variables here for scope purposes
-    let appsToReturn, branchesToReturn, dealersToReturn
+    let appsToReturn, branchesToReturn, dealersToReturn, leasesToReturn
     return User.findOne({
       attributes: ['id', 'level', 'dealerId', 'regionId', 'branchId'],
       where: {
@@ -77,6 +77,20 @@ module.exports = require('express').Router()
     .then(dealerData => {
       dealersToReturn = dealerData
       return Promise.all(appsToReturn.map(app => {
+        return Lease.findAll({
+          where: {
+            appId: {
+              [Op.eq]: app.id
+            }
+          },
+          include: ['machines'],
+          order: [['createdAt', 'ASC'], ['machines', 'createdAt', 'ASC']],
+        })
+      }))
+    })
+    .then(leaseData => {
+      leasesToReturn = leaseData
+      return Promise.all(appsToReturn.map(app => {
         return Action.findAll({
           where: {
             appId: {
@@ -93,6 +107,7 @@ module.exports = require('express').Router()
         apps: appsToReturn,
         branches: branchesToReturn,
         dealers: dealersToReturn,
+        leases: leasesToReturn,
         actions: appActions
       })
     })
@@ -177,7 +192,47 @@ module.exports = require('express').Router()
         })])
       }
     })
+    .then(data => {
+      theApp = data[0]
+
+      return Promise.all(req.body.app.leases.map(lse => {
+        if (lse.delete) {
+          if (lse.id === 'new') return 0
+          else {
+            return Lease.destroy({
+              where: {
+                id: {
+                  [Op.eq]: lse.id
+                }
+              }
+            })
+          }
+        } else if (lse.id === 'new') {
+          return Lease.create({
+            number: lse.number,
+            company: lse.company,
+            quote: lse.quote,
+            appId: theApp.id
+          })
+        } else {
+          return Lease.update({
+            number: lse.number,
+            company: lse.company,
+            quote: lse.quote,
+            appId: theApp.id
+          }, {
+            where: {
+              id: {
+                [Op.eq]: lse.id
+              }
+            },
+            returning: true
+          })
+        }
+      }))
+    })
     .then((data) => {
+      // Machines shouldn't be changed through app so we aren't updating
 
       res.send('success, reloading apps')
     })

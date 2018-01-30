@@ -374,14 +374,9 @@ input, textarea {
 .edit-apps-page .add-lease-button {
 	margin-left: 15px
 }
-.leeses-pieces {
-	margin-top: 15px
-}
-.leeses-pieces .lease {
-	margin-top: 10px
-}
-.leeses-pieces .lease + .lease{
-	margin-top: 15px
+.edit-apps-page .extra-space {
+	margin-top: 10px;
+	margin-bottom: 15px
 }
 .flux-table {
 	width: 100%

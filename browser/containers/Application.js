@@ -15,7 +15,7 @@ class ApplicationContainer extends React.Component {
     this.state = Object.assign({},
       {
         customerCreate: (this.props.app && this.props.app.customer) ? false : true,
-        notifyRep: false,
+        needQuote: false,
         mailBody: '',
         mailSubject: '',
         mailCC: '',
@@ -26,9 +26,9 @@ class ApplicationContainer extends React.Component {
 
     this.handleChange = this.handleChange.bind(this)
 
-    this.handleRemoveLease = this.handleRemoveLease.bind(this)
+    this.handleNewLease = this.handleNewLease.bind(this)
     this.handleChangeInLease = this.handleChangeInLease.bind(this)
-    this.handleAddLease = this.handleAddLease.bind(this)
+    this.handleRemoveLease = this.handleRemoveLease.bind(this)
 
     this.handleChangeInCustomer = this.handleChangeInCustomer.bind(this)
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
@@ -57,32 +57,31 @@ class ApplicationContainer extends React.Component {
   }
 
   handleChangeInLease(e) {
-    let name = e.target.name.split('-')
-    let leases = Array.from(this.state[name[0]])
-    leases[Number(name[1])] = e.target.value
-    this.setState({
-      [name[0]]: leases
-    })
+    let name = e.target.id.split('-')
+    let leases = Array.from(this.state.leases)
+    leases[name[0]][name[1]] = e.target.value
+    this.setState({'leases': leases})
   }
-  
+
+  handleNewLease(e) {
+    e.preventDefault()
+    let leases = Array.from(this.state.leases)
+    leases.push({
+      id: 'new',
+      number: '',
+      company: '',
+      machines: [],
+      buyoutId: this.state.id
+    })
+    this.setState({'leases': leases})
+  }
+
   handleRemoveLease(e) {
     e.preventDefault()
-
-    let index = Number(e.target.name)
-    
-    this.setState({
-      leaseCompany: [...this.state.leaseCompany.slice(0, index), ...this.state.leaseCompany.slice(index + 1)],
-      leaseNumber: [...this.state.leaseNumber.slice(0, index), ...this.state.leaseNumber.slice(index + 1)]
-    })
-  }
-
-  handleAddLease(e) {
-    e.preventDefault()
-
-    this.setState({
-      leaseCompany: [...this.state.leaseCompany, ''],
-      leaseNumber: [...this.state.leaseNumber, '']
-    })
+    let leases = Array.from(this.state.leases)
+    // leases = [...leases.slice(0, e.target.value), ...leases.slice(e.target.value + 1)]
+    leases[e.target.value].delete = true
+    this.setState({'leases': leases})
   }
   
   handleChangeInCustomer(e) {
@@ -160,7 +159,7 @@ class ApplicationContainer extends React.Component {
   }
 
   handleCheckbox(e) {
-    this.setState({notifyRep: !this.state.notifyRep})
+    this.setState({needQuote: !this.state.needQuote})
   }
 
   // For Admin section
@@ -236,10 +235,11 @@ class ApplicationContainer extends React.Component {
           iAmAuthor={(this.props.user) ? this.props.user.email === this.state.rep.email : false}
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
           customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
+          count={1} // for numbering leases
           handleChange={this.handleChange}
-          handleRemoveLease={this.handleRemoveLease}
+          handleNewLease={this.handleNewLease}
           handleChangeInLease={this.handleChangeInLease}
-          handleAddLease={this.handleAddLease}
+          handleRemoveLease={this.handleRemoveLease}
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={this.handleSave}
           handleSubmit={this.handleSubmit}

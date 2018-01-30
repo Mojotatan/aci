@@ -44,18 +44,6 @@ module.exports = db => db.define('Application', {
   existingCustomer: { // only relevant if type is set to 'Existing'
     type: Sequelize.STRING
   },
-  
-
-  // I didn't see a need for the leases attached to apps to be actual lease entries on the db,
-  // so for now they are just arrays on the app table. This might change in the future.
-  leaseCompany: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
-    defaultValue: []
-  },
-  leaseNumber: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
-    defaultValue: []
-  },
 
   comments: {
     type: Sequelize.TEXT,

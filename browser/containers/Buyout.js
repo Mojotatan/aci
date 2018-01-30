@@ -122,7 +122,6 @@ class BuyoutContainer extends React.Component {
       id: 'new',
       number: '',
       company: '',
-      amount: '',
       machines: [],
       buyoutId: this.state.id
     })

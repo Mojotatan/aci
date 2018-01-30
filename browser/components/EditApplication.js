@@ -7,10 +7,11 @@ export default ({
   iAmAuthor,
   admin,
   customers,
+  count,
   handleChange,
-  handleRemoveLease,
+  handleNewLease,
   handleChangeInLease,
-  handleAddLease,
+  handleRemoveLease,
   handleChangeInCustomer,
   handleSave,
   handleSubmit,
@@ -107,25 +108,12 @@ export default ({
               }
             </div>
           </div>
-          {/* Notify functionality moved to admin workflow section*/}
-          {/* {(admin) ?
-            <div className="rad-btns">
-              <input
-                type="checkbox"
-                onChange={handleCheckbox}
-                name="notifyRep"
-                checked={values.notifyRep}
-              />
-              <label>Notify Rep</label>
-            </div>
-            : null
-          } */}
         </div>
 
         <div className="app-bg col-sm-12">
           <h3>Application Type</h3>
           <div className="row">
-            <div className="col-sm-12">
+            <div className="col-sm-6">
               {(admin || values.status === 'Draft') ?
                 <div className="radio-div type-rad-btns">
                   <input
@@ -163,69 +151,157 @@ export default ({
               }
             </div>
           </div>
-
-          {(values.type === 'Existing' && values.leaseCompany && values.leaseNumber) ?
-            <div className="row leeses-pieces">
-              <div className="col-sm-12">
-                <div className="col-sm-5 col-sm-offset-1"><label>Lease Number</label></div>
-                <div className="col-sm-5"><label>Lease Company</label></div>
-              </div>
-            {values.leaseCompany.map((lease, index) => (
-              <div className="col-sm-12 lease" key={`lease-${index}`}>
-                <div className="col-sm-1">
-                  <label className="index-number">{index + 1}</label>
+          {(values.type === 'Existing') ?
+            <div className="row">
+              <div className="col-sm-6">
+                <div className="field-label">
+                  <label className="required">Customer</label>
                 </div>
-                <div className="col-sm-5">
-                  <div className="field-box">
-                    {(admin || values.status === 'Draft') ?
-                      <input
-                        onChange={handleChangeInLease}
-                        name={`leaseNumber-${index}`}
-                        value={values.leaseNumber[index] || ''}
-                      />
-                      :
-                      <p>{values.leaseNumber[index] || ''}</p>
-                    }
-                  </div>
-                </div>
-                <div className="col-sm-5">
-                  <div className="field-box">
-                    {(admin || values.status === 'Draft') ?
-                      <input
-                        onChange={handleChangeInLease}
-                        name={`leaseCompany-${index}`}
-                        value={lease || ''}
-                        list="leaseCompanies"
-                      />
-                      :
-                      <p>{lease || ''}</p>
-                    }
-                  </div>
-                </div>
-                <div className="col-sm-1"><button onClick={handleRemoveLease} name={index} className="remove-button"></button></div>
-              </div>
-            ))}
-            {/* Autofill for Lease Company */}
-              <datalist id="leaseCompanies">
-                <option value="EverBank"></option>
-                <option value="DLL"></option>
-                <option value="Wells"></option>
-                <option value="USB"></option>
-                <option value="CIT"></option>
-                <option value="Marlin"></option>
-                <option value="Balboa"></option>
-                <option value="EMR"></option>
-                <option value="Leaf"></option>
-                <option value="Great America"></option>
-                <option value="PNC"></option>
-              </datalist>
-              <div className="col-sm-12">
-                <div className="col-sm-offset-1">
-                  <button onClick={handleAddLease} className="add-lease-button">Add Lease</button>
+                <div className="field-box">
+                  {(admin || values.status === 'Draft') ?
+                    <input
+                      onChange={function(e) {
+                        handleChange(e)
+                        handleChangeCustomer(e)
+                      }}
+                      name={'existingCustomer'}
+                      value={values.existingCustomer || ''}
+                      list="customers"
+                    />
+                    :
+                    <p>{values.existingCustomer || ''}</p>
+                  }
                 </div>
               </div>
             </div>
             : null
+          }
+
+          {(values.type === 'Existing') ?
+            <div className="row extra-space">
+              <div className="col-sm-6">
+                {(admin || values.status === 'Draft') ?
+                  <div className="radio-div type-rad-btns">
+                    <input
+                      type="radio"
+                      id="existingType-0"
+                      onChange={handleChange}
+                      name="existingType"
+                      value="Addition"
+                      className={(values.existingType === 'Addition') ?
+                        "on" : ""
+                      }
+                      checked={(values.existingType === 'Addition') ?
+                        true : false
+                      }
+                    />
+                    <label htmlFor="existingType-0">Customer Addition</label>
+
+                    <input
+                      type="radio"
+                      id="existingType-1"
+                      onChange={handleChange}
+                      name="existingType"
+                      value="Upgrade"
+                      className={(values.existingType === 'Upgrade') ?
+                        "on" : ""
+                      }
+                      checked={(values.existingType === 'Upgrade') ?
+                        true : false
+                      }
+                    />
+                    <label htmlFor="existingType-1">Customer Upgrade</label>
+                  </div>
+                  :
+                  <p>{values.existingType || ''}</p>
+                }
+              </div>
+              {(values.existingType === 'Upgrade') ?
+                <div className="col-sm-6">
+                  <div className="radio-div type-rad-btns">
+                    <input
+                      type="checkbox"
+                      onChange={handleCheckbox}
+                      name="needQuote"
+                      checked={values.needQuote}
+                    />
+                    <label>Quote Needed</label>
+                  </div>
+                </div>
+                : null
+              }
+            </div>
+            : null
+          }
+
+
+        {(values.leases && values.type === 'Existing' && values.existingType === 'Upgrade') ?
+          <div className="row">
+            <div className="col-sm-12 labels lease-label">
+              <div className="col-sm-10 col-sm-offset-1 no-gutters">
+                <label className="col-sm-6" id="lease-margin">Lease Number</label>
+                <label className="col-sm-6">Lease Company</label>
+              </div>
+            </div>
+            {/* Autofill for Lease Company */}
+            <datalist id="leaseCompanies">
+              <option value="EverBank"></option>
+              <option value="DLL"></option>
+              <option value="Wells"></option>
+              <option value="USB"></option>
+              <option value="CIT"></option>
+              <option value="Marlin"></option>
+              <option value="Balboa"></option>
+              <option value="EMR"></option>
+              <option value="Leaf"></option>
+              <option value="Great America"></option>
+              <option value="PNC"></option>
+            </datalist>
+            {values.leases.map((lease, index) => {
+              return ((!lease.delete) ?
+                <div key={`lease-${index}`} className="col-sm-12 lease-input">
+                  <div className="col-sm-1"><label className="index-number">{count++}</label></div>
+                  <div className="col-sm-10 field-row no-gutters">
+                    <div className="col-sm-6">
+                      {(admin || values.status === 'Draft') ?
+                        <input
+                          onChange={handleChangeInLease}
+                          id={`${index}-number`}
+                          value={lease.number || ''}
+                        />
+                        :
+                        <span>{lease.number || ''}</span>
+                      }
+                    </div>
+                    <div className="col-sm-6">
+                      {(admin || values.status === 'Draft') ?
+                        <input
+                          onChange={handleChangeInLease}
+                          id={`${index}-company`}
+                          value={lease.company || ''}
+                          list="leaseCompanies"
+                        />
+                        :
+                        <span>{lease.company || ''}</span>
+                      }
+                    </div>
+                  </div>
+                  <div className="col-sm-1">
+                    {(admin || values.status === 'Draft') ?
+                      <button value={index} onClick={handleRemoveLease} className="remove-button"></button>
+                      :
+                      null
+                    }
+                  </div>
+                </div>
+                :
+                null
+                )
+            })
+            }
+            <button onClick={handleNewLease} className="add-lease-button">Add Lease</button>
+          </div>
+          : null
           }
         </div>
 

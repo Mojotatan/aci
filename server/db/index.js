@@ -3,6 +3,10 @@ const Sequelize = require('sequelize')
 let dbUrl = process.env.DATABASE_URL || 'postgres://localhost:5432/aci'
 // production
 // dbUrl = 'postgres://impact_myadmin:BlueMountain21@localhost:5432/aci'
+
+
+
+
 let db = new Sequelize(dbUrl, {logging: false})
 
 // Import tables
@@ -51,6 +55,7 @@ let {User, Dealer, Region, Branch, Application, Action, Guarantee, Customer, Buy
 
   // Buyout.hasMany(Lease, {as: 'leases'})
   Lease.belongsTo(Buyout, {as: 'buyout'})
+  Lease.belongsTo(Application, {as: 'app'})
   
   Lease.hasMany(Machine, {as: 'machines'})
   // Machine.belongsTo(Lease, {as: 'lease'})

@@ -114,45 +114,6 @@ export default ({
           } */}
         </div>
 
-        {/* <div className="col-sm-12">
-          {(admin || values.status === 'Draft') ?
-            <div className="radio-div type-rad-btns">
-              <input
-                type="radio"
-                id="quote-0"
-                onChange={handleChange}
-                name="quote"
-                value="Full"
-                className={(values.quote === 'Full') ?
-                  "on" : ""
-                }
-                checked={(values.quote === 'Full') ?
-                  true : false
-                }
-              />
-              <label htmlFor="quote-0">Full Quote</label>
-
-              <input
-                type="radio"
-                id="quote-1"
-                onChange={handleChange}
-                name="quote"
-                value="Partial"
-                className={(values.quote === 'Partial') ?
-                  "on" : ""
-                }
-                checked={(values.quote === 'Partial') ?
-                  true : false
-                }
-              />
-              <label htmlFor="quote-1">Partial Quote</label>
-            </div>
-            :
-            <p>{`${values.quote} Quote` || ''}</p>
-          }
-
-        </div> */}
-
 
 {/* Oh boy... */}
         {(values.leases) ?
@@ -160,17 +121,30 @@ export default ({
           <h3>Lease Information</h3>
           <div className="col-sm-12 labels lease-label">
             <div className="col-sm-10 col-sm-offset-1 no-gutters">
-              <label className="col-sm-4" id="lease-margin">Lease Number</label>
-              <label className="col-sm-4">Lease Company</label>
-              <label className="col-sm-4">Lease Amount</label>
+              <label className="col-sm-6" id="lease-margin">Lease Number</label>
+              <label className="col-sm-6">Lease Company</label>
             </div>
           </div>
+          {/* Autofill for Lease Company */}
+          <datalist id="leaseCompanies">
+            <option value="EverBank"></option>
+            <option value="DLL"></option>
+            <option value="Wells"></option>
+            <option value="USB"></option>
+            <option value="CIT"></option>
+            <option value="Marlin"></option>
+            <option value="Balboa"></option>
+            <option value="EMR"></option>
+            <option value="Leaf"></option>
+            <option value="Great America"></option>
+            <option value="PNC"></option>
+          </datalist>
           {values.leases.map((lease, index) => {
             return ((!lease.delete) ?
               <div key={`lease-${index}`} className="col-sm-12 lease-input">
                 <div className="col-sm-1"><label className="index-number">{count++}</label></div>
                 <div className="col-sm-10 field-row no-gutters">
-                  <div className="col-sm-4">
+                  <div className="col-sm-6">
                     {(admin || values.status === 'Draft') ?
                       <input
                         onChange={handleChangeInLease}
@@ -181,27 +155,16 @@ export default ({
                       <span>{lease.number || ''}</span>
                     }
                   </div>
-                  <div className="col-sm-4">
+                  <div className="col-sm-6">
                     {(admin || values.status === 'Draft') ?
                       <input
                         onChange={handleChangeInLease}
                         id={`${index}-company`}
                         value={lease.company || ''}
+                        list="leaseCompanies"
                       />
                       :
                       <span>{lease.company || ''}</span>
-                    }
-                  </div>
-                  {/* <div className="co" */}
-                  <div className="col-sm-4 monetary">
-                    {(admin || values.status === 'Draft') ?
-                      <input
-                        onChange={handleChangeInLease}
-                        id={`${index}-amount`}
-                        value={lease.amount || ''}
-                      />
-                      :
-                      <span>{lease.amount || ''}</span>
                     }
                   </div>
                 </div>
