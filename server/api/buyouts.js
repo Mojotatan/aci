@@ -1,6 +1,6 @@
 const Op = require('sequelize').Op
 const {User, Buyout, Lease, Machine, Customer} = require('../db').db.models
-const {isLoggedIn, whoAmI, isAdmin, mayI, transporter} = require('./auth')
+const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
 
@@ -96,7 +96,6 @@ module.exports = require('express').Router()
   })
 
   .put('/', isLoggedIn, (req, res) => {
-    // mayI(req.body.token, req.body.byo.id)
     let me = whoAmI(req.body.token)
     let theByo
     let byo = (req.body.byo.id === 'new') ?

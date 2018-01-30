@@ -76,7 +76,7 @@ npm run start-dev
 node -v
 ```
 
-3. Get the files <!-- make sure to find or create secrets -->
+3. Get the files
 
 ```
 git clone https://github.com/Mojotatan/aci.git
@@ -89,7 +89,11 @@ npm install
 npm run build
 ```
 
-5. In server/db/index.js, change dbUrl to wherever you set up PostgresQL
+5. Configure process.env variables for DATABASE_URL, EMAIL_PW, and CERT
+
+```
+export key=value
+```
 
 6. Configure Passenger on cpanel if you haven't already
 

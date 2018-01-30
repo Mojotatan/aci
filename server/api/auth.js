@@ -2,7 +2,7 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 
-const cert = fs.readFileSync('.reamde')
+const cert = process.env.CERT || fs.readFileSync('.reamde')
 
 const whoAmI = (token) => {
   return jwt.verify(token, cert, (err, decoded) => {
@@ -22,18 +22,11 @@ const isAdmin = (req, res, next) => {
   next()
 }
 
-// unfinished
-const mayI = (token, appId) => {
-  let me = whoAmI(token)
-  if (me.level === 'Admin') return true
-
-}
-
 const mailTransporter = nodemailer.createTransport({
   host: 'sub5.mail.dreamhost.com',
-  auth: {user: 'team@myadmindev.xyz', pass: 'Goldfish^2018'},
+  auth: {user: 'team@myadmindev.xyz', pass: process.env.EMAIL_PW},
   port: 465,
   secure: true
 })
 
-module.exports = {isLoggedIn, isAdmin, whoAmI, mayI, mailTransporter}
+module.exports = {isLoggedIn, isAdmin, whoAmI, mailTransporter}

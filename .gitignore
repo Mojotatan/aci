@@ -8,8 +8,6 @@ public/bundle.js
 
 */.DS_Store
 
-key.json
-
-.refresh
+.configsecrets
 
 passenger.*
