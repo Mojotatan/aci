@@ -2,7 +2,6 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const path = require('path')
-const testTransport = require('./server/api/auth.js').testTransport
 const nunjucks = require('nunjucks')
 
 const db = require('./server/db').db

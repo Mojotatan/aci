@@ -6,7 +6,7 @@ public/bundle.js
 
 .DS_Store
 
-*/.DS_Store
+server/uploads
 
 .configsecrets
 
