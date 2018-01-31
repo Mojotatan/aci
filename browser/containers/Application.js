@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import EditApplication from '../components/EditApplication'
 
-import {saveAppThunk, createApp} from '../store/app-reducer'
+import {saveAppThunk, loadAppsThunk, deleteAppThunk, createApp} from '../store/app-reducer'
 import {saveByoThunk} from '../store/buyout-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
@@ -38,6 +38,7 @@ class ApplicationContainer extends React.Component {
     
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
 
     this.handleCheckbox = this.handleCheckbox.bind(this)
 
@@ -45,7 +46,7 @@ class ApplicationContainer extends React.Component {
     
     this.handleNote = this.handleNote.bind(this)
     this.handleChangeAction = this.handleChangeAction.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
+    this.handleActionDelete = this.handleActionDelete.bind(this)
 
   }
 
@@ -156,8 +157,16 @@ class ApplicationContainer extends React.Component {
 
       this.props.history.push('/applications')
     }
+  }
 
-    
+  handleDelete(e) {
+    e.preventDefault()
+    if (this.state.id === 'new') {
+      this.props.loadAppsThunk(this.props.token, () => {this.props.history.push('/applications')})
+      this.props.throwAlert('green', 'Your application has been deleted')
+    } else {
+      this.props.deleteAppThunk(this.props.token, this.state.id, () => {this.props.history.push('/applications')})
+    }
   }
 
   handleCheckbox(e) {
@@ -203,8 +212,7 @@ class ApplicationContainer extends React.Component {
 
   }
 
-  handleDelete(e) {
-
+  handleActionDelete(e) {
   }
 
 
@@ -245,6 +253,7 @@ class ApplicationContainer extends React.Component {
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={this.handleSave}
           handleSubmit={this.handleSubmit}
+          handleDelete={this.handleDelete}
           handleChangeCustomer={this.handleChangeCustomer}
           handleCheckbox={this.handleCheckbox}
           handleChangeInTerm={this.handleChangeInTerm}
@@ -252,7 +261,7 @@ class ApplicationContainer extends React.Component {
           handleNotify={this.handleNotify}
           handleNote={this.handleNote}
           handleChangeAction={this.handleChangeAction}
-          handleDelete={this.handleDelete}
+          handleActionDelete={this.handleActionDelete}
         />
       </div>
     )
@@ -268,6 +277,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {saveAppThunk, saveByoThunk, createApp, throwAlert}
+const mapDispatchToProps = {saveAppThunk, loadAppsThunk, deleteAppThunk, saveByoThunk, createApp, throwAlert}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationContainer)

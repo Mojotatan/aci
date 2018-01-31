@@ -15,6 +15,7 @@ export default ({
   handleChangeInCustomer,
   handleSave,
   handleSubmit,
+  handleDelete,
   handleCheckbox,
   handleChangeCustomer,
   handleChangeInTerm,
@@ -22,7 +23,7 @@ export default ({
   handleNotify,
   handleNote,
   handleChangeAction,
-  handleDelete
+  handleActionDelete
 }) => (
   <div className="row edit-apps-page">
 
@@ -705,6 +706,10 @@ export default ({
         </div>
 
         <div className="col-sm-12 buttons" align="right">
+          {(admin || values.status === 'Draft') ?
+            <button onClick={handleDelete} id="delete-button">Delete</button>
+            : null
+          }
           <Link to='/applications' id="cancel-button">Cancel</Link>
           <button type="submit" id="save-button">Save</button>
           {(values.status === 'Draft') ?
@@ -884,7 +889,7 @@ export default ({
                       <div>{action.status || ''}</div>
                       <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div>
                       <div className="edit" onClick={handleChangeAction}>Edit</div>
-                      <div className="edit" onClick={handleDelete}>Delete</div>
+                      <div className="edit" onClick={handleActionDelete}>Delete</div>
                       <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }><div>{action.notes || ''}</div></div>
                     </div>
                   </div>

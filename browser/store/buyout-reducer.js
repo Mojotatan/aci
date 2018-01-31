@@ -82,6 +82,7 @@ export const loadByosThunk = (token, callback) => {
         }
       })
       dispatch(loadByos(res.data.byos))
+      if (callback) callback()
     })
     .catch(err => console.error(err))
   }
@@ -101,6 +102,23 @@ export const saveByoThunk = (token, byo, customer) => {
         }
         dispatch(loadByosThunk(token))
         dispatch(loadCustomersThunk(token))
+      }
+    })
+    .catch(err => console.error(err))
+  }
+}
+
+export const deleteByoThunk = (token, id, callback) => {
+  return dispatch => {
+    return axios.put('/api/byos/delete', {token, byo: id})
+    .then(res => {
+      if (res.data.err) {
+        console.error(res.data.err)
+        dispatch(throwAlert('red', 'Something went wrong'))
+      } else {
+        dispatch(throwAlert('green', 'Your buyout has been deleted'))
+        dispatch(loadByosThunk(token))
+        if (callback) callback()
       }
     })
     .catch(err => console.error(err))

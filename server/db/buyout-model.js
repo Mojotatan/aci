@@ -8,7 +8,7 @@ module.exports = db => db.define('Buyout', {
   date: {
     type: Sequelize.DATEONLY, // stored as plaintext 'YYYY-MM-DD'
     set(val) {
-      this.setDataValue('expiry', forceDate(val)) // make sure all inputs are 'YYYY-MM-DD'
+      this.setDataValue('date', forceDate(val)) // make sure all inputs are 'YYYY-MM-DD'
     }
   },
   expiry: {
@@ -29,6 +29,7 @@ module.exports = db => db.define('Buyout', {
 
 // Utility func to take a date string and make sure it ends up as 'YYYY-MM-DD'
 const forceDate = (dat) => {
+  if (!dat) return dat
   let arr = dat.split('-')
   if (arr.length === 1) arr = dat.split('/') // Checking for slashes
   if (arr[0].length === 4) { // Checking for YYYY

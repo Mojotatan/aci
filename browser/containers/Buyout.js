@@ -4,7 +4,8 @@ import axios from 'axios'
 
 import EditBuyout from '../components/EditBuyout'
 
-import {saveByoThunk, createByo} from '../store/buyout-reducer'
+import {saveByoThunk, loadByosThunk, deleteByoThunk, createByo} from '../store/buyout-reducer'
+import {throwAlert} from '../store/alert-reducer'
 
 import {getDate} from '../utility'
 
@@ -20,14 +21,20 @@ class BuyoutContainer extends React.Component {
     )
 
     this.handleChange = this.handleChange.bind(this)
+
     this.handleChangeInCustomer = this.handleChangeInCustomer.bind(this)
+    this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
+    
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+    
     this.handleCheckbox = this.handleCheckbox.bind(this)
-    this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
+    
     this.handleNewLease = this.handleNewLease.bind(this)
     this.handleChangeInLease = this.handleChangeInLease.bind(this)
     this.handleRemoveLease = this.handleRemoveLease.bind(this)
+    
     this.toggleMachines = this.toggleMachines.bind(this)
     this.handleNewMachine = this.handleNewMachine.bind(this)
     this.handleChangeInMachine = this.handleChangeInMachine.bind(this)
@@ -102,6 +109,16 @@ class BuyoutContainer extends React.Component {
     }
 
     this.props.history.push('/Buyouts')
+  }
+
+  handleDelete(e) {
+    e.preventDefault()
+    if (this.state.id === 'new') {
+      this.props.loadByosThunk(this.props.token, () => {this.props.history.push('/buyouts')})
+      this.props.throwAlert('green', 'Your buyout has been deleted')
+    } else {
+      this.props.deleteByoThunk(this.props.token, this.state.id, () => {this.props.history.push('/buyouts')})
+    }
   }
 
   handleCheckbox(e) {
@@ -205,6 +222,7 @@ class BuyoutContainer extends React.Component {
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={this.handleSave}
           handleSubmit={this.handleSubmit}
+          handleDelete={this.handleDelete}
           handleChangeCustomer={this.handleChangeCustomer}
           handleCheckbox={this.handleCheckbox}
           handleNewLease={this.handleNewLease}
@@ -229,6 +247,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {saveByoThunk, createByo}
+const mapDispatchToProps = {saveByoThunk, loadByosThunk, deleteByoThunk, createByo, throwAlert}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuyoutContainer)

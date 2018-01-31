@@ -12,6 +12,7 @@ export default ({
   handleChangeInCustomer,
   handleSave,
   handleSubmit,
+  handleDelete,
   handleCheckbox,
   handleChangeCustomer,
   handleNewLease,
@@ -468,6 +469,10 @@ export default ({
         </div>
 
         <div className="col-sm-12 buttons" align="right">
+          {(admin || values.status === 'Draft') ?
+            <button onClick={handleDelete} id="delete-button">Delete</button>
+            : null
+          }
           <Link to='/buyouts' id="cancel-button">Cancel</Link>
           <button type="submit" id="save-button">Save</button>
           {(values.status === 'Draft') ?

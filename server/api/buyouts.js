@@ -64,8 +64,14 @@ module.exports = require('express').Router()
     })
     .then((byoData) => {
       toBeSent.byos = byoData
+      // filter out draft buyouts for admins unless they are the creator
+      if (me.level === 'Admin') {
+        toBeSent.byos = byoData.filter(byo => {
+          return byo.status !== 'Draft' || byo.repId === me.id
+        })
+      }
       
-      return Promise.all(byoData.map(byo => byo.rep.getBranch()))
+      return Promise.all(toBeSent.byos.map(byo => byo.rep.getBranch()))
     })
     .then(branchData => {
       toBeSent.branches = branchData
@@ -94,6 +100,22 @@ module.exports = require('express').Router()
     })
     .catch(err => console.error(err))
   })
+
+
+  .put('/delete', isLoggedIn, (req, res) => {
+    Buyout.destroy({
+      where: {
+        id: {
+          [Op.eq]: req.body.byo
+        }
+      }
+    })
+    .then(() => {
+      res.send('success')
+    })
+    .catch(err => console.error(err))
+  })
+
 
   .put('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)

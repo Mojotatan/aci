@@ -795,6 +795,23 @@ button.disabled {
 .status label {
 	display: block;
 }
+.buttons #delete-button {
+	position: absolute;
+	left: 15px;
+	margin-left: 0
+}
+#delete-button {
+	height: 46px;
+	width: 165px;
+	border: 1px solid rgba(0,0,0,0.15);
+	border-radius: 4px;
+	color: #FFFFFF;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 24px;
+	background-color: #293141;
+}
 #cancel-button {
 	color: #354052;
 	font-family: "Source Sans Pro";

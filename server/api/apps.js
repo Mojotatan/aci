@@ -68,6 +68,12 @@ module.exports = require('express').Router()
     })
     .then(appData => {
       appsToReturn = appData
+      // filter out draft apps for admins unless they are the creator
+      if (me.level === 'Admin') {
+        appsToReturn = appData.filter(app => {
+          return app.status !== 'Draft' || app.repId === me.id
+        })
+      }
       return Promise.all(appsToReturn.map(app => app.rep.getBranch()))
     })
     .then(branchData => {
@@ -113,6 +119,22 @@ module.exports = require('express').Router()
     })
     .catch(err => console.error(err))
   })
+
+
+  .put('/delete', isLoggedIn, (req, res) => {
+    Application.destroy({
+      where: {
+        id: {
+          [Op.eq]: req.body.app
+        }
+      }
+    })
+    .then(() => {
+      res.send('success')
+    })
+    .catch(err => console.error(err))
+  })
+
 
   .put('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)

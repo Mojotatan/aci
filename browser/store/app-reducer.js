@@ -65,7 +65,7 @@ export const flushApps = () => {
 }
 
 // thunks
-export const loadAppsThunk = (token) => {
+export const loadAppsThunk = (token, callback) => {
   return dispatch => {
     return axios.post('/api/apps', {token})
     .then(res => {
@@ -84,6 +84,7 @@ export const loadAppsThunk = (token) => {
         app.actions = res.data.actions[index]
       })
       dispatch(loadApps(res.data.apps))
+      if (callback) callback()
     })
     .catch(err => console.error(err))
   }
@@ -106,6 +107,23 @@ export const saveAppThunk = (token, app, customer) => {
         }
         dispatch(loadAppsThunk(token))
         dispatch(loadCustomersThunk(token))
+      }
+    })
+    .catch(err => console.error(err))
+  }
+}
+
+export const deleteAppThunk = (token, id, callback) => {
+  return dispatch => {
+    return axios.put('/api/apps/delete', {token, app: id})
+    .then(res => {
+      if (res.data.err) {
+        console.error(res.data.err)
+        dispatch(throwAlert('red', 'Something went wrong'))
+      } else {
+        dispatch(throwAlert('green', 'Your application has been deleted'))
+        dispatch(loadAppsThunk(token))
+        if (callback) callback()
       }
     })
     .catch(err => console.error(err))
