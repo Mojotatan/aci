@@ -5,6 +5,7 @@ import axios from 'axios'
 import EditApplication from '../components/EditApplication'
 
 import {saveAppThunk, createApp} from '../store/app-reducer'
+import {saveByoThunk} from '../store/buyout-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
 import {getDate, checkFor$} from '../utility'
@@ -119,23 +120,22 @@ class ApplicationContainer extends React.Component {
 
   handleSave(e) {
     e.preventDefault()
-    if (this.state.customerCreate) {
-      this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], [this.state.customer, {id: 'new'}])
-    } else {
-      this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], [this.state.customer])
+
+    let custArr = (this.state.customerCreate) ? [this.state.customer, {id: 'new'}] : [this.state.customer]
+    this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], custArr)
+
+    if (this.state.needQuote) {
+      this.props.saveByoThunk(this.props.token, [
+          this.state,
+          
+        ],
+        custArr
+      )
+
+      this.setState({
+        needQuote: false
+      })
     }
-
-    // if (this.state.notifyRep) {
-    //   console.log('notifying rep!')
-    //   axios.post('/api/apps/email', {token: this.props.token, rep: this.state.rep, customer: this.state.customer})
-    //   .then(res => {
-    //     console.log('mail sent', res.data)
-    //   })
-    // }
-
-    this.setState({
-      notifyRep: false
-    })
 
   }
 
@@ -156,6 +156,8 @@ class ApplicationContainer extends React.Component {
 
       this.props.history.push('/applications')
     }
+
+    
   }
 
   handleCheckbox(e) {
@@ -266,6 +268,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {saveAppThunk, createApp, throwAlert}
+const mapDispatchToProps = {saveAppThunk, saveByoThunk, createApp, throwAlert}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationContainer)

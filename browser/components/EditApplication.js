@@ -165,7 +165,7 @@ export default ({
                         handleChangeCustomer(e)
                       }}
                       name={'existingCustomer'}
-                      value={values.existingCustomer || ''}
+                      value={values.existingCustomer || (values.customer) ? values.customer.name : '' || ''}
                       list="customers"
                     />
                     :
@@ -884,7 +884,7 @@ export default ({
                       <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div>
                       <div className="edit" onClick={handleChangeAction}>Edit</div>
                       <div className="edit" onClick={handleDelete}>Delete</div>
-                      <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }>{action.notes || ''}</div>
+                      <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }><div>{action.notes || ''}</div></div>
                     </div>
                   </div>
                 ))
