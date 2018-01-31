@@ -23,6 +23,7 @@ module.exports = db => db.define('User', {
     validate: {
       isEmail: true,
     },
+    // emails are forced to be case insensitive
     get() {
       let email = this.getDataValue('email')
       // without ternary this was causing errors on password resets for some reason

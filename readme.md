@@ -47,21 +47,30 @@ git clone https://github.com/Mojotatan/aci.git
 npm install
 ```
 
-2. Download [postgress.app](https://postgresapp.com/), begin running it on port 5432, and create a database named 'aci'
+2. Create secret files
 
-3. Seed the database
+```
+touch .devCert
+touch .devMail
+```
+
+Put any plain text in .devCert and the password for the server's email in .devMail
+
+3. Download [postgress.app](https://postgresapp.com/), begin running it on port 5432, and create a database named 'aci'
+
+4. Seed the database
 
 ```
 npm run seed-dev
 ```
 
-4. Start the webpack compiler and keep it running in a tab in terminal
+5. Start the webpack compiler and keep it running in a tab in terminal
 
 ```
 npm run build-dev
 ```
 
-5. Start the server!
+6. Start the server!
 <!-- The default port is 1337 (localhost:1337) but you can change this in app.js -->
 ```
 npm run start-dev

@@ -2,7 +2,7 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 
-const cert = process.env.CERT || fs.readFileSync('.reamde')
+const cert = process.env.CERT || fs.readFileSync('.devCert')
 
 const whoAmI = (token) => {
   return jwt.verify(token, cert, (err, decoded) => {
@@ -24,7 +24,7 @@ const isAdmin = (req, res, next) => {
 
 const mailTransporter = nodemailer.createTransport({
   host: 'sub5.mail.dreamhost.com',
-  auth: {user: 'team@myadmindev.xyz', pass: process.env.EMAIL_PW},
+  auth: {user: 'team@myadmindev.xyz', pass: process.env.EMAIL_PW || fs.readFileSync('.devMail')},
   port: 465,
   secure: true
 })

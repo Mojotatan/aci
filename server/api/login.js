@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const {isAdmin, mailTransporter} = require('./auth')
 const bcrypt = require('bcrypt')
 
-const cert = process.env.CERT || fs.readFileSync('.reamde')
+const cert = process.env.CERT || fs.readFileSync('.devCert')
 
 module.exports = require('express').Router()
 

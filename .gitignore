@@ -10,4 +10,8 @@ public/bundle.js
 
 .configsecrets
 
+.devCert
+
+.devMail
+
 passenger.*

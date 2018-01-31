@@ -78,9 +78,10 @@ export default ({
                 onChange={handleChange}
                 name={'expiry'}
                 value={values.expiry || ''}
+                placeholder="MM-DD-YY"
                 />
                 :
-                <p>{values.expiry || ''}</p>
+                <p>{reformatDate(values.expiry) || ''}</p>
               }
             </div>
           </div>
