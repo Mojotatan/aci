@@ -116,7 +116,7 @@ export default ({
           <h3>Application Type</h3>
           <div className="row">
             <div className="col-sm-6">
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <div className="radio-div type-rad-btns">
                   <input
                     type="radio"
@@ -160,7 +160,7 @@ export default ({
                   <label className="required">Customer</label>
                 </div>
                 <div className="field-box">
-                  {(admin || values.status === 'Draft') ?
+                  {(admin || values.status !== 'Working') ?
                     <input
                       onChange={function(e) {
                         handleChange(e)
@@ -182,7 +182,7 @@ export default ({
           {(values.type === 'Existing') ?
             <div className="row extra-space">
               <div className="col-sm-6">
-                {(admin || values.status === 'Draft') ?
+                {(admin || values.status !== 'Working') ?
                   <div className="radio-div type-rad-btns">
                     <input
                       type="radio"
@@ -265,7 +265,7 @@ export default ({
                   <div className="col-sm-1"><label className="index-number">{count++}</label></div>
                   <div className="col-sm-10 field-row no-gutters">
                     <div className="col-sm-6">
-                      {(admin || values.status === 'Draft') ?
+                      {(admin || values.status !== 'Working') ?
                         <input
                           onChange={handleChangeInLease}
                           id={`${index}-number`}
@@ -276,7 +276,7 @@ export default ({
                       }
                     </div>
                     <div className="col-sm-6">
-                      {(admin || values.status === 'Draft') ?
+                      {(admin || values.status !== 'Working') ?
                         <input
                           onChange={handleChangeInLease}
                           id={`${index}-company`}
@@ -289,7 +289,7 @@ export default ({
                     </div>
                   </div>
                   <div className="col-sm-1">
-                    {(admin || values.status === 'Draft') ?
+                    {(admin || values.status !== 'Working') ?
                       <button value={index} onClick={handleRemoveLease} className="remove-button"></button>
                       :
                       null
@@ -316,7 +316,7 @@ export default ({
                 <label className="required">Customer</label>
               </div>
               <div className="field-box">
-                {(admin || values.status === 'Draft') ?
+                {(admin || values.status !== 'Working') ?
                   <input
                     onChange={handleChangeCustomer}
                     name={'name'}
@@ -350,7 +350,7 @@ export default ({
                   <label className="required">Address</label>
                 </div>
                 <div className="field-box">
-                  {(admin || values.status === 'Draft') ?
+                  {(admin || values.status !== 'Working') ?
                     <input
                       onChange={handleChangeInCustomer}
                       name={'street'}
@@ -366,7 +366,7 @@ export default ({
                 <label className="required">City</label>
               </div>
               <div className="field-box">
-                {(admin || values.status === 'Draft') ?
+                {(admin || values.status !== 'Working') ?
                   <input
                     onChange={handleChangeInCustomer}
                     name={'city'}
@@ -382,7 +382,7 @@ export default ({
                 <label className="required">State</label>
               </div>
               <div className="field-box">
-                {(admin || values.status === 'Draft') ?
+                {(admin || values.status !== 'Working') ?
                   <input
                     onChange={handleChangeInCustomer}
                     name={'state'}
@@ -398,7 +398,7 @@ export default ({
                 <label className="required">Zip Code</label>
               </div>
               <div className="field-box">
-                {(admin || values.status === 'Draft') ?
+                {(admin || values.status !== 'Working') ?
                   <input
                     onChange={handleChangeInCustomer}
                     name={'zip'}
@@ -417,7 +417,7 @@ export default ({
                 <label className="required">Phone</label>
               </div>
               <div className="field-box">
-                {(admin || values.status === 'Draft') ?
+                {(admin || values.status !== 'Working') ?
                   <input
                     onChange={handleChangeInCustomer}
                     name={'phone'}
@@ -436,7 +436,7 @@ export default ({
                 <label className="required">Customer Email</label>
               </div>
               <div className="field-box">
-                {(admin || values.status === 'Draft') ?
+                {(admin || values.status !== 'Working') ?
                   <input 
                     onChange={handleChangeInCustomer}
                     name={'email'}
@@ -455,7 +455,7 @@ export default ({
                 <label>Tax ID</label>
               </div>
               <div className="field-box">
-                {(admin || values.status === 'Draft') ?
+                {(admin || values.status !== 'Working') ?
                   <input
                     onChange={handleChangeInCustomer}
                     name={'taxID'}
@@ -478,7 +478,7 @@ export default ({
                 <label>Estimated Deal Size</label>
               </div>
               <div className="field-box monetary">
-                {(admin || values.status === 'Draft') ?
+                {(admin || values.status !== 'Working') ?
                   <input
                     onChange={handleChange}
                     name={'amount'}
@@ -495,7 +495,7 @@ export default ({
               </div>
               <div className="col-sm-6 col-md-5 col-lg-4 no-gutters">
                 <div className="field-box">
-                  {(admin || values.status === 'Draft') ?
+                  {(admin || values.status !== 'Working') ?
                     <select
                     id="term"
                     onChange={handleChange}
@@ -521,7 +521,7 @@ export default ({
               <div className="col-sm-6 col-md-7 col-lg-8 no-gutters">
                 <div className="field-box">
                   {(values.term && (values.term.slice(0, 5) === 'other' || values.term.slice(0, 5) === 'co-te')) ? 
-                    (admin || values.status === 'Draft') ?
+                    (admin || values.status !== 'Working') ?
                       <input
                         onChange={handleChangeInTerm}
                         value={values.term.slice(5) || ''}
@@ -540,7 +540,7 @@ export default ({
                 <label>Advanced Payment</label>
               </div>
 
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <div className="radio-div deal-rad-btns">
                   <input
                     type="radio"
@@ -597,7 +597,7 @@ export default ({
                 <label>End of Term</label>
               </div>
 
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <div className="radio-div deal-rad-btns">
                   <input
                     type="radio"

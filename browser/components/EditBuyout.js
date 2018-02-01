@@ -4,6 +4,7 @@ import { WSASERVICE_NOT_FOUND } from 'constants';
 
 export default ({
   values,
+  token,
   iAmAuthor,
   admin,
   customers,
@@ -13,7 +14,6 @@ export default ({
   handleSave,
   handleSubmit,
   handleDelete,
-  handleCheckbox,
   handleChangeCustomer,
   handleNewLease,
   handleChangeInLease,
@@ -21,7 +21,9 @@ export default ({
   toggleMachines,
   handleNewMachine,
   handleChangeInMachine,
-  handleRemoveMachine
+  handleRemoveMachine,
+  handleChoosePDF,
+  handleUploadPDF
 }) => (
   <div className="row edit-byo-page">
     
@@ -482,5 +484,42 @@ export default ({
         </div>
       </form>
     </div>
+
+    <div className="col-sm-12 admin">
+      <div className="row">
+        <div className="app-bg col-sm-12">
+          <div className="col-sm-12">
+            <h3>PDF</h3>
+          </div>
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>Current PDF</label>
+              </div>
+              <div className="field-box">
+                {(values.pdf) ?
+                <a href={`/api/uploads/pdf/${values.pdf}?access_token=${token}`} download>Download</a>
+                :
+                <p>None</p>
+                }
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>Upload new PDF</label>
+              </div>
+              <div className="field-box">
+                <form onSubmit={handleUploadPDF}>
+                  <label>Choose a file to upload</label>
+                  <input type="file" onChange={handleChoosePDF} accept="application/pdf" />
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 )

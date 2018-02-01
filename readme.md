@@ -47,14 +47,12 @@ git clone https://github.com/Mojotatan/aci.git
 npm install
 ```
 
-2. Create secret files
+2. Create secret files -- put any plain text in .devCert and the password for the server's email in .devMail
 
 ```
 touch .devCert
 touch .devMail
 ```
-
-Put any plain text in .devCert and the password for the server's email in .devMail
 
 3. Download [postgress.app](https://postgresapp.com/), begin running it on port 5432, and create a database named 'aci'
 

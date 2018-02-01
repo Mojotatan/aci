@@ -15,7 +15,7 @@ class BuyoutContainer extends React.Component {
     this.state = Object.assign({},
       {
         customerCreate: (this.props.byo && this.props.byo.customer) ? false : true,
-        notifyRep: false
+        upload: null
       },
       this.props.byo,
     )
@@ -29,8 +29,6 @@ class BuyoutContainer extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     
-    this.handleCheckbox = this.handleCheckbox.bind(this)
-    
     this.handleNewLease = this.handleNewLease.bind(this)
     this.handleChangeInLease = this.handleChangeInLease.bind(this)
     this.handleRemoveLease = this.handleRemoveLease.bind(this)
@@ -39,6 +37,9 @@ class BuyoutContainer extends React.Component {
     this.handleNewMachine = this.handleNewMachine.bind(this)
     this.handleChangeInMachine = this.handleChangeInMachine.bind(this)
     this.handleRemoveMachine = this.handleRemoveMachine.bind(this)
+
+    this.handleChoosePDF = this.handleChoosePDF.bind(this)
+    this.handleUploadPDF = this.handleUploadPDF.bind(this)
   }
 
   handleChange(e) {
@@ -85,18 +86,6 @@ class BuyoutContainer extends React.Component {
       this.props.saveByoThunk(this.props.token, [this.state], [this.state.customer])
     }
 
-    if (this.state.notifyRep) {
-      console.log('notifying rep!')
-      axios.post('/api/byos/email', {token: this.props.token, rep: this.state.rep, customer: this.state.customer})
-      .then(res => {
-        console.log('mail sent', res.data)
-      })
-    }
-
-    this.setState({
-      notifyRep: false
-    })
-
   }
 
   handleSubmit(e) {
@@ -119,10 +108,6 @@ class BuyoutContainer extends React.Component {
     } else {
       this.props.deleteByoThunk(this.props.token, this.state.id, () => {this.props.history.push('/buyouts')})
     }
-  }
-
-  handleCheckbox(e) {
-    this.setState({notifyRep: !this.state.notifyRep})
   }
 
   handleChangeInLease(e) {
@@ -194,6 +179,28 @@ class BuyoutContainer extends React.Component {
     this.setState({'leases': leases})
   }
 
+  handleChoosePDF(e) {
+    this.setState({upload: e.target.files[0]})
+  }
+
+  handleUploadPDF(e) {
+    e.preventDefault()
+    if (this.state.upload) {
+      let formData = new FormData()
+      formData.append('file', this.state.upload)
+      axios.post(`/api/uploads/pdf/${this.state.id}?access_token=${this.props.token}`, formData, {'content-type': 'multipart/form-data'})
+      .then(res => {
+        if (res.data.color) this.props.throwAlert(res.data.color, res.data.message)
+        else console.log(res.data)
+        this.props.loadByosThunk(this.props.token)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+      this.setState({upload: null})
+    }
+  }
+
 
   componentWillReceiveProps(newProps){
     // console.log('component receiving props')
@@ -214,6 +221,7 @@ class BuyoutContainer extends React.Component {
       <div>
         <EditBuyout
           values={this.state}
+          token={this.props.token} // token needed to make request for pdf -- not preferable
           iAmAuthor={(this.props.user) ? this.props.user.email === this.state.rep.email : false}
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
           customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
@@ -224,7 +232,6 @@ class BuyoutContainer extends React.Component {
           handleSubmit={this.handleSubmit}
           handleDelete={this.handleDelete}
           handleChangeCustomer={this.handleChangeCustomer}
-          handleCheckbox={this.handleCheckbox}
           handleNewLease={this.handleNewLease}
           handleChangeInLease={this.handleChangeInLease}
           handleRemoveLease={this.handleRemoveLease}
@@ -232,6 +239,8 @@ class BuyoutContainer extends React.Component {
           handleNewMachine={this.handleNewMachine}
           handleChangeInMachine={this.handleChangeInMachine}
           handleRemoveMachine={this.handleRemoveMachine}
+          handleChoosePDF={this.handleChoosePDF}
+          handleUploadPDF={this.handleUploadPDF}
         />
       </div>
     )

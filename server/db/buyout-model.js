@@ -22,7 +22,7 @@ module.exports = db => db.define('Buyout', {
     defaultValue: ''
   },
   pdf: {
-    type: Sequelize.STRING // expect url to file
+    type: Sequelize.STRING // expect filename
   }
   
 })
