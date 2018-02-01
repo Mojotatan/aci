@@ -125,6 +125,7 @@ class BranchContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
+    this.props.loadBranchesThunk(this.props.token)
   }
 
   componentWillReceiveProps() {

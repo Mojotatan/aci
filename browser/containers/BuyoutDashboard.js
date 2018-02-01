@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import Menu from './Menu'
 
-import {focusByo, createByo, sortByos} from '../store/buyout-reducer'
+import {focusByo, createByo, sortByos, loadByosThunk} from '../store/buyout-reducer'
 
 import {getDate, reformatDate} from '../utility'
 
@@ -54,6 +54,7 @@ class BuyoutsContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
+    this.props.loadByosThunk(this.props.token)
   }
 
   render() {
@@ -117,6 +118,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {focusByo, createByo, sortByos}
+const mapDispatchToProps = {focusByo, createByo, sortByos, loadByosThunk}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuyoutsContainer)

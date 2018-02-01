@@ -122,7 +122,7 @@ export const deleteAppThunk = (token, id, callback) => {
         dispatch(throwAlert('red', 'Something went wrong'))
       } else {
         dispatch(throwAlert('green', 'Your application has been deleted'))
-        dispatch(loadAppsThunk(token))
+        // dispatch(loadAppsThunk(token))
         if (callback) callback()
       }
     })

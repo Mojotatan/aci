@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import Menu from './Menu'
 
-import {focusUser, createUser, sortUsers} from '../store/users-reducer'
+import {focusUser, createUser, sortUsers, loadUsersThunk} from '../store/users-reducer'
 
 class UsersContainer extends React.Component {
   constructor(props) {
@@ -34,6 +34,7 @@ class UsersContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
+    this.props.loadUsersThunk(this.props.token)
   }
 
   render() {
@@ -82,6 +83,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {focusUser, createUser, sortUsers}
+const mapDispatchToProps = {focusUser, createUser, sortUsers, loadUsersThunk}
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer)
