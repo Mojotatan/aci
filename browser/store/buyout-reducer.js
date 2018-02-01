@@ -94,7 +94,10 @@ export const saveByoThunk = (token, byo, customer) => {
   return dispatch => {
     return axios.put('/api/byos', {token, byo: byoArgs, customer: cusArgs})
     .then(res => {
-      if (res.data.err) dispatch(throwAlert('red', 'There was an error with your buyout'))
+      if (res.data.err) {
+        dispatch(throwAlert('red', 'There was an error with your buyout'))
+        console.error(res.data.err)
+      }
       else {
         dispatch(throwAlert('green', `Your buyout has been ${(byoArgs.status === 'Submitted' && byo[0].status === 'Draft') ? 'submitted' : 'saved'}`))
         if (byoArgs.id === 'new') {

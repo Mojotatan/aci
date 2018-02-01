@@ -1,6 +1,5 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import { WSASERVICE_NOT_FOUND } from 'constants';
 
 export default ({
   values,
@@ -488,9 +487,7 @@ export default ({
     <div className="col-sm-12 admin">
       <div className="row">
         <div className="app-bg col-sm-12">
-          <div className="col-sm-12">
-            <h3>PDF</h3>
-          </div>
+          <h3>PDF</h3>
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">

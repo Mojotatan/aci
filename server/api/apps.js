@@ -258,5 +258,8 @@ module.exports = require('express').Router()
 
       res.send('success, reloading apps')
     })
-    .catch(err => res.send({err}))
+    .catch(err => {
+      console.error(err)
+      res.send({err})
+    })
   })

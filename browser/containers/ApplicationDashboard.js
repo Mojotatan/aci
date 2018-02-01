@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import Menu from './Menu'
 
-import {focusApp, createApp, sortApps} from '../store/app-reducer'
+import {focusApp, createApp, sortApps, loadAppsThunk} from '../store/app-reducer'
 
 import {getDate, reformatDate, getPrettyNumber} from '../utility'
 
@@ -30,8 +30,8 @@ class ApplicationsContainer extends React.Component {
       date: getDate(),
       rep: this.props.user,
       advancedPayments: '2',
-      endOfTerm: 'FMV'
-
+      endOfTerm: 'FMV',
+      leases: []
     })
     this.props.history.push('/edit-application')
   }
@@ -62,6 +62,7 @@ class ApplicationsContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
+    this.props.loadAppsThunk(this.props.token)
   }
 
   render() {
@@ -132,6 +133,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {focusApp, createApp, sortApps}
+const mapDispatchToProps = {focusApp, createApp, sortApps, loadAppsThunk}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationsContainer)
