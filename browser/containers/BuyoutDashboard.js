@@ -54,7 +54,7 @@ class BuyoutsContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
-    this.props.loadByosThunk(this.props.token)
+    else this.props.loadByosThunk(this.props.token)
   }
 
   render() {

@@ -89,7 +89,7 @@ class RegionContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
-    this.props.loadRegionsThunk(this.props.token)
+    else this.props.loadRegionsThunk(this.props.token)
   }
 
   // componentWillReceiveProps() {

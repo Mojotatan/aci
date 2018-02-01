@@ -113,7 +113,7 @@ class DealerContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
-    this.props.loadDealersThunk(this.props.token)
+    else this.props.loadDealersThunk(this.props.token)
   }
 
   componentWillReceiveProps() {

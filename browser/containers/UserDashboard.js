@@ -34,7 +34,7 @@ class UsersContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
-    this.props.loadUsersThunk(this.props.token)
+    else this.props.loadUsersThunk(this.props.token)
   }
 
   render() {
