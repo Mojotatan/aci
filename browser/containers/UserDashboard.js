@@ -49,10 +49,11 @@ class UsersContainer extends React.Component {
           <table className="user-table">
             <tbody>
               <tr className="user-header-bottom" key="head">
-                <td id="fullName" onClick={this.handleSort}>Name</td>
-                <td>Email</td>
-                <td id="level" onClick={this.handleSort}>Level</td>
-                <td id="active" onClick={this.handleSort}>Active</td>
+                <td id="fullName" className={(this.props.sort.join('-') === "fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Name</td>
+                <td id="email" className={(this.props.sort.join('-') === "email") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Email</td>
+                <td id="level" className={(this.props.sort.join('-') === "level") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Level</td>
+                {/* <td id="dealer-name" className={(this.props.sort.join('-') === "dealer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Dealer</td> */}
+                <td id="active" className={(this.props.sort.join('-') === "active") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Active</td>
                 <td></td>
               </tr>
               {this.props.users.map((user, index) => {
@@ -79,7 +80,8 @@ const mapStateToProps = (state) => {
   return {
     token: state.login.token,
     user: state.login.user,
-    users: state.users.users
+    users: state.users.users,
+    sort: state.users.sort
   }
 }
 
