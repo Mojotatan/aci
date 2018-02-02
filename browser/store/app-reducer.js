@@ -101,12 +101,24 @@ export const saveAppThunk = (token, app, customer) => {
         dispatch(throwAlert('red', 'There was an error with your application'))
       }
       else {
-        dispatch(throwAlert('green', `Your application has been ${(appArgs.status === 'Submitted' && app[0].status === 'Draft') ? 'submitted' : 'saved'}`))
+        dispatch(throwAlert('green', `Your application has been ${(appArgs.status === 'New' && app[0].status === 'Draft') ? 'submitted' : 'saved'}`))
         if (appArgs.id === 'new') {
           dispatch(sortApps(['id']))
         }
         dispatch(loadAppsThunk(token))
         dispatch(loadCustomersThunk(token))
+        if (appArgs.status === 'New' && app[0].status === 'Draft') {
+          axios.post('/api/mail', {
+            token,
+            // to: appArgs.rep.email,
+            to: 'tatan42@gmail.com',
+            // cc: this.state.mailCC.split(', '),
+            subject: 'Application Received',
+            html: `<p>Hi ${appArgs.rep.firstName},</p><p>We have received your application for ${appArgs.customer.name}. We will email your approval/decision as soon as possible.</p><p>Should you have any questions please feel free to contact us at <a href="mailto:team@myadmincentral.com">team@myadmincentral.com</a>.</p><p>Thank you for the Application!</p><p>Sincerely,<br>Myadmincentral.com</p>`
+          })
+          .then(res => console.log(res.data))
+          .catch(err => console.error(err))
+        }
       }
     })
     .catch(err => console.error(err))

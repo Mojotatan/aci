@@ -8,7 +8,7 @@ module.exports = require('express').Router()
       cc: req.body.cc,
       subject: req.body.subject,
       text: req.body.text,
-      // html:
+      html: req.body.html
     }
     mailTransporter.sendMail(message)
     .then((data) => {

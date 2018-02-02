@@ -758,9 +758,28 @@ export default ({
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="field-label">
+                      <label>Activity</label>
+                    </div>
+                    <div className="field-box">
+                      <input
+                        onChange={function(){}}
+                        name={'activity'}
+                        value={''}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-sm-6">
+                    <div className="field-label">
                       <label>Leasing Company</label>
                     </div>
                     <div className="field-box">
+                      <input
+                        onChange={function(){}}
+                        name={'activity'}
+                        value={''}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -768,6 +787,11 @@ export default ({
                       <label>Application Number</label>
                     </div>
                     <div className="field-box">
+                      <input
+                        onChange={function(){}}
+                        name={'activity'}
+                        value={''}
+                      />
                     </div>
                   </div>
                 </div>
@@ -777,6 +801,11 @@ export default ({
                       <label>Status</label>
                     </div>
                     <div className="field-box">
+                      <input
+                        onChange={function(){}}
+                        name={'activity'}
+                        value={''}
+                      />
                     </div>
                   </div>
                 </div>
@@ -787,6 +816,11 @@ export default ({
                       <label>Notes</label>
                     </div>
                     <div className="field-box">
+                      <input
+                        onChange={function(){}}
+                        name={'activity'}
+                        value={''}
+                      />
                     </div>
                   </div>
                 </div>
