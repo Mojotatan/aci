@@ -8,7 +8,7 @@ import {saveAppThunk, loadAppsThunk, deleteAppThunk, createApp} from '../store/a
 import {saveByoThunk} from '../store/buyout-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
-import {getDate, checkFor$} from '../utility'
+import {getDate, checkFor$, reformatDate} from '../utility'
 
 class ApplicationContainer extends React.Component {
   constructor(props) {
@@ -128,7 +128,12 @@ class ApplicationContainer extends React.Component {
     if (this.state.needQuote) {
       this.props.saveByoThunk(this.props.token, [
           this.state,
-          
+          {
+            id: 'new',
+            status: 'New',
+            date: getDate(),
+            expiry: null
+          }
         ],
         custArr
       )
@@ -149,10 +154,22 @@ class ApplicationContainer extends React.Component {
       this.props.throwAlert('red', 'Please fill in all required fields')
     } else {
 
-      if (this.state.customerCreate) {
-        this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate(), amount: checkFor$(this.state.amount)}], [this.state.customer, {id: 'new'}])
-      } else {
-        this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate(), amount: checkFor$(this.state.amount)}], [this.state.customer])
+      let custArr = (this.state.customerCreate) ? [this.state.customer, {id: 'new'}] : [this.state.customer]
+
+      this.props.saveAppThunk(this.props.token, [this.state, {status: 'New', date: getDate(), amount: checkFor$(this.state.amount)}], custArr)
+      
+      if (this.state.needQuote) {
+        this.props.saveByoThunk(this.props.token, [
+            this.state,
+            {
+              id: 'new',
+              status: 'New',
+              date: getDate(),
+              expiry: null
+            }
+          ],
+          custArr
+        )
       }
 
       this.props.history.push('/applications')
@@ -222,11 +239,19 @@ class ApplicationContainer extends React.Component {
       customerCreate: (newProps.app && newProps.app.customer) ? false : true
     })
     this.setState(newProps.app)
+    this.setState({
+      date: reformatDate(newProps.app.date),
+      expiry: reformatDate(newProps.app.expiry)
+    })
   }
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     // console.log('state', this.state)
+    this.setState({
+      date: reformatDate(this.state.date),
+      expiry: reformatDate(this.state.expiry)
+    })
   }
 
 

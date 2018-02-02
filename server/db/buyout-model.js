@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 
 module.exports = db => db.define('Buyout', {
   status: {
-    type: Sequelize.ENUM('Draft', 'New', 'Working', 'Complete'),
+    type: Sequelize.ENUM('Draft', 'New', 'Working', 'Complete', 'Expired'),
     defaultValue: 'Draft'
   },
   date: {

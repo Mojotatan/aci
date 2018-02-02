@@ -86,8 +86,7 @@ class ApplicationsContainer extends React.Component {
                 <td>Approval Number</td>
                 <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expires</td>
                 <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</td>
-                <td></td>
-                <td></td>
+                <td className="table-right"></td>
               </tr>
               {this.props.apps.map((app, index) => {
 
@@ -102,17 +101,17 @@ class ApplicationsContainer extends React.Component {
                     <td>{''}</td>
                     <td>{reformatDate(app.expiry)}</td>
                     <td>{(app.rep) ? app.rep.fullName : ''}</td>
-                    <td id={index} onClick={this.handleClick} className="edit">
-                      {(this.props.user.level === 'Admin' || app.status === 'Draft') ?
-                        'Edit' : 'View'
-                      }
-                    </td>
-
-                    <td id={index} className="edit" onClick={(app.status === "Expired") ?
-                      this.handleResubmit : function(){}}>
-                      {(app.status === "Expired") ?
-                        'Resubmit' : ''}
-                    </td>
+                    {(this.props.user.level === 'Admin' || app.status !== 'Expired') ?
+                      <td id={index} onClick={this.handleClick} className="edit table-right">
+                        {(this.props.user.level === 'Admin' || app.status !== 'Working') ?
+                          'Edit' : 'View'
+                        }
+                      </td>
+                      :
+                      <td id={index} className="edit table-right" onClick={this.handleResubmit}>
+                        Resubmit
+                      </td>
+                    }
                   </tr>
                 )
               })}

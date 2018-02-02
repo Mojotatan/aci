@@ -7,7 +7,7 @@ import EditBuyout from '../components/EditBuyout'
 import {saveByoThunk, loadByosThunk, deleteByoThunk, createByo} from '../store/buyout-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
-import {getDate} from '../utility'
+import {getDate, reformatDate} from '../utility'
 
 class BuyoutContainer extends React.Component {
   constructor(props) {
@@ -208,11 +208,19 @@ class BuyoutContainer extends React.Component {
       customerCreate: (newProps.byo && newProps.byo.customer) ? false : true,
     })
     this.setState(newProps.byo)
+    this.setState({
+      date: reformatDate(newProps.byo.date),
+      expiry: reformatDate(newProps.byo.expiry)
+    })
   }
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     // console.log('state', this.state)
+    this.setState({
+      date: reformatDate(this.state.date),
+      expiry: reformatDate(this.state.expiry)
+    })
   }
 
 

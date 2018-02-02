@@ -48,14 +48,17 @@ class LogInContainer extends React.Component {
       // console.log('promise achieved', res.data)
       if (typeof res.data !== 'string') {
         this.props.logInToken(res.data.token, res.data.user)
+        // Technically only loadCustomersThunk *needs* to be called here
+        // But it makes for a slightly better loading experience
+        // If initial loading times become unbearable this can be changed
+
         this.props.loadAppsThunk(res.data.token)
         this.props.loadByosThunk(res.data.token)
         this.props.loadDealersThunk(res.data.token)
         this.props.loadBranchesThunk(res.data.token)
         this.props.loadRegionsThunk(res.data.token)
-        this.props.loadCustomersThunk(res.data.token)
         this.props.loadUsersThunk(res.data.token)
-        // document.cookie = res.data.token
+        this.props.loadCustomersThunk(res.data.token)
         this.props.history.push('/applications')
       }
       else {

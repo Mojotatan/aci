@@ -70,13 +70,12 @@ class BuyoutsContainer extends React.Component {
             <tbody>
               <tr className="app-header-bottom" key="head">
                 <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</td>
-                <td>Customer Name</td>
+                <td id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Customer Name</td>
                 <td>Address</td>
                 <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</td>
                 <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expires</td>
                 <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</td>
-                <td></td>
-                <td></td>
+                <td className="table-right"></td>
               </tr>
               {this.props.byos.map((byo, index) => {
                 return (
@@ -87,17 +86,17 @@ class BuyoutsContainer extends React.Component {
                     <td>{byo.status}</td>
                     <td>{reformatDate(byo.expiry)}</td>
                     <td>{(byo.rep) ? byo.rep.fullName : ''}</td>
-                    <td id={index} onClick={this.handleClick} className="edit">
-                      {(this.props.user.level === 'Admin' || byo.status === 'Draft') ?
-                        'Edit' : 'View'
-                      }
-                    </td>
-
-                    <td id={index} onClick={(byo.status === "Expired") ?
-                      this.handleResubmit : function(){}}>
-                      {(byo.status === "Expired") ?
-                        'Resubmit' : ''}
-                    </td>
+                    {(this.props.user.level === 'Admin' || byo.status !== 'Expired') ?
+                      <td id={index} onClick={this.handleClick} className="edit table-right">
+                        {(this.props.user.level === 'Admin' || byo.status === 'Draft') ?
+                          'Edit' : 'View'
+                        }
+                      </td>
+                      :
+                      <td id={index} className="edit table-right" onClick={this.handleResubmit}>
+                        Resubmit
+                      </td>
+                    }
                   </tr>
                 )
               })}

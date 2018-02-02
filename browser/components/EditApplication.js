@@ -69,7 +69,7 @@ export default ({
         <div className="col-sm-12">
           <div className="rowed-items" id="date-started">
             <label>Date Started</label>
-            <p>{reformatDate(values.date)}</p>
+            <p>{values.date}</p>
           </div>
           <div className="rowed-items">
             <label>Expires</label>
@@ -82,7 +82,7 @@ export default ({
                 placeholder="MM-DD-YY"
                 />
                 :
-                <p>{reformatDate(values.expiry) || ''}</p>
+                <p>{values.expiry || ''}</p>
               }
             </div>
           </div>
