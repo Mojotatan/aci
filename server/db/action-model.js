@@ -14,7 +14,7 @@ module.exports = db => db.define('Action', {
     type: Sequelize.STRING
   },
   status: {
-    type: Sequelize.ENUM('Working', 'Approved', 'Hold', 'Declined'),
+    type: Sequelize.ENUM('Working', 'Approved', 'Hold', 'Declined', 'Expired'),
     defaultValue: 'Working'
   },
   notes: {

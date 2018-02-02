@@ -82,6 +82,7 @@ class LogInContainer extends React.Component {
   }
 
   logOut(e) {
+    // empty redux store
     this.props.flushToken()
     this.props.flushApps()
     this.props.flushByos()

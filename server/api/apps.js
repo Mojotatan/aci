@@ -6,6 +6,7 @@ const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
 
+  // loading all apps a user has access to
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     // defining variables here for scope purposes

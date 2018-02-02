@@ -120,7 +120,7 @@ export const deleteByoThunk = (token, id, callback) => {
         dispatch(throwAlert('red', 'Something went wrong'))
       } else {
         dispatch(throwAlert('green', 'Your buyout has been deleted'))
-        dispatch(loadByosThunk(token))
+        // dispatch(loadByosThunk(token))
         if (callback) callback()
       }
     })
