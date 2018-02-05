@@ -445,6 +445,11 @@ db.sync({force: true})
   ])
 })
 .then(() => {
+  return Promise.all([
+    seedData.users[2].addUnderling(seedData.users[0])
+  ])
+})
+.then(() => {
   console.log('Dummy seeding complete, reading csv...')
   let rows
   let regs = []

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 
 export default ({
   values,
+  users,
   dealers,
   regions,
   branches,
@@ -99,16 +100,18 @@ export default ({
             </div>
             <div className="col-sm-6">
               <div className="field-label">
-                <label>Active</label>
+                <label>Manager</label>
               </div>
               <div className="field-dropd-full">
                 <select
                 onChange={handleChange}
-                name="active"
-                value={values.active}
+                name="UserId"
+                value={values.UserId || 0}
                 >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value={0}></option>
+                  {users.map(usr => (
+                    <option key={`usr=${usr.id}`} value={usr.id}>{usr.fullName}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -179,6 +182,23 @@ export default ({
                 value={values.password || ''}
                 type="password"
                 />
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>Active</label>
+              </div>
+              <div className="field-dropd-full">
+                <select
+                onChange={handleChange}
+                name="active"
+                value={values.active}
+                >
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
               </div>
             </div>
           </div>

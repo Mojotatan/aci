@@ -122,6 +122,30 @@ module.exports = require('express').Router()
   })
 
 
+  // experimental user control flow style -- each user would have an immediate manager field,
+  // which would allow for cleaner code for getting associated apps, and make custom hierarchies
+  // much easier to implement
+
+  .get('/cascade/:id', (req, res) => {
+    let userArr = []
+    let cascadeGet = usr => {
+      return usr.getUnderlings()
+      .then(underlings => {
+        userArr = [...userArr, ...underlings.map(ling => ling.id)]
+        return Promise.all(underlings.map(ling => cascadeGet(ling)))
+      })
+    }
+    User.findById(Number(req.params.id))
+    .then(usr => {
+      userArr.push(usr.id)
+      return cascadeGet(usr)
+    })
+    .then(unders => {
+      res.send(userArr)
+    })
+    .catch(err => console.error(err))
+  })
+
   .put('/delete', isLoggedIn, (req, res) => {
     Application.destroy({
       where: {

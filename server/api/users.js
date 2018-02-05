@@ -15,6 +15,7 @@ module.exports = require('express').Router()
   })
 
   .put('/', isLoggedIn, isAdmin, (req, res) => {
+    console.log(req.body.user.UserId)
     return (req.body.user.id === 'new') ?
       User.create({
         firstName: req.body.user.firstName,
@@ -25,7 +26,8 @@ module.exports = require('express').Router()
         password: req.body.user.password,
         dealerId: req.body.user.dealerId,
         regionId: req.body.user.regionId,
-        branchId: req.body.user.branchId
+        branchId: req.body.user.branchId,
+        UserId: req.body.user.UserId
       }, {
   
       })
@@ -41,7 +43,8 @@ module.exports = require('express').Router()
           pwHash: bcrypt.hashSync(req.body.user.password, 10),
           dealerId: req.body.user.dealerId,
           regionId: req.body.user.regionId,
-          branchId: req.body.user.branchId
+          branchId: req.body.user.branchId,
+          UserId: req.body.user.UserId
         }, {
           where: {
             id: {
@@ -59,7 +62,8 @@ module.exports = require('express').Router()
           phone: req.body.user.phone,
           dealerId: req.body.user.dealerId,
           regionId: req.body.user.regionId,
-          branchId: req.body.user.branchId
+          branchId: req.body.user.branchId,
+          UserId: req.body.user.UserId
         }, {
           where: {
             id: {

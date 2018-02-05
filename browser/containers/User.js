@@ -27,7 +27,8 @@ class UserContainer extends React.Component {
     if (e.target.name === 'dealerId') {
       this.setState({
         regionId: 0,
-        branchId: 0
+        branchId: 0,
+        UserId: 0
       })
     } else if (e.target.name === 'regionId') {
       this.setState({
@@ -62,6 +63,7 @@ class UserContainer extends React.Component {
       <div>
         <EditUser
           values={this.state}
+          users={this.props.users.filter(usr => (usr.dealerId == this.state.dealerId && usr.id != this.state.id))}
           dealers={this.props.dealers}
           regions={this.props.regions.filter(reg => (reg.dealerId == this.state.dealerId))}
           branches={this.props.branches.filter(bran => (bran.regionId == this.state.regionId))}
@@ -76,6 +78,7 @@ class UserContainer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     token: state.login.token,
+    users: state.users.users,
     user: state.users.users[state.users.focus],
     dealers: state.dlr.dealers,
     regions: state.region.regions,
