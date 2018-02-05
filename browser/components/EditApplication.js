@@ -68,7 +68,7 @@ export default ({
       <form onSubmit={handleSave}>
         <div className="col-sm-12">
           <div className="rowed-items" id="date-started">
-            <label>Date Started</label>
+            <label>Date Submitted</label>
             <p>{values.date}</p>
           </div>
           <div className="rowed-items">

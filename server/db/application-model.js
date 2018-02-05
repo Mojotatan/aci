@@ -28,7 +28,7 @@ module.exports = db => db.define('Application', {
   term: {
     type: Sequelize.STRING, // expecting either a stringified number (in months)
     //                        or a string starting with "co-term"
-    defaultValue: '',
+    defaultValue: '60',
     allowNull: false
   },
   advancedPayments: {
@@ -92,7 +92,7 @@ const getDate = () => {
 
 // Utility func to take a date string and make sure it ends up as 'YYYY-MM-DD'
 const forceDate = (dat) => {
-  if (!dat) return dat
+  if (!dat) return (dat === '') ? null : dat // Handle blank date
   let arr = dat.split('-')
   if (arr.length === 1) arr = dat.split('/') // Checking for slashes
   if (arr[0].length === 4) { // Checking for YYYY

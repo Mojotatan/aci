@@ -31,6 +31,7 @@ class ApplicationsContainer extends React.Component {
       rep: this.props.user,
       advancedPayments: '2',
       endOfTerm: 'FMV',
+      term: '60',
       leases: []
     })
     this.props.history.push('/edit-application')
@@ -80,7 +81,7 @@ class ApplicationsContainer extends React.Component {
                 <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</td>
                 <td id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Customer Name</td>
                 <td id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Address</td>
-                <td id="amount" className={(this.props.sort.join('-') === "amount") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Amount</td>
+                <td id="amount" className={(this.props.sort.join('-') === "amount") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Deal Size</td>
                 <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</td>
                 <td>Leasing Company</td>
                 <td>Approval Number</td>
