@@ -31,6 +31,11 @@ class ApplicationContainer extends React.Component {
     this.handleChangeInLease = this.handleChangeInLease.bind(this)
     this.handleRemoveLease = this.handleRemoveLease.bind(this)
 
+    this.toggleMachines = this.toggleMachines.bind(this)
+    this.handleNewMachine = this.handleNewMachine.bind(this)
+    this.handleChangeInMachine = this.handleChangeInMachine.bind(this)
+    this.handleRemoveMachine = this.handleRemoveMachine.bind(this)
+
     this.handleChangeInCustomer = this.handleChangeInCustomer.bind(this)
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
 
@@ -83,6 +88,47 @@ class ApplicationContainer extends React.Component {
     let leases = Array.from(this.state.leases)
     // leases = [...leases.slice(0, e.target.value), ...leases.slice(e.target.value + 1)]
     leases[e.target.value].delete = true
+    this.setState({'leases': leases})
+  }
+
+  toggleMachines(e) {
+    e.preventDefault()
+    let index = e.target.id.split('-')[0]
+    let leases = Array.from(this.state.leases)
+    leases[index].displayMachines = !leases[index].displayMachines
+    this.setState({
+      'leases': leases
+    })
+  }
+
+  handleChangeInMachine(e) {
+    let name = e.target.id.split('-')
+    let leases = Array.from(this.state.leases)
+    leases[name[0]].machines[name[1]][name[2]] = e.target.value
+    this.setState({'leases': leases})
+  }
+
+  handleNewMachine(e) {
+    e.preventDefault()
+    let index = e.target.id.slice('-')[0]
+    let leases = Array.from(this.state.leases)
+    if (!Array.isArray(leases[index].machines)) leases[index].machines = []
+    leases[index].machines.push({
+      id: 'new',
+      serial: '',
+      make: '',
+      model: '', 
+      location: '',
+      LeaseId: leases[index].id
+    })
+    this.setState({'leases': leases})
+  }
+
+  handleRemoveMachine(e) {
+    e.preventDefault()
+    let index = e.target.value.split('-')
+    let leases = Array.from(this.state.leases)
+    leases[index[0]].machines[index[1]].delete = true
     this.setState({'leases': leases})
   }
   
@@ -275,6 +321,10 @@ class ApplicationContainer extends React.Component {
           handleNewLease={this.handleNewLease}
           handleChangeInLease={this.handleChangeInLease}
           handleRemoveLease={this.handleRemoveLease}
+          toggleMachines={this.toggleMachines}
+          handleNewMachine={this.handleNewMachine}
+          handleChangeInMachine={this.handleChangeInMachine}
+          handleRemoveMachine={this.handleRemoveMachine}
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={this.handleSave}
           handleSubmit={this.handleSubmit}

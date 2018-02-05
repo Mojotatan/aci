@@ -1,7 +1,7 @@
 const Op = require('sequelize').Op
 const formidable = require('formidable')
 
-const {User, Application, Customer, Lease, Action} = require('../db').db.models
+const {User, Application, Customer, Lease, Machine, Action} = require('../db').db.models
 const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
@@ -278,9 +278,52 @@ module.exports = require('express').Router()
         }
       }))
     })
-    .then((data) => {
-      // Machines shouldn't be changed through app so we aren't updating
-
+    .then(leases => {
+      return Promise.all(leases.map((lse, index) => {
+        if (typeof lse === 'number') return []
+        return Promise.all(req.body.app.leases[index].machines.map((mac, mIndex) => {
+          if (mac.delete) {
+            if (mac.id === 'new') return 0
+            else {
+              return Machine.destroy({
+                where: {
+                  id: {
+                    [Op.eq]: mac.id
+                  }
+                }
+              })
+            }
+          } else {
+          return (mac.id === 'new') ?
+            Machine.create({
+              serial: mac.serial,
+              make: mac.make,
+              model: mac.model,
+              location: mac.location,
+              action: mac.action,
+              LeaseId: (Array.isArray(lse)) ? lse[1][0].id : lse.id
+            })
+            :
+            Machine.update({
+              serial: mac.serial,
+              make: mac.make,
+              model: mac.model,
+              location: mac.location,
+              action: mac.action,
+              LeaseId: (Array.isArray(lse)) ? lse[1][0].id : lse.id
+            },{
+              where: {
+                id: {
+                  [Op.eq]: mac.id
+                }
+              },
+              returning: true
+            })
+          }
+        }))
+      }))
+    })
+    .then(data => {
       res.send('success, reloading apps')
     })
     .catch(err => {

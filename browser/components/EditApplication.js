@@ -12,6 +12,10 @@ export default ({
   handleNewLease,
   handleChangeInLease,
   handleRemoveLease,
+  toggleMachines,
+  handleNewMachine,
+  handleChangeInMachine,
+  handleRemoveMachine,
   handleChangeInCustomer,
   handleSave,
   handleSubmit,
@@ -60,6 +64,10 @@ export default ({
       </div>
       <div>
         <label>Branch</label>
+        <p>{(values.rep) ? values.rep.branch || values.branch || '' : values.branch || ''}</p>
+      </div>
+      <div>
+        <label>Manager</label>
         <p>{(values.rep) ? values.rep.branch || values.branch || '' : values.branch || ''}</p>
       </div>
     </div>
@@ -295,6 +303,149 @@ export default ({
                       null
                     }
                   </div>
+                  
+                  <div className="col-sm-10 col-sm-offset-1 no-gutters">
+                    <div className="col-sm-4">
+                    {(lease.quote === 'Partial') ?
+                      <button id={`${index}-machines`} onClick={toggleMachines} className="machine show-button" >
+                        {lease.displayMachines ?
+                          'Hide Machines'
+                          :
+                          'Show Machines'
+                        }
+                      </button>
+                      : ''
+                    }
+                    </div>
+                    <div className="col-sm-8">
+                      {(admin || values.status !== 'Working') ?
+                        <div className="radio-div type-rad-btns">
+                          <input
+                            type="radio"
+                            id={`${index}-quote-0`}
+                            onChange={handleChangeInLease}
+                            name={`${index}-quote`}
+                            value="Full"
+                            className={(lease.quote === 'Full') ?
+                              "on" : ""
+                            }
+                            checked={(lease.quote === 'Full') ?
+                              true : false
+                            }
+                          />
+                          <label htmlFor={`${index}-quote-0`}>Full Quote</label>
+
+                          <input
+                            type="radio"
+                            id={`${index}-quote-1`}
+                            onChange={handleChangeInLease}
+                            name={`${index}-quote`}
+                            value="Partial"
+                            className={(lease.quote === 'Partial') ?
+                              "on" : ""
+                            }
+                            checked={(lease.quote === 'Partial') ?
+                              true : false
+                            }
+                          />
+                          <label htmlFor={`${index}-quote-1`}>Partial Quote</label>
+                        </div>
+                        :
+                        <p>{`${values.quote} Quote` || ''}</p>
+                      }
+                    </div>
+                  </div>
+                  
+                  {(lease.quote === 'Partial' && lease.displayMachines) ?
+                    <div className="col-sm-12 no-gutters">
+                      <div className="col-sm-12 no-gutters labels machine-label">
+                        <label className="col-sm-2 col-sm-offset-1 condense-gutters">Serial #</label>
+                        <label className="col-sm-2 condense-gutters">Make</label>
+                        <label className="col-sm-2 condense-gutters">Model</label>
+                        <label className="col-sm-2 condense-gutters">Location</label>
+                        <label className="col-sm-2 condense-gutters">Action</label>
+                      </div>
+                      {lease.machines.map((machine, mIndex) => {
+                        return ((!machine.delete) ?
+                          <div key={`lease-${index}-machine-${mIndex}`} className="col-sm-12 no-gutters machine-input">
+                            <div className="col-sm-2 col-sm-offset-1 condense-gutters">
+                              {(admin || values.status !== 'Working') ?
+                                <input
+                                  onChange={handleChangeInMachine}
+                                  id={`${index}-${mIndex}-serial`}
+                                  value={machine.serial || ''}
+                                />
+                                :
+                                <p>{machine.serial}</p>
+                              }
+                            </div>
+                            <div className="col-sm-2 condense-gutters">
+                              {(admin || values.status !== 'Working') ?
+                                <input
+                                  onChange={handleChangeInMachine}
+                                  id={`${index}-${mIndex}-make`}
+                                  value={machine.make || ''}
+                                />
+                                :
+                                <p>{machine.make}</p>
+                              }
+                            </div>
+                            <div className="col-sm-2 condense-gutters">
+                              {(admin || values.status !== 'Working') ?
+                                <input
+                                  onChange={handleChangeInMachine}
+                                  id={`${index}-${mIndex}-model`}
+                                  value={machine.model || ''}
+                                />
+                                :
+                                <p>{machine.model}</p>
+                              }
+                            </div>
+                            <div className="col-sm-2 condense-gutters">
+                              {(admin || values.status !== 'Working') ?
+                                <input
+                                  onChange={handleChangeInMachine}
+                                  id={`${index}-${mIndex}-location`}
+                                  value={machine.location || ''}
+                                />
+                                :
+                                <p>{machine.location}</p>
+                              }
+                            </div>
+                            <div className="col-sm-2 condense-gutters">
+                              {(admin || values.status !== 'Working') ?
+                                <select
+                                onChange={handleChangeInMachine}
+                                id={`${index}-${mIndex}-action`}
+                                value={machine.action || ''}
+                                >
+                                  <option value="Release">Release</option>
+                                  <option value="Upgrade to Keep">Upgrade to Keep</option>
+                                  <option value="Upgrade to Return">Upgrade to Return</option>
+                                  <option value="Buyout to Keep">Buyout to Keep</option>
+                                  <option value="Buyout to Return">Buyout to Return</option>
+                                  <option value="Leave on Lease">Leave on Lease</option>
+                                </select>
+                                :
+                                <p>{machine.action}</p>
+                              }
+                            </div>
+                            <div className="col-sm-1">
+                              {(admin || values.status !== 'Working') ?
+                                <button value={`${index}-${mIndex}`} onClick={handleRemoveMachine} className="remove-button"></button>
+                                :
+                                null
+                              }
+                            </div>
+                          </div>
+                          : null
+                        )
+                      })}
+                      <div className="col-sm-offset-1"><button id={`${index}-newMachine`} onClick={handleNewMachine} className="machine add-button">Add Machine</button></div>
+                    </div>
+                    :
+                    null
+                  }
                 </div>
                 :
                 null

@@ -97,6 +97,7 @@ export default ({
                 <option value="New">New</option>
                 <option value="Working">Working</option>
                 <option value="Complete">Complete</option>
+                <option value="Expired">Expired</option>
               </select>
               :
               <p>{values.status}</p>
@@ -148,7 +149,7 @@ export default ({
                 <div className="col-sm-1"><label className="index-number">{count++}</label></div>
                 <div className="col-sm-10 field-row no-gutters">
                   <div className="col-sm-6">
-                    {(admin || values.status === 'Draft') ?
+                    {(admin || values.status !== 'Working') ?
                       <input
                         onChange={handleChangeInLease}
                         id={`${index}-number`}
@@ -159,7 +160,7 @@ export default ({
                     }
                   </div>
                   <div className="col-sm-6">
-                    {(admin || values.status === 'Draft') ?
+                    {(admin || values.status !== 'Working') ?
                       <input
                         onChange={handleChangeInLease}
                         id={`${index}-company`}
@@ -172,7 +173,7 @@ export default ({
                   </div>
                 </div>
                 <div className="col-sm-1">
-                  {(admin || values.status === 'Draft') ?
+                  {(admin || values.status !== 'Working') ?
                     <button value={index} onClick={handleRemoveLease} className="remove-button"></button>
                     :
                     null
@@ -180,6 +181,7 @@ export default ({
                 </div>
                 <div className="col-sm-10 col-sm-offset-1 no-gutters">
                   <div className="col-sm-4">
+                    {(lease.quote === 'Partial') ?
                     <button id={`${index}-machines`} onClick={toggleMachines} className="machine show-button" >
                       {lease.displayMachines ?
                         'Hide Machines'
@@ -187,9 +189,11 @@ export default ({
                         'Show Machines'
                       }
                     </button>
+                    : ''
+                    }
                   </div>
                   <div className="col-sm-8">
-                    {(admin || values.status === 'Draft') ?
+                    {(admin || values.status !== 'Working') ?
                       <div className="radio-div type-rad-btns">
                         <input
                           type="radio"
@@ -227,7 +231,7 @@ export default ({
                   </div>
                 </div>
                 
-                {(lease.displayMachines) ?
+                {(lease.quote === 'Partial' && lease.displayMachines) ?
                   <div className="col-sm-12 no-gutters">
                     <div className="col-sm-12 no-gutters labels machine-label">
                       <label className="col-sm-2 col-sm-offset-1 condense-gutters">Serial #</label>
@@ -240,7 +244,7 @@ export default ({
                       return ((!machine.delete) ?
                         <div key={`lease-${index}-machine-${mIndex}`} className="col-sm-12 no-gutters machine-input">
                           <div className="col-sm-2 col-sm-offset-1 condense-gutters">
-                            {(admin || values.status === 'Draft') ?
+                            {(admin || values.status !== 'Working') ?
                               <input
                                 onChange={handleChangeInMachine}
                                 id={`${index}-${mIndex}-serial`}
@@ -251,7 +255,7 @@ export default ({
                             }
                           </div>
                           <div className="col-sm-2 condense-gutters">
-                            {(admin || values.status === 'Draft') ?
+                            {(admin || values.status !== 'Working') ?
                               <input
                                 onChange={handleChangeInMachine}
                                 id={`${index}-${mIndex}-make`}
@@ -262,7 +266,7 @@ export default ({
                             }
                           </div>
                           <div className="col-sm-2 condense-gutters">
-                            {(admin || values.status === 'Draft') ?
+                            {(admin || values.status !== 'Working') ?
                               <input
                                 onChange={handleChangeInMachine}
                                 id={`${index}-${mIndex}-model`}
@@ -273,7 +277,7 @@ export default ({
                             }
                           </div>
                           <div className="col-sm-2 condense-gutters">
-                            {(admin || values.status === 'Draft') ?
+                            {(admin || values.status !== 'Working') ?
                               <input
                                 onChange={handleChangeInMachine}
                                 id={`${index}-${mIndex}-location`}
@@ -284,7 +288,7 @@ export default ({
                             }
                           </div>
                           <div className="col-sm-2 condense-gutters">
-                            {(admin || values.status === 'Draft') ?
+                            {(admin || values.status !== 'Working') ?
                               <select
                               onChange={handleChangeInMachine}
                               id={`${index}-${mIndex}-action`}
@@ -302,7 +306,7 @@ export default ({
                             }
                           </div>
                           <div className="col-sm-1">
-                            {(admin || values.status === 'Draft') ?
+                            {(admin || values.status !== 'Working') ?
                               <button value={`${index}-${mIndex}`} onClick={handleRemoveMachine} className="remove-button"></button>
                               :
                               null
@@ -335,7 +339,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6 field-label">
               <label className="required">Customer</label>
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <input
                   onChange={handleChangeCustomer}
                   name={'name'}
@@ -365,7 +369,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6 field-label">
               <label className="required">Address</label>
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <input
                   onChange={handleChangeInCustomer}
                   name={'street'}
@@ -377,7 +381,7 @@ export default ({
             </div>
             <div className="col-sm-6 field-label">
               <label className="required">City</label>
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <input
                   onChange={handleChangeInCustomer}
                   name={'city'}
@@ -389,7 +393,7 @@ export default ({
             </div>
             <div className="col-sm-6 field-label">
               <label className="required">State</label>
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <input
                   onChange={handleChangeInCustomer}
                   name={'state'}
@@ -401,7 +405,7 @@ export default ({
             </div>
             <div className="col-sm-6 field-label">
               <label className="required">Zip Code</label>
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <input
                   onChange={handleChangeInCustomer}
                   name={'zip'}
@@ -416,7 +420,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6 field-label">
               <label className="required">Phone</label>
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <input
                   onChange={handleChangeInCustomer}
                   name={'phone'}
@@ -431,7 +435,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6 field-label">
               <label>Customer Email</label>
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <input 
                   onChange={handleChangeInCustomer}
                   name={'email'}
@@ -446,7 +450,7 @@ export default ({
           {/* <div className="row">
             <div className="col-sm-6 field-label">
               <label>Tax ID</label>
-              {(admin || values.status === 'Draft') ?
+              {(admin || values.status !== 'Working') ?
                 <input
                   onChange={handleChangeInCustomer}
                   name={'taxID'}
