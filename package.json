@@ -10,6 +10,7 @@
     "build-dev": "webpack -w",
     "build": "webpack",
     "seed-dev": "node server/db/seed-dev.js",
+    "seed-beta": "node server/db/seed-beta.js",
     "seed": "node server/db/seed.js"
   },
   "author": "",

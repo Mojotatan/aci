@@ -3,8 +3,6 @@ const path = require('path')
 const {db, associations} = require('./index')
 const {User, Dealer, Region, Branch, Application, Action, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
-let userGuy, bbranch, rregion, manager, rival, impact, cushtomer
-
 const generateUsers = () => {
   let arr = []
 
