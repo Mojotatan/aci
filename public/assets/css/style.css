@@ -79,9 +79,9 @@ input, textarea {
 	width: 130px;
 	float: right;
 	display: inline-block;
-	background: url(../img/phone.svg);
+	background: url(../img/email-symbol.svg);
 	background-position-x: left;
-    background-position-y: center;
+	background-position-y: 17px;
 	background-size: 20px;
 	background-repeat: no-repeat;
 }
