@@ -17,7 +17,7 @@ module.exports = db => db.define('Application', {
     }
   },
   amount: {
-    type: Sequelize.DECIMAL(9, 2) // overflows at 10 million
+    type: Sequelize.DECIMAL(11, 2) // overflows at 1 billion
   },
   expiry: {
     type: Sequelize.DATEONLY, // stored as plaintext 'YYYY-MM-DD'

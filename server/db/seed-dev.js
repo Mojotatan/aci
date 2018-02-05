@@ -112,15 +112,15 @@ const generateApplications = () => {
     }))
   }
 
-  builder('Draft', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
+  builder('Draft', '2017-11-26', 20, '2019-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
-  builder('New', '1998-11-26', 20.20, '2018-02-04', '24', '2', 'FMV', 'Existing', 'Addition', '', 30.45, '2%', 'no comment')
+  builder('New', '1998-11-26', 20.20, '2019-02-04', '24', '2', 'FMV', 'Existing', 'Addition', '', 30.45, '2%', 'no comment')
 
   builder('Hold', '2017-11-26', 20, '2024-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
-  builder('Approved', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
+  builder('Approved', '2017-11-26', 20, '2019-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
-  builder('Declined', '2017-11-26', 20, '2018-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
+  builder('Declined', '2017-11-26', 20, '2019-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
   return arr
 }
@@ -139,9 +139,9 @@ const generateActions = () => {
     }))
   }
 
-  builder('Credit App Submitted', '2018-01-23', 'DLL', 'DFS-8456127', 'Hold', 'Needs more cowbell')
-  builder('Credit App Submitted', '2018-01-23', 'DLL', 'DFS-8456127', 'Approved', 'Needs more cowbell')
-  builder('Credit App Submitted', '2018-01-23', 'DLL', 'DFS-8456127', 'Declined', 'Needs more cowbell')
+  builder('Credit App Submitted', '2019-01-23', 'DLL', 'DFS-8456127', 'Hold', 'Needs more cowbell')
+  builder('Credit App Submitted', '2019-01-23', 'DLL', 'DFS-8456127', 'Approved', 'Needs more cowbell')
+  builder('Credit App Submitted', '2019-01-23', 'DLL', 'DFS-8456127', 'Declined', 'Needs more cowbell')
 
   return arr
 }
@@ -392,8 +392,8 @@ db.sync({force: true})
 })
 .then(() => {
   return Promise.all([
-    seedData.applications[0].setRep(seedData.users[2]),
-    seedData.applications[1].setRep(seedData.users[2]),
+    seedData.applications[0].setRep(seedData.users[4]),
+    seedData.applications[1].setRep(seedData.users[4]),
     seedData.applications[2].setRep(seedData.users[0]),
     seedData.applications[3].setRep(seedData.users[4]),
     seedData.applications[4].setRep(seedData.users[5]),
@@ -428,8 +428,8 @@ db.sync({force: true})
 })
 .then(() => {
   return Promise.all([
-    seedData.buyouts[0].setRep(seedData.users[2]),
-    seedData.buyouts[1].setRep(seedData.users[2])
+    seedData.buyouts[0].setRep(seedData.users[4]),
+    seedData.buyouts[1].setRep(seedData.users[4])
   ])
 })
 .then(() => {

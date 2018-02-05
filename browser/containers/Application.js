@@ -150,7 +150,7 @@ class ApplicationContainer extends React.Component {
 
     // verification
     // let required = ['name', 'street', 'city', 'state', 'zip', 'phone', 'email']
-    if (!this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone || !this.state.customer.email) {
+    if (!this.state.amount || !this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone) {
       this.props.throwAlert('red', 'Please fill in all required fields')
     } else {
 

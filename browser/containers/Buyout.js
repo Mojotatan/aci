@@ -91,13 +91,18 @@ class BuyoutContainer extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
 
-    if (this.state.customerCreate) {
-      this.props.saveByoThunk(this.props.token, [this.state, {status: 'Submitted', date: getDate()}], [this.state.customer, {id: 'new'}])
+    if (!this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone) {
+      this.props.throwAlert('red', 'Please fill in all required fields')
     } else {
-      this.props.saveByoThunk(this.props.token, [this.state, {status: 'Submitted', date: getDate()}], [this.state.customer])
-    }
+      
+      if (this.state.customerCreate) {
+        this.props.saveByoThunk(this.props.token, [this.state, {status: 'Submitted', date: getDate()}], [this.state.customer, {id: 'new'}])
+      } else {
+        this.props.saveByoThunk(this.props.token, [this.state, {status: 'Submitted', date: getDate()}], [this.state.customer])
+      }
 
-    this.props.history.push('/Buyouts')
+      this.props.history.push('/Buyouts')
+    }
   }
 
   handleDelete(e) {

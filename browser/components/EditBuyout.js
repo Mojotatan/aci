@@ -430,7 +430,7 @@ export default ({
 
           <div className="row">
             <div className="col-sm-6 field-label">
-              <label className="required">Customer Email</label>
+              <label>Customer Email</label>
               {(admin || values.status === 'Draft') ?
                 <input 
                   onChange={handleChangeInCustomer}

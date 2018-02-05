@@ -433,7 +433,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
-                <label className="required">Customer Email</label>
+                <label>Customer Email</label>
               </div>
               <div className="field-box">
                 {(admin || values.status !== 'Working') ?
@@ -475,7 +475,7 @@ export default ({
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
-                <label>Estimated Deal Size</label>
+                <label className="required">Estimated Deal Size</label>
               </div>
               <div className="field-box monetary">
                 {(admin || values.status !== 'Working') ?

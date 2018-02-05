@@ -105,3 +105,9 @@ export const pwCheck = (pw) => {
   if (checkChars.letters > 0 && checkChars.numbers > 0) return true
   else return false
 }
+
+
+// export const detectRequired = reqs => {
+//   // takes array of required properties
+
+// }

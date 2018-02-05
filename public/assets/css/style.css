@@ -59,6 +59,9 @@ input, textarea {
 	margin-left: -10px;
 	line-height: 36px
 }
+.right-justify {
+	text-align: right
+}
 
 /* Header */
 .header-bar {
@@ -227,9 +230,14 @@ input, textarea {
 	border-right: solid #1991EB;
 	border-width: 0px 1px 1px 1px;
 	width: calc(100% - 2px);
+	/* raven said to do this but it looks dumb */
+	/* text-align: center */
 }
 .app-header-bottom td {
 	font-weight: bold;
+}
+.app-header-bottom #amount {
+	text-align: right
 }
 .app-table {
 	width: 100%;

@@ -27,7 +27,7 @@ class ApplicationsContainer extends React.Component {
     this.props.createApp({
       id: 'new',
       status: 'Draft',
-      date: getDate(),
+      // date: getDate(),
       rep: this.props.user,
       advancedPayments: '2',
       endOfTerm: 'FMV',
@@ -95,7 +95,7 @@ class ApplicationsContainer extends React.Component {
                     <td>{reformatDate(app.date)}</td>
                     <td>{(app.customer) ? app.customer.name : ''}</td>
                     <td>{(app.customer) ? app.customer.street : ''}</td>
-                    <td>{(app.amount) ? getPrettyNumber(app.amount) : ''}</td>
+                    <td className="right-justify">{(app.amount) ? getPrettyNumber(app.amount) : ''}</td>
                     <td>{app.status}</td>
                     <td>{''}</td>
                     <td>{''}</td>
