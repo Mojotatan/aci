@@ -226,20 +226,6 @@ export default ({
                   <p>{values.existingType || ''}</p>
                 }
               </div>
-              {(values.existingType === 'Upgrade') ?
-                <div className="col-sm-6">
-                  <div className="radio-div type-rad-btns">
-                    <input
-                      type="checkbox"
-                      onChange={handleCheckbox}
-                      name="needQuote"
-                      checked={values.needQuote}
-                    />
-                    <label>Quote Needed</label>
-                  </div>
-                </div>
-                : null
-              }
             </div>
             : null
           }
@@ -349,10 +335,21 @@ export default ({
                             }
                           />
                           <label htmlFor={`${index}-quote-1`}>Partial Quote</label>
+
+                          <input
+                            type="checkbox"
+                            id={`${index}-needQuote`}
+                            onChange={handleCheckbox}
+                            name={`${index}-needQuote`}
+                            checked={lease.needQuote || false}
+                          />
+                          <label>Quote Needed</label>
+
                         </div>
                         :
                         <p>{`${values.quote} Quote` || ''}</p>
                       }
+
                     </div>
                   </div>
                   

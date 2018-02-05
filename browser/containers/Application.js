@@ -16,7 +16,6 @@ class ApplicationContainer extends React.Component {
     this.state = Object.assign({},
       {
         customerCreate: (this.props.app && this.props.app.customer) ? false : true,
-        needQuote: false,
         mailBody: '',
         mailSubject: '',
         mailCC: '',
@@ -171,23 +170,21 @@ class ApplicationContainer extends React.Component {
     let custArr = (this.state.customerCreate) ? [this.state.customer, {id: 'new'}] : [this.state.customer]
     this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], custArr)
 
-    if (this.state.needQuote) {
+    let needQuotes = this.state.leases.filter(lse => (lse.needQuote))
+    needQuotes.forEach(quote => {
       this.props.saveByoThunk(this.props.token, [
           this.state,
           {
             id: 'new',
             status: 'New',
             date: getDate(),
-            expiry: null
+            expiry: null,
+            leases: [quote]
           }
         ],
         custArr
       )
-
-      this.setState({
-        needQuote: false
-      })
-    }
+    })
 
   }
 
@@ -233,7 +230,10 @@ class ApplicationContainer extends React.Component {
   }
 
   handleCheckbox(e) {
-    this.setState({needQuote: !this.state.needQuote})
+    let name = e.target.id.split('-')
+    let leases = Array.from(this.state.leases)
+    leases[name[0]].needQuote = !this.state.leases[name[0]].needQuote
+    this.setState({'leases': leases})
   }
 
   // For Admin section
