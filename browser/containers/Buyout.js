@@ -15,7 +15,8 @@ class BuyoutContainer extends React.Component {
     this.state = Object.assign({},
       {
         customerCreate: (this.props.byo && this.props.byo.customer) ? false : true,
-        upload: null
+        upload: null,
+        note: ''
       },
       this.props.byo,
     )
@@ -38,6 +39,8 @@ class BuyoutContainer extends React.Component {
     this.handleChangeInMachine = this.handleChangeInMachine.bind(this)
     this.handleRemoveMachine = this.handleRemoveMachine.bind(this)
 
+    this.handleChangeInPDFNote = this.handleChangeInPDFNote.bind(this)
+    this.handleDeletePDF = this.handleDeletePDF.bind(this)
     this.handleChoosePDF = this.handleChoosePDF.bind(this)
     this.handleUploadPDF = this.handleUploadPDF.bind(this)
   }
@@ -183,7 +186,29 @@ class BuyoutContainer extends React.Component {
     leases[index[0]].machines[index[1]].delete = true
     this.setState({'leases': leases})
   }
+  
+  handleDeletePDF(e) {
+    let index = e.target.id.split('-')[0]
+    let name = e.target.id.split('-')[1]
+    let pdfs = Array.from(this.state.pdfs)
+    let pdfNotes = Array.from(this.state.pdfNotes)
+    
+    pdfs = [...pdfs.slice(0, index), ...pdfs.slice(index + 1)]
+    pdfNotes = [...pdfNotes.slice(0, index), ...pdfNotes.slice(index + 1)]
+    
+    // this.setState({'pdfNotes': pdfNotes, 'pdfs': pdfs})
+    
+    this.props.saveByoThunk(this.props.token, [this.state, {pdfNotes, pdfs}], [this.state.customer])
+    axios.delete(`/api/uploads/pdf/${this.state.id}/${name}?access_token=${this.props.token}`)
+    .then(res => {
+      console.log(res.data)
+    })
+  }
 
+  handleChangeInPDFNote(e) {
+    this.setState({note: e.target.value})
+  }
+  
   handleChoosePDF(e) {
     this.setState({upload: e.target.files[0]})
   }
@@ -193,6 +218,7 @@ class BuyoutContainer extends React.Component {
     if (this.state.upload) {
       let formData = new FormData()
       formData.append('file', this.state.upload)
+      formData.append('note', this.state.note)
       axios.post(`/api/uploads/pdf/${this.state.id}?access_token=${this.props.token}`, formData, {'content-type': 'multipart/form-data'})
       .then(res => {
         if (res.data.color) this.props.throwAlert(res.data.color, res.data.message)
@@ -252,6 +278,8 @@ class BuyoutContainer extends React.Component {
           handleNewMachine={this.handleNewMachine}
           handleChangeInMachine={this.handleChangeInMachine}
           handleRemoveMachine={this.handleRemoveMachine}
+          handleChangeInPDFNote={this.handleChangeInPDFNote}
+          handleDeletePDF={this.handleDeletePDF}
           handleChoosePDF={this.handleChoosePDF}
           handleUploadPDF={this.handleUploadPDF}
         />

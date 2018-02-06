@@ -21,6 +21,8 @@ export default ({
   handleNewMachine,
   handleChangeInMachine,
   handleRemoveMachine,
+  handleChangeInPDFNote,
+  handleDeletePDF,
   handleChoosePDF,
   handleUploadPDF
 }) => (
@@ -488,39 +490,76 @@ export default ({
       </form>
     </div>
 
-    <div className="col-sm-12 admin">
-      <div className="row">
-        <div className="app-bg col-sm-12">
-          <h3>PDF</h3>
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Current PDF</label>
+    {(values.id !== 'new') ?
+      <div className="col-sm-12 admin">
+        <div className="row">
+          <div className="app-bg col-sm-12">
+            <h3>PDFs</h3>
+            <div className="row">
+              <div className="col-sm-3">
+                <div className="field-label">
+                  <label>PDF</label>
+                </div>
               </div>
-              <div className="field-box">
-                {(values.pdf) ?
-                <a href={`/api/uploads/pdf/${values.pdf}?access_token=${token}`} download>Download</a>
-                :
-                <p>None</p>
-                }
+              <div className="col-sm-6">
+                <div className="field-label">
+                  <label>Notes</label>
+                </div>
               </div>
             </div>
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Upload new PDF</label>
-              </div>
-              <div className="field-box">
-                <form onSubmit={handleUploadPDF}>
-                  <label>Choose a file to upload</label>
-                  <input type="file" onChange={handleChoosePDF} accept="application/pdf" />
-                  <button type="submit">Submit</button>
-                </form>
+          {(values.pdfs) ?
+            <div className="pdfs">
+              {values.pdfs.map((pdf, index) => (
+                <div key={`pdf-${index}`} className="row">
+                  <div className="col-sm-3">
+                    <div className="field-box">
+                      <a href={`/api/uploads/pdf/${values.id}/${pdf}?access_token=${token}`} download>{pdf}</a>
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="field-box">
+                      <p>{values.pdfNotes[index] || ''}</p>
+                    </div>
+                  </div>
+                  <div className="col-sm-3" align="center">
+                    <div className="field-box">
+                      <button id={`${index}-${pdf}`} className="fields-button" onClick={handleDeletePDF}>Delete</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            : null
+          }
+          </div>
+          <div id="byo-desc" className="col-sm-12">
+            <div className="row">
+              <div className="col-sm-6">
+                {/* <div className="field-label">
+                  <label>Upload new PDF</label>
+                </div> */}
+                <h3>Upload New PDF</h3>
+                <div className="field-box">
+                  <form onSubmit={handleUploadPDF}>
+                    <div className="col-sm-12">
+                      <input type="file" onChange={handleChoosePDF} accept="application/pdf" />
+                    </div>
+                    <div className="col-sm-12">
+                      <div className="field-label"><label>Note</label></div>
+                      <div className="field-box pdfs"><textarea onChange={handleChangeInPDFNote} value={values.note} /></div>
+                    </div>
+                    <div className="col-sm-12" align="right">
+                      <button id="save-button" type="submit">Submit</button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      : null
+    }
 
   </div>
 )

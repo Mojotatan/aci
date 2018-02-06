@@ -4,6 +4,7 @@ const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
 
+  // get all buyouts you have access to
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     let toBeSent = {}
@@ -133,6 +134,8 @@ module.exports = require('express').Router()
         status: req.body.byo.status,
         expiry: req.body.byo.expiry,
         comments: req.body.byo.comments,
+        pdfs: req.body.byo.pdfs,
+        pdfNotes: req.body.byo.pdfNotes
       }, {
       where: {
         id: {

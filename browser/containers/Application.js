@@ -179,6 +179,8 @@ class ApplicationContainer extends React.Component {
             status: 'New',
             date: getDate(),
             expiry: null,
+            appId: this.state.id, // doesn't work for new apps; need a way around that
+            // like maybe by having saveByoThunk run as a callback on saveAppThunk?
             leases: [quote]
           }
         ],

@@ -390,7 +390,7 @@ db.sync({force: true})
 })
 .then(() => {
   return Promise.all([
-    seedData.applications[0].setRep(seedData.users[4]),
+    seedData.applications[0].setRep(seedData.users[2]),
     seedData.applications[1].setRep(seedData.users[4]),
     seedData.applications[2].setRep(seedData.users[0]),
     seedData.applications[3].setRep(seedData.users[4]),

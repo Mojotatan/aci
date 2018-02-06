@@ -691,6 +691,14 @@ button.disabled {
 	margin-bottom: 30px
 }
 
+.pdfs .row {
+	margin-top: 15px
+}
+.pdfs textarea {
+	width: 100%;
+	margin-bottom: 30px
+}
+
 /* Universal */
 .agent-box {
 	background-color: #F1F4F8;
