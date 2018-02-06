@@ -86,7 +86,7 @@ class ApplicationsContainer extends React.Component {
               <span>Approval Number</span>
               <span id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expires</span>
               <span id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</span>
-              <span className="table-right"></span>
+              <span className=""></span>
             </div>
             {this.props.apps.map((app, index) => {
 
@@ -108,7 +108,7 @@ class ApplicationsContainer extends React.Component {
                       }
                     </span>
                     :
-                    <span id={index} className="edit table-right" onClick={this.handleResubmit}>
+                    <span id={index} className="edit" onClick={this.handleResubmit}>
                       Resubmit
                     </span>
                   }
