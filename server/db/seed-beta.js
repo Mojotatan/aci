@@ -55,29 +55,17 @@ const generateBranches = () => {
   }
 
   builder('Bolingbrook')
-
   builder('Lake Forest HQ')
-
-  builder('Lake Forest Warehouse & Logistics')
-  
-  builder('Peru')
-  
+  builder('Lake Forest Warehouse & Logistics')  
+  builder('Peru')  
   builder('Chicago Clark')
-
   builder('Chicago Michigan')
-
   builder('Darien')
-
-  builder('Rockford')
-  
+  builder('Rockford')  
   builder('LA')
-
   builder('Brookefield')
-
   builder('Madison')
-
   builder('Indianapolis')
-
   builder('Hammond')
 
   return arr
@@ -93,11 +81,8 @@ const generateRegions = () => {
   }
 
   builder('IL')
-
   builder('CA')
-
   builder('WI')
-
   builder('IN')
 
   return arr
@@ -386,6 +371,13 @@ db.sync({force: true})
     return Promise.all(seedData.users.slice(2).map(usr => {
       return usr.setBranch(seedData.branches[0])
     }))
+  })
+  .then(() => {
+    return Promise.all([
+      seedData.users[2].setUnderlings([seedData.users[3], seedData.users[12]]),
+      seedData.users[3].setUnderlings(seedData.users.slice(4, 12)),
+      seedData.users[12].setUnderlings(seedData.users.slice(13))
+    ])
   })
 })
 .then(() => {

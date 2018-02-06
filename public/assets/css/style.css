@@ -255,7 +255,7 @@ input, textarea {
 .app-table td {
 	padding-top: 16px;
 	padding-bottom: 16px;
-	padding-left: 25px
+	padding-left: 25px;
 }
 .no-gutters {
 	padding-left: 0 !important;
