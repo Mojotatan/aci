@@ -226,18 +226,13 @@ input, textarea {
 .app-header-bottom {
 	background-color: #f0f7fb;
 	border-bottom: solid #000;
-	border-left: solid #1991EB;
-	border-right: solid #1991EB;
 	border-width: 0px 1px 1px 1px;
 	width: calc(100% - 2px);
 	/* raven said to do this but it looks dumb */
 	/* text-align: center */
 }
-.app-header-bottom td {
+.app-header-bottom span {
 	font-weight: bold;
-}
-.app-header-bottom #amount {
-	text-align: right
 }
 .app-table {
 	width: 100%;
@@ -249,13 +244,24 @@ input, textarea {
 .admin .app-table {
 	border-top: 1px solid #1991EB
 }
-.app-table tr {
+.app-table > div {
 	width: 100%;
 }
-.app-table td {
+.app-table span {
+	display: inline-block;
 	padding-top: 16px;
 	padding-bottom: 16px;
-	padding-left: 25px;
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 10%;
+}
+.app-table .even span, .app-table .odd span {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden
+}
+.app-table .edit {
+	text-align: center
 }
 .no-gutters {
 	padding-left: 0 !important;
@@ -284,9 +290,6 @@ input, textarea {
 } 
 .even{
   background-color: #f8f8f8;
-}
-.table-right {
-	padding-right: 16px
 }
 
 /* Users List */

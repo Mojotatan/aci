@@ -75,49 +75,47 @@ class ApplicationsContainer extends React.Component {
           <div className="newapp"><button className="app-button" onClick={this.handleNewApp}>Start New Application</button></div>
         </div>
         <div className="col-sm-12 no-gutters">
-          <table className="app-table">
-            <tbody>
-              <tr className="app-header-bottom" key="head">
-                <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</td>
-                <td id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Customer Name</td>
-                <td id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Address</td>
-                <td id="amount" className={(this.props.sort.join('-') === "amount") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Deal Size</td>
-                <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</td>
-                <td>Leasing Company</td>
-                <td>Approval Number</td>
-                <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expires</td>
-                <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</td>
-                <td className="table-right"></td>
-              </tr>
-              {this.props.apps.map((app, index) => {
+          <div className="app-table">
+            <div className="app-header-bottom" key="head">
+              <span id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</span>
+              <span id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Customer Name</span>
+              <span id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Address</span>
+              <span id="amount" className={(this.props.sort.join('-') === "amount") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Deal Size</span>
+              <span id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</span>
+              <span>Leasing Company</span>
+              <span>Approval Number</span>
+              <span id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expires</span>
+              <span id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</span>
+              <span className="table-right"></span>
+            </div>
+            {this.props.apps.map((app, index) => {
 
-                return (
-                  <tr key={app.id} className={(index % 2 === 0) ? 'even' : 'odd'} >
-                    <td>{reformatDate(app.date)}</td>
-                    <td>{(app.customer) ? app.customer.name : ''}</td>
-                    <td>{(app.customer) ? app.customer.street : ''}</td>
-                    <td className="right-justify">{(app.amount) ? getPrettyNumber(app.amount) : ''}</td>
-                    <td>{app.status}</td>
-                    <td>{''}</td>
-                    <td>{''}</td>
-                    <td>{reformatDate(app.expiry)}</td>
-                    <td>{(app.rep) ? app.rep.fullName : ''}</td>
-                    {(this.props.user.level === 'Admin' || app.status !== 'Expired') ?
-                      <td id={index} onClick={this.handleClick} className="edit table-right">
-                        {(this.props.user.level === 'Admin' || app.status !== 'Working') ?
-                          'Edit' : 'View'
-                        }
-                      </td>
-                      :
-                      <td id={index} className="edit table-right" onClick={this.handleResubmit}>
-                        Resubmit
-                      </td>
-                    }
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+              return (
+                <div key={app.id} className={(index % 2 === 0) ? 'even' : 'odd'} >
+                  <span>{reformatDate(app.date)}</span>
+                  <span>{(app.customer) ? app.customer.name : ''}</span>
+                  <span>{(app.customer) ? app.customer.street : ''}</span>
+                  <span className="right-justify">{(app.amount) ? getPrettyNumber(app.amount) : ''}</span>
+                  <span>{app.status}</span>
+                  <span>{''}</span>
+                  <span>{''}</span>
+                  <span>{reformatDate(app.expiry)}</span>
+                  <span>{(app.rep) ? app.rep.fullName : ''}</span>
+                  {(this.props.user.level === 'Admin' || app.status !== 'Expired') ?
+                    <span id={index} onClick={this.handleClick} className="edit table-right">
+                      {(this.props.user.level === 'Admin' || app.status !== 'Working') ?
+                        'Edit' : 'View'
+                      }
+                    </span>
+                    :
+                    <span id={index} className="edit table-right" onClick={this.handleResubmit}>
+                      Resubmit
+                    </span>
+                  }
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
     )
