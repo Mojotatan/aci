@@ -55,6 +55,7 @@ let {User, Dealer, Region, Branch, Application, Action, Guarantee, Customer, Buy
   Buyout.belongsTo(User, {as: 'rep'})
   Buyout.belongsTo(Guarantee, {as: 'guarantee'}) // phase 2
   Buyout.belongsTo(Customer, {as: 'customer'})
+  Buyout.belongsTo(Application, {as: 'app'}) // for 'quote needed' checkbox
 
   // Buyout.hasMany(Lease, {as: 'leases'})
   Lease.belongsTo(Buyout, {as: 'buyout'})

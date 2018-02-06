@@ -54,11 +54,13 @@ class LogInContainer extends React.Component {
 
         this.props.loadAppsThunk(res.data.token)
         this.props.loadByosThunk(res.data.token)
-        this.props.loadDealersThunk(res.data.token)
-        this.props.loadBranchesThunk(res.data.token)
-        this.props.loadRegionsThunk(res.data.token)
-        this.props.loadUsersThunk(res.data.token)
         this.props.loadCustomersThunk(res.data.token)
+        if (res.data.user.level === 'Admin') { // not needed for non admins
+          this.props.loadDealersThunk(res.data.token)
+          this.props.loadBranchesThunk(res.data.token)
+          this.props.loadRegionsThunk(res.data.token)
+          this.props.loadUsersThunk(res.data.token)
+        }
         this.props.history.push('/applications')
       }
       else {

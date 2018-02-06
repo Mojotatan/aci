@@ -28,14 +28,14 @@ module.exports = require('express').Router()
       fs.rename(oldPath, newPath, err => {
         if (err) res.send({color: 'red', message: 'Something went wrong with the upload'})
         else {
-          let fileName = newPath.split('/').pop() // sanitizes malicious file name, hopefully
+          let fileName = newPath.split('/').pop() // sanitizes malicious file.name, hopefully
           Buyout.findById(Number(req.params.id))
           .then(byo => {
-            if (byo.pdf !== fileName) { // delete previous pdf
-              fs.unlink(path.resolve(__dirname, '../uploads/pdf/' + byo.pdf), (err) => {if (err) console.error(err)})
-            }
+            // if (byo.pdf !== fileName) { // delete previous pdf
+            //   fs.unlink(path.resolve(__dirname, '../uploads/pdf/' + byo.pdf), (err) => {if (err) console.error(err)})
+            // }
             return Buyout.update({
-              pdf: fileName
+              pdfs: [...byo.pdfs, fileName]
             }, {
               where: {
                 id: {
@@ -56,6 +56,8 @@ module.exports = require('express').Router()
       })
     })
   })
+
+  // .post('')
 
   .get('/pdf/:name', /*isLoggedIn, isAdmin,*/ (req, res) => {
     let me = whoAmI(req.query.access_token)

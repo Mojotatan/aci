@@ -127,24 +127,45 @@ module.exports = require('express').Router()
   // much easier to implement
 
   .get('/cascade/:id', (req, res) => {
-    let userArr = []
+    let userObj = {} // object not array for faster lookup
     let cascadeGet = usr => {
-      return usr.getUnderlings()
-      .then(underlings => {
-        userArr = [...userArr, ...underlings.map(ling => ling.id)]
-        return Promise.all(underlings.map(ling => cascadeGet(ling)))
-      })
+      if (!userObj[usr.id]) { // check if this user has been cascaded already
+        userObj[usr.id] = true
+        return usr.getUnderlings()
+        .then(underlings => {
+          return Promise.all(underlings.map(ling => cascadeGet(ling)))
+        })
+      }
     }
     User.findById(Number(req.params.id))
     .then(usr => {
-      userArr.push(usr.id)
       return cascadeGet(usr)
     })
     .then(unders => {
-      res.send(userArr)
+      res.send(Object.keys(userObj).map(key => Number(key)))
     })
     .catch(err => console.error(err))
   })
+
+  // .get('/cascade/:id', (req, res) => {
+  //   let userArr = []
+  //   let cascadeGet = usr => {
+  //     return usr.getUnderlings()
+  //     .then(underlings => {
+  //       userArr = [...userArr, ...underlings.map(ling => ling.id)]
+  //       return Promise.all(underlings.map(ling => cascadeGet(ling)))
+  //     })
+  //   }
+  //   User.findById(Number(req.params.id))
+  //   .then(usr => {
+  //     userArr.push(usr.id)
+  //     return cascadeGet(usr)
+  //   })
+  //   .then(unders => {
+  //     res.send(userArr)
+  //   })
+  //   .catch(err => console.error(err))
+  // })
 
   .put('/delete', isLoggedIn, (req, res) => {
     Application.destroy({

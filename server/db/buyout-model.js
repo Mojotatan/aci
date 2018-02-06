@@ -21,8 +21,13 @@ module.exports = db => db.define('Buyout', {
     type: Sequelize.STRING,
     defaultValue: ''
   },
-  pdf: {
-    type: Sequelize.STRING // expect filename
+  pdfs: {
+    type: Sequelize.ARRAY(Sequelize.STRING), // expect filename
+    defaultValue: []
+  },
+  pdfNotes: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+    defaultValue: []
   }
   
 })
