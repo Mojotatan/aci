@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const {db, associations} = require('./index')
-const {User, Dealer, Region, Branch, Application, Action, Guarantee, Customer, Buyout, Lease, Machine} = db.models
+const {User, Dealer, Region, Branch, Application, Action, Log, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
 const generateUsers = () => {
   let arr = []
@@ -144,6 +144,21 @@ const generateActions = () => {
   return arr
 }
 
+const generateLogs = () => {
+  let arr = []
+
+  const builder = (date, activity) => {
+    arr.push(Log.build({
+      'date': date,
+      'activity': activity
+    }))
+  }
+
+  builder('2017-01-23', 'Sent carrier pidgeon to client')
+
+  return arr
+}
+
 const generateGuarantees = () => {
   let arr = []
   
@@ -276,6 +291,10 @@ const createActions = () => {
   return Promise.all(generateActions().map(action => { return action.save() }))
 }
 
+const createLogs = () => {
+  return Promise.all(generateLogs().map(log => { return log.save() }))
+}
+
 const createGuarantees = () => {
   return Promise.all(generateGuarantees().map(guarantee => { return guarantee.save() }))
 }
@@ -324,6 +343,10 @@ db.sync({force: true})
 })
 .then((actions) => {
   seedData.actions = actions
+  return createLogs()
+})
+.then((logs) => {
+  seedData.logs = logs
   return createGuarantees()
 })
 .then((guarantees) => {
@@ -416,6 +439,12 @@ db.sync({force: true})
     seedData.actions[1].setApp(seedData.applications[0]),
     seedData.actions[2].setAdmin(seedData.users[2]),
     seedData.actions[2].setApp(seedData.applications[0])
+  ])
+})
+.then(() => {
+  return Promise.all([
+    seedData.logs[0].setAdmin(seedData.users[2]),
+    seedData.logs[0].setApp(seedData.applications[0]),
   ])
 })
 .then(() => {

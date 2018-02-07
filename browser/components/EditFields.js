@@ -4,7 +4,7 @@ import {match, cleanHeader} from '../utility'
 
 // Fair warning, this code is ugly... turn back now with your sanity
 export default ({uniClass, controller, fields, dropdowns, rows, handleChange, handleSubmit, handleCancel, handleController, handleCreate, handleDelete}) => (
-  <div className={`edit-fields-box ${uniClass} margin-drop`}>
+  <div className={`edit-fields-box ${uniClass}`}>
     <div className="app-table-edit col-sm-12 no-gutters">
       <div className="app-header-bottom">
         {[...Object.keys(fields), ...Object.keys(dropdowns)].map(key => {

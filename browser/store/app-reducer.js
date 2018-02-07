@@ -73,6 +73,7 @@ export const loadAppsThunk = (token, callback) => {
       // and a list of branch + dealer associations through rep
       // and a list of lease associations
       // and a list of admin actions applied to that application
+      // and a list of logs for those admin actions
       res.data.apps.forEach((app, index) => {
         app.leases = res.data.leases[index]
         if (res.data.dealers[index]) {
@@ -82,6 +83,7 @@ export const loadAppsThunk = (token, callback) => {
           app.branch = res.data.branches[index].name
         }
         app.actions = res.data.actions[index]
+        app.logs = res.data.logs[index]
       })
       dispatch(loadApps(res.data.apps))
       if (callback) callback()
