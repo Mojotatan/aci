@@ -134,7 +134,7 @@ class BranchContainer extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className="ex-table">
         <Menu />
         <EditFields
           uniClass="branch"

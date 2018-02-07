@@ -39,13 +39,13 @@ class UsersContainer extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className="ex-table">
         <Menu />
         <div className="col-sm-12 no-gutters user-header-top">
           <div><h2 className="user-title">Current Users</h2></div>
           <div className="newuser"><button className="user-button" onClick={this.handleNewUser}>Create User</button></div>
         </div>
-        <div className="col-sm-12 no-gutters">
+        <div className="col-sm-12 no-gutters margin-drop">
           <table className="user-table">
             <tbody>
               <tr className="user-header-bottom" key="head">

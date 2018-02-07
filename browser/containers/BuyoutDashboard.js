@@ -59,13 +59,13 @@ class BuyoutsContainer extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className="ex-table">
         <Menu />
         <div className="col-sm-12 no-gutters app-header-top">
           <div><h2 className="app-title">Current Buyouts</h2></div>
           <div className="newapp"><button className="app-button" onClick={this.handleNewByo}>Start New Buyout</button></div>
         </div>
-        <div className="col-sm-12 no-gutters">
+        <div className="col-sm-12 no-gutters margin-drop">
           <table className="app-table" id="thetable">
             <tbody>
               <tr className="app-header-bottom" key="head">

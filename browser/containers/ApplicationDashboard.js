@@ -68,13 +68,13 @@ class ApplicationsContainer extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className="ex-table">
         <Menu />
         <div className="col-sm-12 no-gutters app-header-top">
           <div><h2 className="app-title">Current Applications</h2></div>
           <div className="newapp"><button className="app-button" onClick={this.handleNewApp}>Start New Application</button></div>
         </div>
-        <div className="col-sm-12 no-gutters">
+        <div className="col-sm-12 no-gutters margin-drop">
           <div className="app-table">
             <div className="app-header-bottom" key="head">
               <span id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</span>
