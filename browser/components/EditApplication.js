@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import NotifyRep from './NotifyRep'
 import {reformatDate} from '../utility'
 
 export default ({
@@ -871,30 +872,52 @@ export default ({
     {/* Admin Only */}
     {(admin) ?
       <div className="col-sm-12 admin">
-        <div className="col-sm-12 top">
+        <div className="col-sm-12 no-gutters top">
           <h2>Admin Activity</h2>
         </div>
+
+        <div className="row">
+          <div className="col-sm-12 no-gutters">
+            <div className="flux-table app-table">
+              <div className="flux-top">
+                <div>
+                  <div className="thicc">Activity</div>
+                  <div className="thicc">User</div>
+                  <div>Date</div>
+                  <div className="thicc">Leasing Company</div>
+                  <div className="thicc">Application Number</div>
+                  <div>Status</div>
+                  <div>Notes</div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+              
+              {(values.actions && values.actions.length > 0) ?
+                values.actions.map((action, index) => (
+                  <div key={action.id} className={(index % 2 === 0) ? 'even' : 'odd'}>
+                    <div className={(action.show) ? 'retracted extended' : 'retracted'}>
+                      <div className="thicc">{action.activity || ''}</div>
+                      <div className="thicc">{action.admin.email || ''}</div>
+                      <div>{reformatDate(action.date) || ''}</div>
+                      <div className="thicc">{action.leasingCompany || ''}</div>
+                      <div className="thicc">{action.appNumber || ''}</div>
+                      <div>{action.status || ''}</div>
+                      <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div>
+                      <div className="edit" onClick={handleChangeAction}>Edit</div>
+                      <div className="edit" onClick={handleActionDelete}>Delete</div>
+                      <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }><div>{action.notes || ''}</div></div>
+                    </div>
+                  </div>
+                ))
+                :
+                  <div className="even"><div className="retracted"></div></div>
+              }
+            </div>
+          </div>
+        </div>
+
         <div className="row mid-gutter">
-          {/* <div className="rowed-items status">
-            <div>
-              <label>Update Status</label>
-            </div>
-            <div>
-              <select
-              onChange={handleChange}
-              name="status"
-              value={values.status}
-              >
-                <option value="Draft">Draft</option>
-                <option value="New">New</option>
-                <option value="Working">Working</option>
-                <option value="Hold">Hold</option>
-                <option value="Approved">Approved</option>
-                <option value="Declined">Declined</option>
-                <option value="Expired">Expired</option>
-              </select>
-            </div>
-          </div> */}
           <div className="col-sm-6">
             <div className="app-bg col-sm-12">
               <form>
@@ -972,107 +995,47 @@ export default ({
                     </div>
                   </div>
                 </div>
+                <div className="row">
+                  <div className="col-sm-12" align="right">
+                    <span id="cancel-button">Cancel</span>
+                    <button class="send-button">Save</button>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
-
-          {values.rep ?
-            <div className="col-sm-6">
-              <div className="app-bg col-sm-12">
-                <form onSubmit={handleNotify}>
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <h3>{`Notify ${values.rep.fullName || 'Rep'}`}</h3>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="field-label">
-                        <label>To</label>
-                      </div>
-                      <div className="field-box">
-                        <p>{values.rep.email || ''}</p>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="field-label">
-                        <label>CC</label>
-                      </div>
-                      <div className="field-box">
-                        <input name="mailCC" onChange={handleChange} value={values.mailCC || ''} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <div className="field-label">
-                        <label>Subject</label>
-                      </div>
-                      <div className="field-box">
-                        <input name="mailSubject" onChange={handleChange} value={values.mailSubject || ''}/>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <div className="field-label">
-                        <label>Message</label>
-                      </div>
-                      <div className="field-desc">
-                        <textarea name="mailBody" onChange={handleChange} value={values.mailBody || ''}></textarea>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-sm-12" align="right">
-                      <button
-                        className={`send-button${(values.mailDisabled) ? ' disabled' : ''}`}
-                        disabled={values.mailDisabled}
-                      >Send</button>
-                    </div>
-                  </div>
-
-                </form>
-              </div>
-            </div>
-            : <p>ERROR: There is no rep associated with this app</p>
-          }
         </div>
-        <div className="row">
+
+        
+        <NotifyRep
+          values={values}
+          handleChange={handleChange}
+          handleNotify={handleNotify}
+        />
+
+
+        {/* log */}
+        <div className="row log">
+          <div className="col-sm-12 no-gutters">
+            <h3>Activity Logs</h3>
+          </div>
           <div className="col-sm-12 no-gutters">
             <div className="flux-table app-table">
               <div className="flux-top">
                 <div>
-                  <div className="thicc">Activity</div>
+                  <div className="">Date</div>
                   <div className="thicc">User</div>
-                  <div>Date</div>
-                  <div className="thicc">Leasing Company</div>
-                  <div className="thicc">Application Number</div>
-                  <div>Status</div>
-                  <div>Notes</div>
-                  <div></div>
-                  <div></div>
+                  <div className="ultra">Activity</div>
                 </div>
               </div>
               
-              {(values.actions && values.actions.length > 0) ?
-                values.actions.map((action, index) => (
-                  <div key={action.id} className={(index % 2 === 0) ? 'even' : 'odd'}>
-                    <div className={(action.show) ? 'retracted extended' : 'retracted'}>
-                      <div className="thicc">{action.activity || ''}</div>
-                      <div className="thicc">{action.admin.email || ''}</div>
-                      <div>{reformatDate(action.date) || ''}</div>
-                      <div className="thicc">{action.leasingCompany || ''}</div>
-                      <div className="thicc">{action.appNumber || ''}</div>
-                      <div>{action.status || ''}</div>
-                      <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div>
-                      <div className="edit" onClick={handleChangeAction}>Edit</div>
-                      <div className="edit" onClick={handleActionDelete}>Delete</div>
-                      <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }><div>{action.notes || ''}</div></div>
+              {(values.logs && values.logs.length > 0) ?
+                values.logs.map((log, index) => (
+                  <div key={log.id} className={(index % 2 === 0) ? 'even' : 'odd'}>
+                    <div className="retracted">
+                      <div className="">{reformatDate(log.date) || ''}</div>
+                      <div className="thicc">{log.admin.email || ''}</div>
+                      <div className="ultra">{log.activity || ''}</div>
                     </div>
                   </div>
                 ))
@@ -1082,6 +1045,7 @@ export default ({
             </div>
           </div>
         </div>
+
       </div>
       :
       null

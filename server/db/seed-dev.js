@@ -112,11 +112,11 @@ const generateApplications = () => {
 
   builder('Draft', '2017-11-26', 20, '2019-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
-  builder('New', '1998-11-26', 20.20, '2019-02-04', '24', '2', 'FMV', 'Existing', 'Addition', '', 30.45, '2%', 'no comment')
+  builder('New', '1998-11-26', 2000.20, '2019-02-04', '24', '2', 'FMV', 'Existing', 'Addition', '', 30.45, '2%', 'no comment')
 
   builder('Hold', '2017-11-26', 20, '2024-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
-  builder('Approved', '2017-11-26', 20, '2019-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
+  builder('Approved', '2017-11-26', 200, '2019-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
   builder('Declined', '2017-11-26', 20, '2019-02-04', '24', '2', 'FMV', 'New', 'Addition', '', 30.45, '2%', 'no comment')
 
