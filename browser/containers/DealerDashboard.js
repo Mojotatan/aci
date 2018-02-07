@@ -125,6 +125,7 @@ class DealerContainer extends React.Component {
       <div>
         <Menu />
         <EditFields
+          uniClass="dealer"
           controller={this.props.focus}
           fields={{
             name: this.state.name,

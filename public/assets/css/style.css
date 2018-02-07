@@ -606,22 +606,25 @@ input, textarea {
 	border-right: solid #1991EB;
 	border-width: 1px;
 }
-.app-table-edit tr {
+.app-table-edit > div {
 	width: 100%;
 }
-.app-table-edit td {
-	padding: 16px 0px 16px 25px;
+.app-table-edit span {
+	padding: 16px 10px 16px 10px;
+	display: inline-block
+}
+.edit-fields-box.branch span {
+	width: 10%
+}
+.edit-fields-box.region span {
+	width: 25%
+}
+.edit-fields-box.dealer span {
+	width: 12.5%
 }
 /* .street {
 	width: 200px !important;
 } */
-.highlighted {
-	height: 57px;
-	width: 100%;
-	background-color: #eaedf1;
-	border: 1px solid #2EA2F8;
-	border-radius: 4px;
-}
 .clear {
 	resize: none;
 	width: 100%;

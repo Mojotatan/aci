@@ -3,32 +3,29 @@ import React from 'react'
 import {match, cleanHeader} from '../utility'
 
 // Fair warning, this code is ugly... turn back now with your sanity
-export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit, handleCancel, handleController, handleCreate, handleDelete}) => (
-  <div className="edit-fields-box">
-    <table className="app-table-edit col-sm-12">
-      <tbody>
-        <tr className="app-header-bottom">
-          {[...Object.keys(fields), ...Object.keys(dropdowns)].map(key => {
-            return(
-              <td key={key}>
-                {cleanHeader(key)}
-              </td>
-            )
-          })}
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+export default ({uniClass, controller, fields, dropdowns, rows, handleChange, handleSubmit, handleCancel, handleController, handleCreate, handleDelete}) => (
+  <div className={`edit-fields-box ${uniClass}`}>
+    <div className="app-table-edit col-sm-12 no-gutters">
+      <div className="app-header-bottom">
+        {[...Object.keys(fields), ...Object.keys(dropdowns)].map(key => {
+          return(
+            <span key={key}>
+              {cleanHeader(key)}
+            </span>
+          )
+        })}
+        <span></span>
+        <span></span>
+      </div>
+    </div>
     {rows.map((row, index) => {
       return (
         <form key={row.id} onSubmit={handleSubmit}>
-          <table className="app-table-edit col-sm-12">
-            <tbody>
-              <tr className={`tr-padding ${(index % 2 === 0) ? 'even' : 'odd'} ${!(controller == index) ? ' ' : 'highlighted'}`} >
+          <div className="app-table-edit col-sm-12 no-gutters">
+              <div className={`${(index % 2 === 0) ? 'even' : 'odd'} ${!(controller == index) ? ' ' : 'highlighted'}`} >
                   {Object.keys(fields).map(key => {
                     return(
-                      <td key={`${row.id}-${key}`}>
+                      <span key={`${row.id}-${key}`}>
                         <input
                           disabled={!(controller == index)}
                           onChange={handleChange}
@@ -37,13 +34,13 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                           value={(controller == index) ? fields[key] || '' : row[key] || ''}
                           className={`${key} ${!(controller == index) ? 'clear' : 'white'}`}
                         />
-                      </td>
+                      </span>
                     )
                   })}
                   {Object.keys(dropdowns).map(key => {
                     return (controller == index) ?
                     (
-                      <td key={`${row.id}-${key}`}>
+                      <span key={`${row.id}-${key}`}>
                         <select
                           disabled={!(controller == index)}
                           onChange={handleChange}
@@ -59,53 +56,52 @@ export default ({controller, fields, dropdowns, rows, handleChange, handleSubmit
                             )
                           })}
                         </select>
-                      </td>
+                      </span>
                     )
                     :
                     (
-                      <td key={`${row.id}-${key}`}>
+                      <span key={`${row.id}-${key}`}>
                         <input
                           disabled={true}
                           name={`${index}-${key}`}
                           value={match(dropdowns[key].match, row) || ''}
                           className={'clear'}
                         />
-                      </td>
+                      </span>
                     )
                   })}
                   {(!controller) ?
-                    <td>
+                    <span>
                       <button value={index} onClick={handleController} className ="fields-button">Edit</button>
-                    </td>
+                    </span>
                     : null
                   }
                   {(!controller) ?
-                    <td>
+                    <span>
                       <button value={row.id} onClick={handleDelete} className ="fields-button right-margin">Delete</button>
-                    </td>
+                    </span>
                     : null
                   }
                   {(controller) ?
-                    <td>
+                    <span>
                       {(controller == index) ?
                         <button onClick={handleCancel} className ="fields-button">Cancel</button>
                         : null
                       }
-                    </td>
+                    </span>
                     : null
                   }
                   {(controller) ?
-                    <td>
+                    <span>
                       {(controller == index) ?
                         <button type="submit" className ="fields-button right-margin">Save</button>
                         : null
                       }
-                    </td>
+                    </span>
                     : null
                   }
-              </tr>
-            </tbody>
-          </table>
+              </div>
+          </div>
         </form>
       )
     })}

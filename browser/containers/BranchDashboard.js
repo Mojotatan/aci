@@ -137,6 +137,7 @@ class BranchContainer extends React.Component {
       <div>
         <Menu />
         <EditFields
+          uniClass="branch"
           controller={this.props.focus}
           fields={{
             name: this.state.name,
