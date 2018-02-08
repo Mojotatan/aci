@@ -773,6 +773,11 @@ button.disabled {
 	display: block;
 	margin-top: 15px;
 }
+.field-labelish label {
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 10px
+}
 .field-label select {
 	width: 100%;
 	height: 36px;
