@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import Menu from './Menu'
 
-import {focusApp, createApp, sortApps, loadAppsThunk} from '../store/app-reducer'
+import {focusApp, sortApps, loadAppsThunk, createAppThunk} from '../store/app-reducer'
 
 import {getDate, reformatDate, getPrettyNumber} from '../utility'
 
@@ -24,17 +24,7 @@ class ApplicationsContainer extends React.Component {
   }
 
   handleNewApp(e) {
-    this.props.createApp({
-      id: 'new',
-      status: 'Draft',
-      // date: getDate(),
-      rep: this.props.user,
-      advancedPayments: '2',
-      endOfTerm: 'FMV',
-      term: '60',
-      leases: []
-    })
-    this.props.history.push('/edit-application')
+    this.props.createAppThunk(this.props.token, () => {this.props.history.push('/edit-application')})
   }
 
   handleSort(e) {
@@ -44,20 +34,20 @@ class ApplicationsContainer extends React.Component {
 
   handleResubmit(e) {
     let app = this.props.apps[e.target.id]
-    this.props.createApp({
-      id: 'new',
-      status: 'Draft',
-      date: getDate(),
-      rep: this.props.user,
-      type: app.type,
-      leaseCompany: app.leaseCompany,
-      leaseNumber: app.leaseNumber,
-      amount: app.amount,
-      term: app.term,
-      advancedPayments: app.advancedPayments,
-      endOfTerm: app.endOfTerm,
-      comments: app.comments
-    })
+    // this.props.createApp({
+    //   id: 'new',
+    //   status: 'Draft',
+    //   date: getDate(),
+    //   rep: this.props.user,
+    //   type: app.type,
+    //   leaseCompany: app.leaseCompany,
+    //   leaseNumber: app.leaseNumber,
+    //   amount: app.amount,
+    //   term: app.term,
+    //   advancedPayments: app.advancedPayments,
+    //   endOfTerm: app.endOfTerm,
+    //   comments: app.comments
+    // })
     this.props.history.push('/edit-application')
   }
 
@@ -102,7 +92,7 @@ class ApplicationsContainer extends React.Component {
                   <span>{reformatDate(app.expiry)}</span>
                   <span>{(app.rep) ? app.rep.fullName : ''}</span>
                   {(this.props.user.level === 'Admin' || app.status !== 'Expired') ?
-                    <span id={index} onClick={this.handleClick} className="edit table-right">
+                    <span id={app.id} onClick={this.handleClick} className="edit table-right">
                       {(this.props.user.level === 'Admin' || app.status !== 'Working') ?
                         'Edit' : 'View'
                       }
@@ -131,6 +121,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {focusApp, createApp, sortApps, loadAppsThunk}
+const mapDispatchToProps = {focusApp, sortApps, loadAppsThunk, createAppThunk}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationsContainer)

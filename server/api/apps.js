@@ -6,6 +6,25 @@ const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
 
+  .post('/new', isLoggedIn, (req, res) => {
+    let me = whoAmI(req.body.token)
+    Application.create({
+      repId: me.id
+    })
+    .then(newApp => {
+      return Application.findById(newApp.id, {
+        include: ['rep']
+      })
+    })
+    .then(data => {
+      res.status(201).send(data)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500)
+    })
+  })
+
   // loading all apps a user has access to
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)

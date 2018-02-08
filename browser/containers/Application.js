@@ -183,8 +183,7 @@ class ApplicationContainer extends React.Component {
             status: 'New',
             date: getDate(),
             expiry: null,
-            appId: this.state.id, // doesn't work for new apps; need a way around that
-            // like maybe by having saveByoThunk run as a callback on saveAppThunk?
+            appId: this.state.id,
             leases: [quote]
           }
         ],
@@ -227,12 +226,7 @@ class ApplicationContainer extends React.Component {
 
   handleDelete(e) {
     e.preventDefault()
-    if (this.state.id === 'new') {
-      this.props.loadAppsThunk(this.props.token, () => {this.props.history.push('/applications')})
-      this.props.throwAlert('green', 'Your application has been deleted')
-    } else {
-      this.props.deleteAppThunk(this.props.token, this.state.id, () => {this.props.history.push('/applications')})
-    }
+    this.props.deleteAppThunk(this.props.token, this.state.id, () => {this.props.history.push('/applications')})
   }
 
   handleCheckbox(e) {
@@ -387,10 +381,12 @@ class ApplicationContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state.app.focus)
+  console.log(state.app.apps.filter(app => (app.id === state.app.focus))[0])
   return {
     token: state.login.token,
     user: state.login.user,
-    app: state.app.apps[state.app.focus],
+    app: state.app.apps.filter(app => (app.id === state.app.focus))[0],
     customers: state.customer.customers
   }
 }

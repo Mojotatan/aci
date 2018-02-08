@@ -17,12 +17,11 @@ const reducer = (prevState = initialState, action) => {
       if (newState.sort) newState.apps.sort(sortBy(newState.sort))
       return newState
     case FOCUS_APP:
-      newState.focus = action.index
+      newState.focus = action.id
       return newState
     case CREATE_APP:
       newState.apps.push(action.app)
-      newState.focus = newState.apps.length - 1
-      newState.apps[newState.focus].id = 'new'
+      newState.focus = action.app.id
       return newState
     case SORT_APPS:
       newState.sort = action.field
@@ -44,8 +43,8 @@ export const loadApps = (apps) => {
 }
 
 const FOCUS_APP = 'FOCUS_APP'
-export const focusApp = (index) => {
-  return {type: FOCUS_APP, index}
+export const focusApp = (id) => {
+  return {type: FOCUS_APP, id}
 }
 
 const CREATE_APP = 'CREATE_APP'
@@ -121,6 +120,26 @@ export const saveAppThunk = (token, app, customer) => {
           .then(res => console.log(res.data))
           .catch(err => console.error(err))
         }
+      }
+    })
+    .catch(err => console.error(err))
+  }
+}
+
+export const createAppThunk = (token, callback) => {
+  return dispatch => {
+    return axios.post('/api/apps/new', {token})
+    .then(res => {
+      if (res.status === 201) {
+        let app = res.data
+        app.leases = []
+        app.customer = {}
+        app.actions = []
+        app.logs = []
+        dispatch(createApp(app))
+        if (callback) callback()
+      } else {
+        dispatch(throwAlert('red', 'Internal server error'))
       }
     })
     .catch(err => console.error(err))
