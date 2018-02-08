@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import Menu from './Menu'
 
-import {focusApp, sortApps, loadAppsThunk, createAppThunk} from '../store/app-reducer'
+import {focusApp, sortApps, loadAppsThunk, createAppThunk, saveAppThunk} from '../store/app-reducer'
 
 import {getDate, reformatDate, getPrettyNumber} from '../utility'
 
@@ -33,7 +33,7 @@ class ApplicationsContainer extends React.Component {
   }
 
   handleResubmit(e) {
-    let app = this.props.apps[e.target.id]
+    let reApp = this.props.apps.filter(app => (app.id == e.target.id))[0]
     // this.props.createApp({
     //   id: 'new',
     //   status: 'Draft',
@@ -48,7 +48,17 @@ class ApplicationsContainer extends React.Component {
     //   endOfTerm: app.endOfTerm,
     //   comments: app.comments
     // })
-    this.props.history.push('/edit-application')
+    this.props.saveAppThunk(
+      this.props.token,
+      [reApp, {
+        id: 'new',
+        status: 'Draft',
+        date: getDate(),
+        expiry: null
+      }],
+      [reApp.customer]
+    )
+    // this.props.history.push('/edit-application')
   }
 
   componentWillMount() {
@@ -98,7 +108,7 @@ class ApplicationsContainer extends React.Component {
                       }
                     </span>
                     :
-                    <span id={index} className="edit" onClick={this.handleResubmit}>
+                    <span id={app.id} className="edit" onClick={this.handleResubmit}>
                       Resubmit
                     </span>
                   }
@@ -121,6 +131,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {focusApp, sortApps, loadAppsThunk, createAppThunk}
+const mapDispatchToProps = {focusApp, sortApps, loadAppsThunk, createAppThunk, saveAppThunk}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationsContainer)

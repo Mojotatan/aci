@@ -381,8 +381,6 @@ class ApplicationContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.app.focus)
-  console.log(state.app.apps.filter(app => (app.id === state.app.focus))[0])
   return {
     token: state.login.token,
     user: state.login.user,
