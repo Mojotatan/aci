@@ -542,7 +542,7 @@ export default ({
                 <div className="field-box">
                   <form onSubmit={handleUploadPDF}>
                     <div className="col-sm-12">
-                      <input type="file" onChange={handleChoosePDF} accept="application/pdf" />
+                      <input className="upload-button" type="file" onChange={handleChoosePDF} accept="application/pdf" />
                     </div>
                     <div className="col-sm-12">
                       <div className="field-label"><label>Note</label></div>

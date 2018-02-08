@@ -937,3 +937,20 @@ span#cancel-button:hover {
 .admin .field-box select {
 	width: 50%
 }
+.field-box .upload-button {
+	border: none
+}
+.upload-button::-webkit-file-upload-button {
+	height: 36px;
+	width: 140px;
+	border: 1px solid rgba(0,0,0,0.15);
+	border-radius: 4px;
+	color: #fff;
+	font-family: "Source Sans Pro";
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 21px;
+	background-color: #354052;
+	outline: none;
+	cursor: pointer
+}

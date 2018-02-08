@@ -872,7 +872,7 @@ export default ({
     </div>
 
     {/* Admin Only */}
-    {(admin ?
+    {(admin) ?
       <div className="col-sm-12 admin">
         <div className="col-sm-12 no-gutters top">
           <h2>Admin Activity</h2>
