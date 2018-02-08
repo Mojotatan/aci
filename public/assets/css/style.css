@@ -934,3 +934,6 @@ span#cancel-button:hover {
 	cursor: pointer;
 	text-decoration: underline
 }
+.admin .field-box select {
+	width: 50%
+}

@@ -28,7 +28,9 @@ export default ({
   handleNotify,
   handleNote,
   handleChangeAction,
-  handleActionDelete
+  handleActionDelete,
+  handleSaveAction,
+  handleAdminMode
 }) => (
   <div className="row edit-apps-page">
 
@@ -904,7 +906,7 @@ export default ({
                       <div className="thicc">{action.appNumber || ''}</div>
                       <div>{action.status || ''}</div>
                       <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div>
-                      <div className="edit" onClick={handleChangeAction}>Edit</div>
+                      <div id={`edit-${index}`} className="edit" onClick={handleAdminMode}>Edit</div>
                       <div className="edit" onClick={handleActionDelete}>Delete</div>
                       <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }><div>{action.notes || ''}</div></div>
                     </div>
@@ -916,14 +918,15 @@ export default ({
             </div>
           </div>
         </div>
-
+        
+        {(values.action && values.adminMode === 'action') ?
         <div className="row mid-gutter">
           <div className="col-sm-6">
             <div className="app-bg col-sm-12">
-              <form>
+              <form onSubmit={handleSaveAction}>
                 <div className="row">
                   <div className="col-sm-12">
-                    <h3>New</h3>
+                    <h3>{(values.action.id === 'new') ? 'New Activity' : 'Edit Activity'}</h3>
                   </div>
                 </div>
                 <div className="row">
@@ -933,9 +936,9 @@ export default ({
                     </div>
                     <div className="field-box">
                       <input
-                        onChange={function(){}}
-                        name={'activity'}
-                        value={''}
+                        onChange={handleChangeAction}
+                        name="activity"
+                        value={values.action.activity || ''}
                       />
                     </div>
                   </div>
@@ -947,9 +950,9 @@ export default ({
                     </div>
                     <div className="field-box">
                       <input
-                        onChange={function(){}}
-                        name={'activity'}
-                        value={''}
+                        onChange={handleChangeAction}
+                        name="leasingCompany"
+                        value={values.action.leasingCompany || ''}
                       />
                     </div>
                   </div>
@@ -959,9 +962,9 @@ export default ({
                     </div>
                     <div className="field-box">
                       <input
-                        onChange={function(){}}
-                        name={'activity'}
-                        value={''}
+                        onChange={handleChangeAction}
+                        name="appNumber"
+                        value={values.action.appNumber || ''}
                       />
                     </div>
                   </div>
@@ -972,11 +975,16 @@ export default ({
                       <label>Status</label>
                     </div>
                     <div className="field-box">
-                      <input
-                        onChange={function(){}}
-                        name={'activity'}
-                        value={''}
-                      />
+                      <select
+                      onChange={handleChangeAction}
+                      name="status"
+                      value={values.action.status || ''}
+                      >
+                        <option value="Working">Working</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Hold">Hold</option>
+                        <option value="Declined">Declined</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -986,25 +994,33 @@ export default ({
                     <div className="field-label">
                       <label>Notes</label>
                     </div>
-                    <div className="field-box">
-                      <input
-                        onChange={function(){}}
-                        name={'activity'}
-                        value={''}
+                    <div className="field-desc">
+                      <textarea
+                        onChange={handleChangeAction}
+                        name="notes"
+                        value={values.action.notes || ''}
                       />
                     </div>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-sm-12" align="right">
-                    <span id="cancel-button">Cancel</span>
-                    <button class="send-button">Save</button>
+                    <span id="cancel-button" onClick={handleAdminMode}>Cancel</span>
+                    <button className="send-button">Save</button>
                   </div>
                 </div>
               </form>
             </div>
           </div>
         </div>
+        :
+        <div className="row">
+          <div className="col-sm-12">
+            <br />
+            <button id="submit-button" onClick={handleAdminMode}>New</button>
+          </div>
+        </div>
+        }
 
         
         <NotifyRep

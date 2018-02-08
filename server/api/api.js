@@ -7,6 +7,7 @@ api
   .use('/branches', require('./branches'))
   .use('/regions', require('./regions'))
   .use('/customers', require('./customers'))
+  .use('/actions', require('./actions'))
   .use('/login', require('./login'))
   .use('/users', require('./users'))
   .use('/mail', require('./mail'))

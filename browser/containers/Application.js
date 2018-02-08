@@ -19,7 +19,8 @@ class ApplicationContainer extends React.Component {
         mailBody: '',
         mailSubject: '',
         mailCC: '',
-        mailDisabled: false
+        mailDisabled: false,
+        adminMode: false
       },
       this.props.app,
     )
@@ -51,6 +52,9 @@ class ApplicationContainer extends React.Component {
     this.handleNote = this.handleNote.bind(this)
     this.handleChangeAction = this.handleChangeAction.bind(this)
     this.handleActionDelete = this.handleActionDelete.bind(this)
+    this.handleSaveAction = this.handleSaveAction.bind(this)
+
+    this.handleAdminMode = this.handleAdminMode.bind(this)
 
   }
 
@@ -274,10 +278,45 @@ class ApplicationContainer extends React.Component {
   }
 
   handleChangeAction(e) {
-
+    let action = Object.assign({}, this.state.action)
+    action[e.target.name] = e.target.value
+    this.setState({action})
   }
 
   handleActionDelete(e) {
+  }
+
+  handleSaveAction(e) {
+    e.preventDefault()
+    axios.put('/api/actions/', {token: this.props.token, action: this.state.action})
+    .then(res => {
+      this.props.loadAppsThunk(this.props.token)
+      // this.props.throwAlert('green', 'Success')
+      this.setState({adminMode: false})
+    })
+    .catch(err => console.error(err))
+
+  }
+
+  handleAdminMode(e) {
+    if (e.target.id === 'cancel-button') {
+      this.setState({adminMode: false})
+    } else if (e.target.id === 'submit-button'){
+      this.setState({
+        adminMode: 'action',
+        action: {
+          id: 'new',
+          date: getDate(),
+          appId: this.state.id
+        }
+      })
+    } else {
+      let index = e.target.id.split('-')[1]
+      this.setState({
+        adminMode: 'action',
+        action: this.state.actions[index]
+      })
+    }
   }
 
 
@@ -339,6 +378,8 @@ class ApplicationContainer extends React.Component {
           handleNote={this.handleNote}
           handleChangeAction={this.handleChangeAction}
           handleActionDelete={this.handleActionDelete}
+          handleSaveAction={this.handleSaveAction}
+          handleAdminMode={this.handleAdminMode}
         />
       </div>
     )
