@@ -872,7 +872,7 @@ export default ({
     </div>
 
     {/* Admin Only */}
-    {(admin) ?
+    {(admin && values.id !== 'new') ?
       <div className="col-sm-12 admin">
         <div className="col-sm-12 no-gutters top">
           <h2>Admin Activity</h2>
@@ -1022,7 +1022,7 @@ export default ({
         </div>
         }
 
-        
+      
         <NotifyRep
           values={values}
           handleChange={handleChange}
