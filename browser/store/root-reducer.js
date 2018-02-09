@@ -10,6 +10,7 @@ const rootReducer = combineReducers({
   branch: require('./branch-reducer').default,
   region: require('./region-reducer').default,
   customer: require('./customer-reducer').default,
+  lease: require('./lease-reducer').default,
   alert: require('./alert-reducer').default
 })
 

@@ -37,14 +37,14 @@ export const deformatDate = date => {
   return `20${dateArr[2]}-${dateArr[0]}-${dateArr[1]}` // returns 'YYYY-MM-DD
 }
 
-export const getPrettyNumber = num => {
+export const getPrettyNumber = (num, prefix) => {
   let str = String(num)
   let arr = str.split('.')
   arr[0] = arr[0].split('')
   arr[0] = arr[0].map((char, index) => {
     return (index !== arr[0].length - 1 && (arr[0].length - index) % 3 === 1) ? char + ',' : char
   }).join('')
-  return `$${arr.join('.')}`
+  return (prefix) ? prefix + arr.join('.') : arr.join('.')
 }
 
 export const checkFor$ = num => {

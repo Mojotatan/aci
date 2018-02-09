@@ -84,7 +84,7 @@ class ApplicationsContainer extends React.Component {
                   <span>{reformatDate(app.date)}</span>
                   <span>{(app.customer) ? app.customer.name : ''}</span>
                   <span>{(app.customer) ? app.customer.street : ''}</span>
-                  <span className="right-justify">{(app.amount) ? getPrettyNumber(app.amount) : ''}</span>
+                  <span className="right-justify">{(app.amount) ? getPrettyNumber(app.amount, '$') : ''}</span>
                   <span>{app.status}</span>
                   <span>{''}</span>
                   <span>{''}</span>

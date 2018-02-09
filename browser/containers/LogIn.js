@@ -10,6 +10,7 @@ import {loadBranchesThunk, flushBranches} from '../store/branch-reducer'
 import {loadRegionsThunk, flushRegions} from '../store/region-reducer'
 import {loadCustomersThunk, flushCustomers} from '../store/customer-reducer'
 import {loadUsersThunk, flushUsers} from '../store/users-reducer'
+import {flushLeases} from '../store/leases-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
 import Header from '../components/Header'
@@ -96,6 +97,7 @@ class LogInContainer extends React.Component {
     this.props.flushRegions()
     this.props.flushCustomers()
     this.props.flushUsers()
+    this.props.flushLeases()
     this.setState({
       username: "",
       password: ""
@@ -143,6 +145,7 @@ const mapDispatchToProps = {
   loadRegionsThunk, flushRegions,
   loadCustomersThunk, flushCustomers,
   loadUsersThunk, flushUsers,
+  flushLeases,
   throwAlert
 }
 

@@ -8,7 +8,7 @@ import {saveAppThunk, loadAppsThunk, deleteAppThunk} from '../store/app-reducer'
 import {saveByoThunk} from '../store/buyout-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
-import {getDate, checkFor$, reformatDate} from '../utility'
+import {getDate, checkFor$, reformatDate, getPrettyNumber} from '../utility'
 
 class ApplicationContainer extends React.Component {
   constructor(props) {
@@ -325,7 +325,8 @@ class ApplicationContainer extends React.Component {
     this.setState(newProps.app)
     this.setState({
       date: reformatDate(newProps.app.date),
-      expiry: reformatDate(newProps.app.expiry)
+      expiry: reformatDate(newProps.app.expiry),
+      amount: getPrettyNumber(newProps.app.amount)
     })
   }
 
@@ -334,7 +335,8 @@ class ApplicationContainer extends React.Component {
     // console.log('state', this.state)
     this.setState({
       date: reformatDate(this.state.date),
-      expiry: reformatDate(this.state.expiry)
+      expiry: reformatDate(this.state.expiry),
+      amount: getPrettyNumber(this.state.amount)
     })
   }
 
@@ -388,7 +390,8 @@ const mapStateToProps = (state) => {
     token: state.login.token,
     user: state.login.user,
     app: state.app.apps.filter(app => (app.id === state.app.focus))[0],
-    customers: state.customer.customers
+    customers: state.customer.customers,
+    leases: state.lease.leases
   }
 }
 
