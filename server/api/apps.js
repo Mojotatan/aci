@@ -152,7 +152,10 @@ module.exports = require('express').Router()
         logs: appLogs
       })
     })
-    .catch(err => console.error(err))
+    .catch(err => {
+      console.error(err)
+      res.status(500)
+    })
   })
 
 
@@ -191,9 +194,12 @@ module.exports = require('express').Router()
       }
     })
     .then(() => {
-      res.send('success')
+      res.status(200).send('success')
     })
-    .catch(err => console.error(err))
+    .catch(err => {
+      console.error(err)
+      res.status(500)
+    })
   })
 
 
@@ -364,6 +370,6 @@ module.exports = require('express').Router()
     })
     .catch(err => {
       console.error(err)
-      res.send({err})
+      res.status(500).send({err})
     })
   })
