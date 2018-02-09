@@ -88,6 +88,11 @@ input, textarea {
 	background-size: 20px;
 	background-repeat: no-repeat;
 }
+.contactus .phone-icon {
+	position: absolute;
+	top: 12px;
+	right: 152px
+}
 .second-header-bar {
 	margin-top: 20px;
 	border-bottom: 2px solid #1066A3;

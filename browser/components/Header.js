@@ -7,8 +7,8 @@ export default ({user, logOut}) => (
     <div className="header-bar col-sm-12">
     <Link to='/applications'><div className="logo"></div></Link>
       <div className="contactus email">
+        <a className="phone-icon" href="tel:660-263-1029"><img src="/assets/img/phone.svg" /></a>
         <a href="mailto:team@myadmincentral.com"><h4>Contact Us</h4></a>
-        {/* <a className="phone-icon" href="tel:660-263-1029"><img src="/assets/img/phone.svg" /></a> */}
       </div>
     </div>
     <div className="second-header-bar col-sm-12">

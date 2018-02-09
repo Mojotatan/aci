@@ -255,11 +255,11 @@ module.exports = require('express').Router()
     })
     Promise.all([app, cus])
     .then((data) => {
-      let app = (Array.isArray(data[0])) ? data[0][1][0] : data[0]
+      theApp = (Array.isArray(data[0])) ? data[0][1][0] : data[0]
       let cus = data[1][0]
       if (!cus.name) return cus.destroy()
       else {
-        return Promise.all([app.setCustomer(cus), Customer.update({
+        return Promise.all([theApp.setCustomer(cus), Customer.update({
           phone: req.body.customer.phone,
           email: req.body.customer.email,
           street: req.body.customer.street,
@@ -277,7 +277,6 @@ module.exports = require('express').Router()
       }
     })
     .then(data => {
-      theApp = data[0]
 
       return Promise.all(req.body.app.leases.map(lse => {
         if (lse.delete) {
