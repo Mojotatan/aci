@@ -4,10 +4,29 @@ const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
 
-  // get all buyouts you have access to
+  .post('/new', isLoggedIn, (req, res) => {
+    let me = whoAmI(req.body.token)
+    Buyout.create({
+      repId: me.id
+    })
+    .then(newByo => {
+      return Buyout.findById(newByo.id, {
+        include: ['rep']
+      })
+    })
+    .then(data => {
+      res.status(201).send(data)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500)
+    })
+  })
+
+  // loading all byos a user has access to
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
-    let toBeSent = {}
+    let toBeSent = {}  // defining an object to store variables for scope purposes
     return User.findOne({
       attributes: ['id', 'level', 'dealerId', 'regionId', 'branchId'],
       where: {

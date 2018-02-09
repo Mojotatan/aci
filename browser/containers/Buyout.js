@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import EditBuyout from '../components/EditBuyout'
 
-import {saveByoThunk, loadByosThunk, deleteByoThunk, createByo} from '../store/buyout-reducer'
+import {saveByoThunk, loadByosThunk, deleteByoThunk} from '../store/buyout-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
 import {getDate, reformatDate} from '../utility'
@@ -110,12 +110,7 @@ class BuyoutContainer extends React.Component {
 
   handleDelete(e) {
     e.preventDefault()
-    if (this.state.id === 'new') {
-      this.props.loadByosThunk(this.props.token, () => {this.props.history.push('/buyouts')})
-      this.props.throwAlert('green', 'Your buyout has been deleted')
-    } else {
-      this.props.deleteByoThunk(this.props.token, this.state.id, () => {this.props.history.push('/buyouts')})
-    }
+    this.props.deleteByoThunk(this.props.token, this.state.id, () => {this.props.history.push('/buyouts')})
   }
 
   handleChangeInLease(e) {
@@ -292,11 +287,11 @@ const mapStateToProps = (state) => {
   return {
     token: state.login.token,
     user: state.login.user,
-    byo: state.byo.byos[state.byo.focus],
+    byo: state.byo.byos.filter(byo => (byo.id === state.byo.focus))[0],
     customers: state.customer.customers
   }
 }
 
-const mapDispatchToProps = {saveByoThunk, loadByosThunk, deleteByoThunk, createByo, throwAlert}
+const mapDispatchToProps = {saveByoThunk, loadByosThunk, deleteByoThunk, throwAlert}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuyoutContainer)

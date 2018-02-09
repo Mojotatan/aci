@@ -70,7 +70,7 @@ export const loadAppsThunk = (token, callback) => {
     .then(res => {
       // expecting res to have a list of applications
       // and a list of branch + dealer associations through rep
-      // and a list of lease associations
+      // and a list of lease (+ machine) associations
       // and a list of admin actions applied to that application
       // and a list of logs for those admin actions
       res.data.apps.forEach((app, index) => {

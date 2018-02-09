@@ -17,12 +17,11 @@ const reducer = (prevState = initialState, action) => {
       if (newState.sort) newState.byos.sort(sortBy(newState.sort))
       return newState
     case FOCUS_BYO:
-      newState.focus = action.index
+      newState.focus = action.id
       return newState
     case CREATE_BYO:
       newState.byos.push(action.byo)
-      newState.focus = newState.byos.length - 1
-      newState.byos[newState.focus].id = 'new'
+      newState.focus = action.byo.id
       return newState
     case SORT_BYOS:
       newState.sort = action.field
@@ -44,8 +43,8 @@ export const loadByos = (byos) => {
 }
 
 const FOCUS_BYO = 'FOCUS_BYO'
-export const focusByo = (index) => {
-  return {type: FOCUS_BYO, index}
+export const focusByo = (id) => {
+  return {type: FOCUS_BYO, id}
 }
 
 const CREATE_BYO = 'CREATE_BYO'
@@ -105,6 +104,24 @@ export const saveByoThunk = (token, byo, customer) => {
         }
         dispatch(loadByosThunk(token))
         dispatch(loadCustomersThunk(token))
+      }
+    })
+    .catch(err => console.error(err))
+  }
+}
+
+export const createByoThunk = (token, callback) => {
+  return dispatch => {
+    return axios.post('/api/byos/new', {token})
+    .then(res => {
+      if (res.status === 201) {
+        let byo = res.data
+        byo.leases = []
+        byo.customer = {}
+        dispatch(createByo(byo))
+        if (callback) callback()
+      } else {
+        dispatch(throwAlert('red', 'Internal server error'))
       }
     })
     .catch(err => console.error(err))

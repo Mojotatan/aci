@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import EditApplication from '../components/EditApplication'
 
-import {saveAppThunk, loadAppsThunk, deleteAppThunk, createApp} from '../store/app-reducer'
+import {saveAppThunk, loadAppsThunk, deleteAppThunk} from '../store/app-reducer'
 import {saveByoThunk} from '../store/buyout-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
@@ -389,6 +389,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {saveAppThunk, loadAppsThunk, deleteAppThunk, saveByoThunk, createApp, throwAlert}
+const mapDispatchToProps = {saveAppThunk, loadAppsThunk, deleteAppThunk, saveByoThunk, throwAlert}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationContainer)

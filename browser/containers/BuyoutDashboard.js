@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import Menu from './Menu'
 
-import {focusByo, createByo, sortByos, loadByosThunk} from '../store/buyout-reducer'
+import {focusByo, sortByos, loadByosThunk, createByoThunk} from '../store/buyout-reducer'
 
 import {getDate, reformatDate} from '../utility'
 
@@ -24,14 +24,7 @@ class BuyoutsContainer extends React.Component {
   }
 
   handleNewByo(e) {
-    this.props.createByo({
-      id: 'new',
-      status: 'Draft',
-      date: getDate(),
-      rep: this.props.user,
-      leases: []
-    })
-    this.props.history.push('/edit-buyout')
+    this.props.createByoThunk(this.props.token, () => {this.props.history.push('/edit-buyout')})
   }
 
   handleSort(e) {
@@ -87,13 +80,13 @@ class BuyoutsContainer extends React.Component {
                     <td>{reformatDate(byo.expiry)}</td>
                     <td>{(byo.rep) ? byo.rep.fullName : ''}</td>
                     {(this.props.user.level === 'Admin' || byo.status !== 'Expired') ?
-                      <td id={index} onClick={this.handleClick} className="edit table-right">
+                      <td id={byo.id} onClick={this.handleClick} className="edit table-right">
                         {(this.props.user.level === 'Admin' || byo.status !== 'Working') ?
                           'Edit' : 'View'
                         }
                       </td>
                       :
-                      <td id={index} className="edit table-right" onClick={this.handleResubmit}>
+                      <td id={byo.id} className="edit table-right" onClick={this.handleResubmit}>
                         Resubmit
                       </td>
                     }
@@ -117,6 +110,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {focusByo, createByo, sortByos, loadByosThunk}
+const mapDispatchToProps = {focusByo, sortByos, loadByosThunk, createByoThunk}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuyoutsContainer)

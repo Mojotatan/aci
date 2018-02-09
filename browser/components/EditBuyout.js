@@ -490,7 +490,7 @@ export default ({
       </form>
     </div>
 
-    {(values.id !== 'new') ?
+    {(admin) ?
       <div className="col-sm-12 admin">
         <div className="row">
           <div className="app-bg col-sm-12">
