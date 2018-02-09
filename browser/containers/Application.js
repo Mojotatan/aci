@@ -266,9 +266,7 @@ class ApplicationContainer extends React.Component {
   handleNote(e) {
     let actions = Array.from(this.state.actions)
     actions[Number(e.target.id)].show = (actions[Number(e.target.id)].show) ? false : true
-    this.setState({
-      actions
-    })
+    this.setState({actions})
   }
 
   handleChangeAction(e) {
@@ -278,6 +276,11 @@ class ApplicationContainer extends React.Component {
   }
 
   handleActionDelete(e) {
+    axios.put('/api/actions/delete', {token: this.props.token, action: this.state.actions[e.target.id]})
+    .then(res => {
+      this.props.loadAppsThunk(this.props.token)
+    })
+    .catch(err => console.error(err))
   }
 
   handleSaveAction(e) {

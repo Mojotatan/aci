@@ -104,7 +104,7 @@ class BuyoutContainer extends React.Component {
         this.props.saveByoThunk(this.props.token, [this.state, {status: 'New', date: getDate()}], [this.state.customer])
       }
 
-      this.props.history.push('/Buyouts')
+      this.props.history.push('/buyouts')
     }
   }
 

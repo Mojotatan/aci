@@ -5,6 +5,20 @@ const {isLoggedIn, whoAmI, isAdmin} = require('./auth')
 
 module.exports = require('express').Router()
 
+  .put('/delete', isLoggedIn, isAdmin, (req, res) => {
+    Action.destroy({
+      where: {
+        id: {
+          [Op.eq]: req.body.action.id
+        }
+      }
+    })
+    .then(success => {
+      res.send('booyica booyica 619')
+    })
+    .catch(err => console.error(err))
+  })
+
   .put('/', isLoggedIn, isAdmin, (req, res) => {
     let me = whoAmI(req.body.token)
     let prom = (req.body.action.id === 'new') ?

@@ -907,7 +907,7 @@ export default ({
                       <div>{action.status || ''}</div>
                       <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div>
                       <div id={`edit-${index}`} className="edit" onClick={handleAdminMode}>Edit</div>
-                      <div className="edit" onClick={handleActionDelete}>Delete</div>
+                      <div id={index} className="edit" onClick={handleActionDelete}>Delete</div>
                       <div className={(action.show) ? 'notes retracted extended' : 'notes retracted' }><div>{action.notes || ''}</div></div>
                     </div>
                   </div>
