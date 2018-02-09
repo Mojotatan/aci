@@ -199,6 +199,7 @@ module.exports = require('express').Router()
 
   .put('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
+    let theApp // defining this for scope; need to return ID at the end
     let app = (req.body.app.id === 'new') ?
       Application.create({
         status: req.body.app.status,
@@ -360,7 +361,7 @@ module.exports = require('express').Router()
       }))
     })
     .then(data => {
-      res.send('success, reloading apps')
+      res.send({appId: theApp.id})
     })
     .catch(err => {
       console.error(err)

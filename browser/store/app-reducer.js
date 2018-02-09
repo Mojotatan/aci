@@ -91,7 +91,7 @@ export const loadAppsThunk = (token, callback) => {
   }
 }
 
-export const saveAppThunk = (token, app, customer) => {
+export const saveAppThunk = (token, app, customer, callback) => {
   let appArgs = Object.assign({}, ...app)
   let cusArgs = Object.assign({}, ...customer)
   return dispatch => {
@@ -106,7 +106,7 @@ export const saveAppThunk = (token, app, customer) => {
         if (appArgs.id === 'new') {
           dispatch(sortApps(['id']))
         }
-        dispatch(loadAppsThunk(token))
+        dispatch(loadAppsThunk(token, () => {if (callback) callback(res.data)}))
         dispatch(loadCustomersThunk(token))
         if (appArgs.status === 'New' && app[0].status === 'Draft') {
           axios.post('/api/mail', {

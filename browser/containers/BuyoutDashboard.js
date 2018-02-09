@@ -88,7 +88,7 @@ class BuyoutsContainer extends React.Component {
                     <td>{(byo.rep) ? byo.rep.fullName : ''}</td>
                     {(this.props.user.level === 'Admin' || byo.status !== 'Expired') ?
                       <td id={index} onClick={this.handleClick} className="edit table-right">
-                        {(this.props.user.level === 'Admin' || byo.status === 'Draft') ?
+                        {(this.props.user.level === 'Admin' || byo.status !== 'Working') ?
                           'Edit' : 'View'
                         }
                       </td>
