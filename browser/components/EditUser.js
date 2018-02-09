@@ -21,7 +21,7 @@ export default ({
       </div>
     </div>
 
-    <div className="edit-base col-sm-8 col-sm-offset-2">
+    <div className="col-sm-8 col-sm-offset-2">
       <form onSubmit={handleSave}>
         <div className="user-bg col-sm-12">
 

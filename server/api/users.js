@@ -15,8 +15,7 @@ module.exports = require('express').Router()
   })
 
   .put('/', isLoggedIn, isAdmin, (req, res) => {
-    console.log(req.body.user.UserId)
-    return (req.body.user.id === 'new') ?
+    let prom = (req.body.user.id === 'new') ?
       User.create({
         firstName: req.body.user.firstName,
         lastName: req.body.user.lastName,
@@ -27,7 +26,7 @@ module.exports = require('express').Router()
         dealerId: req.body.user.dealerId,
         regionId: req.body.user.regionId,
         branchId: req.body.user.branchId,
-        UserId: req.body.user.UserId
+        UserId: req.body.user.UserId || null
       }, {
   
       })
@@ -71,7 +70,7 @@ module.exports = require('express').Router()
             }
           }
         })
-    .then(data => {
+    prom.then(data => {
       res.send('success')
     })
     .catch(err => res.send({err}))

@@ -40,9 +40,7 @@ class UserContainer extends React.Component {
   handleSave(e) {
     e.preventDefault()
 
-    this.props.saveUserThunk(this.props.token, this.state)
-
-    this.setState({password: ''})
+    this.props.saveUserThunk(this.props.token, this.state, () => {this.props.history.push('/users')})
 
   }
 

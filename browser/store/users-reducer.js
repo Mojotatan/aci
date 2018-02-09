@@ -75,7 +75,7 @@ export const loadUsersThunk = (token) => {
   }
 }
 
-export const saveUserThunk = (token, user) => {
+export const saveUserThunk = (token, user, callback) => {
   return dispatch => {
     let filterUser = Object.assign({}, user)
     filterUser.dealerId = (Number(filterUser.dealerId) === 0) ? null : Number(filterUser.dealerId)
@@ -88,7 +88,6 @@ export const saveUserThunk = (token, user) => {
 
     return axios.put('/api/users', {token, user: filterUser})
     .then(res => {
-      console.log(res.data.err)
       if (res.data.err) dispatch(throwAlert('red', 'There was an error with your changes'))
       else {
         dispatch(throwAlert('green', 'Your changes have been saved'))
@@ -96,6 +95,7 @@ export const saveUserThunk = (token, user) => {
           dispatch(sortUsers(['id']))
         }
         dispatch(loadUsersThunk(token))
+        if (callback) callback()
       }
     })
     .catch(err => console.error(err))
