@@ -34,7 +34,7 @@ module.exports = db => db.define('Buyout', {
 
 // Utility func to take a date string and make sure it ends up as 'YYYY-MM-DD'
 const forceDate = (dat) => {
-  if (!dat) return dat
+  if (!dat) return (dat === '') ? null : dat // Handle blank date
   let arr = dat.split('-')
   if (arr.length === 1) arr = dat.split('/') // Checking for slashes
   if (arr[0].length === 4) { // Checking for YYYY

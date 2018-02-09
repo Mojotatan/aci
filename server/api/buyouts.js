@@ -281,8 +281,10 @@ module.exports = require('express').Router()
       }))
     })
     .then(data => {
-      res.send('success, reloading byos')
+      res.send({byoId: theByo.id})
     })
-    // .catch(err => res.send({err}))
-    .catch(err => console.error(err))
+    .catch(err => {
+      console.error(err)
+      res.send({err})
+    })
   })

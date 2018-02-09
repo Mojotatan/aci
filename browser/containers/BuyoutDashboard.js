@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import Menu from './Menu'
 
-import {focusByo, sortByos, loadByosThunk, createByoThunk} from '../store/buyout-reducer'
+import {focusByo, sortByos, loadByosThunk, saveByoThunk, createByoThunk} from '../store/buyout-reducer'
 
 import {getDate, reformatDate} from '../utility'
 
@@ -33,16 +33,21 @@ class BuyoutsContainer extends React.Component {
   }
 
   handleResubmit(e) {
-    let byo = this.props.byos[e.target.id]
-    this.props.createByo({
-      id: 'new',
-      status: 'Draft',
-      date: getDate(),
-      rep: this.props.user,
-      comments: byo.comments,
-      // Machine???
-    })
-    this.props.history.push('/edit-buyout')
+    let reByo = this.props.byos.filter(byo => (byo.id == e.target.id))[0]
+    this.props.saveByoThunk(
+      this.props.token,
+      [reByo, {
+        id: 'new',
+        status: 'Draft',
+        date: null,
+        expiry: null
+      }],
+      [reByo.customer],
+      (data) => {
+        this.props.focusByo(data.byoId)
+        this.props.history.push('/edit-buyout')
+      }
+    )
   }
 
   componentWillMount() {
@@ -110,6 +115,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {focusByo, sortByos, loadByosThunk, createByoThunk}
+const mapDispatchToProps = {focusByo, sortByos, loadByosThunk, saveByoThunk, createByoThunk}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuyoutsContainer)

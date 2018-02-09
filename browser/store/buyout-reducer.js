@@ -87,22 +87,22 @@ export const loadByosThunk = (token, callback) => {
   }
 }
 
-export const saveByoThunk = (token, byo, customer) => {
+export const saveByoThunk = (token, byo, customer, callback) => {
   let byoArgs = Object.assign({}, ...byo)
   let cusArgs = Object.assign({}, ...customer)
   return dispatch => {
     return axios.put('/api/byos', {token, byo: byoArgs, customer: cusArgs})
     .then(res => {
       if (res.data.err) {
-        dispatch(throwAlert('red', 'There was an error with your buyout'))
         console.error(res.data.err)
+        dispatch(throwAlert('red', 'There was an error with your buyout'))
       }
       else {
-        dispatch(throwAlert('green', `Your buyout has been ${(byoArgs.status === 'Submitted' && byo[0].status === 'Draft') ? 'submitted' : 'saved'}`))
+        dispatch(throwAlert('green', `Your buyout has been ${(byoArgs.status === 'New' && byo[0].status === 'Draft') ? 'submitted' : 'saved'}`))
         if (byoArgs.id === 'new') {
           dispatch(sortByos(['id']))
         }
-        dispatch(loadByosThunk(token))
+        dispatch(loadByosThunk(token, () => {if (callback) callback(res.data)}))
         dispatch(loadCustomersThunk(token))
       }
     })

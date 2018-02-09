@@ -99,9 +99,9 @@ class BuyoutContainer extends React.Component {
     } else {
       
       if (this.state.customerCreate) {
-        this.props.saveByoThunk(this.props.token, [this.state, {status: 'Submitted', date: getDate()}], [this.state.customer, {id: 'new'}])
+        this.props.saveByoThunk(this.props.token, [this.state, {status: 'New', date: getDate()}], [this.state.customer, {id: 'new'}])
       } else {
-        this.props.saveByoThunk(this.props.token, [this.state, {status: 'Submitted', date: getDate()}], [this.state.customer])
+        this.props.saveByoThunk(this.props.token, [this.state, {status: 'New', date: getDate()}], [this.state.customer])
       }
 
       this.props.history.push('/Buyouts')
