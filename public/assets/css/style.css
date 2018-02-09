@@ -948,7 +948,8 @@ span#cancel-button:hover {
 	width: 50%
 }
 .field-box .upload-button {
-	border: none
+	border: none;
+	padding-left: 0
 }
 .upload-button::-webkit-file-upload-button {
 	height: 36px;
