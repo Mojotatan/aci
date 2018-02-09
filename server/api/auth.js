@@ -15,14 +15,14 @@ const whoAmI = (token) => {
 const isLoggedIn = (req, res, next) => {
   let me = whoAmI(req.body.token)
   if (!me) res.send('Please log in')
-  next()
+  else next()
 }
 
 // blocks requests that aren't from an admin user
 const isAdmin = (req, res, next) => {
   let me = whoAmI(req.body.token)
   if (me.level !== 'Admin') res.send('Admin access required')
-  next()
+  else next()
 }
 
 // mail transport -- to send an email, call mailTransporter.sendMail(message)
