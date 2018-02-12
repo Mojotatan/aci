@@ -14,14 +14,14 @@ const whoAmI = (token) => {
 // blocks requests that aren't from a logged in user
 const isLoggedIn = (req, res, next) => {
   let me = whoAmI(req.body.token)
-  if (!me) res.send('Please log in')
+  if (!me) res.status(403).send('Please log in')
   else next()
 }
 
 // blocks requests that aren't from an admin user
 const isAdmin = (req, res, next) => {
   let me = whoAmI(req.body.token)
-  if (me.level !== 'Admin') res.send('Admin access required')
+  if (me.level !== 'Admin') res.status(403).send('Admin access required')
   else next()
 }
 

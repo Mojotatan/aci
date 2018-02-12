@@ -19,57 +19,61 @@ module.exports = require('express').Router()
     let me = whoAmI(req.query.access_token)
     if (!me) res.send('Please log in')
     if (me.level !== 'Admin') res.send('Admin access required')
+    if (me && me.level === 'Admin') {
 
-    // make sure folder exists
-    if (!fs.existsSync(path.resolve(__dirname, `../uploads/pdf/${req.params.id}/`))) {
-      fs.mkdirSync(path.resolve(__dirname, `../uploads/pdf/${req.params.id}`))
-    }
+      // make sure folder exists
+      if (!fs.existsSync(path.resolve(__dirname, `../uploads/pdf/${req.params.id}/`))) {
+        fs.mkdirSync(path.resolve(__dirname, `../uploads/pdf/${req.params.id}`))
+      }
 
-    let form = new formidable.IncomingForm()
-    form.uploadDir = path.resolve(__dirname, `../uploads/pdf/${req.params.id}`)
-    form.parse(req, (err, fields, files) => {
-      let oldPath = files.file.path
-      let newPath = path.resolve(__dirname, `../uploads/pdf/${req.params.id}/${files.file.name}`)
-      fs.rename(oldPath, newPath, err => {
-        if (err) res.send({color: 'red', message: 'Something went wrong with the upload'})
-        else {
-          let fileName = newPath.split('/').pop() // sanitizes malicious file.name, hopefully
-          Buyout.findById(Number(req.params.id))
-          .then(byo => {
-            return Buyout.update({
-              pdfs: [...byo.pdfs, fileName],
-              pdfNotes: [...byo.pdfNotes, fields.note]
-            }, {
-              where: {
-                id: {
-                  [Op.eq]: Number(req.params.id)
-                }
-              },
-              returning: true
+      let form = new formidable.IncomingForm()
+      form.uploadDir = path.resolve(__dirname, `../uploads/pdf/${req.params.id}`)
+      form.parse(req, (err, fields, files) => {
+        let oldPath = files.file.path
+        let newPath = path.resolve(__dirname, `../uploads/pdf/${req.params.id}/${files.file.name}`)
+        fs.rename(oldPath, newPath, err => {
+          if (err) res.send({color: 'red', message: 'Something went wrong with the upload'})
+          else {
+            let fileName = newPath.split('/').pop() // sanitizes malicious file.name, hopefully
+            Buyout.findById(Number(req.params.id))
+            .then(byo => {
+              return Buyout.update({
+                pdfs: [...byo.pdfs, fileName],
+                pdfNotes: [...byo.pdfNotes, fields.note]
+              }, {
+                where: {
+                  id: {
+                    [Op.eq]: Number(req.params.id)
+                  }
+                },
+                returning: true
+              })
             })
-          })
-          .then(data => {
-            res.send({color: 'green', message: 'File uploaded successfully'})
-          })
-          .catch(err => {
-            console.error(err)
-            res.send({color: 'red', message: 'Something went wrong with the database'})
-          })
-        }
+            .then(data => {
+              res.send({color: 'green', message: 'File uploaded successfully'})
+            })
+            .catch(err => {
+              console.error(err)
+              res.send({color: 'red', message: 'Something went wrong with the database'})
+            })
+          }
+        })
       })
-    })
+    }
   })
 
   .get('/pdf/:id/:name', /*isLoggedIn, isAdmin,*/ (req, res) => {
     let me = whoAmI(req.query.access_token)
     if (!me) res.send('Please log in')
     if (me.level !== 'Admin') res.send('Admin access required')
+    if (me && me.level === 'Admin') {
 
-    let filePath = path.resolve(__dirname, `../uploads/pdf/${req.params.id}/${req.params.name}`)
-    if (fs.existsSync(filePath)) {
-      res.sendFile(filePath)
-    } else {
-      res.send('no such file found')
+      let filePath = path.resolve(__dirname, `../uploads/pdf/${req.params.id}/${req.params.name}`)
+      if (fs.existsSync(filePath)) {
+        res.sendFile(filePath)
+      } else {
+        res.send('no such file found')
+      }
     }
   })
 
@@ -77,15 +81,26 @@ module.exports = require('express').Router()
     let me = whoAmI(req.query.access_token)
     if (!me) res.send('Please log in')
     if (me.level !== 'Admin') res.send('Admin access required')
+    if (me && me.level === 'Admin') {
 
-    let filePath = path.resolve(__dirname, `../uploads/pdf/${req.params.id}/${req.params.name}`)
-    if (fs.existsSync(filePath)) {
-      fs.unlink(filePath, (err) => {if (err) console.error(err)})
-      res.send('success')
-    } else {
-      res.send('no such file found')
+      let filePath = path.resolve(__dirname, `../uploads/pdf/${req.params.id}/${req.params.name}`)
+      if (fs.existsSync(filePath)) {
+        fs.unlink(filePath, (err) => {if (err) console.error(err)})
+        res.send('success')
+      } else {
+        res.send('no such file found')
+      }
     }
   })
   // if (byo.pdf !== fileName) { // delete previous pdf
   //   fs.unlink(path.resolve(__dirname, '../uploads/pdf/' + byo.pdf), (err) => {if (err) console.error(err)})
   // }
+
+
+  // api for renaming a directory when a buyout gets resubmitted
+  // .post('/pdf/relink', isLoggedIn, isAdmin, (req, res) => {
+  //   fs.rename(`../uploads/pdf/${req.body.oldId}`, `../uploads/pdf/${req.body.newId}`, err => {
+  //     if (err) console.error(err)
+  //   })
+  //   res.send('whatever')
+  // })

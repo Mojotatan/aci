@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import axios from 'axios'
 
 import Menu from './Menu'
 
@@ -46,6 +47,11 @@ class BuyoutsContainer extends React.Component {
       (data) => {
         this.props.focusByo(data.byoId)
         this.props.history.push('/edit-buyout')
+        // axios.post('/api/uploads/pdf/relink', {token: this.props.token, oldId: this.state.id, newId: data.byoId})
+        // .then(res => {
+        //   console.log(res.status)
+        // })
+        // .catch(err => console.error(err))
       }
     )
   }
