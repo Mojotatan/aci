@@ -7,6 +7,7 @@ export default ({
   iAmAuthor,
   admin,
   customers,
+  leases,
   count,
   handleAppLink,
   handleChange,
@@ -140,6 +141,9 @@ export default ({
             <option value="Leaf"></option>
             <option value="Great America"></option>
             <option value="PNC"></option>
+            {leases.map(name => (
+              <option value={name}></option>
+            ))}
           </datalist>
           {values.leases.map((lease, index) => {
             return ((!lease.delete) ?

@@ -266,6 +266,7 @@ class BuyoutContainer extends React.Component {
           iAmAuthor={(this.props.user) ? this.props.user.email === this.state.rep.email : false}
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
           customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
+          leases={this.props.leases}
           count={1} // for numbering leases
           handleAppLink={this.handleAppLink}
           handleChange={this.handleChange}
@@ -296,7 +297,8 @@ const mapStateToProps = (state) => {
     token: state.login.token,
     user: state.login.user,
     byo: state.byo.byos.filter(byo => (byo.id === state.byo.focus))[0],
-    customers: state.customer.customers
+    customers: state.customer.customers,
+    leases: state.lease.leases
   }
 }
 

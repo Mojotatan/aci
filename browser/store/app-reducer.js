@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import {loadCustomersThunk} from './customer-reducer'
-import {loadLeases} from './lease-reducer'
+import {loadLeasesThunk} from './lease-reducer'
 import {throwAlert} from './alert-reducer'
 
 import {sortBy} from '../utility'
@@ -75,11 +75,11 @@ export const loadAppsThunk = (token, callback) => {
       // and a list of admin actions applied to that application
       // and a list of logs for those admin actions
 
-      let leases = [] // need to track lease companies for autofill
+      // let leases = [] // need to track lease companies for autofill
 
       res.data.apps.forEach((app, index) => {
         app.leases = res.data.leases[index]
-        leases = [...leases, ...res.data.leases[index].map(lse => lse.company)]
+        // leases = [...leases, ...res.data.leases[index].map(lse => lse.company)]
         if (res.data.dealers[index]) {
           app.dealer = res.data.dealers[index].name
         }
@@ -90,7 +90,7 @@ export const loadAppsThunk = (token, callback) => {
         app.logs = res.data.logs[index]
       })
       dispatch(loadApps(res.data.apps))
-      dispatch(loadLeases(leases))
+      // dispatch(loadLeases(leases))
       if (callback) callback()
     })
     .catch(err => console.error(err))
@@ -114,6 +114,7 @@ export const saveAppThunk = (token, app, customer, callback) => {
         }
         dispatch(loadAppsThunk(token, () => {if (callback) callback(res.data)}))
         dispatch(loadCustomersThunk(token))
+        dispatch(loadLeasesThunk(token))
         if (appArgs.status === 'New' && app[0].status === 'Draft') {
           axios.post('/api/mail/appSubmit', {
             token,

@@ -10,7 +10,7 @@ import {loadBranchesThunk, flushBranches} from '../store/branch-reducer'
 import {loadRegionsThunk, flushRegions} from '../store/region-reducer'
 import {loadCustomersThunk, flushCustomers} from '../store/customer-reducer'
 import {loadUsersThunk, flushUsers} from '../store/users-reducer'
-import {flushLeases} from '../store/lease-reducer'
+import {loadLeasesThunk, flushLeases} from '../store/lease-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
 import Header from '../components/Header'
@@ -56,6 +56,7 @@ class LogInContainer extends React.Component {
         this.props.loadAppsThunk(res.data.token)
         this.props.loadByosThunk(res.data.token)
         this.props.loadCustomersThunk(res.data.token)
+        this.props.loadLeasesThunk(res.data.token)
         if (res.data.user.level === 'Admin') { // not needed for non admins
           this.props.loadDealersThunk(res.data.token)
           this.props.loadBranchesThunk(res.data.token)
@@ -145,7 +146,7 @@ const mapDispatchToProps = {
   loadRegionsThunk, flushRegions,
   loadCustomersThunk, flushCustomers,
   loadUsersThunk, flushUsers,
-  flushLeases,
+  loadLeasesThunk, flushLeases,
   throwAlert
 }
 

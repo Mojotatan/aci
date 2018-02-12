@@ -64,6 +64,7 @@ let {User, Dealer, Region, Branch, Application, Action, Log, Guarantee, Customer
   // Buyout.hasMany(Lease, {as: 'leases'})
   Lease.belongsTo(Buyout, {as: 'buyout'})
   Lease.belongsTo(Application, {as: 'app'})
+  Lease.belongsTo(Dealer, {as: 'dealer'}) // for lease company autofill
   
   Lease.hasMany(Machine, {as: 'machines'})
   // Machine.belongsTo(Lease, {as: 'lease'})

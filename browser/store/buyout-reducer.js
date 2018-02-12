@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import {loadCustomersThunk} from './customer-reducer'
+import {loadLeasesThunk} from './lease-reducer'
 import {throwAlert} from './alert-reducer'
 
 import {sortBy} from '../utility'
@@ -104,6 +105,7 @@ export const saveByoThunk = (token, byo, customer, callback) => {
         }
         dispatch(loadByosThunk(token, () => {if (callback) callback(res.data)}))
         dispatch(loadCustomersThunk(token))
+        dispatch(loadLeasesThunk(token))
       }
     })
     .catch(err => console.error(err))

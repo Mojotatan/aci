@@ -362,6 +362,7 @@ class ApplicationContainer extends React.Component {
           iAmAuthor={(this.props.user) ? this.props.user.email === this.state.rep.email : false}
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
           customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
+          leases={this.props.leases}
           count={1} // for numbering leases
           handleByoLink={this.handleByoLink}
           handleChange={this.handleChange}
