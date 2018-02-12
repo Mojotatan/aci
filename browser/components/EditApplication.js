@@ -40,10 +40,17 @@ export default ({
       <div className="row">
         <div className="col-sm-6"><h2>Application</h2></div>
         {/* <div className="col-sm-3 top-buttons"><Link to='/applications' id="cancel-button" className="top">Back</Link></div> */}
-        <div className="col-sm-6 top-buttons" align="right">
-          <Link to='/applications' id="cancel-button" className="top">Cancel</Link>
-          <button type="submit" id="save-button" className="top" onClick={handleSave}>Save</button>
-        </div>
+
+        {(admin || values.status !== 'Working') ?
+          <div className="col-sm-6 top-buttons" align="right">
+            <Link to='/applications' id="cancel-button" className="top">Cancel</Link>
+            <button type="submit" id="save-button" className="top" onClick={handleSave}>Save</button>
+          </div>
+          :
+          <div className="col-sm-6 top-buttons" align="right">
+            <Link to='/applications' id="cancel-button" className="top">Back</Link>
+          </div>
+        }
       </div>
     </div>
 
@@ -870,18 +877,24 @@ export default ({
 
         </div>
 
-        <div className="col-sm-12 buttons" align="right">
-          {(admin || values.status === 'Draft') ?
-            <button onClick={handleDelete} id="delete-button">Delete</button>
-            : null
-          }
-          <Link to='/applications' id="cancel-button">Cancel</Link>
-          <button type="submit" id="save-button">Save</button>
-          {(values.status === 'Draft') ?
-            <button onClick={handleSubmit} type="submit" id="submit-button">Submit</button>
-            : null
-          }
-        </div>
+        {(admin || values.status !== 'Working') ?
+          <div className="col-sm-12 buttons" align="right">
+            {(admin || values.status === 'Draft') ?
+              <button onClick={handleDelete} id="delete-button">Delete</button>
+              : null
+            }
+            <Link to='/applications' id="cancel-button">Cancel</Link>
+            <button type="submit" id="save-button">Save</button>
+            {(values.status === 'Draft') ?
+              <button onClick={handleSubmit} type="submit" id="submit-button">Submit</button>
+              : null
+            }
+          </div>
+          :
+          <div className="col-sm-12 buttons" align="right">
+            <Link to='/applications' id="cancel-button">Back</Link>
+          </div>
+        }
       </form>
     </div>
 
