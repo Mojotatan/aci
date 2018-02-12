@@ -11,18 +11,18 @@ let db = new Sequelize(dbUrl, {logging: false})
 
 // Import tables
 const models = [
-  require('./user-model'),
-  require('./dealer-model'),
-  require('./region-model'),
-  require('./branch-model'),
-  require('./application-model'),
-  require('./action-model'),
-  require('./log-model'),
-  require('./guarantee-model'), // phase 2
-  require('./customer-model'),
-  require('./buyout-model'),
-  require('./lease-model'),
-  require('./machine-model')
+  require('./models/user-model'),
+  require('./models/dealer-model'),
+  require('./models/region-model'),
+  require('./models/branch-model'),
+  require('./models/application-model'),
+  require('./models/action-model'),
+  require('./models/log-model'),
+  require('./models/guarantee-model'), // phase 2
+  require('./models/customer-model'),
+  require('./models/buyout-model'),
+  require('./models/lease-model'),
+  require('./models/machine-model')
 ]
 
 models.forEach(model => {
