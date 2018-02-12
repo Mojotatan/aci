@@ -227,14 +227,16 @@ module.exports = require('express').Router()
             number: lse.number,
             company: lse.company,
             quote: lse.quote,
-            buyoutId: theByo.id
+            buyoutId: theByo.id,
+            dealerId: me.dealer
           })
         } else {
           return Lease.update({
             number: lse.number,
             company: lse.company,
             quote: lse.quote,
-            buyoutId: theByo.id
+            buyoutId: theByo.id,
+            dealerId: me.dealer
           }, {
             where: {
               id: {

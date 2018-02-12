@@ -142,7 +142,7 @@ export default ({
             <option value="Great America"></option>
             <option value="PNC"></option>
             {leases.map(name => (
-              <option value={name}></option>
+              <option key={name} value={name}></option>
             ))}
           </datalist>
           {values.leases.map((lease, index) => {

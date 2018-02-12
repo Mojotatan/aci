@@ -87,7 +87,7 @@ class ApplicationContainer extends React.Component {
       number: '',
       company: '',
       machines: [],
-      buyoutId: this.state.id
+      appId: this.state.id
     })
     this.setState({'leases': leases})
   }
