@@ -82,7 +82,9 @@ export default ({
         <div className="col-sm-12">
           <div className="rowed-items" id="date-started">
             <label>Date Submitted</label>
-            <p>{values.date}</p>
+            <div className="field-box">
+              <p>{values.date}</p>
+            </div>
           </div>
           <div className="rowed-items">
             <label>Expires</label>

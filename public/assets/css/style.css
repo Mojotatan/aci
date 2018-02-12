@@ -753,6 +753,7 @@ button.disabled {
 .rowed-items {
 	display: inline-block;
 	margin-right: 30px;
+	/* min-height: 73px */
 }
 .rad-btns input {
 	margin-right: 10px;
@@ -815,6 +816,9 @@ button.disabled {
 	border: 1px solid #CED0DA;
 	border-radius: 4px;
 }
+.field-box p {
+	line-height: 36px
+}
 .field-desc textarea {
 	width: 100%;
 	height: 110px;
@@ -827,10 +831,10 @@ button.disabled {
 .field-dropd-full select {
 	width: 100%;
 }
-#date-started p {
+/* #date-started p {
 	margin-top: 6px;
 	margin-bottom: 20px;
-}
+} */
 .status select {
 	height: 36px;
 	width: 140px;
