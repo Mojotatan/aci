@@ -152,15 +152,20 @@ module.exports = require('express').Router()
         date: req.body.byo.date,
         expiry: req.body.byo.expiry,
         comments: req.body.byo.comments,
-        repId: me.id
+        pdfs: req.body.byo.pdfs,
+        pdfNotes: req.body.byo.pdfNotes,
+        repId: me.id,
+        appId: req.body.byo.appId
       })
       :
       Buyout.update({
         status: req.body.byo.status,
+        date: req.body.byo.date,
         expiry: req.body.byo.expiry,
         comments: req.body.byo.comments,
         pdfs: req.body.byo.pdfs,
-        pdfNotes: req.body.byo.pdfNotes
+        pdfNotes: req.body.byo.pdfNotes,
+        // appId: req.body.appId
       }, {
       where: {
         id: {

@@ -8,6 +8,7 @@ export default ({
   admin,
   customers,
   count,
+  handleAppLink,
   handleChange,
   handleChangeInCustomer,
   handleSave,
@@ -105,19 +106,14 @@ export default ({
               <p>{values.status}</p>
             }
           </div>
-          {/* notify functionality moved to admin workflow */}
-          {/* {(admin) ?
-            <div className="rad-btns">
-              <input
-                type="checkbox"
-                onChange={handleCheckbox}
-                name="notifyRep"
-                checked={values.notifyRep}
-              />
-              <label>Notify Rep</label>
+          {(values.appId) ?
+            <div className="rowed-items">
+              <div className="field-box">
+                <Link to="/edit-application" id={values.appId} onClick={handleAppLink}>Created for an Application</Link>
+              </div>
             </div>
-            : null
-          } */}
+          : null
+          }
         </div>
 
 

@@ -5,6 +5,7 @@ import axios from 'axios'
 import EditBuyout from '../components/EditBuyout'
 
 import {saveByoThunk, loadByosThunk, deleteByoThunk} from '../store/buyout-reducer'
+import {focusApp} from '../store/app-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
 import {getDate, reformatDate} from '../utility'
@@ -20,6 +21,8 @@ class BuyoutContainer extends React.Component {
       },
       this.props.byo,
     )
+
+    this.handleAppLink = this.handleAppLink.bind(this)
 
     this.handleChange = this.handleChange.bind(this)
 
@@ -43,6 +46,10 @@ class BuyoutContainer extends React.Component {
     this.handleDeletePDF = this.handleDeletePDF.bind(this)
     this.handleChoosePDF = this.handleChoosePDF.bind(this)
     this.handleUploadPDF = this.handleUploadPDF.bind(this)
+  }
+
+  handleAppLink(e) {
+    this.props.focusApp(Number(e.target.id))
   }
 
   handleChange(e) {
@@ -260,6 +267,7 @@ class BuyoutContainer extends React.Component {
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
           customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
           count={1} // for numbering leases
+          handleAppLink={this.handleAppLink}
           handleChange={this.handleChange}
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={this.handleSave}
@@ -292,6 +300,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {saveByoThunk, loadByosThunk, deleteByoThunk, throwAlert}
+const mapDispatchToProps = {saveByoThunk, loadByosThunk, deleteByoThunk, focusApp, throwAlert}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BuyoutContainer)

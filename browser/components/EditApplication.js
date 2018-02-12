@@ -9,6 +9,7 @@ export default ({
   admin,
   customers,
   count,
+  handleByoLink,
   handleChange,
   handleNewLease,
   handleChangeInLease,
@@ -339,14 +340,21 @@ export default ({
                           />
                           <label htmlFor={`${index}-quote-1`}>Partial Quote</label>
 
-                          <input
-                            type="checkbox"
-                            id={`${index}-needQuote`}
-                            onChange={handleCheckbox}
-                            name={`${index}-needQuote`}
-                            checked={lease.needQuote || false}
-                          />
-                          <label>Quote Needed</label>
+
+                          {(lease.buyoutId) ?
+                            <Link to="/edit-buyout" id={lease.buyoutId} onClick={handleByoLink}>Buyout Opened</Link>
+                            :
+                            <span>
+                              <input
+                                type="checkbox"
+                                id={`${index}-needQuote`}
+                                onChange={handleCheckbox}
+                                name={`${index}-needQuote`}
+                                checked={lease.needQuote || false}
+                              />
+                              <label>Quote Needed</label>
+                            </span>
+                          }
 
                         </div>
                         :

@@ -5,7 +5,7 @@ import axios from 'axios'
 import EditApplication from '../components/EditApplication'
 
 import {saveAppThunk, loadAppsThunk, deleteAppThunk} from '../store/app-reducer'
-import {saveByoThunk} from '../store/buyout-reducer'
+import {focusByo, saveByoThunk} from '../store/buyout-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
 import {getDate, checkFor$, reformatDate, getPrettyNumber} from '../utility'
@@ -24,6 +24,8 @@ class ApplicationContainer extends React.Component {
       },
       this.props.app,
     )
+
+    this.handleByoLink = this.handleByoLink.bind(this)
 
     this.handleChange = this.handleChange.bind(this)
 
@@ -56,6 +58,10 @@ class ApplicationContainer extends React.Component {
 
     this.handleAdminMode = this.handleAdminMode.bind(this)
 
+  }
+
+  handleByoLink(e) {
+    this.props.focusByo(Number(e.target.id))
   }
 
   handleChange(e) {
@@ -357,6 +363,7 @@ class ApplicationContainer extends React.Component {
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
           customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
           count={1} // for numbering leases
+          handleByoLink={this.handleByoLink}
           handleChange={this.handleChange}
           handleNewLease={this.handleNewLease}
           handleChangeInLease={this.handleChangeInLease}
@@ -395,6 +402,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {saveAppThunk, loadAppsThunk, deleteAppThunk, saveByoThunk, throwAlert}
+const mapDispatchToProps = {saveAppThunk, loadAppsThunk, deleteAppThunk, focusByo, saveByoThunk, throwAlert}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationContainer)
