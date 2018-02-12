@@ -238,6 +238,7 @@ input, textarea {
 }
 .app-header-bottom span {
 	font-weight: bold;
+	text-align: center
 }
 .app-table {
 	width: 100%;

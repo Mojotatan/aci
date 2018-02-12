@@ -38,6 +38,7 @@ export const deformatDate = date => {
 }
 
 export const getPrettyNumber = (num, prefix) => {
+  if (!num && num != 0) return num
   let str = String(num)
   let arr = str.split('.')
   arr[0] = arr[0].split('')
