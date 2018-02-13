@@ -29,60 +29,74 @@ module.exports = require('express').Router()
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     // defining variables here for scope purposes
-    let appsToReturn, branchesToReturn, dealersToReturn, leasesToReturn, actionsToReturn
-    return User.findOne({
-      attributes: ['id', 'level', 'dealerId', 'regionId', 'branchId'],
-      where: {
-        id: {
-          [Op.eq]: me.id
+    let appsToReturn, /*branchesToReturn, dealersToReturn,*/ leasesToReturn, actionsToReturn
+
+    let usr
+    if (me.level === 'Admin') {
+      usr = User.findAll({
+        attributes: ['id'],
+      })
+    } else if (me.level === 'Branch Manager') {
+      usr = User.findAll({
+        attributes: ['id'],
+        where: {
+          branchId: {
+            [Op.eq]: me.branch
+          }
         }
+      })
+    } else if (me.level === 'Region Manager') {
+      usr = User.findAll({
+        attributes: ['id'],
+        where: {
+          regionId: {
+            [Op.eq]: me.region
+          }
+        }
+      })
+    } else if (me.level === 'Senior Manager') {
+      usr = User.findAll({
+        attributes: ['id'],
+        where: {
+          dealerId: {
+            [Op.eq]: me.dealer
+          }
+        }
+      })
+    } else usr = []
+
+    let userObj = {} // object not array for faster lookup
+    let cascadeGet = usr => {
+      if (!userObj[usr.id]) { // check if this user has been cascaded already
+        userObj[usr.id] = true
+        return usr.getUnderlings()
+        .then(underlings => {
+          return Promise.all(underlings.map(ling => cascadeGet(ling)))
+        })
       }
+    }
+    
+    User.findById(me.id)
+    .then(newMe => {
+      return Promise.all([usr, cascadeGet(newMe)])
     })
     .then(data => {
-      if (data.level === 'Admin') {
-        return User.findAll({
-          attributes: ['id'],
-        })
-      } else if (data.level === 'Branch Manager') {
-        return User.findAll({
-          attributes: ['id'],
-          where: {
-            branchId: {
-              [Op.eq]: data.branchId
-            }
-          }
-        })
-      } else if (data.level === 'Region Manager') {
-        return User.findAll({
-          attributes: ['id'],
-          where: {
-            regionId: {
-              [Op.eq]: data.regionId
-            }
-          }
-        })
-      } else if (data.level === 'Senior Manager') {
-        return User.findAll({
-          attributes: ['id'],
-          where: {
-            dealerId: {
-              [Op.eq]: data.dealerId
-            }
-          }
-        })
-      } else return [{id: data.id}]
-    })
-    .then((data) => {
-      let query = data.map(elem => {
-        return elem.id
-      })
+      let query = [
+        ...data[0].map(elem => {return elem.id}),
+        ...Object.keys(userObj).map(key => Number(key))
+      ]
       return Application.findAll({
         where: {
           repId: {
             [Op.or]: query
           }
         },
-        include: ['rep', /*'guarantee',*/ 'customer'],
+        include: [
+          // 'rep',
+          {model: User, as: 'rep', include: ['branch', 'dealer', 'manager']},
+          /*'guarantee',*/
+          'customer'
+        ],
         order: [['createdAt', 'ASC']]
       })
     })
@@ -94,14 +108,14 @@ module.exports = require('express').Router()
           return app.status !== 'Draft' || app.repId === me.id
         })
       }
-      return Promise.all(appsToReturn.map(app => app.rep.getBranch()))
-    })
-    .then(branchData => {
-      branchesToReturn = branchData
-      return Promise.all(appsToReturn.map(app => app.rep.getDealer()))
-    })
-    .then(dealerData => {
-      dealersToReturn = dealerData
+    //   return Promise.all(appsToReturn.map(app => app.rep.getBranch()))
+    // })
+    // .then(branchData => {
+    //   branchesToReturn = branchData
+    //   return Promise.all(appsToReturn.map(app => app.rep.getDealer()))
+    // })
+    // .then(dealerData => {
+    //   dealersToReturn = dealerData
       return Promise.all(appsToReturn.map(app => {
         return Lease.findAll({
           where: {
@@ -145,8 +159,8 @@ module.exports = require('express').Router()
     .then(appLogs => {
       res.send({
         apps: appsToReturn,
-        branches: branchesToReturn,
-        dealers: dealersToReturn,
+        // branches: branchesToReturn,
+        // dealers: dealersToReturn,
         leases: leasesToReturn,
         actions: actionsToReturn,
         logs: appLogs
@@ -163,26 +177,26 @@ module.exports = require('express').Router()
   // which would allow for cleaner code for getting associated apps, and make custom hierarchies
   // much easier to implement
 
-  .get('/cascade/:id', (req, res) => {
-    let userObj = {} // object not array for faster lookup
-    let cascadeGet = usr => {
-      if (!userObj[usr.id]) { // check if this user has been cascaded already
-        userObj[usr.id] = true
-        return usr.getUnderlings()
-        .then(underlings => {
-          return Promise.all(underlings.map(ling => cascadeGet(ling)))
-        })
-      }
-    }
-    User.findById(Number(req.params.id))
-    .then(usr => {
-      return cascadeGet(usr)
-    })
-    .then(unders => {
-      res.send(Object.keys(userObj).map(key => Number(key)))
-    })
-    .catch(err => console.error(err))
-  })
+  // .get('/cascade/:id', (req, res) => {
+  //   let userObj = {} // object not array for faster lookup
+  //   let cascadeGet = usr => {
+  //     if (!userObj[usr.id]) { // check if this user has been cascaded already
+  //       userObj[usr.id] = true
+  //       return usr.getUnderlings()
+  //       .then(underlings => {
+  //         return Promise.all(underlings.map(ling => cascadeGet(ling)))
+  //       })
+  //     }
+  //   }
+  //   User.findById(Number(req.params.id))
+  //   .then(usr => {
+  //     return cascadeGet(usr)
+  //   })
+  //   .then(unders => {
+  //     res.send(Object.keys(userObj).map(key => Number(key)))
+  //   })
+  //   .catch(err => console.error(err))
+  // })
 
 
   .put('/delete', isLoggedIn, (req, res) => {

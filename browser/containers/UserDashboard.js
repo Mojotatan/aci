@@ -52,7 +52,8 @@ class UsersContainer extends React.Component {
                 <td id="fullName" className={(this.props.sort.join('-') === "fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Name</td>
                 <td id="email" className={(this.props.sort.join('-') === "email") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Email</td>
                 <td id="level" className={(this.props.sort.join('-') === "level") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Level</td>
-                {/* <td id="dealer-name" className={(this.props.sort.join('-') === "dealer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Dealer</td> */}
+                <td id="dealer-name" className={(this.props.sort.join('-') === "dealer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Dealer</td>
+                <td id="manager-fullName" className={(this.props.sort.join('-') === "manager-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Manager</td>
                 <td id="active" className={(this.props.sort.join('-') === "active") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Active</td>
                 <td></td>
               </tr>
@@ -63,6 +64,8 @@ class UsersContainer extends React.Component {
                     <td>{user.fullName}</td>
                     <td>{user.email}</td>
                     <td>{user.level}</td>
+                    <td>{(user.dealer) ? user.dealer.name : ''}</td>
+                    <td>{(user.manager) ? user.manager.fullName: ''}</td>
                     <td>{user.active}</td>
                     <td id={index} onClick={this.handleClick} className="edit">Edit</td>
                   </tr>

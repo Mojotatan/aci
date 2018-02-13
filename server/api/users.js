@@ -7,7 +7,9 @@ const {isLoggedIn, isAdmin} = require('./auth')
 module.exports = require('express').Router()
 
   .post('/', isLoggedIn, isAdmin, (req, res) => {
-    return User.findAll()
+    return User.findAll({
+      include: ['dealer', 'manager']
+    })
     .then(users => {
       res.send(users)
     })
@@ -26,7 +28,7 @@ module.exports = require('express').Router()
         dealerId: req.body.user.dealerId,
         regionId: req.body.user.regionId,
         branchId: req.body.user.branchId,
-        UserId: req.body.user.UserId || null
+        managerId: req.body.user.managerId || null
       }, {
   
       })
@@ -43,7 +45,7 @@ module.exports = require('express').Router()
           dealerId: req.body.user.dealerId,
           regionId: req.body.user.regionId,
           branchId: req.body.user.branchId,
-          UserId: req.body.user.UserId
+          managerId: req.body.user.managerId
         }, {
           where: {
             id: {
@@ -62,7 +64,7 @@ module.exports = require('express').Router()
           dealerId: req.body.user.dealerId,
           regionId: req.body.user.regionId,
           branchId: req.body.user.branchId,
-          UserId: req.body.user.UserId
+          managerId: req.body.user.managerId
         }, {
           where: {
             id: {

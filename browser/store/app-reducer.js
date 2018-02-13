@@ -70,22 +70,16 @@ export const loadAppsThunk = (token, callback) => {
     return axios.post('/api/apps', {token})
     .then(res => {
       // expecting res to have a list of applications
-      // and a list of branch + dealer associations through rep
       // and a list of lease (+ machine) associations
       // and a list of admin actions applied to that application
       // and a list of logs for those admin actions
 
       // let leases = [] // need to track lease companies for autofill
 
+      console.log(res.data)
       res.data.apps.forEach((app, index) => {
         app.leases = res.data.leases[index]
         // leases = [...leases, ...res.data.leases[index].map(lse => lse.company)]
-        if (res.data.dealers[index]) {
-          app.dealer = res.data.dealers[index].name
-        }
-        if (res.data.branches[index]) {
-          app.branch = res.data.branches[index].name
-        }
         app.actions = res.data.actions[index]
         app.logs = res.data.logs[index]
       })

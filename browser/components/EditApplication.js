@@ -71,16 +71,16 @@ export default ({
       <div>
         <label>Dealer</label>
         <p>
-          {(values.rep) ? values.rep.dealer || values.dealer || '' : values.dealer || ''}
+          {(values.rep && values.rep.dealer) ? values.rep.dealer.name || '' : ''}
         </p>
       </div>
       <div>
         <label>Branch</label>
-        <p>{(values.rep) ? values.rep.branch || values.branch || '' : values.branch || ''}</p>
+        <p>{(values.rep && values.rep.branch) ? values.rep.branch.name || '' : ''}</p>
       </div>
       <div>
         <label>Manager</label>
-        <p>{(values.rep) ? values.rep.branch || values.branch || '' : values.branch || ''}</p>
+        <p>{(values.rep && values.rep.manager) ? values.rep.manager.fullName || '' : ''}</p>
       </div>
     </div>
 

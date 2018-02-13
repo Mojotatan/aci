@@ -105,8 +105,8 @@ export default ({
               <div className="field-dropd-full">
                 <select
                 onChange={handleChange}
-                name="UserId"
-                value={values.UserId || 0}
+                name="managerId"
+                value={values.managerId || 0}
                 >
                   <option value={0}></option>
                   {users.map(usr => (

@@ -36,8 +36,8 @@ let {User, Dealer, Region, Branch, Application, Action, Log, Guarantee, Customer
   User.belongsTo(Region, {as: 'region'})
   User.belongsTo(Branch, {as: 'branch'})
 
-  User.hasMany(User, {as: 'underlings'})
-  // User.belongsTo(User, {as: 'manager'})
+  User.hasMany(User, {as: 'underlings', foreignKey: 'managerId'})
+  User.belongsTo(User, {as: 'manager'})
 
   Branch.belongsTo(Region, {as: 'region'})
   Branch.belongsTo(Dealer, {as: 'dealer'})

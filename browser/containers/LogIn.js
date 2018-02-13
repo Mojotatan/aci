@@ -49,11 +49,12 @@ class LogInContainer extends React.Component {
       // console.log('promise achieved', res.data)
       if (typeof res.data !== 'string') {
         this.props.logInToken(res.data.token, res.data.user)
-        // Technically only loadCustomersThunk *needs* to be called here
-        // But it makes for a slightly better loading experience
+        // Technically only loadCustomersThunk and loadLeasesThunk *need* to be called here
+        // But it makes for a slightly better loading experience when you switch screens
         // If initial loading times become unbearable this can be changed
 
-        this.props.loadAppsThunk(res.data.token)
+        this.props.history.push('/applications')
+
         this.props.loadByosThunk(res.data.token)
         this.props.loadCustomersThunk(res.data.token)
         this.props.loadLeasesThunk(res.data.token)
@@ -63,7 +64,6 @@ class LogInContainer extends React.Component {
           this.props.loadRegionsThunk(res.data.token)
           this.props.loadUsersThunk(res.data.token)
         }
-        this.props.history.push('/applications')
       }
       else {
         this.props.throwAlert('red', res.data)

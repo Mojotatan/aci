@@ -28,7 +28,7 @@ class UserContainer extends React.Component {
       this.setState({
         regionId: 0,
         branchId: 0,
-        UserId: 0
+        managerId: 0
       })
     } else if (e.target.name === 'regionId') {
       this.setState({
