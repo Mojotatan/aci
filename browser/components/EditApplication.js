@@ -112,7 +112,7 @@ export default ({
             <div>
               <label>Status</label>
             </div>
-            <div>
+            <div className="field-box">
               {(admin) ?
                 <select
                 onChange={handleChange}
@@ -248,10 +248,17 @@ export default ({
         {(values.leases && values.type === 'Existing' && values.existingType === 'Upgrade') ?
           <div className="row">
             <div className="col-sm-12 labels lease-label">
-              <div className="col-sm-10 col-sm-offset-1 no-gutters">
-                <label className="col-sm-6" id="lease-margin">Lease Number</label>
-                <label className="col-sm-6">Lease Company</label>
-              </div>
+              {(admin || values.status !== 'Working') ?
+                <div className="col-sm-10 col-sm-offset-1 no-gutters">
+                  <label className="col-sm-6" id="lease-margin">Lease Number</label>
+                  <label className="col-sm-6">Lease Company</label>
+                </div>
+                :
+                <div className="col-sm-10 col-sm-offset-1 no-gutters">
+                  <label className="col-sm-4" id="lease-margin">Lease Number</label>
+                  <label className="col-sm-4">Lease Company</label>
+                </div>
+              }
             </div>
             {/* Autofill for Lease Company */}
             <datalist id="leaseCompanies">
@@ -275,29 +282,40 @@ export default ({
                 <div key={`lease-${index}`} className="col-sm-12 lease-input">
                   <div className="col-sm-1"><label className="index-number">{count++}</label></div>
                   <div className="col-sm-10 field-row no-gutters">
-                    <div className="col-sm-6">
-                      {(admin || values.status !== 'Working') ?
+                    {(admin || values.status !== 'Working') ?
+                      <div className="col-sm-6">
                         <input
                           onChange={handleChangeInLease}
                           id={`${index}-number`}
                           value={lease.number || ''}
                         />
-                        :
+                      </div>
+                      :
+                      <div className="col-sm-4">
                         <span>{lease.number || ''}</span>
-                      }
-                    </div>
-                    <div className="col-sm-6">
-                      {(admin || values.status !== 'Working') ?
+                      </div>
+                    }
+                    {(admin || values.status !== 'Working') ?
+                      <div className="col-sm-6">
                         <input
                           onChange={handleChangeInLease}
                           id={`${index}-company`}
                           value={lease.company || ''}
                           list="leaseCompanies"
                         />
-                        :
+                      </div>
+                      :
+                      <div className="col-sm-4">
                         <span>{lease.company || ''}</span>
-                      }
-                    </div>
+                      </div>
+                    }
+                    {(admin || values.status !== 'Working') ?
+                      null
+                      :
+                      <div className="col-sm-4">
+                        <span>{`${lease.quote} Quote` || ''}</span>
+                      </div>
+                    }
                   </div>
                   <div className="col-sm-1">
                     {(admin || values.status !== 'Working') ?
@@ -371,7 +389,7 @@ export default ({
 
                         </div>
                         :
-                        <p>{`${values.quote} Quote` || ''}</p>
+                        null
                       }
 
                     </div>
@@ -462,7 +480,10 @@ export default ({
                           : null
                         )
                       })}
-                      <div className="col-sm-offset-1"><button id={`${index}-newMachine`} onClick={handleNewMachine} className="machine add-button">Add Machine</button></div>
+                      {(admin || values.status !== 'Working') ?
+                        <div className="col-sm-offset-1"><button id={`${index}-newMachine`} onClick={handleNewMachine} className="machine add-button">Add Machine</button></div>
+                        : null
+                      }
                     </div>
                     :
                     null
@@ -473,7 +494,10 @@ export default ({
                 )
             })
             }
-            <button onClick={handleNewLease} className="add-lease-button">Add Lease</button>
+            {(admin || values.status !== 'Working') ?
+              <button onClick={handleNewLease} className="add-lease-button">Add Lease</button>
+              : null
+            }
           </div>
           : null
           }
