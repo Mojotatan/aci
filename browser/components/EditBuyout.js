@@ -141,8 +141,8 @@ export default ({
               </div>
               :
               <div className="col-sm-10 col-sm-offset-1 no-gutters">
-                <label className="col-sm-4" id="lease-margin">Lease Number</label>
-                <label className="col-sm-4">Lease Company</label>
+                <label className="col-sm-5" id="lease-margin">Lease Number</label>
+                <label className="col-sm-5">Lease Company</label>
               </div>
             }
           </div>
@@ -177,7 +177,7 @@ export default ({
                       />
                     </div>
                     :
-                    <div className="col-sm-4">
+                    <div className="col-sm-5">
                       <span>{lease.number || ''}</span>
                     </div>
                   }
@@ -191,14 +191,14 @@ export default ({
                       />
                     </div>
                     :
-                    <div className="col-sm-4">
+                    <div className="col-sm-5">
                       <span>{lease.company || ''}</span>
                     </div>
                   }
                   {(admin || values.status !== 'Working') ?
                     null
                     :
-                    <div className="col-sm-4">
+                    <div className="col-sm-2">
                       <span>{`${lease.quote} Quote` || ''}</span>
                     </div>
                   }

@@ -238,7 +238,7 @@ input, textarea {
 }
 .app-header-bottom span {
 	font-weight: bold;
-	text-align: center
+	/* text-align: center */
 }
 .app-table {
 	width: 100%;
@@ -526,7 +526,8 @@ input, textarea {
 	padding: 0px 5px;
 }
 .lease-input span {
-	line-height: 36px
+	line-height: 36px;
+	word-wrap: break-word
 }
 .machine-input input {
 	width: 100%;
