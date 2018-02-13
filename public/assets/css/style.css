@@ -734,6 +734,23 @@ button.disabled {
 	width: 100%;
 	margin-bottom: 30px
 }
+/* Ellipsis Expand */
+.overflow-tip {
+  white-space:nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  &:active, &:hover {
+    overflow-x: visible;
+    span {
+      position: relative;
+      background-color: PaleGoldenRod;
+      border: 1px solid gray;
+      padding: 3px;
+      margin-left: -4px;
+    }
+    
+  }
+}
 
 /* Universal */
 .agent-box {
@@ -752,6 +769,7 @@ button.disabled {
 	padding-right: 15px;
 }
 .rowed-items {
+	vertical-align: top;
 	display: inline-block;
 	margin-right: 30px;
 	/* min-height: 73px */
