@@ -70,16 +70,9 @@ export const loadByosThunk = (token, callback) => {
     return axios.post('/api/byos', {token})
     .then(res => {
       // expecting res to have a list of buyouts
-      // and a list of branch + dealer associations through rep
       // and a list of lease (+ machine) associations
       res.data.byos.forEach((byo, index) => {
         byo.leases = res.data.leases[index]
-        if (res.data.dealers[index]) {
-          byo.dealer = res.data.dealers[index].name
-        }
-        if (res.data.branches[index]) {
-          byo.branch = res.data.branches[index].name
-        }
       })
       dispatch(loadByos(res.data.byos))
       if (callback) callback()

@@ -27,58 +27,72 @@ module.exports = require('express').Router()
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     let toBeSent = {}  // defining an object to store variables for scope purposes
-    return User.findOne({
-      attributes: ['id', 'level', 'dealerId', 'regionId', 'branchId'],
-      where: {
-        id: {
-          [Op.eq]: me.id}
+
+    let usr
+    if (me.level === 'Admin') {
+      usr = User.findAll({
+        attributes: ['id'],
+      })
+    } else if (me.level === 'Branch Manager') {
+      usr = User.findAll({
+        attributes: ['id'],
+        where: {
+          branchId: {
+            [Op.eq]: me.branchId
+          }
+        }
+      })
+    } else if (me.level === 'Region Manager') {
+      usr = User.findAll({
+        attributes: ['id'],
+        where: {
+          regionId: {
+            [Op.eq]: me.regionId
+          }
+        }
+      })
+    } else if (me.level === 'Senior Manager') {
+      usr = User.findAll({
+        attributes: ['id'],
+        where: {
+          dealerId: {
+            [Op.eq]: me.dealerId
+          }
+        }
+      })
+    } else usr = []
+
+    let userObj = {} // object not array for faster lookup
+    let cascadeGet = usr => {
+      if (!userObj[usr.id]) { // check if this user has been cascaded already
+        userObj[usr.id] = true
+        return usr.getUnderlings()
+        .then(underlings => {
+          return Promise.all(underlings.map(ling => cascadeGet(ling)))
+        })
       }
+    }
+
+    User.findById(me.id)
+    .then(newMe => {
+      return Promise.all([usr, cascadeGet(newMe)])
     })
     .then(data => {
-      if (data.level === 'Admin') {
-        return User.findAll({
-          attributes: ['id'],
-        })
-      } else if (data.level === 'Branch Manager') {
-        return User.findAll({
-          attributes: ['id'],
-          where: {
-            branchId: {
-              [Op.eq]: data.branchId
-            }
-          }
-        })
-      } else if (data.level === 'Region Manager') {
-        return User.findAll({
-          attributes: ['id'],
-          where: {
-            regionId: {
-              [Op.eq]: data.regionId
-            }
-          }
-        })
-      } else if (data.level === 'Senior Manager') {
-        return User.findAll({
-          attributes: ['id'],
-          where: {
-            dealerId: {
-              [Op.eq]: data.dealerId
-            }
-          }
-        })
-      } else return [{id: data.id}]
-    })
-    .then((data) => {
-      let query = data.map(elem => {
-        return elem.id
-      })
+      let query = [
+        ...data[0].map(elem => {return elem.id}),
+        ...Object.keys(userObj).map(key => Number(key))
+      ]
       return Buyout.findAll({
         where: {
           repId: {
             [Op.or]: query
           }
         },
-        include: ['rep', /*'guarantee',*/ 'customer'],
+        include: [
+          {model: User, as: 'rep', include: ['branch', 'dealer', 'manager']},
+          /*'guarantee',*/
+          'customer'
+        ],
         order: [['createdAt', 'ASC']]
       })
     })
@@ -90,17 +104,6 @@ module.exports = require('express').Router()
           return byo.status !== 'Draft' || byo.repId === me.id
         })
       }
-      
-      return Promise.all(toBeSent.byos.map(byo => byo.rep.getBranch()))
-    })
-    .then(branchData => {
-      toBeSent.branches = branchData
-
-      return Promise.all(toBeSent.byos.map(byo => byo.rep.getDealer()))
-    })
-    .then(dealerData => {
-      toBeSent.dealers = dealerData
-
       return Promise.all(toBeSent.byos.map(byo => {
         return Lease.findAll({
           where: {

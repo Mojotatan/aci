@@ -29,7 +29,7 @@ module.exports = require('express').Router()
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     // defining variables here for scope purposes
-    let appsToReturn, /*branchesToReturn, dealersToReturn,*/ leasesToReturn, actionsToReturn
+    let appsToReturn, leasesToReturn, actionsToReturn
 
     let usr
     if (me.level === 'Admin') {
@@ -92,7 +92,6 @@ module.exports = require('express').Router()
           }
         },
         include: [
-          // 'rep',
           {model: User, as: 'rep', include: ['branch', 'dealer', 'manager']},
           /*'guarantee',*/
           'customer'
@@ -108,14 +107,6 @@ module.exports = require('express').Router()
           return app.status !== 'Draft' || app.repId === me.id
         })
       }
-    //   return Promise.all(appsToReturn.map(app => app.rep.getBranch()))
-    // })
-    // .then(branchData => {
-    //   branchesToReturn = branchData
-    //   return Promise.all(appsToReturn.map(app => app.rep.getDealer()))
-    // })
-    // .then(dealerData => {
-    //   dealersToReturn = dealerData
       return Promise.all(appsToReturn.map(app => {
         return Lease.findAll({
           where: {
@@ -159,8 +150,6 @@ module.exports = require('express').Router()
     .then(appLogs => {
       res.send({
         apps: appsToReturn,
-        // branches: branchesToReturn,
-        // dealers: dealersToReturn,
         leases: leasesToReturn,
         actions: actionsToReturn,
         logs: appLogs
