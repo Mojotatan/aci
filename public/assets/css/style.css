@@ -8,7 +8,7 @@ body {
 h2 {
 	color: #354052;
 	font-family: "Source Sans Pro";
-	font-size: 26px;
+	font-size: 24px;
 	line-height: 36px;
 }
 h3 {
@@ -21,7 +21,7 @@ h3 {
 h4 {
 	color: #1A1919;
 	font-family: "Source Sans Pro";
-	font-size: 18px;
+	font-size: 15px;
 	line-height: 24px;
 	text-align: center;
 	margin-top: 12px;
@@ -236,8 +236,9 @@ input, textarea {
 	/* raven said to do this but it looks dumb */
 	/* text-align: center */
 }
-.app-header-bottom span {
+.app-table .app-header-bottom span, .app-table-edit .app-header-bottom span {
 	font-weight: bold;
+	font-size: 13px
 	/* text-align: center */
 }
 .app-table {
@@ -253,13 +254,61 @@ input, textarea {
 .app-table > div {
 	width: 100%;
 }
-.app-table span {
+.app-table span, .app-table-edit span {
 	display: inline-block;
 	padding-top: 16px;
 	padding-bottom: 16px;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: 0;
+	padding-right: 0;
+	/* padding-left: 10px; */
+	/* padding-right: 10px; */
 	width: 10%;
+	font-size: 14px
+}
+.app-table span.date {
+	width: 88px;
+	margin-right: 14px;
+	margin-left: 24px
+}
+.app-table span.customer {
+	width: 132px;
+	margin-right: 13px
+}
+.app-table span.address {
+	width: 156px;
+	margin-right: 13px
+}
+.app-table span.amount {
+	width: 56px;
+	margin-right: 14px
+}
+.app-table span.status {
+	width: 64px;
+	margin-right: 13px
+}
+.app-table span.company {
+	width: 156px;
+	margin-right: 14px
+}
+.app-table span.approval {
+	width: 88px;
+	margin-right: 14px
+}
+.app-table span.expiry {
+	width: 70px;
+	margin-right: 13px
+}
+.app-table span.rep {
+	width: 112px;
+	margin-right: 14px
+}
+.app-table span.options {
+	width: 76px;
+	margin-right: 24px
+}
+
+.app-table .even, .app-table .odd, .user-table .even, .user-table .odd {
+	height: 49px
 }
 .app-table .even span, .app-table .odd span {
 	white-space: nowrap;
@@ -273,8 +322,9 @@ input, textarea {
 	background-color: white;
 	padding: 4px
 } */
-.app-header-bottom td {
+.app-table .app-header-bottom td {
 	font-weight: bold;
+	font-size: 13px
 }
 .app-table tr {
 	width: 100%;
@@ -282,10 +332,11 @@ input, textarea {
 .app-table td {
 	padding-top: 16px;
 	padding-bottom: 16px;
-	padding-left: 25px;
+	padding-left: 24px;
+	font-size: 14px
 }
 .table-right {
-	padding-right: 16px
+	padding-right: 24px
 }
 .app-table .edit {
 	text-align: center
@@ -300,7 +351,7 @@ input, textarea {
 	float: right;
 }
 .app-title {
-	margin-top:15px;
+	margin-top: 15px;
 	margin-left: 25px;
 	margin-bottom: 10px;
 }
@@ -312,10 +363,10 @@ input, textarea {
 	color: #fff;
 	background-color: #1991EB;
 }
-.odd{
+.odd {
   background-color: white;
 } 
-.even{
+.even {
   background-color: #f8f8f8;
 }
 
@@ -339,8 +390,9 @@ input, textarea {
 	border-width: 0px 1px 1px 1px;
 	width: calc(100% - 2px);
 }
-.user-header-bottom td {
+.user-table .user-header-bottom td {
 	font-weight: bold;
+	font-size: 13px
 }
 .user-table {
 	width: 100%;
@@ -353,7 +405,10 @@ input, textarea {
 	width: 100%;
 }
 .user-table td {
-	padding: 16px 0px 16px 25px;
+	padding-top: 16px;
+	padding-bottom: 16px;
+	padding-left: 24px;
+	font-size: 14px
 }
 .newuser {
 	margin-top: 15px;
@@ -621,10 +676,13 @@ input, textarea {
 
 /* Edit Fields Styles */
 .app-table-edit {
-	border-bottom: solid #1991EB;
+	/* border-bottom: solid #1991EB; */
 	border-left: solid #1991EB;
 	border-right: solid #1991EB;
 	border-width: 1px;
+}
+form .app-table-edit {
+	border-bottom: 1px solid #1991EB;
 }
 .app-table-edit > div {
 	width: 100%;

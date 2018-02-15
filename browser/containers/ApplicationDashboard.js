@@ -66,38 +66,38 @@ class ApplicationsContainer extends React.Component {
         <div className="col-sm-12 no-gutters margin-drop">
           <div className="app-table">
             <div className="app-header-bottom" key="head">
-              <span id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</span>
-              <span id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Customer Name</span>
-              <span id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Address</span>
-              <span id="amount" className={(this.props.sort.join('-') === "amount") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Deal Size</span>
-              <span id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</span>
-              <span>Leasing Company</span>
-              <span>Approval Number</span>
-              <span id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expires</span>
-              <span id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</span>
-              <span className=""></span>
+              <span id="date" className={(this.props.sort.join('-') === "date") ? 'date sorting' : 'date sortable'} onClick={this.handleSort}>Date Submitted</span>
+              <span id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'customer sorting' : 'customer sortable'} onClick={this.handleSort}>Customer Name</span>
+              <span id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'address sorting' : 'address sortable'} onClick={this.handleSort}>Address</span>
+              <span id="amount" className={(this.props.sort.join('-') === "amount") ? 'amount sorting' : 'amount sortable'} onClick={this.handleSort}>Deal Size</span>
+              <span id="status" className={(this.props.sort.join('-') === "status") ? 'status sorting' : 'status sortable'} onClick={this.handleSort}>Status</span>
+              <span className="company">Leasing Company</span>
+              <span className="approval">Approval Number</span>
+              <span id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'expiry sorting' : 'expiry sortable'} onClick={this.handleSort}>Expires</span>
+              <span id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'rep sorting' : 'rep sortable'} onClick={this.handleSort}>Rep Name</span>
+              <span className="options"></span>
             </div>
             {this.props.apps.map((app, index) => {
 
               return (
                 <div key={app.id} className={(index % 2 === 0) ? 'even' : 'odd'} >
-                  <span>{reformatDate(app.date)}</span>
-                  <span>{(app.customer) ? app.customer.name : ''}</span>
-                  <span>{(app.customer) ? app.customer.street : ''}</span>
-                  <span className="right-justify">{(app.amount) ? getPrettyNumber(app.amount, '$') : ''}</span>
-                  <span>{app.status}</span>
-                  <span>{''}</span>
-                  <span>{''}</span>
-                  <span>{reformatDate(app.expiry)}</span>
-                  <span>{(app.rep) ? app.rep.fullName : ''}</span>
+                  <span className="date">{reformatDate(app.date)}</span>
+                  <span className="customer">{(app.customer) ? app.customer.name : ''}</span>
+                  <span className="address">{(app.customer) ? app.customer.street : ''}</span>
+                  <span className="amount right-justify">{(app.amount) ? getPrettyNumber(app.amount, '$') : ''}</span>
+                  <span className="status">{app.status}</span>
+                  <span className="company">{''}</span>
+                  <span className="approval">{''}</span>
+                  <span className="expiry">{reformatDate(app.expiry)}</span>
+                  <span className="rep">{(app.rep) ? app.rep.fullName : ''}</span>
                   {(this.props.user.level === 'Admin' || app.status !== 'Expired') ?
-                    <span id={app.id} onClick={this.handleClick} className="edit table-right">
+                    <span id={app.id} onClick={this.handleClick} className="options edit table-right">
                       {(this.props.user.level === 'Admin' || app.status !== 'Working') ?
                         'Edit' : 'View'
                       }
                     </span>
                     :
-                    <span id={app.id} className="edit" onClick={this.handleResubmit}>
+                    <span id={app.id} className="options edit" onClick={this.handleResubmit}>
                       Resubmit
                     </span>
                   }

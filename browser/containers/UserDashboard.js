@@ -67,7 +67,7 @@ class UsersContainer extends React.Component {
                     <td>{(user.dealer) ? user.dealer.name : ''}</td>
                     <td>{(user.manager) ? user.manager.fullName: ''}</td>
                     <td>{user.active}</td>
-                    <td id={index} onClick={this.handleClick} className="edit">Edit</td>
+                    <td id={index} onClick={this.handleClick} className="edit table-right">Edit</td>
                   </tr>
                 )
               })}
