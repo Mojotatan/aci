@@ -934,7 +934,7 @@ export default ({
             <div className="flux-table app-table">
               <div className="flux-top">
                 <div>
-                  <div className="thicc">Activity</div>
+                  {/* <div className="thicc">Activity</div> */}
                   <div className="thicc">User</div>
                   <div>Date</div>
                   <div className="thicc">Leasing Company</div>
@@ -950,9 +950,9 @@ export default ({
                 values.actions.map((action, index) => (
                   <div key={action.id} className={(index % 2 === 0) ? 'even' : 'odd'}>
                     <div className={(action.show) ? 'retracted extended' : 'retracted'}>
-                      <div className="thicc">{action.activity || ''}</div>
+                      {/* <div className="thicc">{action.activity || ''}</div> */}
                       <div className="thicc">{action.admin.email || ''}</div>
-                      <div>{reformatDate(action.date) || ''}</div>
+                      <div>{action.date || ''}</div>
                       <div className="thicc">{action.leasingCompany || ''}</div>
                       <div className="thicc">{action.appNumber || ''}</div>
                       <div>{action.status || ''}</div>
@@ -980,7 +980,7 @@ export default ({
                     <h3>{(values.action.id === 'new') ? 'New Activity' : 'Edit Activity'}</h3>
                   </div>
                 </div>
-                <div className="row">
+                {/* <div className="row">
                   <div className="col-sm-6">
                     <div className="field-label">
                       <label>Activity</label>
@@ -993,7 +993,7 @@ export default ({
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="field-label">
@@ -1032,14 +1032,47 @@ export default ({
                       value={values.action.status || ''}
                       >
                         <option value="Working">Working</option>
+                        <option value="Submitted">Submitted</option>
                         <option value="Approved">Approved</option>
                         <option value="Hold">Hold</option>
                         <option value="Declined">Declined</option>
                       </select>
                     </div>
                   </div>
+                  {(values.action.status === 'Approved') ?
+                    <div className="col-sm-6">
+                      <div className="field-label">
+                        <label>Expiry</label>
+                      </div>
+                      <div className="field-box col-sm-6 no-gutters">
+                        <input
+                          onChange={handleChangeAction}
+                          name="expiry"
+                          value={values.action.expiry || ''}
+                        />
+                      </div>
+                    </div>
+                    : null
+                  }
                 </div>
                 {/* Conditional fields based on status */}
+                {(values.action.status === 'Approved') ?
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <div className="field-label">
+                        <label>Legal Name</label>
+                      </div>
+                      <div className="field-box">
+                        <input
+                          onChange={handleChangeAction}
+                          name="legalName"
+                          value={values.action.legalName || ''}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  : null
+                }
                 <div className="row">
                   <div className="col-sm-12">
                     <div className="field-label">

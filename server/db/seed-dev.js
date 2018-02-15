@@ -126,9 +126,8 @@ const generateApplications = () => {
 const generateActions = () => {
   let arr = []
 
-  const builder = (activity, date, leasingCompany, appNumber, status, notes) => {
+  const builder = (date, leasingCompany, appNumber, status, notes) => {
     arr.push(Action.build({
-      'activity': activity,
       'date': date,
       'leasingCompany': leasingCompany,
       'appNumber': appNumber,
@@ -137,9 +136,9 @@ const generateActions = () => {
     }))
   }
 
-  builder('Credit App Submitted', '2019-01-23', 'DLL', 'DFS-8456127', 'Hold', 'Needs more cowbell')
-  builder('Credit App Submitted', '2019-01-23', 'DLL', 'DFS-8456127', 'Approved', 'Needs more cowbell')
-  builder('Credit App Submitted', '2019-01-23', 'DLL', 'DFS-8456127', 'Declined', 'Needs more cowbell')
+  builder('2019-01-23', 'DLL', 'DFS-8456127', 'Hold', 'Needs more cowbell')
+  builder('2019-01-23', 'DLL', 'DFS-8456127', 'Approved', 'Needs more cowbell')
+  builder('2019-01-23', 'DLL', 'DFS-8456127', 'Declined', 'Needs more cowbell')
 
   return arr
 }

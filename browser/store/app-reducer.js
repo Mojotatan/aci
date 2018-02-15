@@ -76,7 +76,7 @@ export const loadAppsThunk = (token, callback) => {
 
       // let leases = [] // need to track lease companies for autofill
 
-      console.log(res.data)
+      // console.log(res.data)
       res.data.apps.forEach((app, index) => {
         app.leases = res.data.leases[index]
         // leases = [...leases, ...res.data.leases[index].map(lse => lse.company)]

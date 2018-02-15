@@ -329,21 +329,35 @@ class ApplicationContainer extends React.Component {
       customerCreate: (newProps.app && newProps.app.customer) ? false : true
     })
     this.setState(newProps.app)
+    let actions = Array.from(newProps.app.actions)
+    actions.forEach(action => {
+      action.date = reformatDate(action.date)
+      action.expiry = reformatDate(action.expiry)
+    })
     this.setState({
       date: reformatDate(newProps.app.date),
       expiry: reformatDate(newProps.app.expiry),
-      amount: getPrettyNumber(newProps.app.amount)
+      amount: getPrettyNumber(newProps.app.amount),
+      actions
     })
   }
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
-    // console.log('state', this.state)
-    this.setState({
-      date: reformatDate(this.state.date),
-      expiry: reformatDate(this.state.expiry),
-      amount: getPrettyNumber(this.state.amount)
-    })
+    else {
+      // console.log('state', this.state)
+      let actions = Array.from(this.state.actions)
+      actions.forEach(action => {
+        action.date = reformatDate(action.date)
+        action.expiry = reformatDate(action.expiry)
+      })
+      this.setState({
+        date: reformatDate(this.state.date),
+        expiry: reformatDate(this.state.expiry),
+        amount: getPrettyNumber(this.state.amount),
+        actions
+      })
+    }
   }
 
 

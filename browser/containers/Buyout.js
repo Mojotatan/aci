@@ -249,11 +249,13 @@ class BuyoutContainer extends React.Component {
 
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
-    // console.log('state', this.state)
-    this.setState({
-      date: reformatDate(this.state.date),
-      expiry: reformatDate(this.state.expiry)
-    })
+    else {
+      // console.log('state', this.state)
+      this.setState({
+        date: reformatDate(this.state.date),
+        expiry: reformatDate(this.state.expiry)
+      })
+    }
   }
 
 

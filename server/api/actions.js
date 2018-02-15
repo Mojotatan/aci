@@ -23,22 +23,24 @@ module.exports = require('express').Router()
     let me = whoAmI(req.body.token)
     let prom = (req.body.action.id === 'new') ?
       Action.create({
-        activity: req.body.action.activity,
         leasingCompany: req.body.action.leasingCompany,
         appNumber: req.body.action.appNumber,
         date: req.body.action.date,
         status: req.body.action.status,
+        legalName: req.body.action.legalName,
+        expiry: req.body.action.expiry,
         notes: req.body.action.notes,
         appId: req.body.action.appId,
         adminId: me.id
       })
       :
       Action.update({
-        activity: req.body.action.activity,
         leasingCompany: req.body.action.leasingCompany,
         appNumber: req.body.action.appNumber,
         date: req.body.action.date,
         status: req.body.action.status,
+        legalName: req.body.action.legalName,
+        expiry: req.body.action.expiry,
         notes: req.body.action.notes
       }, {
         where: {
