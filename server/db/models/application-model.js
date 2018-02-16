@@ -13,7 +13,8 @@ module.exports = db => db.define('Application', {
   },
   date: {
     type: Sequelize.DATEONLY, // stored as plaintext 'YYYY-MM-DD'
-    // defaultValue: getDate()
+    defaultValue: null,
+    allowNull: true,
     set(val) {
       this.setDataValue('date', forceDate(val)) // make sure all inputs are 'YYYY-MM-DD'
     }

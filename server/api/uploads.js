@@ -95,12 +95,3 @@ module.exports = require('express').Router()
   // if (byo.pdf !== fileName) { // delete previous pdf
   //   fs.unlink(path.resolve(__dirname, '../uploads/pdf/' + byo.pdf), (err) => {if (err) console.error(err)})
   // }
-
-
-  // api for renaming a directory when a buyout gets resubmitted
-  // .post('/pdf/relink', isLoggedIn, isAdmin, (req, res) => {
-  //   fs.rename(`../uploads/pdf/${req.body.oldId}`, `../uploads/pdf/${req.body.newId}`, err => {
-  //     if (err) console.error(err)
-  //   })
-  //   res.send('whatever')
-  // })

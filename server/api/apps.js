@@ -231,6 +231,7 @@ module.exports = require('express').Router()
       :
       Application.update({
         status: req.body.app.status,
+        date: req.body.app.date,
         amount: req.body.app.amount,
         expiry: req.body.app.expiry,
         term: req.body.app.term,

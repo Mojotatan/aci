@@ -9,6 +9,8 @@ module.exports = db => db.define('Buyout', {
   },
   date: {
     type: Sequelize.DATEONLY, // stored as plaintext 'YYYY-MM-DD'
+    defaultValue: null,
+    allowNull: true,
     set(val) {
       this.setDataValue('date', forceDate(val)) // make sure all inputs are 'YYYY-MM-DD'
     }

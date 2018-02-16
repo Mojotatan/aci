@@ -35,10 +35,23 @@ class BuyoutsContainer extends React.Component {
 
   handleResubmit(e) {
     let reByo = this.props.byos.filter(byo => (byo.id == e.target.id))[0]
+    // this.props.saveByoThunk(
+    //   this.props.token,
+    //   [reByo, {
+    //     id: 'new',
+    //     status: 'Draft',
+    //     date: null,
+    //     expiry: null
+    //   }],
+    //   [reByo.customer],
+    //   (data) => {
+    //     this.props.focusByo(data.byoId)
+    //     this.props.history.push('/edit-buyout')
+    //   }
+    // )
     this.props.saveByoThunk(
       this.props.token,
       [reByo, {
-        id: 'new',
         status: 'Draft',
         date: null,
         expiry: null
@@ -47,11 +60,6 @@ class BuyoutsContainer extends React.Component {
       (data) => {
         this.props.focusByo(data.byoId)
         this.props.history.push('/edit-buyout')
-        // axios.post('/api/uploads/pdf/relink', {token: this.props.token, oldId: this.state.id, newId: data.byoId})
-        // .then(res => {
-        //   console.log(res.status)
-        // })
-        // .catch(err => console.error(err))
       }
     )
   }

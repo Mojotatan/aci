@@ -34,16 +34,29 @@ class ApplicationsContainer extends React.Component {
 
   handleResubmit(e) {
     let reApp = this.props.apps.filter(app => (app.id == e.target.id))[0]
+    // this.props.saveAppThunk(
+    //   this.props.token,
+    //   [reApp, {
+    //     id: 'new',
+    //     status: 'Draft',
+    //     date: getDate(),
+    //     expiry: null
+    //   }],
+    //   [reApp.customer],
+    //   data => {
+    //     this.props.focusApp(data.appId)
+    //     this.props.history.push('/edit-application')
+    //   }
+    // )
     this.props.saveAppThunk(
       this.props.token,
       [reApp, {
-        id: 'new',
         status: 'Draft',
-        date: getDate(),
+        date: null,
         expiry: null
       }],
       [reApp.customer],
-      (data) => {
+      data => {
         this.props.focusApp(data.appId)
         this.props.history.push('/edit-application')
       }
