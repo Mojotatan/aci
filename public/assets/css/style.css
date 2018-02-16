@@ -477,7 +477,8 @@ input, textarea {
 	margin-bottom: 15px
 }
 .flux-table {
-	width: 100%
+	width: 100%;
+	border: 1px solid #1991EB
 }
 .flux-table > div {
 	width: 100%
