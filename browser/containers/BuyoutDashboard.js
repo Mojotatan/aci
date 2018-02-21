@@ -95,7 +95,7 @@ class BuyoutsContainer extends React.Component {
                     <td>{reformatDate(byo.date)}</td>
                     <td>{(byo.customer) ? byo.customer.name : ''}</td>
                     <td>{(byo.customer) ? byo.customer.street : ''}</td>
-                    <td>{byo.status}</td>
+                    <td className={`status ${byo.status}`}>{byo.status}</td>
                     <td>{reformatDate(byo.expiry)}</td>
                     <td>{(byo.rep) ? byo.rep.fullName : ''}</td>
                     {(this.props.user.level === 'Admin' || byo.status !== 'Expired') ?

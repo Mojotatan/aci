@@ -37,7 +37,8 @@ h5 {
 	text-decoration: none;
 }
 .edit {
-	color: #2EA2F8;
+	/* color: #2EA2F8; */
+	color: #1066A3;
 	cursor: pointer;
 }
 .edit:hover {
@@ -119,12 +120,12 @@ input, textarea {
 .login .bottom-buttons span {
 	position: absolute;
 	left: 15px;
-	color: #2EA2F8;
+	color: #1066A3;
 	cursor: pointer
 }
 .login .bottom-buttons span:hover {
 	text-decoration: underline;
-	color: #2EA2F8
+	color: #1066A3
 }
 .login .bottom-buttons button {
 	position: absolute;
@@ -368,6 +369,28 @@ input, textarea {
 } 
 .even {
   background-color: #f8f8f8;
+}
+.status.New {
+	font-weight: bold
+}
+.status.Working {
+	font-weight: bold
+}
+.status.Approved {
+	color: #39b54a;
+	font-weight: bold
+}
+.status.Declined {
+	color: #f85359;
+	font-weight: bold
+}
+.status.Hold {
+	color: #f7981c;
+	font-weight: bold
+}
+.status.Expired {
+	color: #6b47db;
+	font-weight: bold
 }
 
 /* Users List */
@@ -744,7 +767,7 @@ form .app-table-edit {
 	margin-right: 25px;
 }
 .fields-button {
-	color: #2EA2F8;
+	color: #1066A3;
 	border: none;
 	background-color: rgba(0, 0, 0, 0);
 }

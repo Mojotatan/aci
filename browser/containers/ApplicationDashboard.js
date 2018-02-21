@@ -98,7 +98,7 @@ class ApplicationsContainer extends React.Component {
                   <span className="customer">{(app.customer) ? app.customer.name : ''}</span>
                   <span className="address">{(app.customer) ? app.customer.street : ''}</span>
                   <span className="amount right-justify">{(app.amount) ? getPrettyNumber(app.amount, '$') : ''}</span>
-                  <span className="status">{app.status}</span>
+                  <span className={`status ${app.status}`}>{app.status}</span>
                   <span className="company">{''}</span>
                   <span className="approval">{''}</span>
                   <span className="expiry">{reformatDate(app.expiry)}</span>
