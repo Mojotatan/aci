@@ -1095,7 +1095,7 @@ span#cancel-button:hover {
 .lightbox {
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, .6);
+	background-color: rgba(0, 0, 0, .85 );
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -1110,7 +1110,6 @@ span#cancel-button:hover {
 	/* width: 100%; */
 	height: 100%;
 	position: relative;
-	opacity: 1;
 	overflow-y: scroll;
 	background-color: white;
 }
