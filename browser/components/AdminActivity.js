@@ -11,10 +11,22 @@ export default ({
   handleAdminMode,
   handleActionDelete,
   handleSaveAction,
+  handleSaveAndNotify,
   handleChangeAction,
-  toggleAdminView
+  toggleAdminView,
+  toggleLightbox
 }) => (
   <div className="row edit-apps-page admin">
+
+    {(values.lightbox) ?
+    <div className="lightbox">
+      <div className="shadowbox" onClick={toggleLightbox}></div>
+      <div className="container">
+        <div className="col-sm-8 col-sm-offset-2 lightbox-content"></div>
+      </div>
+    </div>
+    : null
+    }
 
     <div className="col-sm-12 top">
       <div className="row">
@@ -28,36 +40,80 @@ export default ({
     </div>
 
     <div className="agent-box col-sm-3">
-      <h3>Agent Information</h3>
+      <h3>Application Information</h3>
+      <div>
+        <label>Customer Name</label>
+        {(values.customer) ? <p>{values.customer.name}</p> : <p>&nbsp;</p>}
+      </div>
+      <div>
+        <label>Customer Address</label>
+        {(values.customer) ? <p>{values.customer.address}</p> : <p>&nbsp;</p>}
+      </div>
+      <div>
+        <label>Customer Phone</label>
+        {(values.customer) ? <p>{values.customer.phone}</p> : <p>&nbsp;</p>}
+      </div>
+
+      <br />
+
+      <div>
+        <label>Estimated Deal Size</label>
+        {(values.amount) ? <p>{values.amount}</p> : <p>&nbsp;</p>}
+      </div>
       <div>
         <label>Agent Name</label>
-        <p>{(values.rep) ? values.rep.fullName : ''}</p>
+        {(values.term) ? <p>{values.term}</p> : <p>&nbsp;</p>}
       </div>
       <div>
-        <label>Email</label>
-        <p>{(values.rep) ? values.rep.email : ''}</p>
+        <label>Advanced Payments</label>
+        {(values.advancedPayments) ? <p>{values.advancedPayments}</p> : <p>&nbsp;</p>}
       </div>
       <div>
-        <label>Phone</label>
-        <p>{(values.rep) ? values.rep.phone : ''}</p>
+        <label>End of Term</label>
+        {(values.endOfTerm) ? <p>{values.endOfTerm}</p> : <p>&nbsp;</p>}
+      </div>
+
+      <br />
+
+      <div>
+        <label>Agent Name</label>
+        {(values.rep) ? <p>{values.rep.fullName}</p> : <p>&nbsp;</p>}
       </div>
       <div>
-        <label>Dealer</label>
-        <p>
-          {(values.rep && values.rep.dealer) ? values.rep.dealer.name || '' : ''}
-        </p>
+        <label>Agent Email</label>
+        {(values.rep) ? <p>{values.rep.email}</p> : <p>&nbsp;</p>}
       </div>
       <div>
-        <label>Branch</label>
-        <p>{(values.rep && values.rep.branch) ? values.rep.branch.name || '' : ''}</p>
+        <label>Agent Phone</label>
+        {(values.rep) ? <p>{values.rep.phone}</p> : <p>&nbsp;</p>}
+      </div>
+      <div>
+        <label>Agent Dealer</label>
+        {(values.rep && values.rep.dealer) ? <p>{values.rep.dealer.name}</p> : <p>&nbsp;</p>}
+      </div>
+      <div>
+        <label>Agent Branch</label>
+        {(values.rep && values.rep.branch) ? <p>{values.rep.branch.name}</p> : <p>&nbsp;</p>}
       </div>
       <div>
         <label>Manager</label>
-        <p>{(values.rep && values.rep.manager) ? values.rep.manager.fullName || '' : ''}</p>
+        {(values.rep && values.rep.manager) ? <p>{values.rep.manager.fullName}</p> : <p>&nbsp;</p>}
       </div>
+
+      <br />
+      
+      <div>
+        {(values.type) ? <p>{`${values.type} Customer`}</p> : <p>&nbsp;</p>}
+      </div>
+      <div>
+        {(values.comments) ? <p>Comments Entered</p> : <p>&nbsp;</p>}
+      </div>
+
+      <br />
+
       <div className="full-width">
         <span className="edit" onClick={toggleAdminView}>Edit</span>
-        <span className="edit" onClick={function(){}}>View</span>
+        <span className="edit" onClick={toggleLightbox}>View</span>
       </div>
     </div>
 
@@ -224,27 +280,35 @@ export default ({
                 <div className="col-sm-12" align="right">
                   <span id="cancel-button" onClick={handleAdminMode}>Cancel</span>
                   <button className="send-button">Save</button>
+                  <button className="send-button" onClick={handleSaveAndNotify}>Save and Notify Rep</button>
                 </div>
               </div>
             </form>
           </div>
         </div>
       </div>
-      :
-      <div className="row">
-        <div className="col-sm-12">
-          <br />
-          <button id="submit-button" onClick={handleAdminMode}>New</button>
+      : null
+      }
+
+      {(!values.adminMode) ?
+        <div className="row">
+          <div className="col-sm-12">
+            <br />
+            <button id="submit-button" onClick={handleAdminMode}>New</button>
+          </div>
         </div>
-      </div>
+        : null
       }
 
     
-      <NotifyRep
-        values={values}
-        handleChange={handleChange}
-        handleNotify={handleNotify}
-      />
+      {(values.adminMode === 'notify') ?
+        <NotifyRep
+          values={values}
+          handleChange={handleChange}
+          handleNotify={handleNotify}
+        />
+        : null
+      }
 
 
       {/* log */}

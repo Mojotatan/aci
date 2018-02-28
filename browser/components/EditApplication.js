@@ -32,8 +32,10 @@ export default ({
   handleChangeAction,
   handleActionDelete,
   handleSaveAction,
+  handleSaveAndNotify,
   handleAdminMode,
-  toggleAdminView
+  toggleAdminView,
+  toggleLightbox
 }) => (
   (admin && values.adminView) ?
   (
@@ -44,9 +46,11 @@ export default ({
     handleNotify={handleNotify}
     handleAdminMode={handleAdminMode}
     handleActionDelete={handleActionDelete}
-    handleSaveAction={handleSaveAction}
     handleChangeAction={handleChangeAction}
+    handleSaveAction={handleSaveAction}
+    handleSaveAndNotify={handleSaveAndNotify}
     toggleAdminView={toggleAdminView}
+    toggleLightbox={toggleLightbox}
   />
   )
   :
@@ -78,30 +82,28 @@ export default ({
     <div className="agent-box col-sm-3">
       <h3>Agent Information</h3>
       <div>
-        <label>Agent Name</label>
-        <p>{(values.rep) ? values.rep.fullName : ''}</p>
+        <label>Name</label>
+        {(values.rep) ? <p>{values.rep.fullName}</p> : <p>&nbsp;</p>}
       </div>
       <div>
         <label>Email</label>
-        <p>{(values.rep) ? values.rep.email : ''}</p>
+        {(values.rep) ? <p>{values.rep.email}</p> : <p>&nbsp;</p>}
       </div>
       <div>
         <label>Phone</label>
-        <p>{(values.rep) ? values.rep.phone : ''}</p>
+        {(values.rep) ? <p>{values.rep.phone}</p> : <p>&nbsp;</p>}
       </div>
       <div>
         <label>Dealer</label>
-        <p>
-          {(values.rep && values.rep.dealer) ? values.rep.dealer.name || '' : ''}
-        </p>
+        {(values.rep && values.rep.dealer) ? <p>{values.rep.dealer.name}</p> : <p>&nbsp;</p>}
       </div>
       <div>
         <label>Branch</label>
-        <p>{(values.rep && values.rep.branch) ? values.rep.branch.name || '' : ''}</p>
+        {(values.rep && values.rep.branch) ? <p>{values.rep.branch.name}</p> : <p>&nbsp;</p>}
       </div>
       <div>
         <label>Manager</label>
-        <p>{(values.rep && values.rep.manager) ? values.rep.manager.fullName || '' : ''}</p>
+        {(values.rep && values.rep.manager) ? <p>{values.rep.manager.fullName}</p> : <p>&nbsp;</p>}
       </div>
     </div>
 

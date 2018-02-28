@@ -21,7 +21,8 @@ class ApplicationContainer extends React.Component {
         mailCC: '',
         mailDisabled: false,
         adminMode: false,
-        adminView: (this.props.user) ? this.props.user.level === 'Admin' : false
+        adminView: (this.props.user) ? this.props.user.level === 'Admin' : false,
+        lightbox: false
       },
       this.props.app,
     )
@@ -56,10 +57,12 @@ class ApplicationContainer extends React.Component {
     this.handleChangeAction = this.handleChangeAction.bind(this)
     this.handleActionDelete = this.handleActionDelete.bind(this)
     this.handleSaveAction = this.handleSaveAction.bind(this)
+    this.handleSaveAndNotify = this.handleSaveAndNotify.bind(this)
 
     this.handleAdminMode = this.handleAdminMode.bind(this)
 
     this.toggleAdminView = this.toggleAdminView.bind(this)
+    this.toggleLightbox = this.toggleLightbox.bind(this)
 
   }
 
@@ -304,6 +307,17 @@ class ApplicationContainer extends React.Component {
 
   }
 
+  handleSaveAndNotify(e) {
+    e.preventDefault()
+    axios.put('/api/actions/', {token: this.props.token, action: this.state.action})
+    .then(res => {
+      this.props.loadAppsThunk(this.props.token)
+      // this.props.throwAlert('green', 'Success')
+      this.setState({adminMode: 'notify'})
+    })
+    .catch(err => console.error(err))
+  }
+
   handleAdminMode(e) {
     if (e.target.id === 'cancel-button') {
       this.setState({adminMode: false})
@@ -329,7 +343,12 @@ class ApplicationContainer extends React.Component {
     this.setState({
       adminView: !this.state.adminView
     })
-    console.log(!this.state.adminView)
+  }
+
+  toggleLightbox(e) {
+    this.setState({
+      lightbox: !this.state.lightbox
+    })
   }
 
 
@@ -410,8 +429,10 @@ class ApplicationContainer extends React.Component {
           handleChangeAction={this.handleChangeAction}
           handleActionDelete={this.handleActionDelete}
           handleSaveAction={this.handleSaveAction}
+          handleSaveAndNotify={this.handleSaveAndNotify}
           handleAdminMode={this.handleAdminMode}
           toggleAdminView={this.toggleAdminView}
+          toggleLightbox={this.toggleLightbox}
         />
       </div>
     )
