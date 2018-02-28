@@ -8,7 +8,7 @@ export default ({
       <div className="col-sm-6">
         <div className="row">
           <div className="col-sm-12">
-            <h3>{`Notify ${values.rep.fullName || 'Rep'}`}</h3>
+            <h3>{`Notify ${(values.rep && values.rep.fullName) ? values.rep.fullName : 'Rep'}`}</h3>
           </div>
         </div>
         <div className="row">

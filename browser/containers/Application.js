@@ -20,7 +20,8 @@ class ApplicationContainer extends React.Component {
         mailSubject: '',
         mailCC: '',
         mailDisabled: false,
-        adminMode: false
+        adminMode: false,
+        adminView: (this.props.user) ? this.props.user.level === 'Admin' : false
       },
       this.props.app,
     )
@@ -57,6 +58,8 @@ class ApplicationContainer extends React.Component {
     this.handleSaveAction = this.handleSaveAction.bind(this)
 
     this.handleAdminMode = this.handleAdminMode.bind(this)
+
+    this.toggleAdminView = this.toggleAdminView.bind(this)
 
   }
 
@@ -322,6 +325,13 @@ class ApplicationContainer extends React.Component {
     }
   }
 
+  toggleAdminView(e) {
+    this.setState({
+      adminView: !this.state.adminView
+    })
+    console.log(!this.state.adminView)
+  }
+
 
   componentWillReceiveProps(newProps){
     // console.log('component receiving props')
@@ -401,6 +411,7 @@ class ApplicationContainer extends React.Component {
           handleActionDelete={this.handleActionDelete}
           handleSaveAction={this.handleSaveAction}
           handleAdminMode={this.handleAdminMode}
+          toggleAdminView={this.toggleAdminView}
         />
       </div>
     )

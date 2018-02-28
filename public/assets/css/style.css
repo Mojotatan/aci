@@ -821,7 +821,7 @@ button.disabled {
 	margin-bottom: 30px
 }
 /* Ellipsis Expand */
-.overflow-tip {
+/* .overflow-tip {
   white-space:nowrap;
   overflow-x: hidden;
   text-overflow: ellipsis;
@@ -836,7 +836,7 @@ button.disabled {
     }
     
   }
-}
+} */
 
 /* Universal */
 .agent-box {
@@ -1037,7 +1037,7 @@ input.on + label {
 	font-weight: 600
 }
 .admin {
-	border-top: 2px solid #1066A3;
+	/* border-top: 2px solid #1066A3; */
 	/* margin-bottom: 90px */
 }
 .admin h2 {
@@ -1080,4 +1080,15 @@ span#cancel-button:hover {
 	background-color: #354052;
 	outline: none;
 	cursor: pointer
+}
+.admin .agent-box + div {
+	padding-left: 45px
+}
+.full-width {
+	width: 100%
+}
+.agent-box .full-width span {
+	width: 50%;
+	display: inline-block;
+	text-align: center
 }

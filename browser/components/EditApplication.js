@@ -32,8 +32,25 @@ export default ({
   handleChangeAction,
   handleActionDelete,
   handleSaveAction,
-  handleAdminMode
+  handleAdminMode,
+  toggleAdminView
 }) => (
+  (admin && values.adminView) ?
+  (
+  <AdminActivity
+    values={values}
+    handleChange={handleChange}
+    handleNote={handleNote}
+    handleNotify={handleNotify}
+    handleAdminMode={handleAdminMode}
+    handleActionDelete={handleActionDelete}
+    handleSaveAction={handleSaveAction}
+    handleChangeAction={handleChangeAction}
+    toggleAdminView={toggleAdminView}
+  />
+  )
+  :
+  (
   <div className="row edit-apps-page">
 
     <div className="col-sm-12 top">
@@ -43,7 +60,11 @@ export default ({
 
         {(admin || values.status !== 'Working') ?
           <div className="col-sm-6 top-buttons" align="right">
-            <Link to='/applications' id="cancel-button" className="top">Cancel</Link>
+            {(admin) ?
+              <span id="cancel-button" className="top" onClick={toggleAdminView}>Cancel</span>
+              :
+              <Link to='/applications' id="cancel-button" className="top">Cancel</Link>
+            }
             <button type="submit" id="save-button" className="top" onClick={handleSave}>Save</button>
           </div>
           :
@@ -921,18 +942,7 @@ export default ({
         }
       </form>
     </div>
-
-    {/* Admin Only */}
-    {(admin) ? <AdminActivity
-      values={values}
-      handleChange={handleChange}
-      handleNote={handleNote}
-      handleNotify={handleNotify}
-      handleAdminMode={handleAdminMode}
-      handleActionDelete={handleActionDelete}
-      handleSaveAction={handleSaveAction}
-      handleChangeAction={handleChangeAction}
-    /> : null}
     
   </div>
+  )
 )
