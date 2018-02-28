@@ -1,7 +1,8 @@
 const Op = require('sequelize').Op
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const {User, Dealer, Region, Branch} = require('../db').db.models
-const {isLoggedIn, isAdmin} = require('./auth')
+const {cert, isLoggedIn, isAdmin, mailTransporter} = require('./auth')
 
 
 module.exports = require('express').Router()
@@ -24,7 +25,7 @@ module.exports = require('express').Router()
         level: req.body.user.level,
         email: req.body.user.email,
         phone: req.body.user.phone,
-        password: req.body.user.password,
+        password: req.body.user.password || (Math.random() * 10000).toString(),
         dealerId: req.body.user.dealerId,
         regionId: req.body.user.regionId,
         branchId: req.body.user.branchId,
@@ -74,6 +75,23 @@ module.exports = require('express').Router()
         })
     prom.then(data => {
       res.send('success')
+      if (req.body.user.id === 'new') {
+        let url = 'localhost:1337/api/login/reset?access_token=' + jwt.sign({user: data.email}, cert, {expiresIn: '180m'})
+        let contents = `<!DOCTYPE html><html><p>A new account has been created for you at MyAdminCentral</p><p>To set the password on this account, click <a href="${url}">${url}</a></p><p>If this link does not work, please visit <a>MyAdminCentral</a> and click "I forgot my password".</html>`
+        let message = {
+          from: 'team@myadmindev.xyz',
+          // to: data.email,
+          to: 'tatan42@gmail.com',
+          subject: 'Password Reset',
+          html: contents
+        }
+        return mailTransporter.sendMail(message)
+      }
     })
-    .catch(err => res.send({err}))
+    // .then(() => res.send('success'))
+    .then(() => console.log('success'))
+    .catch(err => {
+      console.error('error:', err)
+      res.send({err})
+    })
   })

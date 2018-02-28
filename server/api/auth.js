@@ -33,4 +33,4 @@ const mailTransporter = nodemailer.createTransport({
   secure: true
 })
 
-module.exports = {isLoggedIn, isAdmin, whoAmI, mailTransporter}
+module.exports = {cert, isLoggedIn, isAdmin, whoAmI, mailTransporter}

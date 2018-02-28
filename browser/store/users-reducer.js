@@ -88,7 +88,10 @@ export const saveUserThunk = (token, user, callback) => {
 
     return axios.put('/api/users', {token, user: filterUser})
     .then(res => {
-      if (res.data.err) dispatch(throwAlert('red', 'There was an error with your changes'))
+      if (res.data.err) {
+        dispatch(throwAlert('red', 'There was an error with your changes'))
+        console.log(res.data.err)
+      }
       else {
         dispatch(throwAlert('green', 'Your changes have been saved'))
         if (user.id === 'new') {

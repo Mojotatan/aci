@@ -3,10 +3,8 @@ const path = require('path')
 const Op = require('sequelize').Op
 const {User} = require('../db').db.models
 const jwt = require('jsonwebtoken')
-const {isAdmin, mailTransporter} = require('./auth')
+const {cert, isAdmin, mailTransporter} = require('./auth')
 const bcrypt = require('bcrypt')
-
-const cert = process.env.CERT || fs.readFileSync('.devCert')
 
 module.exports = require('express').Router()
 
