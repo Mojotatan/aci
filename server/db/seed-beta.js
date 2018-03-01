@@ -1,5 +1,7 @@
 const fs = require('fs')
 const path = require('path')
+const jwt = require('jsonwebtoken')
+const {cert, mailTransporter} = require('../api/auth.js')
 const {db, associations} = require('./index')
 const {User, Dealer, Region, Branch, Application, Action, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
@@ -382,6 +384,22 @@ db.sync({force: true})
 })
 .then(() => {
   console.log('Database seed complete')
+  return Promise.all(seedData.users.slice(3).map(usr => {
+    let url = 'localhost:1337/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '24h'})
+    let contents = `<!DOCTYPE html><html><p>A new account has been created for you at MyAdminCentral</p><p>To set the password on this account, click <a href="${url}">${url}</a></p><p>If this link does not work, please visit <a>MyAdminCentral</a> and click "I forgot my password".</html>`
+    let message = {
+      from: 'team@myadmindev.xyz',
+      // to: usr.email,
+      to: 'tatan42@gmail.com',
+      subject: 'Account Created at MyAdminCentral',
+      // text: usr.email,
+      html: contents
+    }
+    return mailTransporter.sendMail(message)
+  }))
+})
+.then(() => {
+  console.log('Emails sent out to new users')
   process.exit()
 })
 .catch(err => console.error(err))

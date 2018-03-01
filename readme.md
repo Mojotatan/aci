@@ -102,6 +102,32 @@ npm run build
 export key=value
 ```
 
+If process.env variables are getting overwritten or otherwise misbehaving, set up hidden files with the secrets as you would in a dev environment.
+
 6. Configure Passenger on cpanel if you haven't already
 
 7. Start Passenger
+
+**How to update on a Remote Server**
+1. Download the updates
+
+```
+git pull origin production
+npm install
+```
+
+2. Change dbUrl in server/db/index.js
+
+3. Restart Passenger
+
+```
+rm tmp/restart.txt
+touch tmp/restart.txt
+```
+
+4. Double check to make sure everything is configured and running correctly.
+
+*cough cough*
+```
+node -v
+```
