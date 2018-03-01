@@ -4,7 +4,7 @@ import {loadCustomersThunk} from './customer-reducer'
 import {loadLeasesThunk} from './lease-reducer'
 import {throwAlert} from './alert-reducer'
 
-import {sortBy} from '../utility'
+import {sortBy, getDate} from '../utility'
 
 // initial state
 const initialState = {apps: [], focus: null, sort: ['date']}
@@ -80,8 +80,18 @@ export const loadAppsThunk = (token, callback) => {
       res.data.apps.forEach((app, index) => {
         app.leases = res.data.leases[index]
         // leases = [...leases, ...res.data.leases[index].map(lse => lse.company)]
-        app.actions = res.data.actions[index]
-        app.logs = res.data.logs[index]
+
+        let actions = res.data.actions[index]
+        app.actions = []
+        actions = actions.filter(act => {
+          if (act.sentToRep) app.actions.push(act)
+          else return true
+        })
+        app.actions = [...app.actions, ...actions]
+        
+        app.logs = res.data.logs[index].filter(log => {
+          return (log.date <= getDate())
+        })
       })
       dispatch(loadApps(res.data.apps))
       // dispatch(loadLeases(leases))

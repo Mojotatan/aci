@@ -891,48 +891,6 @@ var pwCheck = exports.pwCheck = function pwCheck(pw) {
 "use strict";
 
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-function makeEmptyFunction(arg) {
-  return function () {
-    return arg;
-  };
-}
-
-/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
-var emptyFunction = function emptyFunction() {};
-
-emptyFunction.thatReturns = makeEmptyFunction;
-emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction.thatReturnsThis = function () {
-  return this;
-};
-emptyFunction.thatReturnsArgument = function (arg) {
-  return arg;
-};
-
-module.exports = emptyFunction;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -1007,6 +965,48 @@ exports.matchPath = _matchPath3.default;
 exports.withRouter = _withRouter3.default;
 
 /***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+function makeEmptyFunction(arg) {
+  return function () {
+    return arg;
+  };
+}
+
+/**
+ * This function accepts and discards inputs; it has no side effects. This is
+ * primarily useful idiomatically for overridable function endpoints which
+ * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+ */
+var emptyFunction = function emptyFunction() {};
+
+emptyFunction.thatReturns = makeEmptyFunction;
+emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+emptyFunction.thatReturnsThis = function () {
+  return this;
+};
+emptyFunction.thatReturnsArgument = function (arg) {
+  return arg;
+};
+
+module.exports = emptyFunction;
+
+/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1071,7 +1071,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(9);
 
 var _reactRedux = __webpack_require__(5);
 
@@ -1657,8 +1657,17 @@ var loadAppsThunk = exports.loadAppsThunk = function loadAppsThunk(token, callba
       res.data.apps.forEach(function (app, index) {
         app.leases = res.data.leases[index];
         // leases = [...leases, ...res.data.leases[index].map(lse => lse.company)]
-        app.actions = res.data.actions[index];
-        app.logs = res.data.logs[index];
+
+        var actions = res.data.actions[index];
+        app.actions = [];
+        actions = actions.filter(function (act) {
+          if (act.sentToRep) app.actions.push(act);else return true;
+        });
+        app.actions = [].concat(_toConsumableArray(app.actions), _toConsumableArray(actions));
+
+        app.logs = res.data.logs[index].filter(function (log) {
+          return log.date <= (0, _utility.getDate)();
+        });
       });
       dispatch(loadApps(res.data.apps));
       // dispatch(loadLeases(leases))
@@ -1958,7 +1967,7 @@ module.exports = emptyObject;
 
 
 
-var emptyFunction = __webpack_require__(9);
+var emptyFunction = __webpack_require__(10);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -3714,7 +3723,7 @@ module.exports = ExecutionEnvironment;
  * @typechecks
  */
 
-var emptyFunction = __webpack_require__(9);
+var emptyFunction = __webpack_require__(10);
 
 /**
  * Upstream version of event listener. Does not take into account specific
@@ -5857,7 +5866,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(73);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(9);
 
 var _reactRedux = __webpack_require__(5);
 
@@ -5903,7 +5912,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var m = __webpack_require__(13),
     n = __webpack_require__(20),
-    p = __webpack_require__(9),
+    p = __webpack_require__(10),
     q = "function" === typeof Symbol && Symbol["for"],
     r = q ? Symbol["for"]("react.element") : 60103,
     t = q ? Symbol["for"]("react.call") : 60104,
@@ -6038,7 +6047,7 @@ if (process.env.NODE_ENV !== "production") {
     var emptyObject = __webpack_require__(20);
     var invariant = __webpack_require__(14);
     var warning = __webpack_require__(21);
-    var emptyFunction = __webpack_require__(9);
+    var emptyFunction = __webpack_require__(10);
     var checkPropTypes = __webpack_require__(25);
 
     // TODO: this is special because it gets imported during build.
@@ -7438,7 +7447,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var aa = __webpack_require__(0),
     l = __webpack_require__(41),
     B = __webpack_require__(13),
-    C = __webpack_require__(9),
+    C = __webpack_require__(10),
     ba = __webpack_require__(42),
     da = __webpack_require__(43),
     ea = __webpack_require__(44),
@@ -9482,7 +9491,7 @@ module.exports = isNode;
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj;};if(process.env.NODE_ENV!=="production"){(function(){'use strict';var React=__webpack_require__(0);var invariant=__webpack_require__(14);var warning=__webpack_require__(21);var ExecutionEnvironment=__webpack_require__(41);var _assign=__webpack_require__(13);var emptyFunction=__webpack_require__(9);var EventListener=__webpack_require__(42);var getActiveElement=__webpack_require__(43);var shallowEqual=__webpack_require__(44);var containsNode=__webpack_require__(45);var focusNode=__webpack_require__(46);var emptyObject=__webpack_require__(20);var checkPropTypes=__webpack_require__(25);var hyphenateStyleName=__webpack_require__(78);var camelizeStyleName=__webpack_require__(80);/**
+ */var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj;};if(process.env.NODE_ENV!=="production"){(function(){'use strict';var React=__webpack_require__(0);var invariant=__webpack_require__(14);var warning=__webpack_require__(21);var ExecutionEnvironment=__webpack_require__(41);var _assign=__webpack_require__(13);var emptyFunction=__webpack_require__(10);var EventListener=__webpack_require__(42);var getActiveElement=__webpack_require__(43);var shallowEqual=__webpack_require__(44);var containsNode=__webpack_require__(45);var focusNode=__webpack_require__(46);var emptyObject=__webpack_require__(20);var checkPropTypes=__webpack_require__(25);var hyphenateStyleName=__webpack_require__(78);var camelizeStyleName=__webpack_require__(80);/**
  * WARNING: DO NOT manually require this module.
  * This is a replacement for `invariant(...)` used by the error code system
  * and will _only_ be required by the corresponding babel pass.
@@ -12719,7 +12728,7 @@ exports.default = BrowserRouter;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var emptyFunction = __webpack_require__(9);
+var emptyFunction = __webpack_require__(10);
 var invariant = __webpack_require__(14);
 var warning = __webpack_require__(21);
 var assign = __webpack_require__(13);
@@ -13242,7 +13251,7 @@ module.exports = function (isValidElement, throwOnDirectAccess) {
 
 
 
-var emptyFunction = __webpack_require__(9);
+var emptyFunction = __webpack_require__(10);
 var invariant = __webpack_require__(14);
 var ReactPropTypesSecret = __webpack_require__(26);
 
@@ -18941,7 +18950,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(9);
 
 var _LogIn = __webpack_require__(156);
 
@@ -19030,7 +19039,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(9);
 
 var _reactRedux = __webpack_require__(5);
 
@@ -19243,7 +19252,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(9);
 
 var _utility = __webpack_require__(8);
 
@@ -19695,12 +19704,12 @@ var ApplicationsContainer = function (_React$Component) {
                 _react2.default.createElement(
                   'span',
                   { className: 'company' },
-                  ''
+                  app.actions && app.actions[0] && app.actions[0].sentToRep ? app.actions[0].leasingCompany : ''
                 ),
                 _react2.default.createElement(
                   'span',
                   { className: 'approval' },
-                  ''
+                  app.actions && app.actions[0] && app.actions[0].sentToRep ? app.actions[0].appNumber : ''
                 ),
                 _react2.default.createElement(
                   'span',
@@ -20111,8 +20120,12 @@ var ApplicationContainer = function (_React$Component) {
       var _this7 = this;
 
       e.preventDefault();
-      _axios2.default.put('/api/actions/', { token: this.props.token, action: this.state.action }).then(function (res) {
-        _this7.props.loadAppsThunk(_this7.props.token);
+      var expiryDate = void 0;
+      _axios2.default.put('/api/actions/', { token: this.props.token, action: Object.assign({}, this.state.action, { sentToRep: (0, _utility.getDate)() }) }).then(function (res) {
+        expiryDate = res.data;
+        return _axios2.default.post('/api/logs/new', { token: _this7.props.token, date: new Date(), activity: 'let my people know', app: _this7.state.id, expiry: expiryDate });
+      }).then(function (res) {
+        _this7.props.saveAppThunk(_this7.props.token, [_this7.state, { expiry: expiryDate, amount: (0, _utility.checkFor$)(_this7.state.amount) }], [_this7.state.customer]);
         // this.props.throwAlert('green', 'Success')
         _this7.setState({ adminMode: 'notify' });
       }).catch(function (err) {
@@ -20278,7 +20291,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(9);
 
 var _AdminActivity = __webpack_require__(163);
 
@@ -20534,12 +20547,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box' },
-              admin ? _react2.default.createElement('input', {
-                onChange: handleChange,
-                name: 'expiry',
-                value: values.expiry || '',
-                placeholder: 'MM-DD-YY'
-              }) : _react2.default.createElement(
+              _react2.default.createElement(
                 'p',
                 null,
                 values.expiry || ''
@@ -21685,7 +21693,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(9);
 
 var _NotifyRep = __webpack_require__(164);
 
@@ -23301,7 +23309,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(9);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25313,7 +25321,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(9);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

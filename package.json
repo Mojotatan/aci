@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "nodemon app.js",
-    "start": "webpack && node app.js",
+    "start": "node app.js",
     "build-dev": "webpack -w",
     "build": "webpack",
     "seed-dev": "node server/db/seed-dev.js",

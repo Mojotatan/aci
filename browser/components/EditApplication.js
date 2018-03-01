@@ -119,7 +119,7 @@ export default ({
           <div className="rowed-items">
             <label>Expires</label>
             <div className="field-box">
-              {(admin) ?
+              {/* {(admin) ?
                 <input
                 onChange={handleChange}
                 name={'expiry'}
@@ -128,7 +128,9 @@ export default ({
                 />
                 :
                 <p>{values.expiry || ''}</p>
-              }
+              } */}
+              {/* <p>{(values.actions && values.actions[0] && values.actions[0].sentToRep) ? values.actions[0].expiry : ''}</p> */}
+              <p>{values.expiry || ''}</p>
             </div>
           </div>
           <div className="rowed-items status">
@@ -884,44 +886,6 @@ export default ({
               </div>
             </div>
           </div>
-
-          {/* Admin only section of app */}
-          {/* awaiting rework */}
-          {/* {(admin) ?
-            <div>
-
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="field-label">
-                    <label>Total Funding</label>
-                  </div>
-                  <div className="field-box">
-                    <input
-                      onChange={handleChange}
-                      name={'funding'}
-                      value={values.funding || ''}
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="field-label">
-                    <label>Rep Rate</label>
-                  </div>
-                  <div className="field-box">
-                    <input
-                      onChange={handleChange}
-                      name={'repRate'}
-                      value={values.repRate || ''}
-                    />
-                  </div>
-                </div>
-              </div>
-
-            </div>
-            :
-            null
-          } */}
-
         </div>
 
         {(admin || values.status !== 'Working') ?

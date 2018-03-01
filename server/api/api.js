@@ -13,5 +13,6 @@ api
   .use('/regions', require('./regions'))
   .use('/uploads', require('./uploads'))
   .use('/users', require('./users'))
+  .use('/logs', require('./logs'))
 
 api.use((req, res) => res.status(404).end())

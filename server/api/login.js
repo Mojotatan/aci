@@ -1,4 +1,3 @@
-const fs = require('fs')
 const path = require('path')
 const Op = require('sequelize').Op
 const {User} = require('../db').db.models
@@ -22,10 +21,8 @@ module.exports = require('express').Router()
       if (!usr) res.send({message: ['red', 'No such user email exists']})
       else {
         // jwt.sign
-        let url = 'localhost:1337/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '5m'})
+        let url = 'localhost:1337/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '60m'})
         let contents = `<!DOCTYPE html><html><p>To reset the password for your account with MyAdminCentral, click <a href="${url}">${url}</a></p><p>If you did not trigger this password reset, ignore this email.</p></html>`
-        // let contents = fs.createWriteStream('public/pwreset.html', 'utf8')
-        //   .on
         let message = {
           from: 'team@myadmindev.xyz',
           // to: usr.email,

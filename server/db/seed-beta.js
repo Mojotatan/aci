@@ -1,5 +1,7 @@
 const fs = require('fs')
 const path = require('path')
+const jwt = require('jsonwebtoken')
+const {cert, mailTransporter} = require('../api/auth.js')
 const {db, associations} = require('./index')
 const {User, Dealer, Region, Branch, Application, Action, Guarantee, Customer, Buyout, Lease, Machine} = db.models
 
@@ -23,7 +25,7 @@ const generateUsers = () => {
   builder('Cory', 'Carnes', 'Region Manager', 'ccarnes@impactnetworking.com', '312-424-6110', 'bob')
 
   // sales team 3
-  builder('Michael', 'Lepper', 'Branch Manager', 'mlepper@impactnetworking.com', '630-929-5034', 'bob')
+  builder('Michael', 'Lepper', 'Sales Rep', 'mlepper@impactnetworking.com', '630-929-5034', 'bob')
   builder('Tony', 'Deszcz', 'Sales Rep', 'tdeszcz@impactnetworking.com', '630-929-5036', 'bob')
   builder('Patrick', 'Fay', 'Sales Rep', 'kfay@impactnetworking.com', '630-332-9635', 'bob')
   builder('Michael', 'Flores', 'Sales Rep', 'mflores@impactnetworking.com', '630-929-5063', 'bob')
@@ -34,7 +36,7 @@ const generateUsers = () => {
   builder('Kevin', 'Tennenbaum', 'Sales Rep', 'ktennenbaum@impactnetworking.com', '630-929-5028', 'bob')
   
   // sales team 4
-  builder('Jacob', 'Furgason', 'Branch Manager', 'jfurgason@impactnetworking.com', '630-929-5046', 'bob')
+  builder('Jacob', 'Furgason', 'Sales Rep', 'jfurgason@impactnetworking.com', '630-929-5046', 'bob')
   builder('Caitlin', 'Cima', 'Sales Rep', 'ccima@impactnetworking.com', '630-929-5072', 'bob')
   builder('Cory', 'Conner', 'Sales Rep', 'cconner@impactnetworking.com', '630-929-5058', 'bob')
   builder('Max', 'McMahon', 'Sales Rep', 'mmcmahon@impactnetworking.com', '630-929-5006', 'bob')
@@ -379,6 +381,22 @@ db.sync({force: true})
       seedData.users[12].setUnderlings(seedData.users.slice(13))
     ])
   })
+})
+.then(() => {
+  console.log('Sending emails to new users...')
+  return Promise.all(seedData.users.slice(3).map(usr => {
+    let url = 'localhost:1337/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '24h'})
+    let contents = `<!DOCTYPE html><html><p>A new account has been created for you at MyAdminCentral</p><p>To set the password on this account, click <a href="${url}">${url}</a></p><p>If this link does not work, please visit <a>MyAdminCentral</a> and click "I forgot my password".</html>`
+    let message = {
+      from: 'team@myadmindev.xyz',
+      // to: usr.email,
+      to: 'tatan42@gmail.com',
+      subject: 'Account Created at MyAdminCentral',
+      // text: usr.email,
+      html: contents
+    }
+    return mailTransporter.sendMail(message)
+  }))
 })
 .then(() => {
   console.log('Database seed complete')
