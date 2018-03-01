@@ -48,6 +48,7 @@ let {User, Dealer, Region, Branch, Application, Action, Log, Guarantee, Customer
 
   Action.belongsTo(Application, {as: 'app'})
   Action.belongsTo(User, {as: 'admin'})
+  // Application.belongsTo(Action, {as: 'active'})
 
   Log.belongsTo(Application, {as: 'app'})
   Log.belongsTo(User, {as: 'admin'})

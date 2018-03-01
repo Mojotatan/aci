@@ -30,6 +30,7 @@ module.exports = require('express').Router()
         legalName: req.body.action.legalName,
         expiry: req.body.action.expiry,
         notes: req.body.action.notes,
+        sentToRep: req.body.action.sentToRep,
         appId: req.body.action.appId,
         adminId: me.id
       })
@@ -41,16 +42,19 @@ module.exports = require('express').Router()
         status: req.body.action.status,
         legalName: req.body.action.legalName,
         expiry: req.body.action.expiry,
-        notes: req.body.action.notes
+        notes: req.body.action.notes,
+        sentToRep: req.body.action.sentToRep
       }, {
         where: {
           id: {
             [Op.eq]: req.body.action.id
           }
-        }
+        },
+        returning: true
       })
     prom.then(success => {
-      res.send('fishion accomplished')
+      let expiryReturn = (Array.isArray(success)) ? success[1][0].expiry : success.expiry
+      res.send(expiryReturn)
     })
     .catch(err => console.error(err))
   })

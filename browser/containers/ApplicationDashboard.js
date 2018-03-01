@@ -99,9 +99,10 @@ class ApplicationsContainer extends React.Component {
                   <span className="address">{(app.customer) ? app.customer.street : ''}</span>
                   <span className="amount right-justify">{(app.amount) ? getPrettyNumber(app.amount, '$') : ''}</span>
                   <span className={`status ${app.status}`}>{app.status}</span>
-                  <span className="company">{''}</span>
-                  <span className="approval">{''}</span>
+                  <span className="company">{(app.actions && app.actions[0] && app.actions[0].sentToRep) ? app.actions[0].leasingCompany : ''}</span>
+                  <span className="approval">{(app.actions && app.actions[0] && app.actions[0].sentToRep) ? app.actions[0].appNumber : ''}</span>
                   <span className="expiry">{reformatDate(app.expiry)}</span>
+                  {/* <span className="expiry">{(app.actions && app.actions[0] && app.actions[0].sentToRep) ? reformatDate(app.actions[0].expiry) : ''}</span> */}
                   <span className="rep">{(app.rep) ? app.rep.fullName : ''}</span>
                   {(this.props.user.level === 'Admin' || app.status !== 'Expired') ?
                     <span id={app.id} onClick={this.handleClick} className="options edit table-right">

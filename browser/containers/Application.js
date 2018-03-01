@@ -309,9 +309,14 @@ class ApplicationContainer extends React.Component {
 
   handleSaveAndNotify(e) {
     e.preventDefault()
-    axios.put('/api/actions/', {token: this.props.token, action: this.state.action})
+    let expiryDate
+    axios.put('/api/actions/', {token: this.props.token, action: Object.assign({}, this.state.action, {sentToRep: getDate()})})
     .then(res => {
-      this.props.loadAppsThunk(this.props.token)
+      expiryDate = res.data
+      return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: 'let my people know', app: this.state.id, expiry: expiryDate})
+    })
+    .then(res => {
+      this.props.saveAppThunk(this.props.token, [this.state, {expiry: expiryDate, amount: checkFor$(this.state.amount)}], [this.state.customer])
       // this.props.throwAlert('green', 'Success')
       this.setState({adminMode: 'notify'})
     })

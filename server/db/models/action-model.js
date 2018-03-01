@@ -30,5 +30,13 @@ module.exports = db => db.define('Action', {
   notes: {
     type: Sequelize.TEXT,
     defaultValue: ''
+  },
+  sentToRep: {
+    type: Sequelize.DATEONLY, // stored as plaintext 'YYYY-MM-DD'
+    defaultValue: null,
+    allowNull: true,
+    set(val) {
+      this.setDataValue('sentToRep', forceDate(val)) // make sure all inputs are 'YYYY-MM-DD'
+    }
   }
 })
