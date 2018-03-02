@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="48px" viewBox="0 0 40 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons / Delete</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Icons-/-Delete" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="if_basket_1814090" fill="#1066A3" fill-rule="nonzero">
+            <polygon id="Fill-6" points="12.5 14.9 15.5 14.9 15.5 38.9 12.5 38.9"></polygon>
+            <polygon id="Fill-7" points="18.5 14.9 21.5 14.9 21.5 38.9 18.5 38.9"></polygon>
+            <polygon id="Fill-8" points="24.5 14.9 27.5 14.9 27.5 38.9 24.5 38.9"></polygon>
+            <polygon id="Fill-9" points="0.5 5.9 39.5 5.9 39.5 8.9 0.5 8.9"></polygon>
+            <path d="M27.4,7.4 L24.6,7.4 L24.6,4.4 C24.6,3.5 23.9,2.8 23,2.8 L17,2.8 C16.1,2.8 15.4,3.5 15.4,4.4 L15.4,7.4 L12.6,7.4 L12.6,4.4 C12.6,2 14.6,0 17,0 L23,0 C25.4,0 27.4,2 27.4,4.4 L27.4,7.4" id="Fill-10"></path>
+            <path d="M29,47.9 L11,47.9 C8.6,47.9 6.5,45.9 6.3,43.5 L3.5,7.5 L6.5,7.3 L9.3,43.3 C9.4,44.2 10.2,44.9 11,44.9 L29,44.9 C29.9,44.9 30.7,44.1 30.7,43.3 L33.5,7.3 L36.5,7.5 L33.7,43.5 C33.5,46 31.4,47.9 29,47.9" id="Fill-11"></path>
+        </g>
+    </g>
+</svg>

@@ -5,6 +5,7 @@ module.exports = db => db.define('Log', {
     type: Sequelize.DATEONLY
   },
   activity: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false
   }
 })

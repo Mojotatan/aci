@@ -20,7 +20,7 @@ const generateUsers = () => {
   }
 
   builder('James', 'Byrd', 'Admin', 'jbyrd@impactnetworking.com', '804-551-1212', 'bob')
-  builder('Raven', 'Monnig', 'Admin', 'rmonnig@impactnetworking.com', '847-693-2316', 'bob')
+  builder('Raven', 'Monnig', 'Admin', 'rmonnig@impactnetworking.com', '847-693-2316', 'tmp123')
 
   builder('Cory', 'Carnes', 'Region Manager', 'ccarnes@impactnetworking.com', '312-424-6110', 'bob')
 

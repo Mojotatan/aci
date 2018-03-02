@@ -25,7 +25,7 @@ module.exports = require('express').Router()
         }),
         Log.create({
           date: req.body.expiry,
-          activity: 'oh fuck this shit just got expired',
+          activity: `Application <b>${req.body.action.appNumber}<b> to ${req.body.action.leasingCompany} expired`,
           adminId: me.id,
           appId: req.body.app
         })

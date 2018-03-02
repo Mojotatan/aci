@@ -313,7 +313,7 @@ class ApplicationContainer extends React.Component {
     axios.put('/api/actions/', {token: this.props.token, action: Object.assign({}, this.state.action, {sentToRep: getDate()})})
     .then(res => {
       expiryDate = res.data
-      return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: 'let my people know', app: this.state.id, expiry: expiryDate})
+      return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} that application ${this.state.action.appNumber} to ${this.state.action.leasingCompany} was ${this.state.action.status}`, action: this.state.action, app: this.state.id, expiry: expiryDate})
     })
     .then(res => {
       this.props.saveAppThunk(this.props.token, [this.state, {expiry: expiryDate, amount: checkFor$(this.state.amount)}], [this.state.customer])
@@ -324,9 +324,10 @@ class ApplicationContainer extends React.Component {
   }
 
   handleAdminMode(e) {
+    console.log('trigger', e.target.id)
     if (e.target.id === 'cancel-button') {
       this.setState({adminMode: false})
-    } else if (e.target.id === 'submit-button'){
+    } else if (e.target.id === 'submit-button' || e.target.id === 'app-button'){
       this.setState({
         adminMode: 'action',
         action: {
