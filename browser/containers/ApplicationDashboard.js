@@ -84,8 +84,8 @@ class ApplicationsContainer extends React.Component {
               <span id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'address sorting' : 'address sortable'} onClick={this.handleSort}>Address</span>
               <span id="amount" className={(this.props.sort.join('-') === "amount") ? 'amount sorting' : 'amount sortable'} onClick={this.handleSort}>Deal Size</span>
               <span id="status" className={(this.props.sort.join('-') === "status") ? 'status sorting' : 'status sortable'} onClick={this.handleSort}>Status</span>
-              <span className="company">Leasing Company</span>
-              <span className="approval">Approval Number</span>
+              <span id="actions-0-leasingCompany" className={(this.props.sort.join('-') === "actions-0-leasingCompany") ? 'company sorting' : 'company sortable'} onClick={this.handleSort}>Leasing Company</span>
+              <span id="actions-0-appNumber" className={(this.props.sort.join('-') === "actions-0-appNumber") ? 'approval sorting' : 'approval sortable'} onClick={this.handleSort}>Approval Number</span>
               <span id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'expiry sorting' : 'expiry sortable'} onClick={this.handleSort}>Expires</span>
               <span id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'rep sorting' : 'rep sortable'} onClick={this.handleSort}>Rep Name</span>
               <span className="options"></span>

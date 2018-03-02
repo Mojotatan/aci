@@ -42,6 +42,10 @@ export default ({
     </div>
 
     <div className="agent-box col-sm-3">
+      <div className="agent-edit-box" onClick={toggleAdminView}>
+        <img src="/assets/img/Edit.svg" />
+      </div>
+
       <h3>Application Information</h3>
 
       <br />
@@ -163,7 +167,7 @@ export default ({
                     <div className="date">{action.date || ''}</div>
                     <div className="leasingCompany">{action.leasingCompany || ''}</div>
                     <div className="appNumber">{action.appNumber || ''}</div>
-                    <div className="status">{action.status || ''}</div>
+                    <div className={`status ${action.status}`}>{action.status || ''}</div>
                     {/* <div id={index} onClick={handleNote} className="edit">{(action.show) ? 'Hide' : 'View'}</div> */}
                     <img id={`edit-${index}`} className="edit" onClick={handleAdminMode} src="/assets/img/Edit.svg" />
                     <img id={index} className="edit" onClick={handleActionDelete} src="/assets/img/Delete.svg" />
