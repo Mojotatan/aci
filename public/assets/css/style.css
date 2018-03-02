@@ -109,6 +109,8 @@ input, textarea {
 .logout-button {
 	border: none;
 	background-color:  rgba(0,0,0,0);
+	color: #1066A3;
+	font-size: 18px
 }
 .logout-button:hover {
 	text-decoration: underline !important;
@@ -884,6 +886,9 @@ button.disabled {
 	background-color: #F1F4F8;
 	padding: 20px;
 }
+.agent-box label {
+	font-weight: bold
+}
 .edit-base {
 	margin-left: 30px;
 }
@@ -1030,6 +1035,16 @@ button.disabled {
 	font-weight: 600;
 	line-height: 24px;
 	text-align: center;
+}
+#back-button {
+	color: #1066A3;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 24px
+}
+.pad-me {
+	padding-top: 25px
 }
 #save-button {
 	height: 46px;
@@ -1184,4 +1199,7 @@ span#cancel-button:hover {
 }
 .log-date {
 	font-size: 14px
+}
+.ultra-special {
+	border-top: 1px solid #C5D0DE;
 }

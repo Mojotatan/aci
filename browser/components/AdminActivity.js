@@ -43,6 +43,18 @@ export default ({
 
     <div className="agent-box col-sm-3">
       <h3>Application Information</h3>
+
+      <br />
+
+      <div>
+        {(values.type) ? <p>{`${values.type} Customer`}</p> : <p>&nbsp;</p>}
+      </div>
+      <div>
+        {(values.comments) ? <p>Comments Entered</p> : <p>&nbsp;</p>}
+      </div>
+
+      <br className="ultra-special"/>
+      
       <div>
         <label>Customer Name</label>
         {(values.customer) ? <p>{values.customer.name}</p> : <p>&nbsp;</p>}
@@ -100,15 +112,6 @@ export default ({
       <div>
         <label>Manager</label>
         {(values.rep && values.rep.manager) ? <p>{values.rep.manager.fullName}</p> : <p>&nbsp;</p>}
-      </div>
-
-      <br />
-      
-      <div>
-        {(values.type) ? <p>{`${values.type} Customer`}</p> : <p>&nbsp;</p>}
-      </div>
-      <div>
-        {(values.comments) ? <p>Comments Entered</p> : <p>&nbsp;</p>}
       </div>
 
       <br />

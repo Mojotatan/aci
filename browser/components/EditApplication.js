@@ -60,7 +60,12 @@ export default ({
 
     <div className="col-sm-12 top">
       <div className="row">
-        <div className="col-sm-6"><h2>Application</h2></div>
+        <div className="col-sm-12 pad-me">
+          <Link to='/applications' id="back-button">‹ Back to Applications</Link>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-6"><h2>Editing Application</h2></div>
         {/* <div className="col-sm-3 top-buttons"><Link to='/applications' id="cancel-button" className="top">Back</Link></div> */}
 
         {(admin || values.status !== 'Working') ?

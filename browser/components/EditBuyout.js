@@ -32,7 +32,12 @@ export default ({
     
     <div className="col-sm-12 top">
       <div className="row">
-        <div className="col-sm-6"><h2>Buyout</h2></div>
+        <div className="col-sm-12 pad-me">
+          <Link to='/buyouts' id="back-button">‹ Back to Buyouts</Link>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-6"><h2>Editing Buyout</h2></div>
         {/* <div className="col-sm-6 top-buttons"><Link to='/buyouts' id="cancel-button">Back</Link></div> */}
 
         {(admin || values.status !== 'Working') ?
