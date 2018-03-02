@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Cross (Error)</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M10.3079036,11.7054786 L8.00249719,9.40122301 L5.69209639,11.7094721 C5.30553128,12.0968426 4.67723811,12.0968426 4.29067299,11.7094721 C3.903109,11.3231 3.903109,10.6961188 4.29067299,10.3087483 L6.60007492,7.99950081 L4.29067299,5.69125172 C3.903109,5.30388119 3.903109,4.67690004 4.29067299,4.29052789 C4.67723811,3.90315737 5.30553128,3.90315737 5.69209639,4.29052789 L8.00249719,6.59877699 L10.3079036,4.2945214 C10.6944687,3.90715088 11.321763,3.90715088 11.709327,4.2945214 C12.0958921,4.68189193 12.0958921,5.30887308 11.709327,5.69524523 L9.40392059,8.00049919 L11.709327,10.3047548 C12.096891,10.6911269 12.096891,11.3191065 11.709327,11.7054786 C11.3227619,12.0918507 10.6944687,12.0918507 10.3079036,11.7054786 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/Cross-(Error)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Error-Icon"></g>
+            <g id="UI/Color/Flat/Grey-50%" mask="url(#mask-2)" fill="#000000">
+                <rect id="Base" x="0" y="0" width="16" height="16"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

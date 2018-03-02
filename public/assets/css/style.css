@@ -501,10 +501,22 @@ input, textarea {
 }
 .flux-table {
 	width: 100%;
-	border: 1px solid #1991EB
+	border: 1px solid #C5D0DE
 }
 .flux-table > div {
 	width: 100%
+}
+.flux-top {
+	height: 142px
+}
+.flux-float {
+	padding-top: 15px;
+	padding-bottom: 15px
+}
+.flux-float h2 {
+	margin-top: 0;
+	margin-bottom: 0 !important;
+	display: inline-block
 }
 .flux-table > .flux-top {
 	background-color: #f0f7fb;
@@ -513,13 +525,12 @@ input, textarea {
 .flux-table > .flux-top > div > div {
 	font-weight: bold
 }
-.flux-table > div > div > div {
+.flux-table > div > div > div, .flux-table > div > div > img {
 	display: inline-block;
 	width: 8%;
 	padding-top: 16px;
 	padding-bottom: 16px;
 	padding-left: 5px
-	/* padding-right */
 }
 .flux-table .thicc {
 	width: 15%
@@ -556,6 +567,36 @@ input, textarea {
 }
 .notes.retracted.extended {
 	transform: scaleY(1)
+}
+
+.flux-table .even, .flux-table .odd {
+	padding-left: 15px;
+	padding-right: 15px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap
+}
+.flux-table .user {
+	width: 20%
+}
+.flux-table .date {
+	width: 12%
+}
+.flux-table .leasingCompany {
+	width: 25%
+}
+.flux-table .appNumber {
+	width: 18%
+}
+.flux-table .status {
+	width: 15%
+}
+.flux-table .edit {
+	width: 5%;
+	height: 54px
+}
+.flux-table .edit + .edit {
+	width: 5%
 }
 
 .index-number {
@@ -1112,6 +1153,8 @@ span#cancel-button:hover {
 	position: relative;
 	overflow-y: scroll;
 	background-color: white;
+	padding-top: 15px;
+	padding-bottom: 15px
 }
 .shadowbox {
 	width: 100%;
@@ -1119,4 +1162,26 @@ span#cancel-button:hover {
 	top: 0;
 	left: 0;
 	position: absolute
+}
+.exit-lightbox {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	height: 32px;
+	width: 32px;
+	cursor: pointer;
+	z-index: 2
+}
+.exit-lightbox img {
+	width: 100%
+}
+.log-entry {
+	padding-bottom: 15px
+}
+.log-entry + .log-entry {
+	border-top: 1px solid black;
+	padding-top: 15px
+}
+.log-date {
+	font-size: 14px
 }

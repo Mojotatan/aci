@@ -51,6 +51,7 @@ export default ({
     handleSaveAndNotify={handleSaveAndNotify}
     toggleAdminView={toggleAdminView}
     toggleLightbox={toggleLightbox}
+    formatTerm={formatTerm}
   />
   )
   :
