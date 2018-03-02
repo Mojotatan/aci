@@ -76,12 +76,12 @@ module.exports = require('express').Router()
     prom.then(data => {
       res.send('success')
       if (req.body.user.id === 'new') {
-        let url = 'localhost:1337/api/login/reset?access_token=' + jwt.sign({user: data.email}, cert, {expiresIn: '24h'})
+        let url = 'http://myadmindev.xyz/api/login/reset?access_token=' + jwt.sign({user: data.email}, cert, {expiresIn: '24h'})
         let contents = `<!DOCTYPE html><html><p>A new account has been created for you at MyAdminCentral</p><p>To set the password on this account, click <a href="${url}">${url}</a></p><p>If this link does not work, please visit <a>MyAdminCentral</a> and click "I forgot my password".</html>`
         let message = {
           from: 'team@myadmindev.xyz',
-          // to: data.email,
-          to: 'tatan42@gmail.com',
+          to: data.email,
+          // to: 'tatan42@gmail.com',
           subject: 'Account Created at MyAdminCentral',
           html: contents
         }

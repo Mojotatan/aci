@@ -806,7 +806,7 @@ var reformatDate = exports.reformatDate = function reformatDate(date) {
   if (!date) return '';
   // expecting date in form of 'YYYY-MM-DD'
   var dateArr = date.split('-');
-  return dateArr[1] + '-' + dateArr[2] + '-' + dateArr[0].slice(2); // returns 'MM-DD-YY'
+  return dateArr[1] + '/' + dateArr[2] + '/' + dateArr[0].slice(2); // returns 'MM/DD/YY'
 };
 
 var deformatDate = exports.deformatDate = function deformatDate(date) {
@@ -18964,35 +18964,35 @@ var _Application = __webpack_require__(161);
 
 var _Application2 = _interopRequireDefault(_Application);
 
-var _BuyoutDashboard = __webpack_require__(165);
+var _BuyoutDashboard = __webpack_require__(166);
 
 var _BuyoutDashboard2 = _interopRequireDefault(_BuyoutDashboard);
 
-var _Buyout = __webpack_require__(166);
+var _Buyout = __webpack_require__(167);
 
 var _Buyout2 = _interopRequireDefault(_Buyout);
 
-var _DealerDashboard = __webpack_require__(168);
+var _DealerDashboard = __webpack_require__(169);
 
 var _DealerDashboard2 = _interopRequireDefault(_DealerDashboard);
 
-var _BranchDashboard = __webpack_require__(169);
+var _BranchDashboard = __webpack_require__(170);
 
 var _BranchDashboard2 = _interopRequireDefault(_BranchDashboard);
 
-var _RegionDashboard = __webpack_require__(170);
+var _RegionDashboard = __webpack_require__(171);
 
 var _RegionDashboard2 = _interopRequireDefault(_RegionDashboard);
 
-var _UserDashboard = __webpack_require__(171);
+var _UserDashboard = __webpack_require__(172);
 
 var _UserDashboard2 = _interopRequireDefault(_UserDashboard);
 
-var _User = __webpack_require__(172);
+var _User = __webpack_require__(173);
 
 var _User2 = _interopRequireDefault(_User);
 
-var _Alerts = __webpack_require__(174);
+var _Alerts = __webpack_require__(175);
 
 var _Alerts2 = _interopRequireDefault(_Alerts);
 
@@ -20060,8 +20060,8 @@ var ApplicationContainer = function (_React$Component) {
 
       _axios2.default.post('/api/mail', {
         token: this.props.token,
-        // to: this.state.rep.email,
-        to: 'tatan42@gmail.com',
+        to: this.state.rep.email,
+        // to: 'tatan42@gmail.com',
         cc: this.state.mailCC.split(', '),
         subject: this.state.mailSubject,
         text: this.state.mailBody
@@ -20123,7 +20123,7 @@ var ApplicationContainer = function (_React$Component) {
       var expiryDate = void 0;
       _axios2.default.put('/api/actions/', { token: this.props.token, action: Object.assign({}, this.state.action, { sentToRep: (0, _utility.getDate)() }) }).then(function (res) {
         expiryDate = res.data;
-        return _axios2.default.post('/api/logs/new', { token: _this7.props.token, date: new Date(), activity: 'let my people know', app: _this7.state.id, expiry: expiryDate });
+        return _axios2.default.post('/api/logs/new', { token: _this7.props.token, date: new Date(), activity: '<b>' + _this7.props.user.fullName + '<b> notified rep ' + _this7.state.rep.fullName + ' that application ' + _this7.state.action.appNumber + ' to ' + _this7.state.action.leasingCompany + ' was ' + _this7.state.action.status, action: _this7.state.action, app: _this7.state.id, expiry: expiryDate });
       }).then(function (res) {
         _this7.props.saveAppThunk(_this7.props.token, [_this7.state, { expiry: expiryDate, amount: (0, _utility.checkFor$)(_this7.state.amount) }], [_this7.state.customer]);
         // this.props.throwAlert('green', 'Success')
@@ -20135,9 +20135,10 @@ var ApplicationContainer = function (_React$Component) {
   }, {
     key: 'handleAdminMode',
     value: function handleAdminMode(e) {
+      console.log('trigger', e.target.id);
       if (e.target.id === 'cancel-button') {
         this.setState({ adminMode: false });
-      } else if (e.target.id === 'submit-button') {
+      } else if (e.target.id === 'submit-button' || e.target.id === 'app-button') {
         this.setState({
           adminMode: 'action',
           action: {
@@ -20345,7 +20346,8 @@ exports.default = function (_ref) {
     handleSaveAction: handleSaveAction,
     handleSaveAndNotify: handleSaveAndNotify,
     toggleAdminView: toggleAdminView,
-    toggleLightbox: toggleLightbox
+    toggleLightbox: toggleLightbox,
+    formatTerm: formatTerm
   }) : _react2.default.createElement(
     'div',
     { className: 'row edit-apps-page' },
@@ -20357,11 +20359,24 @@ exports.default = function (_ref) {
         { className: 'row' },
         _react2.default.createElement(
           'div',
+          { className: 'col-sm-12 pad-me' },
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: '/applications', id: 'back-button' },
+            '\u2039 Back to Applications'
+          )
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'row' },
+        _react2.default.createElement(
+          'div',
           { className: 'col-sm-6' },
           _react2.default.createElement(
             'h2',
             null,
-            'Application'
+            'Editing Application'
           )
         ),
         admin || values.status !== 'Working' ? _react2.default.createElement(
@@ -21699,6 +21714,10 @@ var _NotifyRep = __webpack_require__(164);
 
 var _NotifyRep2 = _interopRequireDefault(_NotifyRep);
 
+var _AppLite = __webpack_require__(165);
+
+var _AppLite2 = _interopRequireDefault(_AppLite);
+
 var _utility = __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -21714,7 +21733,8 @@ exports.default = function (_ref) {
       handleSaveAndNotify = _ref.handleSaveAndNotify,
       handleChangeAction = _ref.handleChangeAction,
       toggleAdminView = _ref.toggleAdminView,
-      toggleLightbox = _ref.toggleLightbox;
+      toggleLightbox = _ref.toggleLightbox,
+      formatTerm = _ref.formatTerm;
   return _react2.default.createElement(
     'div',
     { className: 'row edit-apps-page admin' },
@@ -21725,7 +21745,7 @@ exports.default = function (_ref) {
       _react2.default.createElement(
         'div',
         { className: 'container' },
-        _react2.default.createElement('div', { className: 'col-sm-8 col-sm-offset-2 lightbox-content' })
+        _react2.default.createElement(_AppLite2.default, { values: values, formatTerm: formatTerm, toggleLightbox: toggleLightbox })
       )
     ) : null,
     _react2.default.createElement(
@@ -21740,7 +21760,7 @@ exports.default = function (_ref) {
           _react2.default.createElement(
             'h2',
             null,
-            'Admin Activity'
+            'Admin Portal'
           )
         ),
         _react2.default.createElement(
@@ -21762,6 +21782,34 @@ exports.default = function (_ref) {
         null,
         'Application Information'
       ),
+      _react2.default.createElement('br', null),
+      _react2.default.createElement(
+        'div',
+        null,
+        values.type ? _react2.default.createElement(
+          'p',
+          null,
+          values.type + ' Customer'
+        ) : _react2.default.createElement(
+          'p',
+          null,
+          '\xA0'
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        null,
+        values.comments ? _react2.default.createElement(
+          'p',
+          null,
+          'Comments Entered'
+        ) : _react2.default.createElement(
+          'p',
+          null,
+          '\xA0'
+        )
+      ),
+      _react2.default.createElement('br', { className: 'ultra-special' }),
       _react2.default.createElement(
         'div',
         null,
@@ -22001,33 +22049,6 @@ exports.default = function (_ref) {
       _react2.default.createElement('br', null),
       _react2.default.createElement(
         'div',
-        null,
-        values.type ? _react2.default.createElement(
-          'p',
-          null,
-          values.type + ' Customer'
-        ) : _react2.default.createElement(
-          'p',
-          null,
-          '\xA0'
-        )
-      ),
-      _react2.default.createElement(
-        'div',
-        null,
-        values.comments ? _react2.default.createElement(
-          'p',
-          null,
-          'Comments Entered'
-        ) : _react2.default.createElement(
-          'p',
-          null,
-          '\xA0'
-        )
-      ),
-      _react2.default.createElement('br', null),
-      _react2.default.createElement(
-        'div',
         { className: 'full-width' },
         _react2.default.createElement(
           'span',
@@ -22057,40 +22078,53 @@ exports.default = function (_ref) {
               'div',
               { className: 'flux-top' },
               _react2.default.createElement(
+                'span',
+                { className: 'flux-float col-sm-6', align: 'left' },
+                _react2.default.createElement(
+                  'h2',
+                  null,
+                  'Credit Applications'
+                )
+              ),
+              _react2.default.createElement(
+                'span',
+                { className: 'flux-float col-sm-6', align: 'right' },
+                !values.adminMode ? _react2.default.createElement(
+                  'button',
+                  { id: 'app-button', className: 'app-button', onClick: handleAdminMode },
+                  'New Application'
+                ) : null
+              ),
+              _react2.default.createElement(
                 'div',
-                null,
+                { className: 'col-sm-12' },
                 _react2.default.createElement(
                   'div',
-                  { className: 'thicc' },
+                  { className: 'user' },
                   'User'
                 ),
                 _react2.default.createElement(
                   'div',
-                  null,
+                  { className: 'date' },
                   'Date'
                 ),
                 _react2.default.createElement(
                   'div',
-                  { className: 'thicc' },
+                  { className: 'leasingCompany' },
                   'Leasing Company'
                 ),
                 _react2.default.createElement(
                   'div',
-                  { className: 'thicc' },
+                  { className: 'appNumber' },
                   'Application Number'
                 ),
                 _react2.default.createElement(
                   'div',
-                  null,
+                  { className: 'status' },
                   'Status'
                 ),
-                _react2.default.createElement(
-                  'div',
-                  null,
-                  'Notes'
-                ),
-                _react2.default.createElement('div', null),
-                _react2.default.createElement('div', null)
+                _react2.default.createElement('div', { className: 'edit' }),
+                _react2.default.createElement('div', { className: 'edit' })
               )
             ),
             values.actions && values.actions.length > 0 ? values.actions.map(function (action, index) {
@@ -22102,53 +22136,31 @@ exports.default = function (_ref) {
                   { className: action.show ? 'retracted extended' : 'retracted' },
                   _react2.default.createElement(
                     'div',
-                    { className: 'thicc' },
+                    { className: 'user' },
                     action.admin.email || ''
                   ),
                   _react2.default.createElement(
                     'div',
-                    null,
+                    { className: 'date' },
                     action.date || ''
                   ),
                   _react2.default.createElement(
                     'div',
-                    { className: 'thicc' },
+                    { className: 'leasingCompany' },
                     action.leasingCompany || ''
                   ),
                   _react2.default.createElement(
                     'div',
-                    { className: 'thicc' },
+                    { className: 'appNumber' },
                     action.appNumber || ''
                   ),
                   _react2.default.createElement(
                     'div',
-                    null,
+                    { className: 'status' },
                     action.status || ''
                   ),
-                  _react2.default.createElement(
-                    'div',
-                    { id: index, onClick: handleNote, className: 'edit' },
-                    action.show ? 'Hide' : 'View'
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { id: 'edit-' + index, className: 'edit', onClick: handleAdminMode },
-                    'Edit'
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { id: index, className: 'edit', onClick: handleActionDelete },
-                    'Delete'
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: action.show ? 'notes retracted extended' : 'notes retracted' },
-                    _react2.default.createElement(
-                      'div',
-                      null,
-                      action.notes || ''
-                    )
-                  )
+                  _react2.default.createElement('img', { id: 'edit-' + index, className: 'edit', onClick: handleAdminMode, src: '/assets/img/Edit.svg' }),
+                  _react2.default.createElement('img', { id: index, className: 'edit', onClick: handleActionDelete, src: '/assets/img/Delete.svg' })
                 )
               );
             }) : _react2.default.createElement(
@@ -22180,7 +22192,7 @@ exports.default = function (_ref) {
                   _react2.default.createElement(
                     'h3',
                     null,
-                    values.action.id === 'new' ? 'New Activity' : 'Edit Activity'
+                    values.action.id === 'new' ? 'New Credit Application' : 'Edit Credit Application'
                   )
                 )
               ),
@@ -22387,20 +22399,6 @@ exports.default = function (_ref) {
           )
         )
       ) : null,
-      !values.adminMode ? _react2.default.createElement(
-        'div',
-        { className: 'row' },
-        _react2.default.createElement(
-          'div',
-          { className: 'col-sm-12' },
-          _react2.default.createElement('br', null),
-          _react2.default.createElement(
-            'button',
-            { id: 'submit-button', onClick: handleAdminMode },
-            'New'
-          )
-        )
-      ) : null,
       values.adminMode === 'notify' ? _react2.default.createElement(_NotifyRep2.default, {
         values: values,
         handleChange: handleChange,
@@ -22408,76 +22406,50 @@ exports.default = function (_ref) {
       }) : null,
       _react2.default.createElement(
         'div',
-        { className: 'row log' },
+        { className: 'row app-bg log' },
         _react2.default.createElement(
           'div',
-          { className: 'col-sm-12 no-gutters' },
+          { className: 'col-sm-12' },
           _react2.default.createElement(
             'h3',
             null,
-            'Activity Logs'
+            'Activity Log'
           )
         ),
-        _react2.default.createElement(
+        values.logs ? _react2.default.createElement(
           'div',
-          { className: 'col-sm-12 no-gutters' },
-          _react2.default.createElement(
-            'div',
-            { className: 'flux-table app-table' },
-            _react2.default.createElement(
+          { className: 'col-sm-12' },
+          values.logs.map(function (log, index) {
+            return _react2.default.createElement(
               'div',
-              { className: 'flux-top' },
+              { key: log.id, className: 'log-entry' },
               _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(
-                  'div',
-                  { className: '' },
-                  'Date'
-                ),
-                _react2.default.createElement(
-                  'div',
-                  { className: 'thicc' },
-                  'User'
-                ),
-                _react2.default.createElement(
-                  'div',
-                  { className: 'ultra' },
-                  'Activity'
-                )
-              )
-            ),
-            values.logs && values.logs.length > 0 ? values.logs.map(function (log, index) {
-              return _react2.default.createElement(
+                log.activity.split('<b>').map(function (words, index) {
+                  if (index !== 1) {
+                    return _react2.default.createElement(
+                      'span',
+                      { key: index },
+                      words
+                    );
+                  } else {
+                    return _react2.default.createElement(
+                      'strong',
+                      { key: index },
+                      words
+                    );
+                  }
+                })
+              ),
+              _react2.default.createElement(
                 'div',
-                { key: log.id, className: index % 2 === 0 ? 'even' : 'odd' },
-                _react2.default.createElement(
-                  'div',
-                  { className: 'retracted' },
-                  _react2.default.createElement(
-                    'div',
-                    { className: '' },
-                    (0, _utility.reformatDate)(log.date) || ''
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'thicc' },
-                    log.admin.email || ''
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'ultra' },
-                    log.activity || ''
-                  )
-                )
-              );
-            }) : _react2.default.createElement(
-              'div',
-              { className: 'even' },
-              _react2.default.createElement('div', { className: 'retracted' })
-            )
-          )
-        )
+                { className: 'log-date' },
+                (0, _utility.reformatDate)(log.date)
+              )
+            );
+          })
+        ) : null
       )
     )
   );
@@ -22672,6 +22644,673 @@ exports.default = function (_ref) {
 
 /***/ }),
 /* 165 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (_ref) {
+  var values = _ref.values,
+      formatTerm = _ref.formatTerm,
+      toggleLightbox = _ref.toggleLightbox;
+  return _react2.default.createElement(
+    "div",
+    { className: "col-sm-8 col-sm-offset-2 lightbox-content" },
+    _react2.default.createElement(
+      "div",
+      { className: "exit-lightbox", onClick: toggleLightbox },
+      _react2.default.createElement("img", { src: "/assets/img/Cross_Reverse.svg" })
+    ),
+    _react2.default.createElement(
+      "div",
+      { className: "col-sm-12" },
+      _react2.default.createElement(
+        "div",
+        { className: "rowed-items", id: "date-started" },
+        _react2.default.createElement(
+          "label",
+          null,
+          "Date Submitted"
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "field-box" },
+          _react2.default.createElement(
+            "p",
+            null,
+            values.date
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "rowed-items" },
+        _react2.default.createElement(
+          "label",
+          null,
+          "Expires"
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "field-box" },
+          _react2.default.createElement(
+            "p",
+            null,
+            values.expiry || ''
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "rowed-items status" },
+        _react2.default.createElement(
+          "div",
+          null,
+          _react2.default.createElement(
+            "label",
+            null,
+            "Status"
+          )
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "field-box" },
+          _react2.default.createElement(
+            "p",
+            null,
+            values.status
+          )
+        )
+      )
+    ),
+    _react2.default.createElement(
+      "div",
+      { className: "app-bg col-sm-12" },
+      _react2.default.createElement(
+        "h3",
+        null,
+        "Application Type"
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "p",
+            null,
+            values.type || ''
+          )
+        )
+      ),
+      values.type === 'Existing' ? _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              { className: "required" },
+              "Customer"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.existingCustomer || ''
+            )
+          )
+        )
+      ) : null,
+      values.type === 'Existing' ? _react2.default.createElement(
+        "div",
+        { className: "row extra-space" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "p",
+            null,
+            values.existingType || ''
+          )
+        )
+      ) : null,
+      values.leases && values.type === 'Existing' && values.existingType === 'Upgrade' ? _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-12 labels lease-label" },
+          _react2.default.createElement(
+            "div",
+            { className: "col-sm-10 col-sm-offset-1 no-gutters" },
+            _react2.default.createElement(
+              "label",
+              { className: "col-sm-5", id: "lease-margin" },
+              "Lease Number"
+            ),
+            _react2.default.createElement(
+              "label",
+              { className: "col-sm-5" },
+              "Lease Company"
+            )
+          )
+        ),
+        values.leases.map(function (lease, index) {
+          return !lease.delete ? _react2.default.createElement(
+            "div",
+            { key: "lease-" + index, className: "col-sm-12 lease-input" },
+            _react2.default.createElement(
+              "div",
+              { className: "col-sm-1" },
+              _react2.default.createElement(
+                "label",
+                { className: "index-number" },
+                count++
+              )
+            ),
+            _react2.default.createElement(
+              "div",
+              { className: "col-sm-10 field-row no-gutters" },
+              _react2.default.createElement(
+                "div",
+                { className: "col-sm-5" },
+                _react2.default.createElement(
+                  "span",
+                  null,
+                  lease.number || ''
+                )
+              ),
+              _react2.default.createElement(
+                "div",
+                { className: "col-sm-5" },
+                _react2.default.createElement(
+                  "span",
+                  null,
+                  lease.company || ''
+                )
+              ),
+              _react2.default.createElement(
+                "div",
+                { className: "col-sm-2" },
+                _react2.default.createElement(
+                  "span",
+                  null,
+                  lease.quote + " Quote" || ''
+                )
+              )
+            ),
+            _react2.default.createElement("div", { className: "col-sm-1" }),
+            _react2.default.createElement(
+              "div",
+              { className: "col-sm-10 col-sm-offset-1 no-gutters" },
+              _react2.default.createElement(
+                "div",
+                { className: "col-sm-4" },
+                lease.quote === 'Partial' ? _react2.default.createElement(
+                  "button",
+                  { id: index + "-machines", onClick: toggleMachines, className: "machine show-button" },
+                  lease.displayMachines ? 'Hide Machines' : 'Show Machines'
+                ) : ''
+              ),
+              _react2.default.createElement("div", { className: "col-sm-8" })
+            ),
+            lease.quote === 'Partial' && lease.displayMachines ? _react2.default.createElement(
+              "div",
+              { className: "col-sm-12 no-gutters" },
+              _react2.default.createElement(
+                "div",
+                { className: "col-sm-12 no-gutters labels machine-label" },
+                _react2.default.createElement(
+                  "label",
+                  { className: "col-sm-2 col-sm-offset-1 condense-gutters" },
+                  "Serial #"
+                ),
+                _react2.default.createElement(
+                  "label",
+                  { className: "col-sm-2 condense-gutters" },
+                  "Make"
+                ),
+                _react2.default.createElement(
+                  "label",
+                  { className: "col-sm-2 condense-gutters" },
+                  "Model"
+                ),
+                _react2.default.createElement(
+                  "label",
+                  { className: "col-sm-2 condense-gutters" },
+                  "Location"
+                ),
+                _react2.default.createElement(
+                  "label",
+                  { className: "col-sm-2 condense-gutters" },
+                  "Action"
+                )
+              ),
+              lease.machines.map(function (machine, mIndex) {
+                return !machine.delete ? _react2.default.createElement(
+                  "div",
+                  { key: "lease-" + index + "-machine-" + mIndex, className: "col-sm-12 no-gutters machine-input" },
+                  _react2.default.createElement(
+                    "div",
+                    { className: "col-sm-2 col-sm-offset-1 condense-gutters" },
+                    _react2.default.createElement(
+                      "p",
+                      null,
+                      machine.serial
+                    )
+                  ),
+                  _react2.default.createElement(
+                    "div",
+                    { className: "col-sm-2 condense-gutters" },
+                    _react2.default.createElement(
+                      "p",
+                      null,
+                      machine.make
+                    )
+                  ),
+                  _react2.default.createElement(
+                    "div",
+                    { className: "col-sm-2 condense-gutters" },
+                    _react2.default.createElement(
+                      "p",
+                      null,
+                      machine.model
+                    )
+                  ),
+                  _react2.default.createElement(
+                    "div",
+                    { className: "col-sm-2 condense-gutters" },
+                    _react2.default.createElement(
+                      "p",
+                      null,
+                      machine.location
+                    )
+                  ),
+                  _react2.default.createElement(
+                    "div",
+                    { className: "col-sm-2 condense-gutters" },
+                    _react2.default.createElement(
+                      "p",
+                      null,
+                      machine.action
+                    )
+                  ),
+                  _react2.default.createElement("div", { className: "col-sm-1" })
+                ) : null;
+              })
+            ) : null
+          ) : null;
+        })
+      ) : null
+    ),
+    _react2.default.createElement(
+      "div",
+      { className: "app-bg col-sm-12" },
+      _react2.default.createElement(
+        "h3",
+        null,
+        "Customer Information"
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              { className: "required" },
+              "Customer"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.customer ? values.customer.name || '' : ''
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              { className: "required" },
+              "Address"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.customer ? values.customer.street || '' : ''
+            )
+          )
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              { className: "required" },
+              "City"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.customer ? values.customer.city || '' : ''
+            )
+          )
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              { className: "required" },
+              "State"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.customer ? values.customer.state || '' : ''
+            )
+          )
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              { className: "required" },
+              "Zip Code"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.customer ? values.customer.zip || '' : ''
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              { className: "required" },
+              "Phone"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.customer ? values.customer.phone || '' : ''
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              null,
+              "Customer Email"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.customer ? values.customer.email || '' : ''
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              null,
+              "Tax ID"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.customer ? values.customer.taxID || '' : ''
+            )
+          )
+        )
+      )
+    ),
+    _react2.default.createElement(
+      "div",
+      { className: "app-bg col-sm-12" },
+      _react2.default.createElement(
+        "h3",
+        null,
+        "Deal Information"
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              { className: "required" },
+              "Estimated Deal Size"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-box monetary" },
+            _react2.default.createElement(
+              "p",
+              null,
+              values.amount || ''
+            )
+          )
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              null,
+              "Term"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "col-sm-6 col-md-5 col-lg-4 no-gutters" },
+            _react2.default.createElement(
+              "div",
+              { className: "field-box" },
+              _react2.default.createElement(
+                "p",
+                null,
+                formatTerm(values.term) || ''
+              )
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "col-sm-6 col-md-7 col-lg-8 no-gutters" },
+            _react2.default.createElement(
+              "div",
+              { className: "field-box" },
+              values.term && (values.term.slice(0, 5) === 'other' || values.term.slice(0, 5) === 'co-te') ? _react2.default.createElement(
+                "p",
+                null,
+                values.term.slice(5) || ''
+              ) : null
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              null,
+              "Advanced Payment"
+            )
+          ),
+          _react2.default.createElement(
+            "p",
+            null,
+            values.advancedPayments || ''
+          )
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-6" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              null,
+              "End of Term"
+            )
+          ),
+          _react2.default.createElement(
+            "p",
+            null,
+            values.endOfTerm || ''
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-sm-12" },
+          _react2.default.createElement(
+            "div",
+            { className: "field-label" },
+            _react2.default.createElement(
+              "label",
+              null,
+              "Comments"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "field-desc" },
+            _react2.default.createElement("textarea", {
+              value: values.comments || '',
+              disabled: true
+            })
+          )
+        )
+      )
+    )
+  );
+};
+
+/***/ }),
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22927,7 +23566,7 @@ var mapDispatchToProps = { focusByo: _buyoutReducer.focusByo, sortByos: _buyoutR
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BuyoutsContainer);
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22949,7 +23588,7 @@ var _axios = __webpack_require__(2);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _EditBuyout = __webpack_require__(167);
+var _EditBuyout = __webpack_require__(168);
 
 var _EditBuyout2 = _interopRequireDefault(_EditBuyout);
 
@@ -23295,7 +23934,7 @@ var mapDispatchToProps = { saveByoThunk: _buyoutReducer.saveByoThunk, loadByosTh
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BuyoutContainer);
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23350,11 +23989,24 @@ exports.default = function (_ref) {
         { className: 'row' },
         _react2.default.createElement(
           'div',
+          { className: 'col-sm-12 pad-me' },
+          _react2.default.createElement(
+            _reactRouterDom.Link,
+            { to: '/buyouts', id: 'back-button' },
+            '\u2039 Back to Buyouts'
+          )
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'row' },
+        _react2.default.createElement(
+          'div',
           { className: 'col-sm-6' },
           _react2.default.createElement(
             'h2',
             null,
-            'Buyout'
+            'Editing Buyout'
           )
         ),
         admin || values.status !== 'Working' ? _react2.default.createElement(
@@ -24287,7 +24939,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24504,7 +25156,7 @@ var mapDispatchToProps = { loadDealersThunk: _dealerReducer.loadDealersThunk, sa
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DealerContainer);
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24756,7 +25408,7 @@ var mapDispatchToProps = { loadBranchesThunk: _branchReducer.loadBranchesThunk, 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BranchContainer);
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24953,7 +25605,7 @@ var mapDispatchToProps = { loadRegionsThunk: _regionReducer.loadRegionsThunk, sa
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(RegionContainer);
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25167,7 +25819,7 @@ var mapDispatchToProps = { focusUser: _usersReducer.focusUser, createUser: _user
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UsersContainer);
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25189,7 +25841,7 @@ var _axios = __webpack_require__(2);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _EditUser = __webpack_require__(173);
+var _EditUser = __webpack_require__(174);
 
 var _EditUser2 = _interopRequireDefault(_EditUser);
 
@@ -25307,7 +25959,7 @@ var mapDispatchToProps = { saveUserThunk: _usersReducer.saveUserThunk, createUse
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserContainer);
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25745,7 +26397,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25767,7 +26419,7 @@ var _axios = __webpack_require__(2);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _Alert = __webpack_require__(175);
+var _Alert = __webpack_require__(176);
 
 var _Alert2 = _interopRequireDefault(_Alert);
 
@@ -25821,7 +26473,7 @@ var mapDispatchToProps = { handleAlert: _alertReducer.handleAlert };
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AlertContainer);
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
