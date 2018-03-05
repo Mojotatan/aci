@@ -842,18 +842,21 @@ form .app-table-edit {
 	line-height: 24px;
 	background-color: #4490e4;
 }
+.admin .super.send-button {
+	width: 190px
+}
 button.disabled {
 	background-color: #e2e7ee !important;
 	cursor: not-allowed
 }
 .mid-gutter > * {
 	padding-left: 0;
-	padding-right: 15px
-}
-.mid-gutter > * + * {
-	padding-left: 15px;
 	padding-right: 0
 }
+/* .mid-gutter > * + * {
+	padding-left: 15px;
+	padding-right: 0
+} */
 .admin .mid-gutter .app-bg {
 	padding-bottom: 15px;
 	margin-bottom: 30px
@@ -1112,8 +1115,10 @@ input.on + label {
 	margin-top: 15px;
 	margin-bottom: 15px
 }
-.admin #cancel-button + .send-button {
-	margin-left: 30px
+.admin #cancel-button {
+	margin-top: 26px;
+	margin-left: 15px;
+	display: inline-block
 }
 span#cancel-button:hover {
 	cursor: pointer;
@@ -1264,4 +1269,7 @@ span#cancel-button:hover {
 }
 select.state {
 	width: 100% !important
+}
+.admin .field-desc textarea {
+	height: 208px
 }

@@ -5,28 +5,18 @@ export default ({
 }) => (
   <div className="row mid-gutter">
     <div className="app-bg col-sm-12 no-gutters">
-      <div className="col-sm-6">
-        <div className="row">
-          <div className="col-sm-12">
-            <h3>{`Notify ${(values.rep && values.rep.fullName) ? values.rep.fullName : 'Rep'}`}</h3>
-          </div>
-        </div>
-        <div className="row">
-          THE FIELDS AND SUCH
-        </div>
-      </div>
     
     {values.rep ?
-      <div className="col-sm-6">
+      <div className="col-sm-12">
         <form onSubmit={handleNotify}>
           <div className="row">
             <div className="col-sm-12">
-              <h3>Email to be Sent</h3>
+              <h3>{`Notify ${values.rep.fullName || 'Rep'}`}</h3>
             </div>
           </div>
 
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-4">
               <div className="field-label">
                 <label>To</label>
               </div>
@@ -34,7 +24,7 @@ export default ({
                 <p>{values.rep.email || ''}</p>
               </div>
             </div>
-            <div className="col-sm-6">
+            <div className="col-sm-8">
               <div className="field-label">
                 <label>CC</label>
               </div>
@@ -45,7 +35,7 @@ export default ({
           </div>
 
           <div className="row">
-            <div className="col-sm-12">
+            <div className="col-sm-12 col-lg-6">
               <div className="field-label">
                 <label>Subject</label>
               </div>
@@ -67,8 +57,10 @@ export default ({
           </div>
 
           <div className="row">
-            <div className="col-sm-12" align="right">
+            <div className="col-sm-6" align="left">
               <span id="cancel-button">Cancel</span>
+            </div>
+            <div className="col-sm-6" align="right">
               <button
                 className={`send-button${(values.mailDisabled) ? ' disabled' : ''}`}
                 disabled={values.mailDisabled}

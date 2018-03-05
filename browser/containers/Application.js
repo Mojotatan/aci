@@ -22,7 +22,8 @@ class ApplicationContainer extends React.Component {
         mailDisabled: false,
         adminMode: false,
         adminView: (this.props.user) ? this.props.user.level === 'Admin' : false,
-        lightbox: false
+        lightbox: false,
+        expiryTemp: ''
       },
       this.props.app,
     )
@@ -278,6 +279,8 @@ class ApplicationContainer extends React.Component {
 
     this.setState({mailDisabled: true})
 
+    let expiryDate
+
     axios.post('/api/mail', {
       token: this.props.token,
       // to: this.state.rep.email,
@@ -296,7 +299,15 @@ class ApplicationContainer extends React.Component {
       }
       else this.props.throwAlert('red', 'Message not sent')
       
+      return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} that application ${this.state.action.appNumber} to ${this.state.action.leasingCompany} was ${this.state.action.status}`, action: this.state.action, app: this.state.id, expiry: this.state.expiryTemp})
     })
+    .then(res => {
+      return this.props.saveAppThunk(this.props.token, [this.state, {expiry: this.state.expiryTemp, amount: checkFor$(this.state.amount)}], [this.state.customer])
+    })
+    .then(res => {
+      this.setState({adminMode: false, expiryTemp: ''})
+    })
+    .catch(err => console.error(err))
   }
 
   handleNote(e) {
@@ -336,16 +347,26 @@ class ApplicationContainer extends React.Component {
 
   handleSaveAndNotify(e) {
     e.preventDefault()
-    let expiryDate
     axios.put('/api/actions/', {token: this.props.token, action: Object.assign({}, this.state.action, {sentToRep: getDate()})})
     .then(res => {
-      expiryDate = res.data
-      return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} that application ${this.state.action.appNumber} to ${this.state.action.leasingCompany} was ${this.state.action.status}`, action: this.state.action, app: this.state.id, expiry: expiryDate})
-    })
-    .then(res => {
-      this.props.saveAppThunk(this.props.token, [this.state, {expiry: expiryDate, amount: checkFor$(this.state.amount)}], [this.state.customer])
-      // this.props.throwAlert('green', 'Success')
-      this.setState({adminMode: 'notify'})
+      let soonToBeSubject = ''
+      let soonToBeBody = ''
+      if (this.state.action.status === 'Approved') {
+        soonToBeSubject = `Application Approved for ${this.state.action.legalName}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} has been approved with ${this.state.action.leasingCompany} under application number ${this.state.action.appNumber} for $${this.state.amount}.\n\nThe legal name is ${this.state.action.legalName}.\n\nPlease be sure to use the correct legal name on all of your lease paperwork.\n\nThanks,\n${this.props.user.firstName}`
+      } else if (this.state.action.status === 'Hold') {
+        soonToBeSubject = `Application On Hold for ${this.state.action.legalName}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} is on hold. We have tried all of our options and we will need the following items to proceed.\n\n    • 2 years of Audited Financials or\n    • 2 years of Tax Returns\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n${this.props.user.firstName}`
+      } else if (this.state.action.status === 'Declined') {
+        soonToBeSubject = `Application Declined for ${this.state.action.legalName}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} has been declined by all lenders. We will need the following items in order to try again.\n\n    •Personal Guarantee Information\n        • Owner's full name\n        • Owner's Address\n        • Owner's Social Security #\n        • Owner's Birth Date\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n${this.props.user.firstName}`
+      }
+      this.setState({
+        expiryTemp: res.data,
+        adminMode: 'notify',
+        mailSubject: soonToBeSubject,
+        mailBody: soonToBeBody
+      })
     })
     .catch(err => {
       console.error(err)
@@ -434,6 +455,7 @@ class ApplicationContainer extends React.Component {
         else return term
       } else return term
     }
+    // console.log(this.props.user)
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
 

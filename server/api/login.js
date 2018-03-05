@@ -114,6 +114,7 @@ module.exports = require('express').Router()
         token,
         user: {
           fullName: account.fullName,
+          firstName: account.firstName,
           level: account.level,
           email: account.email,
           phone: account.phone,

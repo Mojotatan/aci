@@ -184,7 +184,7 @@ export default ({
       
       {(values.action && values.adminMode === 'action') ?
       <div className="row mid-gutter">
-        <div className="col-sm-6">
+        <div className="col-sm-12">
           <div className="app-bg col-sm-12">
             <form onSubmit={handleSaveAction}>
               <div className="row">
@@ -233,7 +233,7 @@ export default ({
                 </div>
               </div>
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-sm-3">
                   <div className="field-label">
                     <label>Status</label>
                   </div>
@@ -252,8 +252,9 @@ export default ({
                     </select>
                   </div>
                 </div>
+
                 {(values.action.status === 'Approved') ?
-                  <div className="col-sm-6">
+                  <div className="col-sm-3">
                     <div className="field-label">
                       <label>Expiration Date</label>
                     </div>
@@ -267,11 +268,9 @@ export default ({
                   </div>
                   : null
                 }
-              </div>
-              {/* Conditional fields based on status */}
+
               {(values.action.status === 'Approved') ?
-                <div className="row">
-                  <div className="col-sm-12">
+                  <div className="col-sm-6">
                     <div className="field-label">
                       <label>Legal Name</label>
                     </div>
@@ -283,9 +282,9 @@ export default ({
                       />
                     </div>
                   </div>
-                </div>
                 : null
               }
+              </div>
               <div className="row">
                 <div className="col-sm-12">
                   <div className="field-label">
@@ -301,10 +300,14 @@ export default ({
                 </div>
               </div>
               <div className="row">
-                <div className="col-sm-12" align="right">
+                <div className="col-sm-4">
                   <span id="cancel-button" onClick={handleAdminMode}>Cancel</span>
+                </div>
+                <div className="col-sm-4" align="right">
                   <button className="send-button">Save</button>
-                  <button className="send-button" onClick={handleSaveAndNotify}>Save and Notify Rep</button>
+                </div>
+                <div className="col-sm-4" align="right">
+                  <button className="super send-button" onClick={handleSaveAndNotify}>Save and Notify Rep</button>
                 </div>
               </div>
             </form>
