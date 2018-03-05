@@ -845,14 +845,18 @@ var sortBy = exports.sortBy = function sortBy(field) {
     if (!match(field, a)) return 1;
 
     // sort based on field array
-    if (match(field, a) > match(field, b)) return 1;
-    if (match(field, a) < match(field, b)) return -1;
+    if (handleCase(match(field, a)) > handleCase(match(field, b))) return 1;
+    if (handleCase(match(field, a)) < handleCase(match(field, b))) return -1;
 
     // tiebreaker
     return a.id - b.id;
 
     return 0;
   };
+};
+
+var handleCase = function handleCase(variable) {
+  return typeof variable === 'string' ? variable.toLowerCase() : variable;
 };
 
 var match = exports.match = function match(arr, obj) {
@@ -19651,12 +19655,12 @@ var ApplicationsContainer = function (_React$Component) {
               ),
               _react2.default.createElement(
                 'span',
-                { className: 'company' },
+                { id: 'actions-0-leasingCompany', className: this.props.sort.join('-') === "actions-0-leasingCompany" ? 'company sorting' : 'company sortable', onClick: this.handleSort },
                 'Leasing Company'
               ),
               _react2.default.createElement(
                 'span',
-                { className: 'approval' },
+                { id: 'actions-0-appNumber', className: this.props.sort.join('-') === "actions-0-appNumber" ? 'approval sorting' : 'approval sortable', onClick: this.handleSort },
                 'Approval Number'
               ),
               _react2.default.createElement(
@@ -21778,6 +21782,11 @@ exports.default = function (_ref) {
       'div',
       { className: 'agent-box col-sm-3' },
       _react2.default.createElement(
+        'div',
+        { className: 'agent-edit-box', onClick: toggleAdminView },
+        _react2.default.createElement('img', { src: '/assets/img/Edit.svg' })
+      ),
+      _react2.default.createElement(
         'h3',
         null,
         'Application Information'
@@ -22156,7 +22165,7 @@ exports.default = function (_ref) {
                   ),
                   _react2.default.createElement(
                     'div',
-                    { className: 'status' },
+                    { className: 'status ' + action.status },
                     action.status || ''
                   ),
                   _react2.default.createElement('img', { id: 'edit-' + index, className: 'edit', onClick: handleAdminMode, src: '/assets/img/Edit.svg' }),

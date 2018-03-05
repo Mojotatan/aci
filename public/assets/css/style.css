@@ -1190,6 +1190,14 @@ span#cancel-button:hover {
 .exit-lightbox img {
 	width: 100%
 }
+.agent-edit-box {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	height: 22px;
+	width: 20px;
+	cursor: pointer
+}
 .log-entry {
 	padding-bottom: 15px
 }

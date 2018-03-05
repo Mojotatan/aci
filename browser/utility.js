@@ -67,14 +67,18 @@ export const sortBy = field => {
     if (!match(field, a)) return 1
 
     // sort based on field array
-    if (match(field, a) > match(field, b)) return 1
-    if (match(field, a) < match(field, b)) return -1
+    if (handleCase(match(field, a)) > handleCase(match(field, b))) return 1
+    if (handleCase(match(field, a)) < handleCase(match(field, b))) return -1
 
     // tiebreaker
     return a.id - b.id
 
     return 0
   }
+}
+
+const handleCase = variable => {
+  return (typeof variable === 'string') ? variable.toLowerCase() : variable
 }
 
 export const match = (arr, obj) => {
