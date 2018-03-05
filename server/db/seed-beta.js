@@ -18,9 +18,13 @@ const generateUsers = () => {
       'password': password
     }))
   }
-
-  builder('James', 'Byrd', 'Admin', 'jbyrd@impactnetworking.com', '804-551-1212', 'bob')
+  
   builder('Raven', 'Monnig', 'Admin', 'rmonnig@impactnetworking.com', '847-693-2316', 'tmp123')
+  builder('Julie', 'Danner', 'Admin', 'jdanner@myadmincentral.com', '', 'tmp123')
+  builder('Kim', 'White', 'Admin', 'kwhite@myadmincentral.com', '', 'tmp123')
+  builder('Gena', 'Cobb-Ogle', 'Admin', 'gcobb@myadmincentral.com', '', 'tmp123')
+  
+  builder('James', 'Byrd', 'Admin', 'jbyrd@impactnetworking.com', '804-551-1212', 'bob')
 
   builder('Cory', 'Carnes', 'Region Manager', 'ccarnes@impactnetworking.com', '312-424-6110', 'bob')
 
@@ -32,14 +36,17 @@ const generateUsers = () => {
   builder('Matthew', 'Harrigan', 'Sales Rep', 'mharrigan@impactnetworking.com', '630-332-9633', 'bob')
   builder('Eric', 'Janik', 'Sales Rep', 'ejanik@impactnetworking.com', '630-929-5059', 'bob')
   builder('Jack', 'Rante', 'Sales Rep', 'jrante@impactnetworking.com', '630-332-9634', 'bob')
-  builder('Anthony', 'Sarlo', 'Sales Rep', 'asarlo@impactnetworking.com', '630-929-5012', 'bob')
+  // builder('Anthony', 'Sarlo', 'Sales Rep', 'asarlo@impactnetworking.com', '630-929-5012', 'bob')
+  builder('Seth', 'McDonald', 'Sales Rep', 'smcdonald@impactnetworking.com', '630-929-5052', 'bob')
   builder('Kevin', 'Tennenbaum', 'Sales Rep', 'ktennenbaum@impactnetworking.com', '630-929-5028', 'bob')
   
   // sales team 4
   builder('Jacob', 'Furgason', 'Sales Rep', 'jfurgason@impactnetworking.com', '630-929-5046', 'bob')
+  builder('Anthony', 'Cetera', 'Sales Rep', 'acetera@impactnetworking.com', '630-3657647', 'bob')
   builder('Caitlin', 'Cima', 'Sales Rep', 'ccima@impactnetworking.com', '630-929-5072', 'bob')
   builder('Cory', 'Conner', 'Sales Rep', 'cconner@impactnetworking.com', '630-929-5058', 'bob')
-  builder('Max', 'McMahon', 'Sales Rep', 'mmcmahon@impactnetworking.com', '630-929-5006', 'bob')
+  builder('Jakob', 'Gregorich', 'Sales Rep', 'jgregorich@impactnetworking.com', '630-365-7638', 'bob')
+  // builder('Max', 'McMahon', 'Sales Rep', 'mmcmahon@impactnetworking.com', '630-929-5006', 'bob')
   builder('Jennifer', 'Reardon', 'Sales Rep', 'jreardon@impactnetworking.com', '630-929-5048', 'bob')
   builder('Patrick', 'Scotkovsky', 'Sales Rep', 'pscotkovsky@impactnetworking.com', '630-929-5043', 'bob')
   builder('Richard', 'Treiber', 'Sales Rep', 'rtreiber@impactnetworking.com', '815-255-8384', 'bob')
@@ -105,6 +112,7 @@ const generateDealers = () => {
   }
 
   builder('Impact Networking, LLC', '847-785-2250', '13875 West Boulton Boulevard', 'Lake Forest', 'Illinois', '60045')
+  builder('MyAdminCentral', '', '', '', '', '')
 
   return arr
 }
@@ -360,25 +368,30 @@ db.sync({force: true})
     }))
   })
   .then(() => {
-    return Promise.all(seedData.users.slice(2).map(usr => {
+    return Promise.all(seedData.users.slice(0, 4).map(usr => {
+      return usr.setDealer(seedData.dealers[1])
+    }))
+  })
+  .then(() => {
+    return Promise.all(seedData.users.slice(4).map(usr => {
       return usr.setDealer(seedData.dealers[0])
     }))
   })
   .then(() => {
-    return Promise.all(seedData.users.slice(2).map(usr => {
+    return Promise.all(seedData.users.slice(5).map(usr => {
       return usr.setRegion(seedData.regions[0])
     }))
   })
   .then(() => {
-    return Promise.all(seedData.users.slice(2).map(usr => {
+    return Promise.all(seedData.users.slice(5).map(usr => {
       return usr.setBranch(seedData.branches[0])
     }))
   })
   .then(() => {
     return Promise.all([
-      seedData.users[2].setUnderlings([seedData.users[3], seedData.users[12]]),
-      seedData.users[3].setUnderlings(seedData.users.slice(4, 12)),
-      seedData.users[12].setUnderlings(seedData.users.slice(13))
+      seedData.users[5].setUnderlings([seedData.users[6], seedData.users[15]]),
+      seedData.users[6].setUnderlings(seedData.users.slice(7, 15)),
+      seedData.users[15].setUnderlings(seedData.users.slice(16))
     ])
   })
 })
