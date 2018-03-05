@@ -4,7 +4,7 @@ const {forceDate} = require('../../util')
 
 module.exports = db => db.define('Action', {
   date: {
-    type: Sequelize.DATEONLY
+    type: Sequelize.STRING
   },
   leasingCompany: {
     type: Sequelize.STRING
@@ -20,7 +20,7 @@ module.exports = db => db.define('Action', {
     type: Sequelize.STRING
   },
   expiry: {
-    type: Sequelize.DATEONLY, // stored as plaintext 'YYYY-MM-DD'
+    type: Sequelize.STRING, // stored as plaintext 'YYYY-MM-DD'
     defaultValue: null,
     allowNull: true,
     set(val) {

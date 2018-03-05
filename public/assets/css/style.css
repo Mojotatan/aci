@@ -278,11 +278,11 @@ input, textarea {
 	margin-right: 13px
 }
 .app-table span.address {
-	width: 156px;
+	width: 140px;
 	margin-right: 13px
 }
 .app-table span.amount {
-	width: 56px;
+	width: 72px;
 	margin-right: 14px
 }
 .app-table span.status {
@@ -573,10 +573,13 @@ input, textarea {
 
 .flux-table .even, .flux-table .odd {
 	padding-left: 15px;
-	padding-right: 15px;
+	padding-right: 15px
+}
+.flux-table .even .retracted > *, .flux-table .odd .retracted > * {
 	text-overflow: ellipsis;
 	overflow: hidden;
-	white-space: nowrap
+	white-space: nowrap;
+	vertical-align: top
 }
 .flux-table .user {
 	width: 20%
@@ -1210,4 +1213,55 @@ span#cancel-button:hover {
 }
 .ultra-special {
 	border-top: 1px solid #C5D0DE;
+}
+
+@media screen and (max-width: 1199px) {
+	.app-table span.date {
+		width: 7.33%;
+		margin-right: 1.17%;
+		margin-left: 2%
+	}
+	.app-table span.customer {
+		width: 11%;
+		margin-right: 1.08%
+	}
+	.app-table span.address {
+		width: 11.67%;
+		margin-right: 1.08%
+	}
+	.app-table span.amount {
+		width: 6%;
+		margin-right: 1.17%
+	}
+	.app-table span.status {
+		width: 5.33%;
+		margin-right: 1.08%
+	}
+	.app-table span.company {
+		width: 13%;
+		margin-right: 1.17%
+	}
+	.app-table span.approval {
+		width: 7.33%;
+		margin-right: 1.17%
+	}
+	.app-table span.expiry {
+		width: 5.83%;
+		margin-right: 1.08%
+	}
+	.app-table span.rep {
+		width: 9.33%;
+		margin-right: 1.17%
+	}
+	.app-table span.options {
+		width: 6.33%;
+		margin-right: 2%
+	}
+}
+
+.red {
+	border: 1px solid #f85359 !important
+}
+select.state {
+	width: 100%
 }

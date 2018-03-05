@@ -13,7 +13,7 @@ export default ({values, formatTerm, toggleLightbox}) => (
         </div>
       </div>
       <div className="rowed-items">
-        <label>Expires</label>
+        <label>Expiration Date</label>
         <div className="field-box">
           <p>{values.expiry || ''}</p>
         </div>

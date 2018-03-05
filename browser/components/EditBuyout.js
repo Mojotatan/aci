@@ -93,7 +93,7 @@ export default ({
             </div>
           </div>
           <div className="rowed-items">
-            <label>Expires</label>
+            <label>Expiration Date</label>
             <div className="field-box">
               {(admin) ?
                 <input
@@ -440,11 +440,21 @@ export default ({
             <div className="col-sm-6 field-label">
               <label className="required">State</label>
               {(admin || values.status !== 'Working') ?
-                <input
+                // <input
+                //   onChange={handleChangeInCustomer}
+                //   name={'state'}
+                //   value={(values.customer) ? values.customer.state || '' : ''}
+                // />
+                <select
                   onChange={handleChangeInCustomer}
                   name={'state'}
                   value={(values.customer) ? values.customer.state || '' : ''}
-                />
+                  className="state"
+                >
+                  {['', 'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'].map(state => (
+                    <option value={state} key={state}>{state}</option>
+                  ))}
+                </select>
                 :
                 <p>{(values.customer) ? values.customer.state || '' : ''}</p>
               }
@@ -471,6 +481,7 @@ export default ({
                   onChange={handleChangeInCustomer}
                   name={'phone'}
                   value={(values.customer) ? values.customer.phone || '' : ''}
+                  placeholder="xxx-xxx-xxxx"
                 />
                 :
                 <p>{(values.customer) ? values.customer.phone || '' : ''}</p>

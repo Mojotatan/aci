@@ -117,7 +117,7 @@ class BuyoutContainer extends React.Component {
 
   handleDelete(e) {
     e.preventDefault()
-    this.props.deleteByoThunk(this.props.token, this.state.id, () => {this.props.history.push('/buyouts')})
+    if (confirm('Are you sure you wish to delete this buyout?')) this.props.deleteByoThunk(this.props.token, this.state.id, () => {this.props.history.push('/buyouts')})
   }
 
   handleChangeInLease(e) {

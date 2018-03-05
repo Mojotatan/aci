@@ -254,7 +254,7 @@ export default ({
                 {(values.action.status === 'Approved') ?
                   <div className="col-sm-6">
                     <div className="field-label">
-                      <label>Expiry</label>
+                      <label>Expiration Date</label>
                     </div>
                     <div className="field-box col-sm-6 no-gutters">
                       <input
