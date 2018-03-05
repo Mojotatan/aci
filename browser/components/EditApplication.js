@@ -640,6 +640,7 @@ export default ({
                   <input
                     onChange={handleChangeInCustomer}
                     name={'zip'}
+                    className={(errors.zip) ? 'red' : ''}
                     value={(values.customer) ? values.customer.zip || '' : ''}
                   />
                   :
@@ -914,7 +915,11 @@ export default ({
               <button onClick={handleDelete} id="delete-button">Delete</button>
               : null
             }
-            <Link to='/applications' id="cancel-button">Cancel</Link>
+            {(admin) ?
+              <span id="cancel-button" onClick={toggleAdminView}>Cancel</span>
+              :
+              <Link to='/applications' id="cancel-button">Cancel</Link>
+            }
             <button type="submit" id="save-button">Save</button>
             {(values.status === 'Draft') ?
               <button onClick={handleSubmit} type="submit" id="submit-button">Submit</button>

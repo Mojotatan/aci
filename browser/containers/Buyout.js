@@ -29,6 +29,8 @@ class BuyoutContainer extends React.Component {
     this.handleChangeInCustomer = this.handleChangeInCustomer.bind(this)
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
     
+    this.validateFields = this.validateFields.bind(this)
+    this.generateErrors = this.generateErrors.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
@@ -85,6 +87,24 @@ class BuyoutContainer extends React.Component {
         )
       })
     }
+  }
+
+  validateFields() {
+    let errors = {}
+    if (this.state.customer && this.state.customer.zip) errors.zip = (this.state.customer.zip.search(/\d\d\d\d\d|\d\d\d\d\d-\d\d\d\d/) === -1) ? true : false
+    if (this.state.customer && this.state.customer.phone) errors.phone = (this.state.customer.phone.search(/\d\d\d-\d\d\d-\d\d\d\d|\(\d\d\d\)\s\d\d\d-\d\d\d\d/) === -1) ? true : false
+    if (this.state.customer && this.state.customer.email) errors.email = (this.state.customer.email.search(/\w+@\w+\.\w+/) === -1) ? true : false
+    return errors
+  }
+
+  generateErrors(errors) {
+    let fields = Object.keys(errors).filter(n => errors[n])
+
+    return (e) => {
+      e.preventDefault()
+      this.props.throwAlert('red', `Problem with the ${fields.join(', ')} field${(fields.length > 1) ? 's' : ''}`)
+    }
+
   }
 
   handleSave(e) {
@@ -260,10 +280,13 @@ class BuyoutContainer extends React.Component {
 
 
   render() {
+    let errors = this.validateFields()
+    let disabled = Object.keys(errors).some(n => errors[n])
     return(
       <div>
         <EditBuyout
           values={this.state}
+          errors={errors}
           token={this.props.token} // token needed to make request for pdf -- not preferable
           iAmAuthor={(this.props.user) ? this.props.user.email === this.state.rep.email : false}
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
@@ -273,8 +296,8 @@ class BuyoutContainer extends React.Component {
           handleAppLink={this.handleAppLink}
           handleChange={this.handleChange}
           handleChangeInCustomer={this.handleChangeInCustomer}
-          handleSave={this.handleSave}
-          handleSubmit={this.handleSubmit}
+          handleSave={(disabled) ? this.generateErrors(errors) : this.handleSave}
+          handleSubmit={(disabled) ? this.generateErrors(errors) : this.handleSubmit}
           handleDelete={this.handleDelete}
           handleChangeCustomer={this.handleChangeCustomer}
           handleNewLease={this.handleNewLease}

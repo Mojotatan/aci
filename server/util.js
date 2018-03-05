@@ -13,7 +13,7 @@ const getDate = () => {
 
 // take a date string and make sure it ends up as 'YYYY-MM-DD'
 const forceDate = (dat) => {
-  console.log(dat)
+  // console.log(dat)
   if (!dat) return (dat === '') ? null : dat // Handle blank date
   // if (!dat) return dat
   let arr = dat.split('-')

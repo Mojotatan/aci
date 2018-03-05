@@ -76,7 +76,7 @@ export default ({
 
       <div>
         <label>Estimated Deal Size</label>
-        {(values.amount) ? <p>{values.amount}</p> : <p>&nbsp;</p>}
+        {(values.amount) ? <p>{`$${values.amount}`}</p> : <p>&nbsp;</p>}
       </div>
       <div>
         <label>Agent Name</label>
@@ -241,6 +241,7 @@ export default ({
                     <select
                     onChange={handleChangeAction}
                     name="status"
+                    className="state"
                     value={values.action.status || ''}
                     >
                       <option value="Working">Working</option>
@@ -256,7 +257,7 @@ export default ({
                     <div className="field-label">
                       <label>Expiration Date</label>
                     </div>
-                    <div className="field-box col-sm-6 no-gutters">
+                    <div className="field-box">
                       <input
                         onChange={handleChangeAction}
                         name="expiry"

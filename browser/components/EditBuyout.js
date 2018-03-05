@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 
 export default ({
   values,
+  errors,
   token,
   iAmAuthor,
   admin,
@@ -465,6 +466,7 @@ export default ({
                 <input
                   onChange={handleChangeInCustomer}
                   name={'zip'}
+                  className={(errors.zip) ? 'red' : ''}
                   value={(values.customer) ? values.customer.zip || '' : ''}
                 />
                 :
@@ -480,6 +482,7 @@ export default ({
                 <input
                   onChange={handleChangeInCustomer}
                   name={'phone'}
+                  className={(errors.phone) ? 'red' : ''}
                   value={(values.customer) ? values.customer.phone || '' : ''}
                   placeholder="xxx-xxx-xxxx"
                 />
@@ -496,6 +499,7 @@ export default ({
                 <input 
                   onChange={handleChangeInCustomer}
                   name={'email'}
+                  className={(errors.email) ? 'red' : ''}
                   value={(values.customer) ? values.customer.email || '' : ''}
                 />
                 :

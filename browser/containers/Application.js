@@ -184,8 +184,11 @@ class ApplicationContainer extends React.Component {
 
   validateFields() {
     let errors = {}
+    if (this.state.customer && this.state.customer.zip) errors.zip = (this.state.customer.zip.search(/\d\d\d\d\d|\d\d\d\d\d-\d\d\d\d/) === -1) ? true : false
     if (this.state.customer && this.state.customer.phone) errors.phone = (this.state.customer.phone.search(/\d\d\d-\d\d\d-\d\d\d\d|\(\d\d\d\)\s\d\d\d-\d\d\d\d/) === -1) ? true : false
     if (this.state.customer && this.state.customer.email) errors.email = (this.state.customer.email.search(/\w+@\w+\.\w+/) === -1) ? true : false
+
+    // if (this.state.adminMode === 'action' && this.action.status === 'Approved') errors.expiry = 
     return errors
   }
 
@@ -433,6 +436,8 @@ class ApplicationContainer extends React.Component {
     }
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
+
+    let actionDisabled = Object.keys(errors).expiry
 
     return(
       <div>

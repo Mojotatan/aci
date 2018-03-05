@@ -1263,5 +1263,5 @@ span#cancel-button:hover {
 	border: 1px solid #f85359 !important
 }
 select.state {
-	width: 100%
+	width: 100% !important
 }
