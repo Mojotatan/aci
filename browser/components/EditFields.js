@@ -20,7 +20,7 @@ export default ({uniClass, controller, fields, dropdowns, rows, handleChange, ha
     </div>
     {rows.map((row, index) => {
       return (
-        <form key={row.id} onSubmit={handleSubmit}>
+        <form key={row.id} onSubmit={handleSubmit} autoComplete="off">
           <div className="app-table-edit col-sm-12 no-gutters">
               <div className={`${(index % 2 === 0) ? 'even' : 'odd'} ${!(controller == index) ? ' ' : 'highlighted'}`} >
                   {Object.keys(fields).map(key => {

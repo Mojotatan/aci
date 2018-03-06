@@ -186,7 +186,7 @@ export default ({
       <div className="row mid-gutter">
         <div className="col-sm-12">
           <div className="app-bg col-sm-12">
-            <form onSubmit={handleSaveAction}>
+            <form onSubmit={handleSaveAction} autoComplete="off">
               <div className="row">
                 <div className="col-sm-12">
                   <h3>{(values.action.id === 'new') ? 'New Credit Application' : 'Edit Credit Application'}</h3>

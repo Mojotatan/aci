@@ -85,7 +85,7 @@ export default ({
     </div>
 
     <div className="edit-base col-sm-8">
-      <form onSubmit={handleSave}>
+      <form onSubmit={handleSave} autoComplete="off">
         <div className="col-sm-12">
           <div className="rowed-items" id="date-started">
             <label>Date Started</label>

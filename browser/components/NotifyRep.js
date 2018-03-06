@@ -8,7 +8,7 @@ export default ({
     
     {values.rep ?
       <div className="col-sm-12">
-        <form onSubmit={handleNotify}>
+        <form onSubmit={handleNotify} autoComplete="off">
           <div className="row">
             <div className="col-sm-12">
               <h3>{`Notify ${values.rep.fullName || 'Rep'}`}</h3>
