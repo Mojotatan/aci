@@ -1316,6 +1316,6 @@ select.state {
 .og.exit-lightbox {
 	position: fixed;
 	top: 0;
-	/* right: 0; */
-	padding-top: calc(10% + 15px)
+	right: calc(((100% - 1170px) / 2) + (1170px / 6) + 20px);
+	padding-top: calc(10% + 10px);
 }
