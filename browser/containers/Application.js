@@ -455,7 +455,7 @@ class ApplicationContainer extends React.Component {
         else return term
       } else return term
     }
-    // console.log(this.state.action)
+    // console.log(this.state.adminMode)
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
 

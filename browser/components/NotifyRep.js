@@ -5,7 +5,7 @@ export default ({
 }) => (
   <div className="row lightbox-content">
     <div id={`edit-${values.action.index}`} className="exit-lightbox" onClick={handleAdminMode}>
-      <img src="/assets/img/Cross_Reverse.svg" />
+      <img id={`edit-${values.action.index}`} src="/assets/img/Cross_Reverse.svg" />
     </div>
     <div className="app-bg col-sm-12 no-gutters">
     
