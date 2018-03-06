@@ -33,4 +33,13 @@ const mailTransporter = nodemailer.createTransport({
   secure: true
 })
 
-module.exports = {cert, isLoggedIn, isAdmin, whoAmI, mailTransporter}
+const mailFooter = `<img style="border-bottom:1px solid black;width: 235px;" src="cid:logo" />
+Admin Central, LLC<br>
+Corporate Headquarters<br>
+209 West Rollins, Suite 204<br>
+Moberly, MO 65270<br>
+Call us at (660) 263-1029<br>
+Email us at <a href="mailto:team@myadmincentral.com">team@myadmincentral.com</a><br>
+<a href="www.myadmincentral.com">www.myadmincentral.com</a>`
+
+module.exports = {cert, isLoggedIn, isAdmin, whoAmI, mailTransporter, mailFooter}

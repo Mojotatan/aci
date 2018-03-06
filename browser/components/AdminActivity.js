@@ -31,6 +31,11 @@ export default ({
     }
 
     <div className="col-sm-12 top">
+    <div className="row">
+        <div className="col-sm-12 pad-me">
+          <Link to='/applications' id="back-button">‹ Back to Applications</Link>
+        </div>
+      </div>
       <div className="row">
         <div className="col-sm-6"><h2>Admin Portal</h2></div>
         {/* <div className="col-sm-3 top-buttons"><Link to='/applications' id="cancel-button" className="top">Back</Link></div> */}
@@ -76,7 +81,7 @@ export default ({
 
       <div>
         <label>Estimated Deal Size</label>
-        {(values.amount) ? <p>{values.amount}</p> : <p>&nbsp;</p>}
+        {(values.amount) ? <p>{`$${values.amount}`}</p> : <p>&nbsp;</p>}
       </div>
       <div>
         <label>Agent Name</label>
@@ -183,10 +188,17 @@ export default ({
       </div>
       
       {(values.action && values.adminMode === 'action') ?
-      <div className="row mid-gutter">
-        <div className="col-sm-6">
+      <div className="action lightbox">
+      <div id="cancel" className="shadowbox" onClick={handleAdminMode}></div>
+      <div className="container">
+
+      <div className="row lightbox-content">
+        <div id="cancel" className="exit-lightbox" onClick={handleAdminMode}>
+          <img src="/assets/img/Cross_Reverse.svg" />
+        </div>
+        <div className="col-sm-12 no-gutters">
           <div className="app-bg col-sm-12">
-            <form onSubmit={handleSaveAction}>
+            <form onSubmit={handleSaveAction} autoComplete="off">
               <div className="row">
                 <div className="col-sm-12">
                   <h3>{(values.action.id === 'new') ? 'New Credit Application' : 'Edit Credit Application'}</h3>
@@ -233,7 +245,7 @@ export default ({
                 </div>
               </div>
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-sm-3">
                   <div className="field-label">
                     <label>Status</label>
                   </div>
@@ -241,6 +253,7 @@ export default ({
                     <select
                     onChange={handleChangeAction}
                     name="status"
+                    className="state"
                     value={values.action.status || ''}
                     >
                       <option value="Working">Working</option>
@@ -251,12 +264,13 @@ export default ({
                     </select>
                   </div>
                 </div>
+
                 {(values.action.status === 'Approved') ?
-                  <div className="col-sm-6">
+                  <div className="col-sm-3">
                     <div className="field-label">
-                      <label>Expiry</label>
+                      <label>Expiration Date</label>
                     </div>
-                    <div className="field-box col-sm-6 no-gutters">
+                    <div className="field-box">
                       <input
                         onChange={handleChangeAction}
                         name="expiry"
@@ -266,11 +280,9 @@ export default ({
                   </div>
                   : null
                 }
-              </div>
-              {/* Conditional fields based on status */}
+
               {(values.action.status === 'Approved') ?
-                <div className="row">
-                  <div className="col-sm-12">
+                  <div className="col-sm-6">
                     <div className="field-label">
                       <label>Legal Name</label>
                     </div>
@@ -282,9 +294,9 @@ export default ({
                       />
                     </div>
                   </div>
-                </div>
                 : null
               }
+              </div>
               <div className="row">
                 <div className="col-sm-12">
                   <div className="field-label">
@@ -300,26 +312,39 @@ export default ({
                 </div>
               </div>
               <div className="row">
-                <div className="col-sm-12" align="right">
+                <div className="col-sm-4">
                   <span id="cancel-button" onClick={handleAdminMode}>Cancel</span>
+                </div>
+                <div className="col-sm-4" align="right">
                   <button className="send-button">Save</button>
-                  <button className="send-button" onClick={handleSaveAndNotify}>Save and Notify Rep</button>
+                </div>
+                <div className="col-sm-4" align="right">
+                  <button className="super send-button" onClick={handleSaveAndNotify}>Save and Notify Rep</button>
                 </div>
               </div>
             </form>
           </div>
         </div>
       </div>
+
+      </div>
+      </div>
       : null
       }
 
     
       {(values.adminMode === 'notify') ?
-        <NotifyRep
-          values={values}
-          handleChange={handleChange}
-          handleNotify={handleNotify}
-        />
+        <div className="notify lightbox">
+          <div className="shadowbox" onClick={toggleLightbox}></div>
+          <div className="container">
+            <NotifyRep
+            values={values}
+            handleChange={handleChange}
+            handleNotify={handleNotify}
+            handleAdminMode={handleAdminMode}
+            />
+          </div>
+        </div>
         : null
       }
 

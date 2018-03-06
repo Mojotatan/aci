@@ -13,10 +13,16 @@ const getDate = () => {
 
 // take a date string and make sure it ends up as 'YYYY-MM-DD'
 const forceDate = (dat) => {
+  // console.log(dat)
   if (!dat) return (dat === '') ? null : dat // Handle blank date
   // if (!dat) return dat
   let arr = dat.split('-')
   if (arr.length === 1) arr = dat.split('/') // Checking for slashes
+  if (arr.length === 1) arr = dat.split(' ') // Checking for spaces
+  if (arr.length === 1) { // Date does not have seperators
+    if (dat.length === 4) arr = [dat[0], dat[1], dat.slice(2)]
+    else if (dat.length === 6 || dat.length === 8) arr = [dat.slice(0, 2), dat.slice(2, 4), dat.slice(4)]
+  }
   if (arr[0].length === 4) { // Checking for YYYY
     if (arr[1].length === 1) arr[1] = '0' + arr[1] // Checking for missing 0 in front of month or day
     if (arr[2].length === 1) arr[2] = '0' + arr[2]

@@ -5,6 +5,7 @@ import {reformatDate} from '../utility'
 
 export default ({
   values,
+  errors,
   iAmAuthor,
   admin,
   customers,
@@ -114,7 +115,7 @@ export default ({
     </div>
 
     <div className="edit-base col-sm-8">
-      <form onSubmit={handleSave}>
+      <form onSubmit={handleSave} autoComplete="off">
         <div className="col-sm-12">
           <div className="rowed-items" id="date-started">
             <label>Date Submitted</label>
@@ -123,7 +124,7 @@ export default ({
             </div>
           </div>
           <div className="rowed-items">
-            <label>Expires</label>
+            <label>Expiration Date</label>
             <div className="field-box">
               {/* {(admin) ?
                 <input
@@ -610,11 +611,21 @@ export default ({
               </div>
               <div className="field-box">
                 {(admin || values.status !== 'Working') ?
-                  <input
+                  // <input
+                  //   onChange={handleChangeInCustomer}
+                  //   name={'state'}
+                  //   value={(values.customer) ? values.customer.state || '' : ''}
+                  // />
+                  <select
                     onChange={handleChangeInCustomer}
                     name={'state'}
                     value={(values.customer) ? values.customer.state || '' : ''}
-                  />
+                    className="state"
+                  >
+                    {['', 'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'].map(state => (
+                      <option value={state} key={state}>{state}</option>
+                    ))}
+                  </select>
                   :
                   <p>{(values.customer) ? values.customer.state || '' : ''}</p>
                 }
@@ -629,6 +640,7 @@ export default ({
                   <input
                     onChange={handleChangeInCustomer}
                     name={'zip'}
+                    className={(errors.zip) ? 'red' : ''}
                     value={(values.customer) ? values.customer.zip || '' : ''}
                   />
                   :
@@ -648,7 +660,9 @@ export default ({
                   <input
                     onChange={handleChangeInCustomer}
                     name={'phone'}
+                    className={(errors.phone) ? 'red' : ''}
                     value={(values.customer) ? values.customer.phone || '' : ''}
+                    placeholder="xxx-xxx-xxxx"
                   />
                   :
                   <p>{(values.customer) ? values.customer.phone || '' : ''}</p>
@@ -667,6 +681,7 @@ export default ({
                   <input 
                     onChange={handleChangeInCustomer}
                     name={'email'}
+                    className={(errors.email) ? 'red' : ''}
                     value={(values.customer) ? values.customer.email || '' : ''}
                   />
                   :
@@ -900,7 +915,11 @@ export default ({
               <button onClick={handleDelete} id="delete-button">Delete</button>
               : null
             }
-            <Link to='/applications' id="cancel-button">Cancel</Link>
+            {(admin) ?
+              <span id="cancel-button" onClick={toggleAdminView}>Cancel</span>
+              :
+              <Link to='/applications' id="cancel-button">Cancel</Link>
+            }
             <button type="submit" id="save-button">Save</button>
             {(values.status === 'Draft') ?
               <button onClick={handleSubmit} type="submit" id="submit-button">Submit</button>

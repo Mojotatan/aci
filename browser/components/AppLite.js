@@ -2,7 +2,7 @@ import React from 'react'
 
 export default ({values, formatTerm, toggleLightbox}) => (
   <div className="col-sm-8 col-sm-offset-2 lightbox-content">
-    <div className="exit-lightbox" onClick={toggleLightbox}>
+    <div className="og exit-lightbox" onClick={toggleLightbox}>
       <img src="/assets/img/Cross_Reverse.svg" />
     </div>
     <div className="col-sm-12">
@@ -13,7 +13,7 @@ export default ({values, formatTerm, toggleLightbox}) => (
         </div>
       </div>
       <div className="rowed-items">
-        <label>Expires</label>
+        <label>Expiration Date</label>
         <div className="field-box">
           <p>{values.expiry || ''}</p>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default ({handleChange, handleSubmit, handleControl}) => (
-  <div className="login col-sm-4 col-sm-offset-4">
+  <div className="login col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
     <form className="field-label" onSubmit={handleSubmit}>
       <div className="app-bg">
         <h3>Agent Login</h3>

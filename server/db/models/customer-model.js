@@ -23,9 +23,9 @@ module.exports = db => db.define('Customer', {
   email: {
     type: Sequelize.STRING,
     // validation removed because it was causing problems on front end
-    // validate: {
-    //   isEmail: true,
-    // }
+    validate: {
+      isEmail: true,
+    }
   },
   taxID: {
     type: Sequelize.STRING
@@ -33,7 +33,7 @@ module.exports = db => db.define('Customer', {
 }, {
   getterMethods: {
     address() {
-      return `${this.street}\n${this.city}, ${this.state} ${this.zip}`
+      return `${this.street || ''}\n${this.city || ''}, ${this.state || ''} ${this.zip || ''}`
     }
   }
 })

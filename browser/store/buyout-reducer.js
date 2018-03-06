@@ -99,6 +99,15 @@ export const saveByoThunk = (token, byo, customer, callback) => {
         dispatch(loadByosThunk(token, () => {if (callback) callback(res.data)}))
         dispatch(loadCustomersThunk(token))
         dispatch(loadLeasesThunk(token))
+        if (byoArgs.status === 'New' && byo[0].status === 'Draft') {
+          axios.post('/api/mail/byoSubmit', {
+            token,
+            rep: byoArgs.rep,
+            customer: byoArgs.customer
+          })
+          .then(res => console.log(res.data))
+          .catch(err => console.error(err))
+        }
       }
     })
     .catch(err => console.error(err))

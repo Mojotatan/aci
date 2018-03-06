@@ -22,7 +22,7 @@ export default ({
     </div>
 
     <div className="col-sm-8 col-sm-offset-2">
-      <form onSubmit={handleSave}>
+      <form onSubmit={handleSave} autoComplete="off">
         <div className="user-bg col-sm-12">
 
           <div className="row">

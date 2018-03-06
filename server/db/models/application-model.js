@@ -12,7 +12,7 @@ module.exports = db => db.define('Application', {
     }
   },
   date: {
-    type: Sequelize.DATEONLY, // stored as plaintext 'YYYY-MM-DD'
+    type: Sequelize.STRING, // stored as plaintext 'YYYY-MM-DD'
     defaultValue: null,
     allowNull: true,
     set(val) {
@@ -23,7 +23,7 @@ module.exports = db => db.define('Application', {
     type: Sequelize.DECIMAL(11, 2) // overflows at 1 billion
   },
   expiry: {
-    type: Sequelize.DATEONLY, // stored as plaintext 'YYYY-MM-DD'
+    type: Sequelize.STRING, // stored as plaintext 'YYYY-MM-DD'
     defaultValue: null,
     allowNull: true,
     set(val) {

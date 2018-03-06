@@ -2,7 +2,7 @@ const Op = require('sequelize').Op
 const formidable = require('formidable')
 
 const {User, Application, Customer, Lease, Machine, Action, Log} = require('../db').db.models
-const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
+const {isLoggedIn, whoAmI, isAdmin} = require('./auth')
 
 module.exports = require('express').Router()
 

@@ -22,7 +22,8 @@ class ApplicationContainer extends React.Component {
         mailDisabled: false,
         adminMode: false,
         adminView: (this.props.user) ? this.props.user.level === 'Admin' : false,
-        lightbox: false
+        lightbox: false,
+        expiryTemp: ''
       },
       this.props.app,
     )
@@ -45,6 +46,8 @@ class ApplicationContainer extends React.Component {
 
     this.handleChangeInTerm = this.handleChangeInTerm.bind(this)
     
+    this.validateFields = this.validateFields.bind(this)
+    this.generateErrors = this.generateErrors.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
@@ -180,8 +183,30 @@ class ApplicationContainer extends React.Component {
     })
   }
 
+  validateFields() {
+    let errors = {}
+    if (this.state.customer && this.state.customer.zip) errors.zip = (this.state.customer.zip.search(/\d\d\d\d\d|\d\d\d\d\d-\d\d\d\d/) === -1) ? true : false
+    if (this.state.customer && this.state.customer.phone) errors.phone = (this.state.customer.phone.search(/\d\d\d-\d\d\d-\d\d\d\d|\(\d\d\d\)\s\d\d\d-\d\d\d\d/) === -1) ? true : false
+    if (this.state.customer && this.state.customer.email) errors.email = (this.state.customer.email.search(/\w+@\w+\.\w+/) === -1) ? true : false
+
+    // if (this.state.adminMode === 'action' && this.action.status === 'Approved') errors.expiry = 
+    return errors
+  }
+
+  generateErrors(errors) {
+    let fields = Object.keys(errors).filter(n => errors[n])
+
+    return (e) => {
+      e.preventDefault()
+      this.props.throwAlert('red', `Problem with the ${fields.join(', ')} field${(fields.length > 1) ? 's' : ''}`)
+    }
+
+  }
+
   handleSave(e) {
     e.preventDefault()
+
+    
 
     let custArr = (this.state.customerCreate) ? [this.state.customer, {id: 'new'}] : [this.state.customer]
     this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], custArr)
@@ -238,7 +263,7 @@ class ApplicationContainer extends React.Component {
 
   handleDelete(e) {
     e.preventDefault()
-    this.props.deleteAppThunk(this.props.token, this.state.id, () => {this.props.history.push('/applications')})
+    if (confirm('Are you sure you wish to delete this application?')) this.props.deleteAppThunk(this.props.token, this.state.id, () => {this.props.history.push('/applications')})
   }
 
   handleCheckbox(e) {
@@ -253,6 +278,8 @@ class ApplicationContainer extends React.Component {
     e.preventDefault()
 
     this.setState({mailDisabled: true})
+
+    let expiryDate
 
     axios.post('/api/mail', {
       token: this.props.token,
@@ -272,7 +299,15 @@ class ApplicationContainer extends React.Component {
       }
       else this.props.throwAlert('red', 'Message not sent')
       
+      return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} that application ${this.state.action.appNumber} to ${this.state.action.leasingCompany} was ${this.state.action.status}`, action: this.state.action, app: this.state.id, expiry: this.state.expiryTemp})
     })
+    .then(res => {
+      return this.props.saveAppThunk(this.props.token, [this.state, {expiry: this.state.expiryTemp, amount: checkFor$(this.state.amount)}], [this.state.customer])
+    })
+    .then(res => {
+      this.setState({adminMode: false, expiryTemp: ''})
+    })
+    .catch(err => console.error(err))
   }
 
   handleNote(e) {
@@ -303,29 +338,45 @@ class ApplicationContainer extends React.Component {
       // this.props.throwAlert('green', 'Success')
       this.setState({adminMode: false})
     })
-    .catch(err => console.error(err))
+    .catch(err => {
+      console.error(err)
+      this.props.throwAlert('red', 'Something went wrong')
+    })
 
   }
 
   handleSaveAndNotify(e) {
     e.preventDefault()
-    let expiryDate
     axios.put('/api/actions/', {token: this.props.token, action: Object.assign({}, this.state.action, {sentToRep: getDate()})})
     .then(res => {
-      expiryDate = res.data
-      return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} that application ${this.state.action.appNumber} to ${this.state.action.leasingCompany} was ${this.state.action.status}`, action: this.state.action, app: this.state.id, expiry: expiryDate})
+      let soonToBeSubject = ''
+      let soonToBeBody = ''
+      if (this.state.action.status === 'Approved') {
+        soonToBeSubject = `Application Approved for ${this.state.action.legalName}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} has been approved with ${this.state.action.leasingCompany} under application number ${this.state.action.appNumber} for $${this.state.amount}.\n\nThe legal name is ${this.state.action.legalName}.\n\nPlease be sure to use the correct legal name on all of your lease paperwork.\n\nThanks,\n${this.props.user.firstName}`
+      } else if (this.state.action.status === 'Hold') {
+        soonToBeSubject = `Application On Hold for ${this.state.action.legalName}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} is on hold. We have tried all of our options and we will need the following items to proceed.\n\n    • 2 years of Audited Financials or\n    • 2 years of Tax Returns\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n${this.props.user.firstName}`
+      } else if (this.state.action.status === 'Declined') {
+        soonToBeSubject = `Application Declined for ${this.state.action.legalName}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} has been declined by all lenders. We will need the following items in order to try again.\n\n    •Personal Guarantee Information\n        • Owner's full name\n        • Owner's Address\n        • Owner's Social Security #\n        • Owner's Birth Date\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n${this.props.user.firstName}`
+      }
+      this.setState({
+        expiryTemp: res.data,
+        adminMode: 'notify',
+        mailSubject: soonToBeSubject,
+        mailBody: soonToBeBody
+      })
     })
-    .then(res => {
-      this.props.saveAppThunk(this.props.token, [this.state, {expiry: expiryDate, amount: checkFor$(this.state.amount)}], [this.state.customer])
-      // this.props.throwAlert('green', 'Success')
-      this.setState({adminMode: 'notify'})
+    .catch(err => {
+      console.error(err)
+      this.props.throwAlert('red', 'Something went wrong')
     })
-    .catch(err => console.error(err))
   }
 
   handleAdminMode(e) {
-    console.log('trigger', e.target.id)
-    if (e.target.id === 'cancel-button') {
+    // console.log('trigger', e.target.id)
+    if (e.target.id === 'cancel-button' || e.target.id === 'cancel') {
       this.setState({adminMode: false})
     } else if (e.target.id === 'submit-button' || e.target.id === 'app-button'){
       this.setState({
@@ -340,7 +391,7 @@ class ApplicationContainer extends React.Component {
       let index = e.target.id.split('-')[1]
       this.setState({
         adminMode: 'action',
-        action: this.state.actions[index]
+        action: Object.assign({}, this.state.actions[index], {index: index})
       })
     }
   }
@@ -404,10 +455,17 @@ class ApplicationContainer extends React.Component {
         else return term
       } else return term
     }
+    // console.log(this.state.action)
+    let errors = this.validateFields()
+    let disabled = Object.keys(errors).some(n => errors[n])
+
+    let actionDisabled = Object.keys(errors).expiry
+
     return(
       <div>
         <EditApplication
           values={this.state}
+          errors={errors}
           iAmAuthor={(this.props.user) ? this.props.user.email === this.state.rep.email : false}
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
           customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
@@ -423,8 +481,8 @@ class ApplicationContainer extends React.Component {
           handleChangeInMachine={this.handleChangeInMachine}
           handleRemoveMachine={this.handleRemoveMachine}
           handleChangeInCustomer={this.handleChangeInCustomer}
-          handleSave={this.handleSave}
-          handleSubmit={this.handleSubmit}
+          handleSave={(disabled) ? this.generateErrors(errors) : this.handleSave}
+          handleSubmit={(disabled) ? this.generateErrors(errors) : this.handleSubmit}
           handleDelete={this.handleDelete}
           handleChangeCustomer={this.handleChangeCustomer}
           handleCheckbox={this.handleCheckbox}
