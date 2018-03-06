@@ -6509,7 +6509,8 @@ exports.default = function (_ref) {
                   name: index + '-' + key,
                   placeholder: '' + key,
                   value: controller == index ? fields[key] || '' : row[key] || '',
-                  className: key + ' ' + (!(controller == index) ? 'clear' : 'white')
+                  className: key + ' ' + (!(controller == index) ? 'clear' : 'white'),
+                  autoComplete: 'new-password'
                 })
               );
             }),
@@ -6542,7 +6543,8 @@ exports.default = function (_ref) {
                   disabled: true,
                   name: index + '-' + key,
                   value: (0, _utility.match)(dropdowns[key].match, row) || '',
-                  className: 'clear'
+                  className: 'clear',
+                  autoComplete: 'new-password'
                 })
               );
             }),
@@ -28834,7 +28836,8 @@ exports.default = function (_ref) {
         _react2.default.createElement("input", {
           onChange: handleChange,
           name: "username",
-          placeholder: "username..."
+          placeholder: "username...",
+          autoComplete: "new-password"
         }),
         _react2.default.createElement(
           "div",
@@ -28849,7 +28852,8 @@ exports.default = function (_ref) {
           type: "password",
           onChange: handleChange,
           name: "password",
-          placeholder: "password..."
+          placeholder: "password...",
+          autoComplete: "new-password"
         })
       ),
       _react2.default.createElement("br", null),
@@ -29743,7 +29747,7 @@ var ApplicationContainer = function (_React$Component) {
           if (term.slice(0, 5) === 'other') return 'Other';else if (term.slice(0, 5) === 'co-te') return 'Co-Term';else return term;
         } else return term;
       };
-      // console.log(this.state.action)
+      // console.log(this.state.adminMode)
       var errors = this.validateFields();
       var disabled = Object.keys(errors).some(function (n) {
         return errors[n];
@@ -30067,7 +30071,7 @@ exports.default = function (_ref) {
       { className: 'edit-base col-sm-8' },
       _react2.default.createElement(
         'form',
-        { onSubmit: handleSave, autoComplete: 'off' },
+        { onSubmit: handleSave, autoComplete: 'new-password' },
         _react2.default.createElement(
           'div',
           { className: 'col-sm-12' },
@@ -30196,7 +30200,8 @@ exports.default = function (_ref) {
                   name: 'type',
                   value: 'New',
                   className: values.type === 'New' ? "on" : "",
-                  checked: values.type === 'New' ? true : false
+                  checked: values.type === 'New' ? true : false,
+                  autoComplete: 'new-password'
                 }),
                 _react2.default.createElement(
                   'label',
@@ -30210,7 +30215,8 @@ exports.default = function (_ref) {
                   name: 'type',
                   value: 'Existing',
                   className: values.type === 'Existing' ? "on" : "",
-                  checked: values.type === 'Existing' ? true : false
+                  checked: values.type === 'Existing' ? true : false,
+                  autoComplete: 'new-password'
                 }),
                 _react2.default.createElement(
                   'label',
@@ -30249,7 +30255,8 @@ exports.default = function (_ref) {
                   },
                   name: 'existingCustomer',
                   value: values.existingCustomer || values.customer ? values.customer.name : '' || '',
-                  list: 'customers'
+                  list: 'customers',
+                  autoComplete: 'new-password'
                 }) : _react2.default.createElement(
                   'p',
                   null,
@@ -30274,7 +30281,8 @@ exports.default = function (_ref) {
                   name: 'existingType',
                   value: 'Addition',
                   className: values.existingType === 'Addition' ? "on" : "",
-                  checked: values.existingType === 'Addition' ? true : false
+                  checked: values.existingType === 'Addition' ? true : false,
+                  autoComplete: 'new-password'
                 }),
                 _react2.default.createElement(
                   'label',
@@ -30288,7 +30296,8 @@ exports.default = function (_ref) {
                   name: 'existingType',
                   value: 'Upgrade',
                   className: values.existingType === 'Upgrade' ? "on" : "",
-                  checked: values.existingType === 'Upgrade' ? true : false
+                  checked: values.existingType === 'Upgrade' ? true : false,
+                  autoComplete: 'new-password'
                 }),
                 _react2.default.createElement(
                   'label',
@@ -30376,7 +30385,8 @@ exports.default = function (_ref) {
                     _react2.default.createElement('input', {
                       onChange: handleChangeInLease,
                       id: index + '-number',
-                      value: lease.number || ''
+                      value: lease.number || '',
+                      autoComplete: 'new-password'
                     })
                   ) : _react2.default.createElement(
                     'div',
@@ -30394,7 +30404,8 @@ exports.default = function (_ref) {
                       onChange: handleChangeInLease,
                       id: index + '-company',
                       value: lease.company || '',
-                      list: 'leaseCompanies'
+                      list: 'leaseCompanies',
+                      autoComplete: 'new-password'
                     })
                   ) : _react2.default.createElement(
                     'div',
@@ -30531,7 +30542,8 @@ exports.default = function (_ref) {
                         admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                           onChange: handleChangeInMachine,
                           id: index + '-' + mIndex + '-serial',
-                          value: machine.serial || ''
+                          value: machine.serial || '',
+                          autoComplete: 'new-password'
                         }) : _react2.default.createElement(
                           'p',
                           null,
@@ -30544,7 +30556,8 @@ exports.default = function (_ref) {
                         admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                           onChange: handleChangeInMachine,
                           id: index + '-' + mIndex + '-make',
-                          value: machine.make || ''
+                          value: machine.make || '',
+                          autoComplete: 'new-password'
                         }) : _react2.default.createElement(
                           'p',
                           null,
@@ -30557,7 +30570,8 @@ exports.default = function (_ref) {
                         admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                           onChange: handleChangeInMachine,
                           id: index + '-' + mIndex + '-model',
-                          value: machine.model || ''
+                          value: machine.model || '',
+                          autoComplete: 'new-password'
                         }) : _react2.default.createElement(
                           'p',
                           null,
@@ -30570,7 +30584,8 @@ exports.default = function (_ref) {
                         admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                           onChange: handleChangeInMachine,
                           id: index + '-' + mIndex + '-location',
-                          value: machine.location || ''
+                          value: machine.location || '',
+                          autoComplete: 'new-password'
                         }) : _react2.default.createElement(
                           'p',
                           null,
@@ -30585,7 +30600,8 @@ exports.default = function (_ref) {
                           {
                             onChange: handleChangeInMachine,
                             id: index + '-' + mIndex + '-action',
-                            value: machine.action || ''
+                            value: machine.action || '',
+                            autoComplete: 'new-password'
                           },
                           _react2.default.createElement(
                             'option',
@@ -30679,7 +30695,8 @@ exports.default = function (_ref) {
                   onChange: handleChangeCustomer,
                   name: 'name',
                   value: values.customer ? values.customer.name || '' : '',
-                  list: 'customers'
+                  list: 'customers',
+                  autoComplete: 'new-password'
                 }) : _react2.default.createElement(
                   'p',
                   null,
@@ -30720,7 +30737,8 @@ exports.default = function (_ref) {
                 admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                   onChange: handleChangeInCustomer,
                   name: 'street',
-                  value: values.customer ? values.customer.street || '' : ''
+                  value: values.customer ? values.customer.street || '' : '',
+                  autoComplete: 'new-password'
                 }) : _react2.default.createElement(
                   'p',
                   null,
@@ -30746,7 +30764,8 @@ exports.default = function (_ref) {
                 admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                   onChange: handleChangeInCustomer,
                   name: 'city',
-                  value: values.customer ? values.customer.city || '' : ''
+                  value: values.customer ? values.customer.city || '' : '',
+                  autoComplete: 'new-password'
                 }) : _react2.default.createElement(
                   'p',
                   null,
@@ -30816,7 +30835,8 @@ exports.default = function (_ref) {
                   onChange: handleChangeInCustomer,
                   name: 'zip',
                   className: errors.zip ? 'red' : '',
-                  value: values.customer ? values.customer.zip || '' : ''
+                  value: values.customer ? values.customer.zip || '' : '',
+                  autoComplete: 'new-password'
                 }) : _react2.default.createElement(
                   'p',
                   null,
@@ -30848,7 +30868,8 @@ exports.default = function (_ref) {
                   name: 'phone',
                   className: errors.phone ? 'red' : '',
                   value: values.customer ? values.customer.phone || '' : '',
-                  placeholder: 'xxx-xxx-xxxx'
+                  placeholder: 'xxx-xxx-xxxx',
+                  autoComplete: 'new-password'
                 }) : _react2.default.createElement(
                   'p',
                   null,
@@ -30879,7 +30900,8 @@ exports.default = function (_ref) {
                   onChange: handleChangeInCustomer,
                   name: 'email',
                   className: errors.email ? 'red' : '',
-                  value: values.customer ? values.customer.email || '' : ''
+                  value: values.customer ? values.customer.email || '' : '',
+                  autoComplete: 'new-password'
                 }) : _react2.default.createElement(
                   'p',
                   null,
@@ -30909,7 +30931,8 @@ exports.default = function (_ref) {
                 admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                   onChange: handleChangeInCustomer,
                   name: 'taxID',
-                  value: values.customer ? values.customer.taxID || '' : ''
+                  value: values.customer ? values.customer.taxID || '' : '',
+                  autoComplete: 'new-password'
                 }) : _react2.default.createElement(
                   'p',
                   null,
@@ -30948,7 +30971,8 @@ exports.default = function (_ref) {
                 admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                   onChange: handleChange,
                   name: 'amount',
-                  value: values.amount || ''
+                  value: values.amount || '',
+                  autoComplete: 'new-password'
                 }) : _react2.default.createElement(
                   'p',
                   null,
@@ -31047,7 +31071,8 @@ exports.default = function (_ref) {
                   { className: 'field-box' },
                   values.term && (values.term.slice(0, 5) === 'other' || values.term.slice(0, 5) === 'co-te') ? admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                     onChange: handleChangeInTerm,
-                    value: values.term.slice(5) || ''
+                    value: values.term.slice(5) || '',
+                    autoComplete: 'new-password'
                   }) : _react2.default.createElement(
                     'p',
                     null,
@@ -31765,7 +31790,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { id: 'cancel', className: 'exit-lightbox', onClick: handleAdminMode },
-              _react2.default.createElement('img', { src: '/assets/img/Cross_Reverse.svg' })
+              _react2.default.createElement('img', { id: 'cancel', src: '/assets/img/Cross_Reverse.svg' })
             ),
             _react2.default.createElement(
               'div',
@@ -31810,7 +31835,8 @@ exports.default = function (_ref) {
                         _react2.default.createElement('input', {
                           onChange: handleChangeAction,
                           name: 'leasingCompany',
-                          value: values.action.leasingCompany || ''
+                          value: values.action.leasingCompany || '',
+                          autoComplete: 'new-password'
                         })
                       )
                     ),
@@ -31832,7 +31858,8 @@ exports.default = function (_ref) {
                         _react2.default.createElement('input', {
                           onChange: handleChangeAction,
                           name: 'appNumber',
-                          value: values.action.appNumber || ''
+                          value: values.action.appNumber || '',
+                          autoComplete: 'new-password'
                         })
                       )
                     )
@@ -31909,7 +31936,9 @@ exports.default = function (_ref) {
                         _react2.default.createElement('input', {
                           onChange: handleChangeAction,
                           name: 'expiry',
-                          value: values.action.expiry || ''
+                          value: values.action.expiry || '',
+                          placeholder: 'mm/dd/yy',
+                          autoComplete: 'new-password'
                         })
                       )
                     ) : null,
@@ -31931,7 +31960,8 @@ exports.default = function (_ref) {
                         _react2.default.createElement('input', {
                           onChange: handleChangeAction,
                           name: 'legalName',
-                          value: values.action.legalName || ''
+                          value: values.action.legalName || '',
+                          autoComplete: 'new-password'
                         })
                       )
                     ) : null
@@ -32093,7 +32123,7 @@ exports.default = function (_ref) {
     _react2.default.createElement(
       "div",
       { id: "edit-" + values.action.index, className: "exit-lightbox", onClick: handleAdminMode },
-      _react2.default.createElement("img", { src: "/assets/img/Cross_Reverse.svg" })
+      _react2.default.createElement("img", { id: "edit-" + values.action.index, src: "/assets/img/Cross_Reverse.svg" })
     ),
     _react2.default.createElement(
       "div",
@@ -32157,7 +32187,7 @@ exports.default = function (_ref) {
               _react2.default.createElement(
                 "div",
                 { className: "field-box" },
-                _react2.default.createElement("input", { name: "mailCC", onChange: handleChange, value: values.mailCC || '' })
+                _react2.default.createElement("input", { name: "mailCC", onChange: handleChange, value: values.mailCC || '', autoComplete: "new-password" })
               )
             )
           ),
@@ -32179,7 +32209,7 @@ exports.default = function (_ref) {
               _react2.default.createElement(
                 "div",
                 { className: "field-box" },
-                _react2.default.createElement("input", { name: "mailSubject", onChange: handleChange, value: values.mailSubject || '' })
+                _react2.default.createElement("input", { name: "mailSubject", onChange: handleChange, value: values.mailSubject || '', autoComplete: "new-password" })
               )
             )
           ),
@@ -33808,7 +33838,8 @@ exports.default = function (_ref) {
                 onChange: handleChange,
                 name: 'expiry',
                 value: values.expiry || '',
-                placeholder: 'MM-DD-YY'
+                placeholder: 'MM-DD-YY',
+                autoComplete: 'new-password'
               }) : _react2.default.createElement(
                 'p',
                 null,
@@ -33959,7 +33990,8 @@ exports.default = function (_ref) {
                   _react2.default.createElement('input', {
                     onChange: handleChangeInLease,
                     id: index + '-number',
-                    value: lease.number || ''
+                    value: lease.number || '',
+                    autoComplete: 'new-password'
                   })
                 ) : _react2.default.createElement(
                   'div',
@@ -33977,7 +34009,8 @@ exports.default = function (_ref) {
                     onChange: handleChangeInLease,
                     id: index + '-company',
                     value: lease.company || '',
-                    list: 'leaseCompanies'
+                    list: 'leaseCompanies',
+                    autoComplete: 'new-password'
                   })
                 ) : _react2.default.createElement(
                   'div',
@@ -34094,7 +34127,8 @@ exports.default = function (_ref) {
                       admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                         onChange: handleChangeInMachine,
                         id: index + '-' + mIndex + '-serial',
-                        value: machine.serial || ''
+                        value: machine.serial || '',
+                        autoComplete: 'new-password'
                       }) : _react2.default.createElement(
                         'p',
                         null,
@@ -34107,7 +34141,8 @@ exports.default = function (_ref) {
                       admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                         onChange: handleChangeInMachine,
                         id: index + '-' + mIndex + '-make',
-                        value: machine.make || ''
+                        value: machine.make || '',
+                        autoComplete: 'new-password'
                       }) : _react2.default.createElement(
                         'p',
                         null,
@@ -34120,7 +34155,8 @@ exports.default = function (_ref) {
                       admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                         onChange: handleChangeInMachine,
                         id: index + '-' + mIndex + '-model',
-                        value: machine.model || ''
+                        value: machine.model || '',
+                        autoComplete: 'new-password'
                       }) : _react2.default.createElement(
                         'p',
                         null,
@@ -34133,7 +34169,8 @@ exports.default = function (_ref) {
                       admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                         onChange: handleChangeInMachine,
                         id: index + '-' + mIndex + '-location',
-                        value: machine.location || ''
+                        value: machine.location || '',
+                        autoComplete: 'new-password'
                       }) : _react2.default.createElement(
                         'p',
                         null,
@@ -34148,7 +34185,8 @@ exports.default = function (_ref) {
                         {
                           onChange: handleChangeInMachine,
                           id: index + '-' + mIndex + '-action',
-                          value: machine.action || ''
+                          value: machine.action || '',
+                          autoComplete: 'new-password'
                         },
                         _react2.default.createElement(
                           'option',
@@ -34234,7 +34272,8 @@ exports.default = function (_ref) {
                 onChange: handleChangeCustomer,
                 name: 'name',
                 value: values.customer ? values.customer.name || '' : '',
-                list: 'customers'
+                list: 'customers',
+                autoComplete: 'new-password'
               }) : _react2.default.createElement(
                 'p',
                 null,
@@ -34267,7 +34306,8 @@ exports.default = function (_ref) {
               admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                 onChange: handleChangeInCustomer,
                 name: 'street',
-                value: values.customer ? values.customer.street || '' : ''
+                value: values.customer ? values.customer.street || '' : '',
+                autoComplete: 'new-password'
               }) : _react2.default.createElement(
                 'p',
                 null,
@@ -34285,7 +34325,8 @@ exports.default = function (_ref) {
               admin || values.status !== 'Working' ? _react2.default.createElement('input', {
                 onChange: handleChangeInCustomer,
                 name: 'city',
-                value: values.customer ? values.customer.city || '' : ''
+                value: values.customer ? values.customer.city || '' : '',
+                autoComplete: 'new-password'
               }) : _react2.default.createElement(
                 'p',
                 null,
@@ -34339,7 +34380,8 @@ exports.default = function (_ref) {
                 onChange: handleChangeInCustomer,
                 name: 'zip',
                 className: errors.zip ? 'red' : '',
-                value: values.customer ? values.customer.zip || '' : ''
+                value: values.customer ? values.customer.zip || '' : '',
+                autoComplete: 'new-password'
               }) : _react2.default.createElement(
                 'p',
                 null,
@@ -34363,7 +34405,8 @@ exports.default = function (_ref) {
                 name: 'phone',
                 className: errors.phone ? 'red' : '',
                 value: values.customer ? values.customer.phone || '' : '',
-                placeholder: 'xxx-xxx-xxxx'
+                placeholder: 'xxx-xxx-xxxx',
+                autoComplete: 'new-password'
               }) : _react2.default.createElement(
                 'p',
                 null,
@@ -34386,7 +34429,8 @@ exports.default = function (_ref) {
                 onChange: handleChangeInCustomer,
                 name: 'email',
                 className: errors.email ? 'red' : '',
-                value: values.customer ? values.customer.email || '' : ''
+                value: values.customer ? values.customer.email || '' : '',
+                autoComplete: 'new-password'
               }) : _react2.default.createElement(
                 'p',
                 null,
@@ -35706,7 +35750,8 @@ exports.default = function (_ref) {
                 _react2.default.createElement('input', {
                   onChange: handleChange,
                   name: 'firstName',
-                  value: values.firstName || ''
+                  value: values.firstName || '',
+                  autoComplete: 'new-password'
                 })
               )
             ),
@@ -35728,7 +35773,8 @@ exports.default = function (_ref) {
                 _react2.default.createElement('input', {
                   onChange: handleChange,
                   name: 'lastName',
-                  value: values.lastName || ''
+                  value: values.lastName || '',
+                  autoComplete: 'new-password'
                 })
               )
             )
@@ -35754,7 +35800,8 @@ exports.default = function (_ref) {
                 _react2.default.createElement('input', {
                   onChange: handleChange,
                   name: 'email',
-                  value: values.email || ''
+                  value: values.email || '',
+                  autoComplete: 'new-password'
                 })
               )
             ),
@@ -35776,7 +35823,8 @@ exports.default = function (_ref) {
                 _react2.default.createElement('input', {
                   onChange: handleChange,
                   name: 'phone',
-                  value: values.phone || ''
+                  value: values.phone || '',
+                  autoComplete: 'new-password'
                 })
               )
             )
@@ -35993,7 +36041,8 @@ exports.default = function (_ref) {
                   onChange: handleChange,
                   name: 'password',
                   value: values.password || '',
-                  type: 'password'
+                  type: 'password',
+                  autoComplete: 'new-password'
                 })
               )
             )
