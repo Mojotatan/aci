@@ -33,6 +33,7 @@ export default ({uniClass, controller, fields, dropdowns, rows, handleChange, ha
                           placeholder={`${key}`}
                           value={(controller == index) ? fields[key] || '' : row[key] || ''}
                           className={`${key} ${!(controller == index) ? 'clear' : 'white'}`}
+                          autoComplete="new-password"
                         />
                       </span>
                     )
@@ -66,6 +67,7 @@ export default ({uniClass, controller, fields, dropdowns, rows, handleChange, ha
                           name={`${index}-${key}`}
                           value={match(dropdowns[key].match, row) || ''}
                           className={'clear'}
+                          autoComplete="new-password"
                         />
                       </span>
                     )

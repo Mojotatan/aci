@@ -10,6 +10,7 @@ export default ({handleChange, handleSubmit, handleControl}) => (
           onChange={handleChange}
           name="username"
           placeholder="username..."
+          autoComplete="new-password"
         />
         <div><label>Password</label></div>
         <input 
@@ -17,6 +18,7 @@ export default ({handleChange, handleSubmit, handleControl}) => (
           onChange={handleChange}
           name="password"
           placeholder="password..."
+          autoComplete="new-password"
         />
       </div>
       <br />

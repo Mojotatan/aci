@@ -5,7 +5,7 @@ export default ({
 }) => (
   <div className="row lightbox-content">
     <div id={`edit-${values.action.index}`} className="exit-lightbox" onClick={handleAdminMode}>
-      <img src="/assets/img/Cross_Reverse.svg" />
+      <img id={`edit-${values.action.index}`} src="/assets/img/Cross_Reverse.svg" />
     </div>
     <div className="app-bg col-sm-12 no-gutters">
     
@@ -32,7 +32,7 @@ export default ({
                 <label>CC</label>
               </div>
               <div className="field-box">
-                <input name="mailCC" onChange={handleChange} value={values.mailCC || ''} />
+                <input name="mailCC" onChange={handleChange} value={values.mailCC || ''} autoComplete="new-password" />
               </div>
             </div>
           </div>
@@ -43,7 +43,7 @@ export default ({
                 <label>Subject</label>
               </div>
               <div className="field-box">
-                <input name="mailSubject" onChange={handleChange} value={values.mailSubject || ''}/>
+                <input name="mailSubject" onChange={handleChange} value={values.mailSubject || ''} autoComplete="new-password" />
               </div>
             </div>
           </div>

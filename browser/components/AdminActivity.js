@@ -194,7 +194,7 @@ export default ({
 
       <div className="row lightbox-content">
         <div id="cancel" className="exit-lightbox" onClick={handleAdminMode}>
-          <img src="/assets/img/Cross_Reverse.svg" />
+          <img id="cancel" src="/assets/img/Cross_Reverse.svg" />
         </div>
         <div className="col-sm-12 no-gutters">
           <div className="app-bg col-sm-12">
@@ -228,6 +228,7 @@ export default ({
                       onChange={handleChangeAction}
                       name="leasingCompany"
                       value={values.action.leasingCompany || ''}
+                      autoComplete="new-password"
                     />
                   </div>
                 </div>
@@ -240,6 +241,7 @@ export default ({
                       onChange={handleChangeAction}
                       name="appNumber"
                       value={values.action.appNumber || ''}
+                      autoComplete="new-password"
                     />
                   </div>
                 </div>
@@ -275,6 +277,8 @@ export default ({
                         onChange={handleChangeAction}
                         name="expiry"
                         value={values.action.expiry || ''}
+                        placeholder="mm/dd/yy"
+                        autoComplete="new-password"
                       />
                     </div>
                   </div>
@@ -291,6 +295,7 @@ export default ({
                         onChange={handleChangeAction}
                         name="legalName"
                         value={values.action.legalName || ''}
+                        autoComplete="new-password"
                       />
                     </div>
                   </div>

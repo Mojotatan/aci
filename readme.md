@@ -83,7 +83,7 @@ npm run start-dev
 node -v
 ```
 
-3. Get the files
+3. Get the files -- make sure you download the production branch
 
 ```
 git clone https://github.com/Mojotatan/aci.git
@@ -109,14 +109,14 @@ If process.env variables are getting overwritten or otherwise misbehaving, set u
 7. Start Passenger
 
 **How to update on a Remote Server**
-1. Download the updates
+1. Download the updates -- make sure you download the production branch
 
 ```
 git pull origin production
 npm install
 ```
 
-2. Change dbUrl in server/db/index.js
+2. Change dbUrl in server/db/index.js. You may have to manually add the email password as well.
 
 3. Restart Passenger
 
