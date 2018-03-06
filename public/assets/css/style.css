@@ -1285,10 +1285,10 @@ select.state {
 }
 
 .refresh-btn {
-	margin-top: 18px;
-	margin-left: 15px;
-	width: 30px;
-	height: 30px;
+	margin-top: -2px;
+	margin-left: 5px;
+	width: 20px;
+	height: 20px;
 	cursor: pointer
 }
 
@@ -1324,4 +1324,14 @@ select.state {
 	top: 0;
 	right: calc(((100% - 1170px) / 2) + (1170px / 6) + 20px);
 	padding-top: calc(10% + 10px);
+}
+
+.refresh {
+	margin-left: 25px;
+	display: inline-block;
+	margin-top: 23px;
+	cursor: pointer
+}
+.refresh:hover {
+	text-decoration: underline
 }

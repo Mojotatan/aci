@@ -43,6 +43,10 @@ class UsersContainer extends React.Component {
         <Menu />
         <div className="col-sm-12 no-gutters user-header-top">
           <div><h2 className="user-title">Current Users</h2></div>
+          <div onClick={this.refresh}>
+            <span className="refresh">Refresh</span>
+            <img className="refresh-btn" src="/assets/img/reload.svg" />
+          </div>
           <div className="newuser"><button className="user-button" onClick={this.handleNewUser}>Create User</button></div>
         </div>
         <div className="col-sm-12 no-gutters margin-drop">

@@ -80,7 +80,10 @@ class BuyoutsContainer extends React.Component {
         <Menu />
         <div className="col-sm-12 no-gutters app-header-top">
           <div><h2 className="app-title">Current Buyouts</h2></div>
-          <div><img className="refresh-btn" onClick={this.refresh} src="/assets/img/reload.svg" /></div>
+          <div onClick={this.refresh}>
+            <span className="refresh">Refresh</span>
+            <img className="refresh-btn" src="/assets/img/reload.svg" />
+          </div>
           <div className="newapp"><button className="app-button" onClick={this.handleNewByo}>Start New Buyout</button></div>
         </div>
         <div className="col-sm-12 no-gutters margin-drop">
