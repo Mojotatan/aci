@@ -1273,9 +1273,9 @@ span#cancel-button:hover {
 }
 /* .red::before {
 	content: "hadurr";
-	/* display: block;
+	display: block;
 	position: absolute;
-	color: #f85359; */
+	color: #f85359;
 } */
 select.state {
 	width: 100% !important
