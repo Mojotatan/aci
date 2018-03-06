@@ -16,6 +16,8 @@ class ApplicationsContainer extends React.Component {
     this.handleNewApp = this.handleNewApp.bind(this)
     this.handleSort = this.handleSort.bind(this)
     this.handleResubmit = this.handleResubmit.bind(this)
+
+    this.refresh = this.refresh.bind(this)
   }
 
   handleClick(e) {
@@ -63,6 +65,10 @@ class ApplicationsContainer extends React.Component {
     )
   }
 
+  refresh(e) {
+    this.props.loadAppsThunk(this.props.token)
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     else this.props.loadAppsThunk(this.props.token)
@@ -74,6 +80,7 @@ class ApplicationsContainer extends React.Component {
         <Menu />
         <div className="col-sm-12 no-gutters app-header-top">
           <div><h2 className="app-title">Current Applications</h2></div>
+          <div><img className="refresh-btn" onClick={this.refresh} src="/assets/img/reload.svg" /></div>
           <div className="newapp"><button className="app-button" onClick={this.handleNewApp}>Start New Application</button></div>
         </div>
         <div className="col-sm-12 no-gutters margin-drop">

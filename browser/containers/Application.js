@@ -376,7 +376,7 @@ class ApplicationContainer extends React.Component {
 
   handleAdminMode(e) {
     // console.log('trigger', e.target.id)
-    if (e.target.id === 'cancel-button') {
+    if (e.target.id === 'cancel-button' || e.target.id === 'cancel') {
       this.setState({adminMode: false})
     } else if (e.target.id === 'submit-button' || e.target.id === 'app-button'){
       this.setState({
@@ -391,7 +391,7 @@ class ApplicationContainer extends React.Component {
       let index = e.target.id.split('-')[1]
       this.setState({
         adminMode: 'action',
-        action: this.state.actions[index]
+        action: Object.assign({}, this.state.actions[index], {index: index})
       })
     }
   }
@@ -455,7 +455,7 @@ class ApplicationContainer extends React.Component {
         else return term
       } else return term
     }
-    // console.log(this.props.user)
+    // console.log(this.state.action)
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
 

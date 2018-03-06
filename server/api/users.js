@@ -2,7 +2,7 @@ const Op = require('sequelize').Op
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {User, Dealer, Region, Branch} = require('../db').db.models
-const {cert, isLoggedIn, isAdmin, mailTransporter} = require('./auth')
+const {cert, isLoggedIn, isAdmin, mailTransporter, mailFooter} = require('./auth')
 
 
 module.exports = require('express').Router()
@@ -77,13 +77,18 @@ module.exports = require('express').Router()
       res.send('success')
       if (req.body.user.id === 'new') {
         let url = 'localhost:1337/api/login/reset?access_token=' + jwt.sign({user: data.email}, cert, {expiresIn: '24h'})
-        let contents = `<!DOCTYPE html><html><p>A new account has been created for you at MyAdminCentral</p><p>To set the password on this account, click <a href="${url}">${url}</a></p><p>If this link does not work, please visit <a>MyAdminCentral</a> and click "I forgot my password".</html>`
+        let contents = `<p>A new account has been created for you at MyAdminCentral</p><p>To set the password on this account, click <a href="${url}">${url}</a></p><p>If this link does not work, please visit <a>MyAdminCentral</a> and click "I forgot my password".`
         let message = {
           from: 'team@myadmindev.xyz',
           // to: data.email,
           to: 'tatan42@gmail.com',
           subject: 'Account Created at MyAdminCentral',
-          html: contents
+          html: contents + mailFooter,
+          attachments: [{
+            filename: 'myadmin_logo.png',
+            path: path.resolve(__dirname, '../../public/assets/img/myadmin_logo.png'),
+            cid: 'logo'
+          }]
         }
         return mailTransporter.sendMail(message)
       }

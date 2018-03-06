@@ -41,7 +41,12 @@ module.exports = require('express').Router()
       We have received your buyout request for ${req.body.customer.name}. We send your quotes as soon as we can.
       Thanks,<br>
       MyAdminCentral
-      ` + mailFooter
+      ` + mailFooter,
+      attachments: [{
+        filename: 'myadmin_logo.png',
+        path: path.resolve(__dirname, '../../public/assets/img/myadmin_logo.png'),
+        cid: 'logo'
+      }]
     }
     mailTransporter.sendMail(message)
     .then(data => {
@@ -63,7 +68,12 @@ module.exports = require('express').Router()
       bcc: 'jbyrd@impactnetworking.com',
       subject: req.body.subject,
       text: req.body.text,
-      html: req.body.html
+      html: req.body.html + mailFooter,
+      attachments: [{
+        filename: 'myadmin_logo.png',
+        path: path.resolve(__dirname, '../../public/assets/img/myadmin_logo.png'),
+        cid: 'logo'
+      }]
     }
     mailTransporter.sendMail(message)
     .then(data => {

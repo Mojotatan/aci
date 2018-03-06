@@ -1,9 +1,12 @@
 import React from 'react'
 
 export default ({
-  values, handleNotify, handleChange
+  values, handleNotify, handleChange, handleAdminMode
 }) => (
-  <div className="row mid-gutter">
+  <div className="row lightbox-content">
+    <div id={`edit-${values.action.index}`} className="exit-lightbox" onClick={handleAdminMode}>
+      <img src="/assets/img/Cross_Reverse.svg" />
+    </div>
     <div className="app-bg col-sm-12 no-gutters">
     
     {values.rep ?
@@ -58,7 +61,7 @@ export default ({
 
           <div className="row">
             <div className="col-sm-6" align="left">
-              <span id="cancel-button">Cancel</span>
+              <span id={`edit-${values.action.index}`} className="cancel-button" onClick={handleAdminMode}>Cancel</span>
             </div>
             <div className="col-sm-6" align="right">
               <button

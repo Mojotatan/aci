@@ -17,6 +17,7 @@ class BuyoutsContainer extends React.Component {
     this.handleNewByo = this.handleNewByo.bind(this)
     this.handleSort = this.handleSort.bind(this)
     this.handleResubmit = this.handleResubmit.bind(this)
+    this.refresh = this.refresh.bind(this)
   }
 
   handleClick(e) {
@@ -64,6 +65,10 @@ class BuyoutsContainer extends React.Component {
     )
   }
 
+  refresh(e) {
+    this.props.loadByosThunk(this.props.token)
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     else this.props.loadByosThunk(this.props.token)
@@ -75,6 +80,7 @@ class BuyoutsContainer extends React.Component {
         <Menu />
         <div className="col-sm-12 no-gutters app-header-top">
           <div><h2 className="app-title">Current Buyouts</h2></div>
+          <div><img className="refresh-btn" onClick={this.refresh} src="/assets/img/reload.svg" /></div>
           <div className="newapp"><button className="app-button" onClick={this.handleNewByo}>Start New Buyout</button></div>
         </div>
         <div className="col-sm-12 no-gutters margin-drop">

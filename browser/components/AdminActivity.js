@@ -31,6 +31,11 @@ export default ({
     }
 
     <div className="col-sm-12 top">
+    <div className="row">
+        <div className="col-sm-12 pad-me">
+          <Link to='/applications' id="back-button">‹ Back to Applications</Link>
+        </div>
+      </div>
       <div className="row">
         <div className="col-sm-6"><h2>Admin Portal</h2></div>
         {/* <div className="col-sm-3 top-buttons"><Link to='/applications' id="cancel-button" className="top">Back</Link></div> */}
@@ -183,8 +188,15 @@ export default ({
       </div>
       
       {(values.action && values.adminMode === 'action') ?
-      <div className="row mid-gutter">
-        <div className="col-sm-12">
+      <div className="action lightbox">
+      <div id="cancel" className="shadowbox" onClick={handleAdminMode}></div>
+      <div className="container">
+
+      <div className="row lightbox-content">
+        <div id="cancel" className="exit-lightbox" onClick={handleAdminMode}>
+          <img src="/assets/img/Cross_Reverse.svg" />
+        </div>
+        <div className="col-sm-12 no-gutters">
           <div className="app-bg col-sm-12">
             <form onSubmit={handleSaveAction} autoComplete="off">
               <div className="row">
@@ -314,16 +326,25 @@ export default ({
           </div>
         </div>
       </div>
+
+      </div>
+      </div>
       : null
       }
 
     
       {(values.adminMode === 'notify') ?
-        <NotifyRep
-          values={values}
-          handleChange={handleChange}
-          handleNotify={handleNotify}
-        />
+        <div className="notify lightbox">
+          <div className="shadowbox" onClick={toggleLightbox}></div>
+          <div className="container">
+            <NotifyRep
+            values={values}
+            handleChange={handleChange}
+            handleNotify={handleNotify}
+            handleAdminMode={handleAdminMode}
+            />
+          </div>
+        </div>
         : null
       }
 

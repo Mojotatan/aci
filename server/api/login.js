@@ -2,7 +2,7 @@ const path = require('path')
 const Op = require('sequelize').Op
 const {User} = require('../db').db.models
 const jwt = require('jsonwebtoken')
-const {cert, isAdmin, mailTransporter} = require('./auth')
+const {cert, isAdmin, mailTransporter, mailFooter} = require('./auth')
 const bcrypt = require('bcrypt')
 
 module.exports = require('express').Router()
@@ -22,14 +22,19 @@ module.exports = require('express').Router()
       else {
         // jwt.sign
         let url = 'localhost:1337/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '60m'})
-        let contents = `<!DOCTYPE html><html><p>To reset the password for your account with MyAdminCentral, click <a href="${url}">${url}</a></p><p>If you did not trigger this password reset, ignore this email.</p></html>`
+        let contents = `<p>To reset the password for your account with MyAdminCentral, click <a href="${url}">${url}</a></p><p>If you did not trigger this password reset, ignore this email.</p>`
         let message = {
           from: 'team@myadmindev.xyz',
           // to: usr.email,
           to: 'tatan42@gmail.com',
           subject: 'Password Reset',
           // text: usr.email,
-          html: contents
+          html: contents + mailFooter,
+          attachments: [{
+            filename: 'myadmin_logo.png',
+            path: path.resolve(__dirname, '../../public/assets/img/myadmin_logo.png'),
+            cid: 'logo'
+          }]
         }
         mailTransporter.sendMail(message)
         .then(data => {
