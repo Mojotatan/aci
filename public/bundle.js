@@ -29083,8 +29083,13 @@ var ApplicationsContainer = function (_React$Component) {
           ),
           _react2.default.createElement(
             'div',
-            null,
-            _react2.default.createElement('img', { className: 'refresh-btn', onClick: this.refresh, src: '/assets/img/reload.svg' })
+            { onClick: this.refresh },
+            _react2.default.createElement(
+              'span',
+              { className: 'refresh' },
+              'Refresh'
+            ),
+            _react2.default.createElement('img', { className: 'refresh-btn', src: '/assets/img/reload.svg' })
           ),
           _react2.default.createElement(
             'div',
@@ -33079,8 +33084,13 @@ var BuyoutsContainer = function (_React$Component) {
           ),
           _react2.default.createElement(
             'div',
-            null,
-            _react2.default.createElement('img', { className: 'refresh-btn', onClick: this.refresh, src: '/assets/img/reload.svg' })
+            { onClick: this.refresh },
+            _react2.default.createElement(
+              'span',
+              { className: 'refresh' },
+              'Refresh'
+            ),
+            _react2.default.createElement('img', { className: 'refresh-btn', src: '/assets/img/reload.svg' })
           ),
           _react2.default.createElement(
             'div',
@@ -35403,6 +35413,16 @@ var UsersContainer = function (_React$Component) {
               { className: 'user-title' },
               'Current Users'
             )
+          ),
+          _react2.default.createElement(
+            'div',
+            { onClick: this.refresh },
+            _react2.default.createElement(
+              'span',
+              { className: 'refresh' },
+              'Refresh'
+            ),
+            _react2.default.createElement('img', { className: 'refresh-btn', src: '/assets/img/reload.svg' })
           ),
           _react2.default.createElement(
             'div',
