@@ -228,6 +228,7 @@ export default ({
                       onChange={handleChangeAction}
                       name="leasingCompany"
                       value={values.action.leasingCompany || ''}
+                      autoComplete="new-password"
                     />
                   </div>
                 </div>
@@ -240,6 +241,7 @@ export default ({
                       onChange={handleChangeAction}
                       name="appNumber"
                       value={values.action.appNumber || ''}
+                      autoComplete="new-password"
                     />
                   </div>
                 </div>
@@ -275,6 +277,7 @@ export default ({
                         onChange={handleChangeAction}
                         name="expiry"
                         value={values.action.expiry || ''}
+                        autoComplete="new-password"
                       />
                     </div>
                   </div>
@@ -291,6 +294,7 @@ export default ({
                         onChange={handleChangeAction}
                         name="legalName"
                         value={values.action.legalName || ''}
+                        autoComplete="new-password"
                       />
                     </div>
                   </div>

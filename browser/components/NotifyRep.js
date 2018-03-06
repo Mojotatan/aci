@@ -32,7 +32,7 @@ export default ({
                 <label>CC</label>
               </div>
               <div className="field-box">
-                <input name="mailCC" onChange={handleChange} value={values.mailCC || ''} />
+                <input name="mailCC" onChange={handleChange} value={values.mailCC || ''} autoComplete="new-password" />
               </div>
             </div>
           </div>
@@ -43,7 +43,7 @@ export default ({
                 <label>Subject</label>
               </div>
               <div className="field-box">
-                <input name="mailSubject" onChange={handleChange} value={values.mailSubject || ''}/>
+                <input name="mailSubject" onChange={handleChange} value={values.mailSubject || ''} autoComplete="new-password" />
               </div>
             </div>
           </div>

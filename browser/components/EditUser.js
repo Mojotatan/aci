@@ -35,6 +35,7 @@ export default ({
                 onChange={handleChange}
                 name={'firstName'}
                 value={values.firstName || ''}
+                autoComplete="new-password"
                 />
               </div>
             </div>
@@ -47,6 +48,7 @@ export default ({
                   onChange={handleChange}
                   name={'lastName'}
                   value={values.lastName || ''}
+                  autoComplete="new-password"
                 />
               </div>
             </div>
@@ -62,6 +64,7 @@ export default ({
                 onChange={handleChange}
                 name={'email'}
                 value={values.email || ''}
+                autoComplete="new-password"
                 />
               </div>
             </div>
@@ -74,6 +77,7 @@ export default ({
                   onChange={handleChange}
                   name={'phone'}
                   value={values.phone || ''}
+                  autoComplete="new-password"
                 />
               </div>
             </div>
@@ -181,6 +185,7 @@ export default ({
                 name={'password'}
                 value={values.password || ''}
                 type="password"
+                autoComplete="new-password"
                 />
               </div>
             </div>

@@ -115,7 +115,7 @@ export default ({
     </div>
 
     <div className="edit-base col-sm-8">
-      <form onSubmit={handleSave} autoComplete="off">
+      <form onSubmit={handleSave} autoComplete="new-password">
         <div className="col-sm-12">
           <div className="rowed-items" id="date-started">
             <label>Date Submitted</label>
@@ -184,6 +184,7 @@ export default ({
                     checked={(values.type === 'New') ?
                       true : false
                     }
+                    autoComplete="new-password"
                   />
                   <label htmlFor="type-0">New Customer</label>
 
@@ -199,6 +200,7 @@ export default ({
                     checked={(values.type === 'Existing') ?
                       true : false
                     }
+                    autoComplete="new-password"
                   />
                   <label htmlFor="type-1">Existing Customer</label>
                 </div>
@@ -223,6 +225,7 @@ export default ({
                       name={'existingCustomer'}
                       value={values.existingCustomer || (values.customer) ? values.customer.name : '' || ''}
                       list="customers"
+                      autoComplete="new-password"
                     />
                     :
                     <p>{values.existingCustomer || ''}</p>
@@ -250,6 +253,7 @@ export default ({
                       checked={(values.existingType === 'Addition') ?
                         true : false
                       }
+                      autoComplete="new-password"
                     />
                     <label htmlFor="existingType-0">Customer Addition</label>
 
@@ -265,6 +269,7 @@ export default ({
                       checked={(values.existingType === 'Upgrade') ?
                         true : false
                       }
+                      autoComplete="new-password"
                     />
                     <label htmlFor="existingType-1">Customer Upgrade</label>
                   </div>
@@ -320,6 +325,7 @@ export default ({
                           onChange={handleChangeInLease}
                           id={`${index}-number`}
                           value={lease.number || ''}
+                          autoComplete="new-password"
                         />
                       </div>
                       :
@@ -334,6 +340,7 @@ export default ({
                           id={`${index}-company`}
                           value={lease.company || ''}
                           list="leaseCompanies"
+                          autoComplete="new-password"
                         />
                       </div>
                       :
@@ -445,6 +452,7 @@ export default ({
                                   onChange={handleChangeInMachine}
                                   id={`${index}-${mIndex}-serial`}
                                   value={machine.serial || ''}
+                                  autoComplete="new-password"
                                 />
                                 :
                                 <p>{machine.serial}</p>
@@ -456,6 +464,7 @@ export default ({
                                   onChange={handleChangeInMachine}
                                   id={`${index}-${mIndex}-make`}
                                   value={machine.make || ''}
+                                  autoComplete="new-password"
                                 />
                                 :
                                 <p>{machine.make}</p>
@@ -467,6 +476,7 @@ export default ({
                                   onChange={handleChangeInMachine}
                                   id={`${index}-${mIndex}-model`}
                                   value={machine.model || ''}
+                                  autoComplete="new-password"
                                 />
                                 :
                                 <p>{machine.model}</p>
@@ -478,6 +488,7 @@ export default ({
                                   onChange={handleChangeInMachine}
                                   id={`${index}-${mIndex}-location`}
                                   value={machine.location || ''}
+                                  autoComplete="new-password"
                                 />
                                 :
                                 <p>{machine.location}</p>
@@ -489,6 +500,7 @@ export default ({
                                 onChange={handleChangeInMachine}
                                 id={`${index}-${mIndex}-action`}
                                 value={machine.action || ''}
+                                autoComplete="new-password"
                                 >
                                   <option value="Release">Release</option>
                                   <option value="Upgrade to Keep">Upgrade to Keep</option>
@@ -550,6 +562,7 @@ export default ({
                     name={'name'}
                     value={(values.customer) ? values.customer.name || '' : ''}
                     list="customers"
+                    autoComplete="new-password"
                   />
                   :
                   <p>{(values.customer) ? values.customer.name || '' : ''}</p>
@@ -583,6 +596,7 @@ export default ({
                       onChange={handleChangeInCustomer}
                       name={'street'}
                       value={(values.customer) ? values.customer.street || '' : ''}
+                      autoComplete="new-password"
                     />
                     :
                     <p>{(values.customer) ? values.customer.street || '' : ''}</p>
@@ -599,6 +613,7 @@ export default ({
                     onChange={handleChangeInCustomer}
                     name={'city'}
                     value={(values.customer) ? values.customer.city || '' : ''}
+                    autoComplete="new-password"
                   />
                   :
                   <p>{(values.customer) ? values.customer.city || '' : ''}</p>
@@ -642,6 +657,7 @@ export default ({
                     name={'zip'}
                     className={(errors.zip) ? 'red' : ''}
                     value={(values.customer) ? values.customer.zip || '' : ''}
+                    autoComplete="new-password"
                   />
                   :
                   <p>{(values.customer) ? values.customer.zip || '' : ''}</p>
@@ -663,6 +679,7 @@ export default ({
                     className={(errors.phone) ? 'red' : ''}
                     value={(values.customer) ? values.customer.phone || '' : ''}
                     placeholder="xxx-xxx-xxxx"
+                    autoComplete="new-password"
                   />
                   :
                   <p>{(values.customer) ? values.customer.phone || '' : ''}</p>
@@ -683,6 +700,7 @@ export default ({
                     name={'email'}
                     className={(errors.email) ? 'red' : ''}
                     value={(values.customer) ? values.customer.email || '' : ''}
+                    autoComplete="new-password"
                   />
                   :
                   <p>{(values.customer) ? values.customer.email || '' : ''}</p>
@@ -702,6 +720,7 @@ export default ({
                     onChange={handleChangeInCustomer}
                     name={'taxID'}
                     value={(values.customer) ? values.customer.taxID || '' : ''}
+                    autoComplete="new-password"
                   />
                   :
                   <p>{(values.customer) ? values.customer.taxID || '' : ''}</p>
@@ -725,6 +744,7 @@ export default ({
                     onChange={handleChange}
                     name={'amount'}
                     value={values.amount || ''}
+                    autoComplete="new-password"
                   />
                   :
                   <p>{values.amount || ''}</p>
@@ -767,6 +787,7 @@ export default ({
                       <input
                         onChange={handleChangeInTerm}
                         value={values.term.slice(5) || ''}
+                        autoComplete="new-password"
                       />
                       :
                       <p>{values.term.slice(5) || ''}</p>
