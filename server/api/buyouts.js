@@ -1,5 +1,5 @@
 const Op = require('sequelize').Op
-const {User, Buyout, Lease, Machine, Customer, Pdf} = require('../db').db.models
+const {User, Buyout, Lease, Machine, Customer, Upload} = require('../db').db.models
 const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
@@ -120,7 +120,7 @@ module.exports = require('express').Router()
       toBeSent.leases = leases
 
       return Promise.all(toBeSent.byos.map(byo => {
-        return Pdf.findAll({
+        return Upload.findAll({
           where: {
             buyoutId: {
               [Op.eq]: byo.id

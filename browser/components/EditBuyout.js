@@ -588,21 +588,21 @@ export default ({
             </div>
           {(values.pdfs) ?
             <div className="pdfs">
-              {values.pdfs.map((pdf, index) => (
-                <div key={`pdf-${index}`} className="row">
+              {values.pdfs.map(pdf => (
+                <div key={`pdf-${pdf.id}`} className="row">
                   <div className="col-sm-3">
                     <div className="field-box">
-                      <a href={`/api/uploads/pdf/${values.id}/${pdf}?access_token=${token}`} download>{pdf}</a>
+                      <a href={`/api/uploads/${pdf.id}/${pdf.name}?access_token=${token}`} download>{pdf.name}</a>
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="field-box">
-                      <p>{values.pdfNotes[index] || ''}</p>
+                      <p>{pdf.notes || ''}</p>
                     </div>
                   </div>
                   <div className="col-sm-3" align="center">
                     <div className="field-box">
-                      <button id={`${index}-${pdf}`} className="fields-button" onClick={handleDeletePDF}>Delete</button>
+                      <button id={pdf.id} className="fields-button" onClick={handleDeletePDF}>Delete</button>
                     </div>
                   </div>
                 </div>
