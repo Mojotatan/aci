@@ -21,11 +21,6 @@ module.exports = require('express').Router()
     if (me.level !== 'Admin') res.send('Admin access required')
     if (me && me.level === 'Admin') {
 
-      // make sure folder exists
-      if (!fs.existsSync(path.resolve(__dirname, `../uploads/pdf/${req.params.id}/`))) {
-        fs.mkdirSync(path.resolve(__dirname, `../uploads/pdf/${req.params.id}`))
-      }
-
       let form = new formidable.IncomingForm()
       form.uploadDir = path.resolve(__dirname, `../uploads/pdf/${req.params.id}`)
       form.parse(req, (err, fields, files) => {

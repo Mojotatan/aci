@@ -18,7 +18,8 @@ const models = [
   require('./models/customer-model'),
   require('./models/buyout-model'),
   require('./models/lease-model'),
-  require('./models/machine-model')
+  require('./models/machine-model'),
+  require('./models/pdf-model')
 ]
 
 models.forEach(model => {
@@ -26,7 +27,7 @@ models.forEach(model => {
 })
 
 // Associations
-let {User, Dealer, Region, Branch, Application, Action, Log, Guarantee, Customer, Buyout, Lease, Machine} = db.models
+let {User, Dealer, Region, Branch, Application, Action, Log, Guarantee, Customer, Buyout, Lease, Machine, Pdf} = db.models
 
   User.belongsTo(Dealer, {as: 'dealer'})
   User.belongsTo(Region, {as: 'region'})
@@ -65,6 +66,8 @@ let {User, Dealer, Region, Branch, Application, Action, Log, Guarantee, Customer
   
   Lease.hasMany(Machine, {as: 'machines'})
   // Machine.belongsTo(Lease, {as: 'lease'})
+
+  Pdf.belongsTo(Buyout, {as: 'pdf'})
 
 
 

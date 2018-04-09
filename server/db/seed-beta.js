@@ -1,4 +1,5 @@
 const fs = require('fs')
+const rimraf = require('rimraf')
 const path = require('path')
 const jwt = require('jsonwebtoken')
 const {cert, mailTransporter} = require('../api/auth.js')
@@ -413,6 +414,11 @@ db.sync({force: true})
 })
 .then(() => {
   console.log('Database seed complete')
-  process.exit()
+  rimraf(path.resolve(__dirname, '../uploads'), err => {
+    if (err) console.error(err)
+    fs.mkdirSync(path.resolve(__dirname, '../uploads'))
+    console.log('Refreshed uploads directory')
+    process.exit()
+  })
 })
 .catch(err => console.error(err))
