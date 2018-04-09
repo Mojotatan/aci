@@ -144,6 +144,7 @@ class BuyoutContainer extends React.Component {
     let name = e.target.id.split('-')
     let leases = Array.from(this.state.leases)
     leases[name[0]][name[1]] = e.target.value
+    if (e.target.value === 'Partial') leases[name[0]].displayMachines = true
     this.setState({'leases': leases})
   }
 
@@ -282,6 +283,7 @@ class BuyoutContainer extends React.Component {
   render() {
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
+    // console.log('state', this.state)
     return(
       <div>
         <EditBuyout
