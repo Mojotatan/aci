@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize')
 
+const {getPrettyCity} = require('../../util')
+
 module.exports = db => db.define('Branch', {
   name: {
     type: Sequelize.STRING,
@@ -12,7 +14,10 @@ module.exports = db => db.define('Branch', {
     type: Sequelize.STRING
   },
   city: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    set(val) {
+      this.setDataValue('city', getPrettyCity(val)) // make sure all cities are capitalized
+    }
   },
   state: {
     type: Sequelize.STRING
