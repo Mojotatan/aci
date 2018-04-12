@@ -3378,8 +3378,10 @@ var loadByosThunk = exports.loadByosThunk = function loadByosThunk(token, callba
     return _axios2.default.post('/api/byos', { token: token }).then(function (res) {
       // expecting res to have a list of buyouts
       // and a list of lease (+ machine) associations
+      // and a list of pdf associations
       res.data.byos.forEach(function (byo, index) {
         byo.leases = res.data.leases[index];
+        byo.pdfs = res.data.pdfs[index];
       });
       dispatch(loadByos(res.data.byos));
       if (callback) callback();
@@ -29365,6 +29367,7 @@ var ApplicationContainer = function (_React$Component) {
       var name = e.target.id.split('-');
       var leases = Array.from(this.state.leases);
       leases[name[0]][name[1]] = e.target.value;
+      if (e.target.value === 'Partial') leases[name[0]].displayMachines = true;
       this.setState({ 'leases': leases });
     }
   }, {
@@ -29471,7 +29474,7 @@ var ApplicationContainer = function (_React$Component) {
     value: function validateFields() {
       var errors = {};
       if (this.state.customer && this.state.customer.zip) errors.zip = this.state.customer.zip.search(/\d\d\d\d\d|\d\d\d\d\d-\d\d\d\d/) === -1 ? true : false;
-      if (this.state.customer && this.state.customer.phone) errors.phone = this.state.customer.phone.search(/\d\d\d-\d\d\d-\d\d\d\d|\(\d\d\d\)\s\d\d\d-\d\d\d\d/) === -1 ? true : false;
+      if (this.state.customer && this.state.customer.phone) errors.phone = this.state.customer.phone.search(/\d\d\d(-|\.)\d\d\d(-|\.)\d\d\d\d|\(\d\d\d\)\s\d\d\d(-|\.)\d\d\d\d|\d\d\d\d\d\d\d\d\d\d/) === -1 ? true : false;
       if (this.state.customer && this.state.customer.email) errors.email = this.state.customer.email.search(/\w+@\w+\.\w+/) === -1 ? true : false;
 
       // if (this.state.adminMode === 'action' && this.action.status === 'Approved') errors.expiry = 
@@ -31799,233 +31802,245 @@ exports.default = function (_ref) {
             ),
             _react2.default.createElement(
               'div',
-              { className: 'col-sm-12 no-gutters' },
+              { className: 'app-bg col-sm-12' },
               _react2.default.createElement(
-                'div',
-                { className: 'app-bg col-sm-12' },
+                'form',
+                { onSubmit: handleSaveAction, autoComplete: 'off' },
                 _react2.default.createElement(
-                  'form',
-                  { onSubmit: handleSaveAction, autoComplete: 'off' },
+                  'div',
+                  { className: 'row' },
                   _react2.default.createElement(
                     'div',
-                    { className: 'row' },
+                    { className: 'col-sm-12' },
+                    _react2.default.createElement(
+                      'h3',
+                      null,
+                      values.action.id === 'new' ? 'New Credit Application' : 'Edit Credit Application'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'row' },
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-6' },
                     _react2.default.createElement(
                       'div',
-                      { className: 'col-sm-12' },
+                      { className: 'field-label' },
                       _react2.default.createElement(
-                        'h3',
+                        'label',
                         null,
-                        values.action.id === 'new' ? 'New Credit Application' : 'Edit Credit Application'
+                        'Leasing Company'
                       )
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'field-box' },
+                      _react2.default.createElement(
+                        'datalist',
+                        { id: 'leaseCompanies' },
+                        _react2.default.createElement('option', { value: 'EverBank' }),
+                        _react2.default.createElement('option', { value: 'DLL' }),
+                        _react2.default.createElement('option', { value: 'Wells' }),
+                        _react2.default.createElement('option', { value: 'USB' }),
+                        _react2.default.createElement('option', { value: 'CIT' }),
+                        _react2.default.createElement('option', { value: 'Marlin' }),
+                        _react2.default.createElement('option', { value: 'Balboa' }),
+                        _react2.default.createElement('option', { value: 'EMR' }),
+                        _react2.default.createElement('option', { value: 'Leaf' }),
+                        _react2.default.createElement('option', { value: 'Great America' }),
+                        _react2.default.createElement('option', { value: 'PNC' })
+                      ),
+                      _react2.default.createElement('input', {
+                        onChange: handleChangeAction,
+                        name: 'leasingCompany',
+                        value: values.action.leasingCompany || '',
+                        list: 'leaseCompanies',
+                        autoComplete: 'new-password'
+                      })
                     )
                   ),
                   _react2.default.createElement(
                     'div',
-                    { className: 'row' },
+                    { className: 'col-sm-6' },
                     _react2.default.createElement(
                       'div',
-                      { className: 'col-sm-6' },
+                      { className: 'field-label' },
                       _react2.default.createElement(
-                        'div',
-                        { className: 'field-label' },
-                        _react2.default.createElement(
-                          'label',
-                          null,
-                          'Leasing Company'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-box' },
-                        _react2.default.createElement('input', {
-                          onChange: handleChangeAction,
-                          name: 'leasingCompany',
-                          value: values.action.leasingCompany || '',
-                          autoComplete: 'new-password'
-                        })
+                        'label',
+                        null,
+                        'Application Number'
                       )
                     ),
                     _react2.default.createElement(
                       'div',
-                      { className: 'col-sm-6' },
+                      { className: 'field-box' },
+                      _react2.default.createElement('input', {
+                        onChange: handleChangeAction,
+                        name: 'appNumber',
+                        value: values.action.appNumber || '',
+                        autoComplete: 'new-password'
+                      })
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'row' },
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-3' },
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'field-label' },
                       _react2.default.createElement(
-                        'div',
-                        { className: 'field-label' },
-                        _react2.default.createElement(
-                          'label',
-                          null,
-                          'Application Number'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-box' },
-                        _react2.default.createElement('input', {
-                          onChange: handleChangeAction,
-                          name: 'appNumber',
-                          value: values.action.appNumber || '',
-                          autoComplete: 'new-password'
-                        })
+                        'label',
+                        null,
+                        'Status'
                       )
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'field-box' },
+                      _react2.default.createElement(
+                        'select',
+                        {
+                          onChange: handleChangeAction,
+                          name: 'status',
+                          className: 'state',
+                          value: values.action.status || ''
+                        },
+                        _react2.default.createElement(
+                          'option',
+                          { value: 'Working' },
+                          'Working'
+                        ),
+                        _react2.default.createElement(
+                          'option',
+                          { value: 'Submitted' },
+                          'Submitted'
+                        ),
+                        _react2.default.createElement(
+                          'option',
+                          { value: 'Approved' },
+                          'Approved'
+                        ),
+                        _react2.default.createElement(
+                          'option',
+                          { value: 'Hold' },
+                          'Hold'
+                        ),
+                        _react2.default.createElement(
+                          'option',
+                          { value: 'Declined' },
+                          'Declined'
+                        )
+                      )
+                    )
+                  ),
+                  values.action.status === 'Approved' ? _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-3' },
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'field-label' },
+                      _react2.default.createElement(
+                        'label',
+                        null,
+                        'Expiration Date'
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'field-box' },
+                      _react2.default.createElement('input', {
+                        onChange: handleChangeAction,
+                        name: 'expiry',
+                        value: values.action.expiry || '',
+                        placeholder: 'mm/dd/yy',
+                        autoComplete: 'new-password'
+                      })
+                    )
+                  ) : null,
+                  values.action.status === 'Approved' ? _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-6' },
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'field-label' },
+                      _react2.default.createElement(
+                        'label',
+                        null,
+                        'Legal Name'
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'field-box' },
+                      _react2.default.createElement('input', {
+                        onChange: handleChangeAction,
+                        name: 'legalName',
+                        value: values.action.legalName || '',
+                        autoComplete: 'new-password'
+                      })
+                    )
+                  ) : null
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'row' },
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-12' },
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'field-label' },
+                      _react2.default.createElement(
+                        'label',
+                        null,
+                        'Notes'
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      { className: 'field-desc' },
+                      _react2.default.createElement('textarea', {
+                        onChange: handleChangeAction,
+                        name: 'notes',
+                        value: values.action.notes || ''
+                      })
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'row' },
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-4' },
+                    _react2.default.createElement(
+                      'span',
+                      { id: 'cancel-button', onClick: handleAdminMode },
+                      'Cancel'
                     )
                   ),
                   _react2.default.createElement(
                     'div',
-                    { className: 'row' },
+                    { className: 'col-sm-4', align: 'right' },
                     _react2.default.createElement(
-                      'div',
-                      { className: 'col-sm-3' },
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-label' },
-                        _react2.default.createElement(
-                          'label',
-                          null,
-                          'Status'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-box' },
-                        _react2.default.createElement(
-                          'select',
-                          {
-                            onChange: handleChangeAction,
-                            name: 'status',
-                            className: 'state',
-                            value: values.action.status || ''
-                          },
-                          _react2.default.createElement(
-                            'option',
-                            { value: 'Working' },
-                            'Working'
-                          ),
-                          _react2.default.createElement(
-                            'option',
-                            { value: 'Submitted' },
-                            'Submitted'
-                          ),
-                          _react2.default.createElement(
-                            'option',
-                            { value: 'Approved' },
-                            'Approved'
-                          ),
-                          _react2.default.createElement(
-                            'option',
-                            { value: 'Hold' },
-                            'Hold'
-                          ),
-                          _react2.default.createElement(
-                            'option',
-                            { value: 'Declined' },
-                            'Declined'
-                          )
-                        )
-                      )
-                    ),
-                    values.action.status === 'Approved' ? _react2.default.createElement(
-                      'div',
-                      { className: 'col-sm-3' },
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-label' },
-                        _react2.default.createElement(
-                          'label',
-                          null,
-                          'Expiration Date'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-box' },
-                        _react2.default.createElement('input', {
-                          onChange: handleChangeAction,
-                          name: 'expiry',
-                          value: values.action.expiry || '',
-                          placeholder: 'mm/dd/yy',
-                          autoComplete: 'new-password'
-                        })
-                      )
-                    ) : null,
-                    values.action.status === 'Approved' ? _react2.default.createElement(
-                      'div',
-                      { className: 'col-sm-6' },
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-label' },
-                        _react2.default.createElement(
-                          'label',
-                          null,
-                          'Legal Name'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-box' },
-                        _react2.default.createElement('input', {
-                          onChange: handleChangeAction,
-                          name: 'legalName',
-                          value: values.action.legalName || '',
-                          autoComplete: 'new-password'
-                        })
-                      )
-                    ) : null
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'row' },
-                    _react2.default.createElement(
-                      'div',
-                      { className: 'col-sm-12' },
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-label' },
-                        _react2.default.createElement(
-                          'label',
-                          null,
-                          'Notes'
-                        )
-                      ),
-                      _react2.default.createElement(
-                        'div',
-                        { className: 'field-desc' },
-                        _react2.default.createElement('textarea', {
-                          onChange: handleChangeAction,
-                          name: 'notes',
-                          value: values.action.notes || ''
-                        })
-                      )
+                      'button',
+                      { className: 'send-button' },
+                      'Save'
                     )
                   ),
                   _react2.default.createElement(
                     'div',
-                    { className: 'row' },
+                    { className: 'col-sm-4', align: 'right' },
                     _react2.default.createElement(
-                      'div',
-                      { className: 'col-sm-4' },
-                      _react2.default.createElement(
-                        'span',
-                        { id: 'cancel-button', onClick: handleAdminMode },
-                        'Cancel'
-                      )
-                    ),
-                    _react2.default.createElement(
-                      'div',
-                      { className: 'col-sm-4', align: 'right' },
-                      _react2.default.createElement(
-                        'button',
-                        { className: 'send-button' },
-                        'Save'
-                      )
-                    ),
-                    _react2.default.createElement(
-                      'div',
-                      { className: 'col-sm-4', align: 'right' },
-                      _react2.default.createElement(
-                        'button',
-                        { className: 'super send-button', onClick: handleSaveAndNotify },
-                        'Save and Notify Rep'
-                      )
+                      'button',
+                      { className: 'super send-button', onClick: handleSaveAndNotify },
+                      'Save and Notify Rep'
                     )
                   )
                 )
@@ -33251,8 +33266,6 @@ var _utility = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33345,7 +33358,7 @@ var BuyoutContainer = function (_React$Component) {
     value: function validateFields() {
       var errors = {};
       if (this.state.customer && this.state.customer.zip) errors.zip = this.state.customer.zip.search(/\d\d\d\d\d|\d\d\d\d\d-\d\d\d\d/) === -1 ? true : false;
-      if (this.state.customer && this.state.customer.phone) errors.phone = this.state.customer.phone.search(/\d\d\d-\d\d\d-\d\d\d\d|\(\d\d\d\)\s\d\d\d-\d\d\d\d/) === -1 ? true : false;
+      if (this.state.customer && this.state.customer.phone) errors.phone = this.state.customer.phone.search(/\d\d\d(-|\.)\d\d\d(-|\.)\d\d\d\d|\(\d\d\d\)\s\d\d\d(-|\.)\d\d\d\d|\d\d\d\d\d\d\d\d\d\d/) === -1 ? true : false;
       if (this.state.customer && this.state.customer.email) errors.email = this.state.customer.email.search(/\w+@\w+\.\w+/) === -1 ? true : false;
       return errors;
     }
@@ -33408,6 +33421,7 @@ var BuyoutContainer = function (_React$Component) {
       var name = e.target.id.split('-');
       var leases = Array.from(this.state.leases);
       leases[name[0]][name[1]] = e.target.value;
+      if (e.target.value === 'Partial') leases[name[0]].displayMachines = true;
       this.setState({ 'leases': leases });
     }
   }, {
@@ -33481,19 +33495,14 @@ var BuyoutContainer = function (_React$Component) {
   }, {
     key: 'handleDeletePDF',
     value: function handleDeletePDF(e) {
-      var index = e.target.id.split('-')[0];
-      var name = e.target.id.split('-')[1];
-      var pdfs = Array.from(this.state.pdfs);
-      var pdfNotes = Array.from(this.state.pdfNotes);
+      var _this4 = this;
 
-      pdfs = [].concat(_toConsumableArray(pdfs.slice(0, index)), _toConsumableArray(pdfs.slice(index + 1)));
-      pdfNotes = [].concat(_toConsumableArray(pdfNotes.slice(0, index)), _toConsumableArray(pdfNotes.slice(index + 1)));
+      // let pdfs = Array.from(this.state.pdfs)
 
-      // this.setState({'pdfNotes': pdfNotes, 'pdfs': pdfs})
-
-      this.props.saveByoThunk(this.props.token, [this.state, { pdfNotes: pdfNotes, pdfs: pdfs }], [this.state.customer]);
-      _axios2.default.delete('/api/uploads/pdf/' + this.state.id + '/' + name + '?access_token=' + this.props.token).then(function (res) {
+      // this.props.saveByoThunk(this.props.token, [this.state, {pdfNotes, pdfs}], [this.state.customer])
+      _axios2.default.delete('/api/uploads/' + e.target.id + '?access_token=' + this.props.token).then(function (res) {
         console.log(res.data);
+        _this4.props.loadByosThunk(_this4.props.token);
       });
     }
   }, {
@@ -33509,16 +33518,16 @@ var BuyoutContainer = function (_React$Component) {
   }, {
     key: 'handleUploadPDF',
     value: function handleUploadPDF(e) {
-      var _this4 = this;
+      var _this5 = this;
 
       e.preventDefault();
       if (this.state.upload) {
         var formData = new FormData();
         formData.append('file', this.state.upload);
         formData.append('note', this.state.note);
-        _axios2.default.post('/api/uploads/pdf/' + this.state.id + '?access_token=' + this.props.token, formData, { 'content-type': 'multipart/form-data' }).then(function (res) {
-          if (res.data.color) _this4.props.throwAlert(res.data.color, res.data.message);else console.log(res.data);
-          _this4.props.loadByosThunk(_this4.props.token);
+        _axios2.default.post('/api/uploads/buyout/' + this.state.id + '?access_token=' + this.props.token, formData, { 'content-type': 'multipart/form-data' }).then(function (res) {
+          if (res.data.color) _this5.props.throwAlert(res.data.color, res.data.message);else console.log(res.data);
+          _this5.props.loadByosThunk(_this5.props.token);
         }).catch(function (err) {
           console.error(err);
         });
@@ -33556,6 +33565,7 @@ var BuyoutContainer = function (_React$Component) {
       var disabled = Object.keys(errors).some(function (n) {
         return errors[n];
       });
+      // console.log('state', this.state.pdfs)
       return _react2.default.createElement(
         'div',
         null,
@@ -34544,10 +34554,10 @@ exports.default = function (_ref) {
           values.pdfs ? _react2.default.createElement(
             'div',
             { className: 'pdfs' },
-            values.pdfs.map(function (pdf, index) {
+            values.pdfs.map(function (pdf) {
               return _react2.default.createElement(
                 'div',
-                { key: 'pdf-' + index, className: 'row' },
+                { key: 'pdf-' + pdf.id, className: 'row' },
                 _react2.default.createElement(
                   'div',
                   { className: 'col-sm-3' },
@@ -34556,8 +34566,8 @@ exports.default = function (_ref) {
                     { className: 'field-box' },
                     _react2.default.createElement(
                       'a',
-                      { href: '/api/uploads/pdf/' + values.id + '/' + pdf + '?access_token=' + token, download: true },
-                      pdf
+                      { href: '/api/uploads/' + pdf.id + '/' + pdf.name + '?access_token=' + token, download: true },
+                      pdf.name
                     )
                   )
                 ),
@@ -34570,7 +34580,7 @@ exports.default = function (_ref) {
                     _react2.default.createElement(
                       'p',
                       null,
-                      values.pdfNotes[index] || ''
+                      pdf.notes || ''
                     )
                   )
                 ),
@@ -34582,7 +34592,7 @@ exports.default = function (_ref) {
                     { className: 'field-box' },
                     _react2.default.createElement(
                       'button',
-                      { id: index + '-' + pdf, className: 'fields-button', onClick: handleDeletePDF },
+                      { id: pdf.id, className: 'fields-button', onClick: handleDeletePDF },
                       'Delete'
                     )
                   )
@@ -36235,7 +36245,7 @@ exports.default = function (_ref) {
         },
         _react2.default.createElement("img", { className: "left", src: "/assets/img/" + (alert.color === 'red' ? 'Cross' : 'Check') + "_Circle.svg" }),
         alert.message,
-        _react2.default.createElement("img", { className: "right", src: "/assets/img/Cross_(error).svg" })
+        _react2.default.createElement("img", { className: "right", src: "/assets/img/Cross_(Error).svg" })
       );
     })
   );
