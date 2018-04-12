@@ -95,7 +95,6 @@ export const cleanHeader = key => {
   return clean
 }
 
-
 // Password must consist of at least 8 characters with at least 1 letter and 1 number
 
 export const pwCheck = (pw) => {

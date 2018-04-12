@@ -71,8 +71,10 @@ export const loadByosThunk = (token, callback) => {
     .then(res => {
       // expecting res to have a list of buyouts
       // and a list of lease (+ machine) associations
+      // and a list of pdf associations
       res.data.byos.forEach((byo, index) => {
         byo.leases = res.data.leases[index]
+        byo.pdfs = res.data.pdfs[index]
       })
       dispatch(loadByos(res.data.byos))
       if (callback) callback()

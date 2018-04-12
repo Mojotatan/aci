@@ -1,5 +1,5 @@
 const Op = require('sequelize').Op
-const {User, Buyout, Lease, Machine, Customer} = require('../db').db.models
+const {User, Buyout, Lease, Machine, Customer, Upload} = require('../db').db.models
 const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
@@ -96,7 +96,7 @@ module.exports = require('express').Router()
         order: [['createdAt', 'ASC']]
       })
     })
-    .then((byoData) => {
+    .then(byoData => {
       toBeSent.byos = byoData
       // filter out draft buyouts for admins unless they are the creator
       if (me.level === 'Admin') {
@@ -118,6 +118,19 @@ module.exports = require('express').Router()
     })
     .then(leases => {
       toBeSent.leases = leases
+
+      return Promise.all(toBeSent.byos.map(byo => {
+        return Upload.findAll({
+          where: {
+            buyoutId: {
+              [Op.eq]: byo.id
+            }
+          }
+        })
+      }))
+    })
+    .then(pdfs => {
+      toBeSent.pdfs = pdfs
 
       res.send(toBeSent)
     })

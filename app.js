@@ -1,6 +1,9 @@
 const express = require('express')
+const https = require('https')
+const fs = require('fs')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const helmet = require('helmet')
 const path = require('path')
 const nunjucks = require('nunjucks')
 
@@ -20,6 +23,8 @@ db.sync()
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({extended: true}))
 
+    .use(helmet())
+
     .use(express.static('public'))
 
     .set('view engine', 'html')
@@ -28,6 +33,10 @@ db.sync()
 
     // Routes
     .use('/api', require('./server/api/api'))
+
+    .get('/pulse', (req, res) => {
+      res.sendStatus(200)
+    })
 
     .get('*', (req, res) => {
       res.sendFile(path.resolve(__dirname, './public/index.html'))

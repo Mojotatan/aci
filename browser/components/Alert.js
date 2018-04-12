@@ -10,7 +10,7 @@ export default ({alerts, handleClose}) => (
       >
         <img className="left" src={`/assets/img/${(alert.color === 'red') ? 'Cross' : 'Check'}_Circle.svg`}/>
         {alert.message}
-        <img className="right" src="/assets/img/Cross_(error).svg"/>
+        <img className="right" src="/assets/img/Cross_(Error).svg"/>
       </div>
     ))}
   </div>

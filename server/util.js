@@ -34,7 +34,14 @@ const forceDate = (dat) => {
   } else return dat
 }
 
+// take a string and capitalize all the first letters
+const getPrettyCity = city => {
+  if (city === '') return ''
+  else return city.split(' ').map(word => word[0].toUpperCase() + word.slice(1)).join(' ')
+}
+
 module.exports = {
   getDate,
-  forceDate
+  forceDate,
+  getPrettyCity
 }

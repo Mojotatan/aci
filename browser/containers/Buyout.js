@@ -92,7 +92,7 @@ class BuyoutContainer extends React.Component {
   validateFields() {
     let errors = {}
     if (this.state.customer && this.state.customer.zip) errors.zip = (this.state.customer.zip.search(/\d\d\d\d\d|\d\d\d\d\d-\d\d\d\d/) === -1) ? true : false
-    if (this.state.customer && this.state.customer.phone) errors.phone = (this.state.customer.phone.search(/\d\d\d-\d\d\d-\d\d\d\d|\(\d\d\d\)\s\d\d\d-\d\d\d\d/) === -1) ? true : false
+    if (this.state.customer && this.state.customer.phone) errors.phone = (this.state.customer.phone.search(/\d\d\d(-|\.)\d\d\d(-|\.)\d\d\d\d|\(\d\d\d\)\s\d\d\d(-|\.)\d\d\d\d|\d\d\d\d\d\d\d\d\d\d/) === -1) ? true : false
     if (this.state.customer && this.state.customer.email) errors.email = (this.state.customer.email.search(/\w+@\w+\.\w+/) === -1) ? true : false
     return errors
   }
@@ -144,6 +144,7 @@ class BuyoutContainer extends React.Component {
     let name = e.target.id.split('-')
     let leases = Array.from(this.state.leases)
     leases[name[0]][name[1]] = e.target.value
+    if (e.target.value === 'Partial') leases[name[0]].displayMachines = true
     this.setState({'leases': leases})
   }
 
@@ -210,20 +211,13 @@ class BuyoutContainer extends React.Component {
   }
   
   handleDeletePDF(e) {
-    let index = e.target.id.split('-')[0]
-    let name = e.target.id.split('-')[1]
-    let pdfs = Array.from(this.state.pdfs)
-    let pdfNotes = Array.from(this.state.pdfNotes)
-    
-    pdfs = [...pdfs.slice(0, index), ...pdfs.slice(index + 1)]
-    pdfNotes = [...pdfNotes.slice(0, index), ...pdfNotes.slice(index + 1)]
-    
-    // this.setState({'pdfNotes': pdfNotes, 'pdfs': pdfs})
-    
-    this.props.saveByoThunk(this.props.token, [this.state, {pdfNotes, pdfs}], [this.state.customer])
-    axios.delete(`/api/uploads/pdf/${this.state.id}/${name}?access_token=${this.props.token}`)
+    // let pdfs = Array.from(this.state.pdfs)
+        
+    // this.props.saveByoThunk(this.props.token, [this.state, {pdfNotes, pdfs}], [this.state.customer])
+    axios.delete(`/api/uploads/${e.target.id}?access_token=${this.props.token}`)
     .then(res => {
       console.log(res.data)
+      this.props.loadByosThunk(this.props.token)
     })
   }
 
@@ -241,7 +235,7 @@ class BuyoutContainer extends React.Component {
       let formData = new FormData()
       formData.append('file', this.state.upload)
       formData.append('note', this.state.note)
-      axios.post(`/api/uploads/pdf/${this.state.id}?access_token=${this.props.token}`, formData, {'content-type': 'multipart/form-data'})
+      axios.post(`/api/uploads/buyout/${this.state.id}?access_token=${this.props.token}`, formData, {'content-type': 'multipart/form-data'})
       .then(res => {
         if (res.data.color) this.props.throwAlert(res.data.color, res.data.message)
         else console.log(res.data)
@@ -282,6 +276,7 @@ class BuyoutContainer extends React.Component {
   render() {
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
+    // console.log('state', this.state.pdfs)
     return(
       <div>
         <EditBuyout

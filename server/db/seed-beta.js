@@ -1,4 +1,5 @@
 const fs = require('fs')
+const rimraf = require('rimraf')
 const path = require('path')
 const jwt = require('jsonwebtoken')
 const {cert, mailTransporter} = require('../api/auth.js')
@@ -31,25 +32,20 @@ const generateUsers = () => {
   // sales team 3
   builder('Michael', 'Lepper', 'Sales Rep', 'mlepper@impactnetworking.com', '630-929-5034', 'bob')
   builder('Tony', 'Deszcz', 'Sales Rep', 'tdeszcz@impactnetworking.com', '630-929-5036', 'bob')
-  builder('Patrick', 'Fay', 'Sales Rep', 'kfay@impactnetworking.com', '630-332-9635', 'bob')
   builder('Michael', 'Flores', 'Sales Rep', 'mflores@impactnetworking.com', '630-929-5063', 'bob')
   builder('Matthew', 'Harrigan', 'Sales Rep', 'mharrigan@impactnetworking.com', '630-332-9633', 'bob')
   builder('Eric', 'Janik', 'Sales Rep', 'ejanik@impactnetworking.com', '630-929-5059', 'bob')
   builder('Jack', 'Rante', 'Sales Rep', 'jrante@impactnetworking.com', '630-332-9634', 'bob')
-  // builder('Anthony', 'Sarlo', 'Sales Rep', 'asarlo@impactnetworking.com', '630-929-5012', 'bob')
-  builder('Seth', 'McDonald', 'Sales Rep', 'smcdonald@impactnetworking.com', '630-929-5052', 'bob')
   builder('Kevin', 'Tennenbaum', 'Sales Rep', 'ktennenbaum@impactnetworking.com', '630-929-5028', 'bob')
   
   // sales team 4
   builder('Jacob', 'Furgason', 'Sales Rep', 'jfurgason@impactnetworking.com', '630-929-5046', 'bob')
-  builder('Anthony', 'Cetera', 'Sales Rep', 'acetera@impactnetworking.com', '630-3657647', 'bob')
   builder('Caitlin', 'Cima', 'Sales Rep', 'ccima@impactnetworking.com', '630-929-5072', 'bob')
   builder('Cory', 'Conner', 'Sales Rep', 'cconner@impactnetworking.com', '630-929-5058', 'bob')
   builder('Jakob', 'Gregorich', 'Sales Rep', 'jgregorich@impactnetworking.com', '630-365-7638', 'bob')
-  // builder('Max', 'McMahon', 'Sales Rep', 'mmcmahon@impactnetworking.com', '630-929-5006', 'bob')
   builder('Jennifer', 'Reardon', 'Sales Rep', 'jreardon@impactnetworking.com', '630-929-5048', 'bob')
   builder('Patrick', 'Scotkovsky', 'Sales Rep', 'pscotkovsky@impactnetworking.com', '630-929-5043', 'bob')
-  builder('Richard', 'Treiber', 'Sales Rep', 'rtreiber@impactnetworking.com', '815-255-8384', 'bob')
+  // builder('Richard', 'Treiber', 'Sales Rep', 'rtreiber@impactnetworking.com', '815-255-8384', 'bob')
 
   return arr
 }
@@ -413,6 +409,11 @@ db.sync({force: true})
 })
 .then(() => {
   console.log('Database seed complete')
-  process.exit()
+  rimraf(path.resolve(__dirname, '../uploads'), err => {
+    if (err) console.error(err)
+    fs.mkdirSync(path.resolve(__dirname, '../uploads'))
+    console.log('Refreshed uploads directory')
+    process.exit()
+  })
 })
 .catch(err => console.error(err))

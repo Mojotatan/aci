@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize')
 
+const {getPrettyCity} = require('../../util')
+
 module.exports = db => db.define('Customer', {
   name: {
     type: Sequelize.STRING // no strict validation but attempting to save a customer with no name thru
@@ -12,7 +14,10 @@ module.exports = db => db.define('Customer', {
     type: Sequelize.STRING
   },
   city: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    set(val) {
+      this.setDataValue('city', getPrettyCity(val)) // make sure all cities are capitalized
+    }
   },
   state: {
     type: Sequelize.STRING
@@ -22,7 +27,6 @@ module.exports = db => db.define('Customer', {
   },
   email: {
     type: Sequelize.STRING,
-    // validation removed because it was causing problems on front end
     validate: {
       isEmail: true,
     }

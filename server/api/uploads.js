@@ -1,8 +1,9 @@
 const formidable = require('formidable')
 const fs = require('fs')
+const rimraf = require('rimraf')
 const path = require('path')
 const Op = require('sequelize').Op
-const {Buyout} = require('../db').db.models
+const {Buyout, Upload} = require('../db').db.models
 const {isLoggedIn, isAdmin, whoAmI} = require('./auth')
 
 module.exports = require('express').Router()
@@ -15,81 +16,94 @@ module.exports = require('express').Router()
 
   // not using middleware because access token had to be on url and not req.body
 
-  .post('/pdf/:id', /*isLoggedIn, isAdmin,*/ (req, res) => {
+  .post('/buyout/:id', /*isLoggedIn, isAdmin,*/ (req, res) => {
     let me = whoAmI(req.query.access_token)
     if (!me) res.send('Please log in')
     if (me.level !== 'Admin') res.send('Admin access required')
     if (me && me.level === 'Admin') {
 
-      // make sure folder exists
-      if (!fs.existsSync(path.resolve(__dirname, `../uploads/pdf/${req.params.id}/`))) {
-        fs.mkdirSync(path.resolve(__dirname, `../uploads/pdf/${req.params.id}`))
-      }
-
-      let form = new formidable.IncomingForm()
-      form.uploadDir = path.resolve(__dirname, `../uploads/pdf/${req.params.id}`)
-      form.parse(req, (err, fields, files) => {
-        let oldPath = files.file.path
-        let newPath = path.resolve(__dirname, `../uploads/pdf/${req.params.id}/${files.file.name}`)
-        fs.rename(oldPath, newPath, err => {
-          if (err) res.send({color: 'red', message: 'Something went wrong with the upload'})
-          else {
-            let fileName = newPath.split('/').pop() // sanitizes malicious file.name, hopefully
-            Buyout.findById(Number(req.params.id))
-            .then(byo => {
-              return Buyout.update({
-                pdfs: [...byo.pdfs, fileName],
-                pdfNotes: [...byo.pdfNotes, fields.note]
+      Upload.create({buyoutId: Number(req.params.id)}, {returning: true})
+      .then(newUpload => {
+        fs.mkdirSync(path.resolve(__dirname, `../uploads/${newUpload.id}`))
+        let form = new formidable.IncomingForm()
+        form.uploadDir = path.resolve(__dirname, `../uploads/${newUpload.id}`)
+        form.parse(req, (err, fields, files) => {
+          let oldPath = files.file.path
+          // console.log('fields', fields)
+          // console.log('files', files)
+          let newPath = path.resolve(__dirname, `../uploads/${newUpload.id}/${files.file.name}`)
+          fs.rename(oldPath, newPath, err => {
+            if (err) res.send({color: 'red', message: 'Something went wrong with the upload'})
+            else {
+              let fileName = newPath.split('/').pop()
+              Upload.update({
+                name: fileName,
+                notes: fields.note
               }, {
                 where: {
                   id: {
-                    [Op.eq]: Number(req.params.id)
+                    [Op.eq]: newUpload.id
                   }
                 },
                 returning: true
               })
-            })
-            .then(data => {
-              res.send({color: 'green', message: 'File uploaded successfully'})
-            })
-            .catch(err => {
-              console.error(err)
-              res.send({color: 'red', message: 'Something went wrong with the database'})
-            })
-          }
+              .then(data => {
+                res.send({color: 'green', message: 'File uploaded successfully'})
+              })
+              .catch(err => {
+                console.error(err)
+                res.send({color: 'red', message: 'Something went wrong with the database'})
+              })
+            }
+          })
         })
+      })
+      .catch(err => {
+        console.error(err)
+        res.send({color: 'red', message: 'Something went wrong with the database'})
       })
     }
   })
 
-  .get('/pdf/:id/:name', /*isLoggedIn, isAdmin,*/ (req, res) => {
+  .get('/:id/:name', /*isLoggedIn, isAdmin,*/ (req, res) => {
     let me = whoAmI(req.query.access_token)
     if (!me) res.send('Please log in')
     if (me.level !== 'Admin') res.send('Admin access required')
     if (me && me.level === 'Admin') {
 
-      let filePath = path.resolve(__dirname, `../uploads/pdf/${req.params.id}/${req.params.name}`)
+      let filePath = path.resolve(__dirname, `../uploads/${req.params.id}/${req.params.name}`)
       if (fs.existsSync(filePath)) {
         res.sendFile(filePath)
       } else {
-        res.send('no such file found')
+        res.send('No such file found')
       }
     }
   })
 
-  .delete('/pdf/:id/:name', /*isLoggedIn, isAdmin,*/ (req, res) => {
+  .delete('/:id', /*isLoggedIn, isAdmin,*/ (req, res) => {
     let me = whoAmI(req.query.access_token)
     if (!me) res.send('Please log in')
     if (me.level !== 'Admin') res.send('Admin access required')
     if (me && me.level === 'Admin') {
 
-      let filePath = path.resolve(__dirname, `../uploads/pdf/${req.params.id}/${req.params.name}`)
-      if (fs.existsSync(filePath)) {
-        fs.unlink(filePath, (err) => {if (err) console.error(err)})
-        res.send('success')
-      } else {
-        res.send('no such file found')
-      }
+      Upload.destroy({
+        where: {
+          id: {
+            [Op.eq]: Number(req.params.id)
+          }
+        }
+      })
+      .then(success => {
+        let filePath = path.resolve(__dirname, `../uploads/${req.params.id}`)
+        rimraf(filePath, err => {
+          if (err) res.send(err)
+          else res.send('success')
+        })
+      })
+      .catch(err => {
+        console.error(err)
+        res.send(err)
+      })
     }
   })
   // if (byo.pdf !== fileName) { // delete previous pdf

@@ -85,6 +85,7 @@ class ApplicationContainer extends React.Component {
     let name = e.target.id.split('-')
     let leases = Array.from(this.state.leases)
     leases[name[0]][name[1]] = e.target.value
+    if (e.target.value === 'Partial') leases[name[0]].displayMachines = true
     this.setState({'leases': leases})
   }
 
@@ -186,7 +187,7 @@ class ApplicationContainer extends React.Component {
   validateFields() {
     let errors = {}
     if (this.state.customer && this.state.customer.zip) errors.zip = (this.state.customer.zip.search(/\d\d\d\d\d|\d\d\d\d\d-\d\d\d\d/) === -1) ? true : false
-    if (this.state.customer && this.state.customer.phone) errors.phone = (this.state.customer.phone.search(/\d\d\d-\d\d\d-\d\d\d\d|\(\d\d\d\)\s\d\d\d-\d\d\d\d/) === -1) ? true : false
+    if (this.state.customer && this.state.customer.phone) errors.phone = (this.state.customer.phone.search(/\d\d\d(-|\.)\d\d\d(-|\.)\d\d\d\d|\(\d\d\d\)\s\d\d\d(-|\.)\d\d\d\d|\d\d\d\d\d\d\d\d\d\d/) === -1) ? true : false
     if (this.state.customer && this.state.customer.email) errors.email = (this.state.customer.email.search(/\w+@\w+\.\w+/) === -1) ? true : false
 
     // if (this.state.adminMode === 'action' && this.action.status === 'Approved') errors.expiry = 
