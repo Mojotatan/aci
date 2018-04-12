@@ -196,7 +196,7 @@ export default ({
         <div id="cancel" className="exit-lightbox" onClick={handleAdminMode}>
           <img id="cancel" src="/assets/img/Cross_Reverse.svg" />
         </div>
-        <div className="col-sm-12 no-gutters">
+        {/* <div className="col-sm-12 no-gutters"> */}
           <div className="app-bg col-sm-12">
             <form onSubmit={handleSaveAction} autoComplete="off">
               <div className="row">
@@ -224,10 +224,24 @@ export default ({
                     <label>Leasing Company</label>
                   </div>
                   <div className="field-box">
+                  <datalist id="leaseCompanies">
+                    <option value="EverBank"></option>
+                    <option value="DLL"></option>
+                    <option value="Wells"></option>
+                    <option value="USB"></option>
+                    <option value="CIT"></option>
+                    <option value="Marlin"></option>
+                    <option value="Balboa"></option>
+                    <option value="EMR"></option>
+                    <option value="Leaf"></option>
+                    <option value="Great America"></option>
+                    <option value="PNC"></option>
+                  </datalist>
                     <input
                       onChange={handleChangeAction}
                       name="leasingCompany"
                       value={values.action.leasingCompany || ''}
+                      list="leaseCompanies"
                       autoComplete="new-password"
                     />
                   </div>
@@ -329,7 +343,7 @@ export default ({
               </div>
             </form>
           </div>
-        </div>
+        {/* </div> */}
       </div>
 
       </div>
