@@ -108,6 +108,9 @@ If process.env variables are getting overwritten or otherwise misbehaving, set u
 
 7. Start Passenger
 
+Bonus Round
+8. [Use certbot to set up HTTPS](https://medium.com/@yash.kulshrestha/using-lets-encrypt-with-express-e069c7abe625)
+
 **How to update on a Remote Server**
 1. Download the updates -- make sure you download the production branch
 
