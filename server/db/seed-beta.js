@@ -33,7 +33,6 @@ const generateUsers = () => {
   builder('Michael', 'Lepper', 'Sales Rep', 'mlepper@impactnetworking.com', '630-929-5034', 'bob')
   builder('Tony', 'Deszcz', 'Sales Rep', 'tdeszcz@impactnetworking.com', '630-929-5036', 'bob')
   builder('Michael', 'Flores', 'Sales Rep', 'mflores@impactnetworking.com', '630-929-5063', 'bob')
-  builder('Matthew', 'Harrigan', 'Sales Rep', 'mharrigan@impactnetworking.com', '630-332-9633', 'bob')
   builder('Eric', 'Janik', 'Sales Rep', 'ejanik@impactnetworking.com', '630-929-5059', 'bob')
   builder('Jack', 'Rante', 'Sales Rep', 'jrante@impactnetworking.com', '630-332-9634', 'bob')
   builder('Kevin', 'Tennenbaum', 'Sales Rep', 'ktennenbaum@impactnetworking.com', '630-929-5028', 'bob')
@@ -334,9 +333,6 @@ db.sync({force: true})
 
 
   console.log('Setting associations...')
-  // return Promise.all([
-  //   // seedData.users[0].setDealer(seedData.dealers[0]),
-  // ])
   return Promise.all(seedData.regions.map(reg => {
     return reg.setDealer(seedData.dealers[0])
   }))
@@ -385,15 +381,16 @@ db.sync({force: true})
   })
   .then(() => {
     return Promise.all([
-      seedData.users[5].setUnderlings([seedData.users[6], seedData.users[15]]),
-      seedData.users[6].setUnderlings(seedData.users.slice(7, 15)),
-      seedData.users[15].setUnderlings(seedData.users.slice(16))
+      seedData.users[5].setUnderlings([seedData.users[6], seedData.users[12]]),
+      seedData.users[6].setUnderlings(seedData.users.slice(7, 12)),
+      seedData.users[12].setUnderlings(seedData.users.slice(13))
     ])
   })
 })
 .then(() => {
   console.log('Sending emails to new users...')
   return Promise.all(seedData.users.slice(3).map(usr => {
+    // let url = 'http://localhost:1337/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '24h'})
     let url = 'http://myadmindev.xyz/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '24h'})
     let contents = `<!DOCTYPE html><html><p>A new account has been created for you at MyAdminCentral</p><p>To set the password on this account, click <a href="${url}">${url}</a></p><p>If this link does not work, please visit <a>MyAdminCentral</a> and click "I forgot my password".</html>`
     let message = {
@@ -401,7 +398,6 @@ db.sync({force: true})
       to: usr.email,
       // to: 'tatan42@gmail.com',
       subject: 'Account Created at MyAdminCentral',
-      // text: usr.email,
       html: contents
     }
     return mailTransporter.sendMail(message)
