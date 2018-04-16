@@ -108,6 +108,9 @@ If process.env variables are getting overwritten or otherwise misbehaving, set u
 
 7. Start Passenger
 
+Bonus Round
+8. [Use certbot to set up HTTPS](https://medium.com/@yash.kulshrestha/using-lets-encrypt-with-express-e069c7abe625)
+
 **How to update on a Remote Server**
 1. Download the updates -- make sure you download the production branch
 
@@ -121,6 +124,10 @@ npm install
 3. Restart Passenger
 
 ```
+passenger-config restart-app
+```
+or
+```
 rm tmp/restart.txt
 touch tmp/restart.txt
 ```
@@ -130,4 +137,15 @@ touch tmp/restart.txt
 *cough cough*
 ```
 node -v
+```
+
+If you need to restart the Passenger instance (after changing values in Passengerfile.json, for example):
+```
+kill <pid>
+passenger start
+```
+
+You can find the pid in the pid file or with
+```
+ps aux | grep passenger
 ```

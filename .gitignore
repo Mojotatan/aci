@@ -15,3 +15,15 @@ server/uploads
 passenger.*
 
 tmp/*
+
+certbot-auto
+
+.well-known/*
+
+sslcert/*
+
+log
+
+pid
+
+Passengerfile.json
