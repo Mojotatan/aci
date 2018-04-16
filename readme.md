@@ -124,6 +124,10 @@ npm install
 3. Restart Passenger
 
 ```
+passenger-config restart-app
+```
+or
+```
 rm tmp/restart.txt
 touch tmp/restart.txt
 ```
@@ -133,4 +137,15 @@ touch tmp/restart.txt
 *cough cough*
 ```
 node -v
+```
+
+If you need to restart the Passenger instance (after changing values in Passengerfile.json, for example):
+```
+kill <pid>
+passenger start
+```
+
+You can find the pid in the pid file or with
+```
+ps aux | grep passenger
 ```

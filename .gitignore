@@ -20,4 +20,12 @@ tmp/*
 
 certbot-auto
 
-sslcert
+.well-known/*
+
+sslcert/*
+
+log
+
+pid
+
+Passengerfile.json
