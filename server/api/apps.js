@@ -143,7 +143,7 @@ module.exports = require('express').Router()
             }
           },
           include: ['admin'],
-          order: [['date', 'DESC']]
+          order: [['date', 'DESC'], ['createdAt', 'DESC']]
         })
       }))
     })
