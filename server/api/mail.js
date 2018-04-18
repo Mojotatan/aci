@@ -63,12 +63,13 @@ module.exports = require('express').Router()
     let message = {
       from: 'team@myadmindev.xyz',
       to: req.body.to,
+      // to: 'tatan42@gmail.com',
       cc: req.body.cc,
-      bcc: [me.email, 'team@myadmincentral.com'],
+      bcc: ['team@myadmincentral.com'],
       // bcc: 'jbyrd@impactnetworking.com',
       subject: req.body.subject,
-      text: req.body.text,
-      html: req.body.html + mailFooter,
+      // text: req.body.text,
+      html: req.body.html.split('\n').join('<br>') + mailFooter,
       attachments: [{
         filename: 'myadmin_logo.png',
         path: path.resolve(__dirname, '../../public/assets/img/myadmin_logo.png'),

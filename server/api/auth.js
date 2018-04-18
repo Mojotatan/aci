@@ -33,7 +33,8 @@ const mailTransporter = nodemailer.createTransport({
   secure: true
 })
 
-const mailFooter = `<img style="border-bottom:1px solid black;width: 235px;" src="cid:logo" />
+const mailFooter = `<br><br>
+<img style="border-bottom:1px solid black;width: 235px;" src="cid:logo" /><br>
 Admin Central, LLC<br>
 Corporate Headquarters<br>
 209 West Rollins, Suite 204<br>
