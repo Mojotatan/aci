@@ -288,11 +288,11 @@ class ApplicationContainer extends React.Component {
       to: 'tatan42@gmail.com',
       cc: this.state.mailCC.split(', '),
       subject: this.state.mailSubject,
-      text: this.state.mailBody
+      html: this.state.mailBody
     })
     .then(res => {
-      console.log('accepted:', res.data.accepted)
-      console.log('rejected:', res.data.rejected)
+      // console.log('accepted:', res.data.accepted)
+      // console.log('rejected:', res.data.rejected)
       this.setState({mailDisabled: false})
       if (res.data.accepted) {
         this.props.throwAlert('green', 'Message sent')

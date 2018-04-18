@@ -23,10 +23,14 @@ const forceDate = (dat) => {
     if (dat.length === 4) arr = [dat[0], dat[1], dat.slice(2)]
     else if (dat.length === 6 || dat.length === 8) arr = [dat.slice(0, 2), dat.slice(2, 4), dat.slice(4)]
   }
-  if (arr[0].length === 4) { // Checking for YYYY
+  if (arr[0].length === 4) { // Checking for [YYYY XX XX]
     if (arr[1].length === 1) arr[1] = '0' + arr[1] // Checking for missing 0 in front of month or day
     if (arr[2].length === 1) arr[2] = '0' + arr[2]
     return arr.join('-')
+  } else if (arr[2].length === 4) { // Checking for [XX XX YYYY]
+    if (arr[0].length === 1) arr[0] = '0' + arr[0] // Checking for missing 0 in front of month or day
+    if (arr[1].length === 1) arr[1] = '0' + arr[1]
+    return [arr[2], arr[0], arr[1]].join('-')
   } else if (dat.length <= 8) { // Assuming a string of ≤8 length is in the form of 'MM-DD-YY'
     if (arr[0].length === 1) arr[0] = '0' + arr[0] // Checking for missing 0 in front of month or day
     if (arr[1].length === 1) arr[1] = '0' + arr[1]
