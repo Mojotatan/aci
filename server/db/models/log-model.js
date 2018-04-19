@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 
 module.exports = db => db.define('Log', {
   date: {
-    type: Sequelize.DATEONLY
+    type: Sequelize.STRING
   },
   activity: {
     type: Sequelize.STRING,
