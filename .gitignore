@@ -28,4 +28,6 @@ log
 
 pid
 
+pid.lock
+
 Passengerfile.json
