@@ -1335,3 +1335,7 @@ select.state {
 .refresh:hover {
 	text-decoration: underline
 }
+
+.big-bar-bot {
+	border-bottom: 2px solid #1066A3
+}

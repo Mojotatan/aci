@@ -9,6 +9,9 @@ const nunjucks = require('nunjucks')
 
 const db = require('./server/db').db
 
+let maintenance
+// maintenance = true
+
 let port = process.env.PORT || '1337'
 const app = express()
 db.sync()
@@ -39,7 +42,8 @@ db.sync()
     })
 
     .get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, './public/index.html'))
+      let file = (maintenance) ? './public/down.html' : './public/main.html'
+      res.sendFile(path.resolve(__dirname, file))
     })
 })
 .catch(err => console.error(err))
