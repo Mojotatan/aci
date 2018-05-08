@@ -324,11 +324,13 @@ class ApplicationContainer extends React.Component {
   }
 
   handleActionDelete(e) {
-    axios.put('/api/actions/delete', {token: this.props.token, action: this.state.actions[e.target.id]})
-    .then(res => {
-      this.props.loadAppsThunk(this.props.token)
-    })
-    .catch(err => console.error(err))
+    if (confirm('Are you sure you wish to delete this application?')) {
+      axios.put('/api/actions/delete', {token: this.props.token, action: this.state.actions[e.target.id]})
+      .then(res => {
+        this.props.loadAppsThunk(this.props.token)
+      })
+      .catch(err => console.error(err))
+    }
   }
 
   handleSaveAction(e) {
