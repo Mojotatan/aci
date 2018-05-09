@@ -206,28 +206,30 @@ class ApplicationContainer extends React.Component {
 
   handleSave(e) {
     e.preventDefault()
+    if (this.state.status !== 'Draft' && (!this.state.amount || !this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone)) {
+      this.props.throwAlert('red', 'Please fill in all required fields')
+    } else {
 
-    
+      let custArr = (this.state.customerCreate) ? [this.state.customer, {id: 'new'}] : [this.state.customer]
+      this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], custArr)
 
-    let custArr = (this.state.customerCreate) ? [this.state.customer, {id: 'new'}] : [this.state.customer]
-    this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], custArr)
-
-    let needQuotes = this.state.leases.filter(lse => (lse.needQuote))
-    needQuotes.forEach(quote => {
-      this.props.saveByoThunk(this.props.token, [
-          this.state,
-          {
-            id: 'new',
-            status: 'New',
-            date: getDate(),
-            expiry: null,
-            appId: this.state.id,
-            leases: [quote]
-          }
-        ],
-        custArr
-      )
-    })
+      let needQuotes = this.state.leases.filter(lse => (lse.needQuote))
+      needQuotes.forEach(quote => {
+        this.props.saveByoThunk(this.props.token, [
+            this.state,
+            {
+              id: 'new',
+              status: 'New',
+              date: getDate(),
+              expiry: null,
+              appId: this.state.id,
+              leases: [quote]
+            }
+          ],
+          custArr
+        )
+      })
+    }
 
   }
 
