@@ -21,13 +21,15 @@ module.exports = require('express').Router()
           date: req.body.date,
           activity: req.body.activity,
           adminId: me.id,
-          appId: req.body.app
+          appId: req.body.app,
+          buyoutId: req.body.byo
         }),
         Log.create({
           date: req.body.expiry,
           activity: `Application <b>${req.body.action.appNumber}<b> to ${req.body.action.leasingCompany} expired`,
           adminId: me.id,
-          appId: req.body.app
+          appId: req.body.app,
+          buyoutId: req.body.byo
         })
       ])
     })

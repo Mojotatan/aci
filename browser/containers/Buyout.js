@@ -16,6 +16,14 @@ class BuyoutContainer extends React.Component {
     this.state = Object.assign({},
       {
         customerCreate: (this.props.byo && this.props.byo.customer) ? false : true,
+        mailBody: '',
+        mailSubject: '',
+        mailCC: '',
+        mailDisabled: false,
+        adminMode: false,
+        adminView: (this.props.user) ? this.props.user.level === 'Admin' : false,
+        lightbox: false,
+        expiryTemp: '',
         upload: null,
         note: ''
       },
@@ -25,15 +33,6 @@ class BuyoutContainer extends React.Component {
     this.handleAppLink = this.handleAppLink.bind(this)
 
     this.handleChange = this.handleChange.bind(this)
-
-    this.handleChangeInCustomer = this.handleChangeInCustomer.bind(this)
-    this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
-    
-    this.validateFields = this.validateFields.bind(this)
-    this.generateErrors = this.generateErrors.bind(this)
-    this.handleSave = this.handleSave.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
     
     this.handleNewLease = this.handleNewLease.bind(this)
     this.handleChangeInLease = this.handleChangeInLease.bind(this)
@@ -43,6 +42,28 @@ class BuyoutContainer extends React.Component {
     this.handleNewMachine = this.handleNewMachine.bind(this)
     this.handleChangeInMachine = this.handleChangeInMachine.bind(this)
     this.handleRemoveMachine = this.handleRemoveMachine.bind(this)
+
+    this.handleChangeInCustomer = this.handleChangeInCustomer.bind(this)
+    this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
+    
+    this.validateFields = this.validateFields.bind(this)
+    this.generateErrors = this.generateErrors.bind(this)
+    this.handleSave = this.handleSave.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+
+    this.handleNotify = this.handleNotify.bind(this)
+    
+    this.handleNote = this.handleNote.bind(this)
+    this.handleChangeAction = this.handleChangeAction.bind(this)
+    this.handleActionDelete = this.handleActionDelete.bind(this)
+    this.handleSaveAction = this.handleSaveAction.bind(this)
+    this.handleSaveAndNotify = this.handleSaveAndNotify.bind(this)
+
+    this.handleAdminMode = this.handleAdminMode.bind(this)
+
+    this.toggleAdminView = this.toggleAdminView.bind(this)
+    this.toggleLightbox = this.toggleLightbox.bind(this)
 
     this.handleChangeInPDFNote = this.handleChangeInPDFNote.bind(this)
     this.handleDeletePDF = this.handleDeletePDF.bind(this)
@@ -209,7 +230,154 @@ class BuyoutContainer extends React.Component {
     leases[index[0]].machines[index[1]].delete = true
     this.setState({'leases': leases})
   }
-  
+
+  // For Admin section
+  handleNotify(e) {
+    e.preventDefault()
+
+    this.setState({mailDisabled: true})
+
+    let expiryDate
+
+    axios.post('/api/mail', {
+      token: this.props.token,
+      // to: this.state.rep.email,
+      to: 'tatan42@gmail.com',
+      cc: this.state.mailCC.split(', '),
+      subject: this.state.mailSubject,
+      html: this.state.mailBody
+    })
+    .then(res => {
+      // console.log('accepted:', res.data.accepted)
+      // console.log('rejected:', res.data.rejected)
+      this.setState({mailDisabled: false})
+      if (res.data.accepted) {
+        this.props.throwAlert('green', 'Message sent')
+        this.setState({mailSubject: '', mailBody: '', mailCC: ''})
+      }
+      else this.props.throwAlert('red', 'Message not sent')
+      
+      return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} that application ${this.state.action.appNumber} to ${this.state.action.leasingCompany} was ${this.state.action.status}`, action: this.state.action, byo: this.state.id, expiry: this.state.expiryTemp})
+    })
+    .then(res => {
+      let overallStatus
+      if (this.state.action.status === 'Working') overallStatus = 'Working'
+      else if (this.state.action.status === 'Approved') overallStatus = 'Approved'
+      else if (this.state.action.status === 'Declined') overallStatus = 'Declined'
+
+      if (overallStatus) return this.props.saveByoThunk(this.props.token, [this.state, {status: overallStatus, expiry: this.state.expiryTemp, amount: checkFor$(this.state.amount)}], [this.state.customer])
+      else return this.props.saveByoThunk(this.props.token, [this.state, {expiry: this.state.expiryTemp, amount: checkFor$(this.state.amount)}], [this.state.customer])
+    })
+    .then(res => {
+      this.setState({adminMode: false, expiryTemp: ''})
+    })
+    .catch(err => console.error(err))
+  }
+
+  handleNote(e) {
+    let actions = Array.from(this.state.actions)
+    actions[Number(e.target.id)].show = (actions[Number(e.target.id)].show) ? false : true
+    this.setState({actions})
+  }
+
+  handleChangeAction(e) {
+    let action = Object.assign({}, this.state.action)
+    action[e.target.name] = e.target.value
+    this.setState({action})
+  }
+
+  handleActionDelete(e) {
+    if (confirm('Are you sure you wish to delete this application?')) {
+      axios.put('/api/actions/delete', {token: this.props.token, action: this.state.actions[e.target.id]})
+      .then(res => {
+        this.props.loadAppsThunk(this.props.token)
+      })
+      .catch(err => console.error(err))
+    }
+  }
+
+  handleSaveAction(e) {
+    e.preventDefault()
+    axios.put('/api/actions/', {token: this.props.token, action: this.state.action})
+    .then(res => {
+      this.props.loadByosThunk(this.props.token)
+      // this.props.throwAlert('green', 'Success')
+      this.setState({adminMode: false})
+    })
+    .catch(err => {
+      console.error(err)
+      this.props.throwAlert('red', 'Something went wrong')
+    })
+
+  }
+
+  handleSaveAndNotify(e) {
+    e.preventDefault()
+    axios.put('/api/actions/', {token: this.props.token, action: Object.assign({}, this.state.action, {sentToRep: getDate()})})
+    .then(res => {
+      let soonToBeSubject = ''
+      let soonToBeBody = ''
+      if (this.state.action.status === 'Approved') {
+        soonToBeSubject = `Application Approved for ${this.state.action.legalName}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} has been approved with ${this.state.action.leasingCompany} under application number ${this.state.action.appNumber} for $${this.state.amount}.\n\nThe legal name is ${this.state.action.legalName}.\n\nPlease be sure to use the correct legal name on all of your lease paperwork.\n\nThanks,\n${this.props.user.firstName}`
+      } else if (this.state.action.status === 'Hold') {
+        soonToBeSubject = `Application On Hold for ${this.state.customer.name}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} is on hold. We have tried all of our options and we will need the following items to proceed.\n\n    • 2 years of Audited Financials or\n    • 2 years of Tax Returns\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n${this.props.user.firstName}`
+      } else if (this.state.action.status === 'Declined') {
+        soonToBeSubject = `Application Declined for ${this.state.customer.name}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} has been declined by all lenders. We will need the following items in order to try again.\n\n    •Personal Guarantee Information\n        • Owner's full name\n        • Owner's Address\n        • Owner's Social Security #\n        • Owner's Birth Date\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n${this.props.user.firstName}`
+      } else {
+        soonToBeSubject = `Update for Application for ${this.state.customer.name}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application's status has been set to ${this.state.action.status}.\n\nThanks,\n${this.props.user.firstName}`
+      }
+      this.setState({
+        expiryTemp: res.data,
+        adminMode: 'notify',
+        mailSubject: soonToBeSubject,
+        mailBody: soonToBeBody
+      })
+    })
+    .catch(err => {
+      console.error(err)
+      this.props.throwAlert('red', 'Something went wrong')
+    })
+  }
+
+  handleAdminMode(e) {
+    // console.log('trigger', e.target.id)
+    if (e.target.id === 'cancel-button' || e.target.id === 'cancel') {
+      this.setState({adminMode: false})
+    } else if (e.target.id === 'submit-button' || e.target.id === 'app-button'){
+      this.setState({
+        adminMode: 'action',
+        action: {
+          id: 'new',
+          date: getDate(),
+          buyoutId: this.state.id
+        }
+      })
+    } else {
+      let index = e.target.id.split('-')[1]
+      this.setState({
+        adminMode: 'action',
+        action: Object.assign({}, this.state.actions[index], {index: index})
+      })
+    }
+  }
+
+  toggleAdminView(e) {
+    this.setState({
+      adminView: !this.state.adminView
+    })
+  }
+
+  toggleLightbox(e) {
+    this.setState({
+      lightbox: !this.state.lightbox
+    })
+  }
+
+
   handleDeletePDF(e) {
     // let pdfs = Array.from(this.state.pdfs)
         
@@ -255,9 +423,15 @@ class BuyoutContainer extends React.Component {
       customerCreate: (newProps.byo && newProps.byo.customer) ? false : true,
     })
     this.setState(newProps.byo)
+    let actions = Array.from(newProps.byo.actions)
+    actions.forEach(action => {
+      action.date = reformatDate(action.date)
+      action.expiry = reformatDate(action.expiry)
+    })
     this.setState({
       date: reformatDate(newProps.byo.date),
-      expiry: reformatDate(newProps.byo.expiry)
+      expiry: reformatDate(newProps.byo.expiry),
+      actions
     })
   }
 
@@ -265,18 +439,27 @@ class BuyoutContainer extends React.Component {
     if (!this.props.token) this.props.history.push('/')
     else {
       // console.log('state', this.state)
+      let actions = Array.from(this.state.actions)
+      actions.forEach(action => {
+        action.date = reformatDate(action.date)
+        action.expiry = reformatDate(action.expiry)
+      })
       this.setState({
         date: reformatDate(this.state.date),
-        expiry: reformatDate(this.state.expiry)
+        expiry: reformatDate(this.state.expiry),
+        actions
       })
     }
   }
 
 
   render() {
+    // console.log('state', this.state.pdfs)
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
-    // console.log('state', this.state.pdfs)
+
+    let actionDisabled = Object.keys(errors).expiry
+
     return(
       <div>
         <EditBuyout
@@ -302,6 +485,15 @@ class BuyoutContainer extends React.Component {
           handleNewMachine={this.handleNewMachine}
           handleChangeInMachine={this.handleChangeInMachine}
           handleRemoveMachine={this.handleRemoveMachine}
+          handleNotify={this.handleNotify}
+          handleNote={this.handleNote}
+          handleChangeAction={this.handleChangeAction}
+          handleActionDelete={this.handleActionDelete}
+          handleSaveAction={this.handleSaveAction}
+          handleSaveAndNotify={this.handleSaveAndNotify}
+          handleAdminMode={this.handleAdminMode}
+          toggleAdminView={this.toggleAdminView}
+          toggleLightbox={this.toggleLightbox}
           handleChangeInPDFNote={this.handleChangeInPDFNote}
           handleDeletePDF={this.handleDeletePDF}
           handleChoosePDF={this.handleChoosePDF}

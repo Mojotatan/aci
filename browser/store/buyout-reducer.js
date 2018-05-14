@@ -4,7 +4,7 @@ import {loadCustomersThunk} from './customer-reducer'
 import {loadLeasesThunk} from './lease-reducer'
 import {throwAlert} from './alert-reducer'
 
-import {sortBy} from '../utility'
+import {sortBy, getDate} from '../utility'
 
 // initial state
 const initialState = {byos: [], focus: null, sort: ['date']}
@@ -71,9 +71,25 @@ export const loadByosThunk = (token, callback) => {
     .then(res => {
       // expecting res to have a list of buyouts
       // and a list of lease (+ machine) associations
+      // and a list of admin actions applied to that application
+      // and a list of logs for those admin actions
+
       // and a list of pdf associations
       res.data.byos.forEach((byo, index) => {
         byo.leases = res.data.leases[index]
+
+        let actions = res.data.actions[index]
+        byo.actions = []
+        actions = actions.filter(act => {
+          if (act.sentToRep) byo.actions.push(act)
+          else return true
+        })
+        byo.actions = [...byo.actions, ...actions]
+        
+        byo.logs = res.data.logs[index].filter(log => {
+          return (log.date <= getDate())
+        })
+
         byo.pdfs = res.data.pdfs[index]
       })
       dispatch(loadByos(res.data.byos))
