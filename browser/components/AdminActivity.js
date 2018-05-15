@@ -8,6 +8,8 @@ import {reformatDate} from '../utility'
 export default ({
   mode,
   values,
+  token,
+  count,
   handleChange,
   handleNote,
   handleNotify,
@@ -31,9 +33,9 @@ export default ({
       <div className="shadowbox" onClick={toggleLightbox}></div>
       <div className="container">
         {(mode === 'app') ?
-          <AppLite values={values} formatTerm={formatTerm} toggleLightbox={toggleLightbox} />
+          <AppLite values={values} count={count} formatTerm={formatTerm} toggleLightbox={toggleLightbox} />
           :
-          <ByoLite values={values} toggleLightbox={toggleLightbox} />
+          <ByoLite values={values} count={count} toggleLightbox={toggleLightbox} />
         }
       </div>
     </div>
@@ -96,25 +98,37 @@ export default ({
       </div>
 
       <br />
+      
+      {(mode === 'app') ?
+        <div>
+          <label>Estimated Deal Size</label>
+          {(values.amount) ? <p>{`$${values.amount}`}</p> : <p>&nbsp;</p>}
+        </div>
+        : null
+      }
+      {(mode === 'app') ?
+        <div>
+          <label>Agent Name</label>
+          {(values.term) ? <p>{values.term}</p> : <p>&nbsp;</p>}
+        </div>
+        : null
+      }
+      {(mode === 'app') ?
+        <div>
+          <label>Advanced Payments</label>
+          {(values.advancedPayments) ? <p>{values.advancedPayments}</p> : <p>&nbsp;</p>}
+        </div>
+        : null
+      }
+      {(mode === 'app') ?
+        <div>
+          <label>End of Term</label>
+          {(values.endOfTerm) ? <p>{values.endOfTerm}</p> : <p>&nbsp;</p>}
+        </div>
+        : null
+      }
 
-      <div>
-        <label>Estimated Deal Size</label>
-        {(values.amount) ? <p>{`$${values.amount}`}</p> : <p>&nbsp;</p>}
-      </div>
-      <div>
-        <label>Agent Name</label>
-        {(values.term) ? <p>{values.term}</p> : <p>&nbsp;</p>}
-      </div>
-      <div>
-        <label>Advanced Payments</label>
-        {(values.advancedPayments) ? <p>{values.advancedPayments}</p> : <p>&nbsp;</p>}
-      </div>
-      <div>
-        <label>End of Term</label>
-        {(values.endOfTerm) ? <p>{values.endOfTerm}</p> : <p>&nbsp;</p>}
-      </div>
-
-      <br />
+      {(mode === 'app') ? <br /> : null}
 
       <div>
         <label>Agent Name</label>
@@ -407,7 +421,7 @@ export default ({
                 <div key={`pdf-${pdf.id}`} className="row">
                   <div className="col-sm-3">
                     <div className="field-box">
-                      <a href={`/api/uploads/${pdf.id}/${pdf.name}?access_token=${token}`} download>{pdf.name}</a>
+                      <p><a href={`/api/uploads/${pdf.id}/${pdf.name}?access_token=${token}`} download>{pdf.name}</a></p>
                     </div>
                   </div>
                   <div className="col-sm-6">

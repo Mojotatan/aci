@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({values, formatTerm, toggleLightbox}) => (
+export default ({values, count, formatTerm, toggleLightbox}) => (
   <div className="col-sm-8 col-sm-offset-2 lightbox-content">
     <div className="og exit-lightbox" onClick={toggleLightbox}>
       <img src="/assets/img/Cross_Reverse.svg" />

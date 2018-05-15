@@ -23,6 +23,7 @@ const reducer = (prevState = initialState, action) => {
 // constants and action creators
 const THROW_ALERT = 'THROW_ALERT'
 export const throwAlert = (color, message) => {
+  console.log(`Alert: ${message}`)
   return {type: THROW_ALERT, alert: {color, message}}
 }
 

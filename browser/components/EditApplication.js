@@ -43,6 +43,7 @@ export default ({
   <AdminActivity
     mode={'app'}
     values={values}
+    count={count}
     handleChange={handleChange}
     handleNote={handleNote}
     handleNotify={handleNotify}

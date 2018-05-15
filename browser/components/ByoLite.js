@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({values, formatTerm, toggleLightbox}) => (
+export default ({values, count, formatTerm, toggleLightbox}) => (
   <div className="col-sm-8 col-sm-offset-2 lightbox-content">
     <div className="og exit-lightbox" onClick={toggleLightbox}>
       <img src="/assets/img/Cross_Reverse.svg" />
@@ -29,37 +29,6 @@ export default ({values, formatTerm, toggleLightbox}) => (
     </div>
 
     <div className="app-bg col-sm-12">
-      <h3>Buyout Type</h3>
-      <div className="row">
-        <div className="col-sm-6">
-          <p>{values.type || ''}</p>
-        </div>
-      </div>
-      {(values.type === 'Existing') ?
-        <div className="row">
-          <div className="col-sm-6">
-            <div className="field-label">
-              <label className="required">Customer</label>
-            </div>
-            <div className="field-box">
-              <p>{values.existingCustomer || ''}</p>
-            </div>
-          </div>
-        </div>
-        : null
-      }
-
-      {(values.type === 'Existing') ?
-        <div className="row extra-space">
-          <div className="col-sm-6">
-            <p>{values.existingType || ''}</p>
-          </div>
-        </div>
-        : null
-      }
-
-
-    {(values.leases && values.type === 'Existing' && values.existingType === 'Upgrade') ?
       <div className="row">
         <div className="col-sm-12 labels lease-label">
           <div className="col-sm-10 col-sm-offset-1 no-gutters">
@@ -147,8 +116,6 @@ export default ({values, formatTerm, toggleLightbox}) => (
         })
         }
       </div>
-      : null
-      }
     </div>
 
     <div className="app-bg col-sm-12">

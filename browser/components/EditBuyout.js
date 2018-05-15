@@ -44,6 +44,8 @@ export default ({
     <AdminActivity
       mode={'byo'}
       values={values}
+      token={token}
+      count={count}
       handleChange={handleChange}
       handleNote={handleNote}
       handleNotify={handleNotify}
