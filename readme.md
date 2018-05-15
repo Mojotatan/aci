@@ -136,6 +136,15 @@ ln -s /path/to/key /path/to/web/directory/.ssl/privkey.pem
 
 11. TODO: automate certificate renewal
 
+12. Set up a cron job to automatically backup the database:
+```
+crontab -e
+```
+Add the following:
+```
+01	01	04	*	*	/usr/local/pgsql/bin/pg_dump aci > /home/impact_myadmin/dbackups/$(date +\%Y\%m\%d)
+```
+
 **How to update on a Remote Server**
 1. Download the updates -- make sure you download the production branch
 
