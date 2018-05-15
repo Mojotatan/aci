@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import AdminActivity from './AdminActivity';
 
 export default ({
   values,
@@ -24,11 +25,45 @@ export default ({
   handleNewMachine,
   handleChangeInMachine,
   handleRemoveMachine,
+  handleNotify,
+  handleNote,
+  handleChangeAction,
+  handleActionDelete,
+  handleSaveAction,
+  handleSaveAndNotify,
+  handleAdminMode,
+  toggleAdminView,
+  toggleLightbox,
   handleChangeInPDFNote,
   handleDeletePDF,
   handleChoosePDF,
   handleUploadPDF
 }) => (
+  (admin && values.adminView) ?
+  (
+    <AdminActivity
+      mode={'byo'}
+      values={values}
+      token={token}
+      count={count}
+      handleChange={handleChange}
+      handleNote={handleNote}
+      handleNotify={handleNotify}
+      handleAdminMode={handleAdminMode}
+      handleActionDelete={handleActionDelete}
+      handleChangeAction={handleChangeAction}
+      handleSaveAction={handleSaveAction}
+      handleSaveAndNotify={handleSaveAndNotify}
+      toggleAdminView={toggleAdminView}
+      toggleLightbox={toggleLightbox}
+      handleChangeInPDFNote={handleChangeInPDFNote}
+      handleDeletePDF={handleDeletePDF}
+      handleChoosePDF={handleChoosePDF}
+      handleUploadPDF={handleUploadPDF}
+    />
+  )
+  :
+  (
   <div className="row edit-byo-page">
     
     <div className="col-sm-12 top">
@@ -43,7 +78,11 @@ export default ({
 
         {(admin || values.status !== 'Working') ?
           <div className="col-sm-6 top-buttons" align="right">
-            <Link to='/buyouts' id="cancel-button" className="top">Cancel</Link>
+            {(admin) ?
+              <span id="cancel-button" className="top" onClick={toggleAdminView}>Cancel</span>
+              :
+              <Link to='/buyouts' id="cancel-button" className="top">Cancel</Link>
+            }
             <button type="submit" id="save-button" className="top" onClick={handleSave}>Save</button>
           </div>
           :
@@ -554,7 +593,11 @@ export default ({
               <button onClick={handleDelete} id="delete-button">Delete</button>
               : null
             }
-            <Link to='/buyouts' id="cancel-button">Cancel</Link>
+            {(admin) ?
+              <span id="cancel-button" onClick={toggleAdminView}>Cancel</span>
+              :
+              <Link to='/buyouts' id="cancel-button">Cancel</Link>
+            }
             <button type="submit" id="save-button">Save</button>
             {(values.status === 'Draft') ?
               <button onClick={handleSubmit} type="submit" id="submit-button">Submit</button>
@@ -569,76 +612,6 @@ export default ({
       </form>
     </div>
 
-    {(admin) ?
-      <div className="col-sm-12 admin">
-        <div className="row">
-          <div className="app-bg col-sm-12">
-            <h3>PDFs</h3>
-            <div className="row">
-              <div className="col-sm-3">
-                <div className="field-label">
-                  <label>PDF</label>
-                </div>
-              </div>
-              <div className="col-sm-6">
-                <div className="field-label">
-                  <label>Notes</label>
-                </div>
-              </div>
-            </div>
-          {(values.pdfs) ?
-            <div className="pdfs">
-              {values.pdfs.map(pdf => (
-                <div key={`pdf-${pdf.id}`} className="row">
-                  <div className="col-sm-3">
-                    <div className="field-box">
-                      <a href={`/api/uploads/${pdf.id}/${pdf.name}?access_token=${token}`} download>{pdf.name}</a>
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="field-box">
-                      <p>{pdf.notes || ''}</p>
-                    </div>
-                  </div>
-                  <div className="col-sm-3" align="center">
-                    <div className="field-box">
-                      <button id={pdf.id} className="fields-button" onClick={handleDeletePDF}>Delete</button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            : null
-          }
-          </div>
-          <div id="byo-desc" className="col-sm-12">
-            <div className="row">
-              <div className="col-sm-6">
-                {/* <div className="field-label">
-                  <label>Upload new PDF</label>
-                </div> */}
-                <h3>Upload New PDF</h3>
-                <div className="field-box">
-                  <form onSubmit={handleUploadPDF}>
-                    <div className="col-sm-12">
-                      <input className="upload-button" type="file" onChange={handleChoosePDF} accept="application/pdf" />
-                    </div>
-                    <div className="col-sm-12">
-                      <div className="field-label"><label>Note</label></div>
-                      <div className="field-box pdfs"><textarea onChange={handleChangeInPDFNote} value={values.note} /></div>
-                    </div>
-                    <div className="col-sm-12" align="right">
-                      <button id="save-button" type="submit">Submit</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      : null
-    }
-
   </div>
+  )
 )

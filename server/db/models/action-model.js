@@ -32,7 +32,7 @@ module.exports = db => db.define('Action', {
     defaultValue: ''
   },
   sentToRep: {
-    type: Sequelize.DATEONLY, // stored as plaintext 'YYYY-MM-DD'
+    type: Sequelize.STRING, // stored as plaintext 'YYYY-MM-DD'
     defaultValue: null,
     allowNull: true,
     set(val) {

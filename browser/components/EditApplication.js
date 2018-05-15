@@ -41,7 +41,9 @@ export default ({
   (admin && values.adminView) ?
   (
   <AdminActivity
+    mode={'app'}
     values={values}
+    count={count}
     handleChange={handleChange}
     handleNote={handleNote}
     handleNotify={handleNotify}

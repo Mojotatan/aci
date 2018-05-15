@@ -108,8 +108,42 @@ If process.env variables are getting overwritten or otherwise misbehaving, set u
 
 7. Start Passenger
 
-Bonus Round
-8. [Use certbot to set up HTTPS](https://medium.com/@yash.kulshrestha/using-lets-encrypt-with-express-e069c7abe625)
+8. [Follow this tutorial to set up SSL](https://medium.com/@yash.kulshrestha/using-lets-encrypt-with-express-e069c7abe625)
+
+9. After you successfully generate web certificates, create symbolic links to them:
+```
+mkdir .ssl
+ln -s /path/to/cert /path/to/web/directory/.ssl/fullchain.pem
+ln -s /path/to/key /path/to/web/directory/.ssl/privkey.pem
+```
+
+10. Create/edit Passengerfile.json to say:
+```
+{
+  "app_type": "node",
+  "startup_file": "app.js",
+  "environment": "development",
+  "daemonize": true,
+  "log_file": "./log",
+  "pid_file": "./pid",
+  "port": 80,
+  "ssl": true,
+  "ssl_certificate": "./.ssl/fullchain.pem",
+  "ssl_certificate_key": "./.ssl/privkey.pem",
+  "ssl_port": 443
+}
+```
+
+11. TODO: automate certificate renewal
+
+12. Set up a cron job to automatically backup the database:
+```
+crontab -e
+```
+Add the following:
+```
+01	01	04	*	*	/usr/local/pgsql/bin/pg_dump aci > /home/impact_myadmin/dbackups/$(date +\%Y\%m\%d)
+```
 
 **How to update on a Remote Server**
 1. Download the updates -- make sure you download the production branch

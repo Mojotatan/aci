@@ -1,5 +1,5 @@
 const Op = require('sequelize').Op
-const {User, Buyout, Lease, Machine, Customer, Upload} = require('../db').db.models
+const {User, Buyout, Lease, Machine, Customer, Action, Log, Upload} = require('../db').db.models
 const {isLoggedIn, whoAmI, isAdmin, transporter} = require('./auth')
 
 module.exports = require('express').Router()
@@ -118,6 +118,36 @@ module.exports = require('express').Router()
     })
     .then(leases => {
       toBeSent.leases = leases
+
+      return Promise.all(toBeSent.byos.map(byo => {
+        return Action.findAll({
+          where: {
+            buyoutId: {
+              [Op.eq]: byo.id
+            }
+          },
+          include: ['admin'],
+          order: [['date', 'DESC'], ['updatedAt', 'DESC']]
+        })
+      }))
+    })
+    .then(byoActions => {
+      toBeSent.actions = byoActions
+
+      return Promise.all(toBeSent.byos.map(byo => {
+        return Log.findAll({
+          where: {
+            buyoutId: {
+              [Op.eq]: byo.id
+            }
+          },
+          include: ['admin'],
+          order: [['date', 'DESC'], ['createdAt', 'DESC']]
+        })
+      }))
+    })
+    .then(byoLogs => {
+      toBeSent.logs = byoLogs
 
       return Promise.all(toBeSent.byos.map(byo => {
         return Upload.findAll({

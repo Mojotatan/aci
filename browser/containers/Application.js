@@ -206,28 +206,30 @@ class ApplicationContainer extends React.Component {
 
   handleSave(e) {
     e.preventDefault()
+    if (this.state.status !== 'Draft' && (!this.state.amount || !this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone)) {
+      this.props.throwAlert('red', 'Please fill in all required fields')
+    } else {
 
-    
+      let custArr = (this.state.customerCreate) ? [this.state.customer, {id: 'new'}] : [this.state.customer]
+      this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], custArr)
 
-    let custArr = (this.state.customerCreate) ? [this.state.customer, {id: 'new'}] : [this.state.customer]
-    this.props.saveAppThunk(this.props.token, [this.state, {amount: checkFor$(this.state.amount)}], custArr)
-
-    let needQuotes = this.state.leases.filter(lse => (lse.needQuote))
-    needQuotes.forEach(quote => {
-      this.props.saveByoThunk(this.props.token, [
-          this.state,
-          {
-            id: 'new',
-            status: 'New',
-            date: getDate(),
-            expiry: null,
-            appId: this.state.id,
-            leases: [quote]
-          }
-        ],
-        custArr
-      )
-    })
+      let needQuotes = this.state.leases.filter(lse => (lse.needQuote))
+      needQuotes.forEach(quote => {
+        this.props.saveByoThunk(this.props.token, [
+            this.state,
+            {
+              id: 'new',
+              status: 'New',
+              date: getDate(),
+              expiry: null,
+              appId: this.state.id,
+              leases: [quote]
+            }
+          ],
+          custArr
+        )
+      })
+    }
 
   }
 
@@ -303,7 +305,13 @@ class ApplicationContainer extends React.Component {
       return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} that application ${this.state.action.appNumber} to ${this.state.action.leasingCompany} was ${this.state.action.status}`, action: this.state.action, app: this.state.id, expiry: this.state.expiryTemp})
     })
     .then(res => {
-      return this.props.saveAppThunk(this.props.token, [this.state, {expiry: this.state.expiryTemp, amount: checkFor$(this.state.amount)}], [this.state.customer])
+      let overallStatus
+      if (this.state.action.status === 'Working') overallStatus = 'Working'
+      else if (this.state.action.status === 'Approved') overallStatus = 'Approved'
+      else if (this.state.action.status === 'Declined') overallStatus = 'Declined'
+
+      if (overallStatus) return this.props.saveAppThunk(this.props.token, [this.state, {status: overallStatus, expiry: this.state.expiryTemp, amount: checkFor$(this.state.amount)}], [this.state.customer])
+      else return this.props.saveAppThunk(this.props.token, [this.state, {expiry: this.state.expiryTemp, amount: checkFor$(this.state.amount)}], [this.state.customer])
     })
     .then(res => {
       this.setState({adminMode: false, expiryTemp: ''})
@@ -324,11 +332,13 @@ class ApplicationContainer extends React.Component {
   }
 
   handleActionDelete(e) {
-    axios.put('/api/actions/delete', {token: this.props.token, action: this.state.actions[e.target.id]})
-    .then(res => {
-      this.props.loadAppsThunk(this.props.token)
-    })
-    .catch(err => console.error(err))
+    if (confirm('Are you sure you wish to delete this application?')) {
+      axios.put('/api/actions/delete', {token: this.props.token, action: this.state.actions[e.target.id]})
+      .then(res => {
+        this.props.loadAppsThunk(this.props.token)
+      })
+      .catch(err => console.error(err))
+    }
   }
 
   handleSaveAction(e) {
@@ -356,11 +366,14 @@ class ApplicationContainer extends React.Component {
         soonToBeSubject = `Application Approved for ${this.state.action.legalName}`
         soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} has been approved with ${this.state.action.leasingCompany} under application number ${this.state.action.appNumber} for $${this.state.amount}.\n\nThe legal name is ${this.state.action.legalName}.\n\nPlease be sure to use the correct legal name on all of your lease paperwork.\n\nThanks,\n${this.props.user.firstName}`
       } else if (this.state.action.status === 'Hold') {
-        soonToBeSubject = `Application On Hold for ${this.state.action.legalName}`
+        soonToBeSubject = `Application On Hold for ${this.state.customer.name}`
         soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} is on hold. We have tried all of our options and we will need the following items to proceed.\n\n    • 2 years of Audited Financials or\n    • 2 years of Tax Returns\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n${this.props.user.firstName}`
       } else if (this.state.action.status === 'Declined') {
-        soonToBeSubject = `Application Declined for ${this.state.action.legalName}`
+        soonToBeSubject = `Application Declined for ${this.state.customer.name}`
         soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application for ${this.state.customer.name} has been declined by all lenders. We will need the following items in order to try again.\n\n    •Personal Guarantee Information\n        • Owner's full name\n        • Owner's Address\n        • Owner's Social Security #\n        • Owner's Birth Date\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n${this.props.user.firstName}`
+      } else {
+        soonToBeSubject = `Update for Application for ${this.state.customer.name}`
+        soonToBeBody = `Dear ${this.state.rep.fullName},\n\nYour application's status has been set to ${this.state.action.status}.\n\nThanks,\n${this.props.user.firstName}`
       }
       this.setState({
         expiryTemp: res.data,
@@ -456,7 +469,7 @@ class ApplicationContainer extends React.Component {
         else return term
       } else return term
     }
-    // console.log(this.state.adminMode)
+    // console.log(this.state)
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
 

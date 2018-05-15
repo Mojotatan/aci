@@ -18,7 +18,7 @@ tmp/*
 
 certbot-auto
 
-.well-known/*
+public/.well-known/*
 
 sslcert/*
 
@@ -29,3 +29,7 @@ pid
 pid.lock
 
 Passengerfile.json
+
+.ssl/*
+
+certbot-auto

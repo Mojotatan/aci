@@ -32,6 +32,7 @@ module.exports = require('express').Router()
         notes: req.body.action.notes,
         sentToRep: req.body.action.sentToRep,
         appId: req.body.action.appId,
+        buyoutId: req.body.action.buyoutId,
         adminId: me.id
       })
       :

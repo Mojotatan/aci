@@ -29,37 +29,6 @@ export default ({values, count, formatTerm, toggleLightbox}) => (
     </div>
 
     <div className="app-bg col-sm-12">
-      <h3>Application Type</h3>
-      <div className="row">
-        <div className="col-sm-6">
-          <p>{values.type || ''}</p>
-        </div>
-      </div>
-      {(values.type === 'Existing') ?
-        <div className="row">
-          <div className="col-sm-6">
-            <div className="field-label">
-              <label className="required">Customer</label>
-            </div>
-            <div className="field-box">
-              <p>{values.existingCustomer || ''}</p>
-            </div>
-          </div>
-        </div>
-        : null
-      }
-
-      {(values.type === 'Existing') ?
-        <div className="row extra-space">
-          <div className="col-sm-6">
-            <p>{values.existingType || ''}</p>
-          </div>
-        </div>
-        : null
-      }
-
-
-    {(values.leases && values.type === 'Existing' && values.existingType === 'Upgrade') ?
       <div className="row">
         <div className="col-sm-12 labels lease-label">
           <div className="col-sm-10 col-sm-offset-1 no-gutters">
@@ -147,8 +116,6 @@ export default ({values, count, formatTerm, toggleLightbox}) => (
         })
         }
       </div>
-      : null
-      }
     </div>
 
     <div className="app-bg col-sm-12">
@@ -236,53 +203,6 @@ export default ({values, count, formatTerm, toggleLightbox}) => (
     </div>
 
     <div className="app-bg col-sm-12">
-      <h3>Deal Information</h3>
-      <div className="row">
-        <div className="col-sm-6">
-          <div className="field-label">
-            <label className="required">Estimated Deal Size</label>
-          </div>
-          <div className="field-box monetary">
-            <p>{values.amount || ''}</p>
-          </div>
-        </div>
-        <div className="col-sm-6">
-          <div className="field-label">
-            <label>Term</label>
-          </div>
-          <div className="col-sm-6 col-md-5 col-lg-4 no-gutters">
-            <div className="field-box">
-              <p>{formatTerm(values.term) || ''}</p>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-7 col-lg-8 no-gutters">
-            <div className="field-box">
-              {(values.term && (values.term.slice(0, 5) === 'other' || values.term.slice(0, 5) === 'co-te')) ? 
-                <p>{values.term.slice(5) || ''}</p>
-                : null
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-6">
-          <div className="field-label">
-            <label>Advanced Payment</label>
-          </div>
-
-          <p>{values.advancedPayments || ''}</p>
-
-        </div>
-        <div className="col-sm-6">
-          <div className="field-label">
-            <label>End of Term</label>
-          </div>
-
-          <p>{values.endOfTerm || ''}</p>
-
-        </div>
-      </div>
       <div className="row">
         <div className="col-sm-12">
           <div className="field-label">

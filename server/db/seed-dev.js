@@ -154,7 +154,7 @@ const generateLogs = () => {
     }))
   }
 
-  builder(new Date(), 'Sent carrier pidgeon to client')
+  builder('tuesday', 'Sent carrier pidgeon to client')
 
   return arr
 }

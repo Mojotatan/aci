@@ -48,10 +48,12 @@ let {User, Dealer, Region, Branch, Application, Action, Log, Guarantee, Customer
   Customer.belongsTo(Dealer, {as: 'dealer'})
 
   Action.belongsTo(Application, {as: 'app'})
+  Action.belongsTo(Buyout, {as: 'buyout'})
   Action.belongsTo(User, {as: 'admin'})
   // Application.belongsTo(Action, {as: 'active'})
 
   Log.belongsTo(Application, {as: 'app'})
+  Log.belongsTo(Buyout, {as: 'buyout'})
   Log.belongsTo(User, {as: 'admin'})
 
   Buyout.belongsTo(User, {as: 'rep'})
