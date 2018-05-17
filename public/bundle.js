@@ -30612,7 +30612,7 @@ var ApplicationContainer = function (_React$Component) {
           _this5.setState({ mailSubject: '', mailBody: '', mailCC: '' });
         } else _this5.props.throwAlert('red', 'Message not sent');
 
-        return _axios2.default.post('/api/logs/new', { token: _this5.props.token, date: new Date(), activity: '<b>' + _this5.props.user.fullName + '<b> notified rep ' + _this5.state.rep.fullName + ' that application ' + _this5.state.action.appNumber + ' to ' + _this5.state.action.leasingCompany + ' was ' + _this5.state.action.status, action: _this5.state.action, app: _this5.state.id, expiry: _this5.state.expiryTemp });
+        return _axios2.default.post('/api/logs/new', { token: _this5.props.token, date: (0, _utility.getDate)(), activity: '<b>' + _this5.props.user.fullName + '<b> notified rep ' + _this5.state.rep.fullName + ' that application ' + _this5.state.action.appNumber + ' to ' + _this5.state.action.leasingCompany + ' was ' + _this5.state.action.status, action: _this5.state.action, app: _this5.state.id, expiry: _this5.state.expiryTemp });
       }).then(function (res) {
         var overallStatus = void 0;
         if (_this5.state.action.status === 'Working') overallStatus = 'Working';else if (_this5.state.action.status === 'Approved') overallStatus = 'Approved';else if (_this5.state.action.status === 'Declined') overallStatus = 'Declined';
@@ -34248,12 +34248,12 @@ var BuyoutContainer = function (_React$Component) {
           _this4.setState({ mailSubject: '', mailBody: '', mailCC: '' });
         } else _this4.props.throwAlert('red', 'Message not sent');
 
-        return _axios2.default.post('/api/logs/new', { token: _this4.props.token, date: new Date(), activity: '<b>' + _this4.props.user.fullName + '<b> notified rep ' + _this4.state.rep.fullName + ' that application ' + _this4.state.action.appNumber + ' to ' + _this4.state.action.leasingCompany + ' was ' + _this4.state.action.status, action: _this4.state.action, byo: _this4.state.id, expiry: _this4.state.expiryTemp });
+        return _axios2.default.post('/api/logs/new', { token: _this4.props.token, date: (0, _utility.getDate)(), activity: '<b>' + _this4.props.user.fullName + '<b> notified rep ' + _this4.state.rep.fullName + ' that application ' + _this4.state.action.appNumber + ' to ' + _this4.state.action.leasingCompany + ' was ' + _this4.state.action.status, action: _this4.state.action, byo: _this4.state.id, expiry: _this4.state.expiryTemp });
       }).then(function (res) {
         var overallStatus = void 0;
         if (_this4.state.action.status === 'Working') overallStatus = 'Working';else if (_this4.state.action.status === 'Approved') overallStatus = 'Approved';else if (_this4.state.action.status === 'Declined') overallStatus = 'Declined';
 
-        if (overallStatus) return _this4.props.saveByoThunk(_this4.props.token, [_this4.state, { status: overallStatus, expiry: _this4.state.expiryTemp, amount: checkFor$(_this4.state.amount) }], [_this4.state.customer]);else return _this4.props.saveByoThunk(_this4.props.token, [_this4.state, { expiry: _this4.state.expiryTemp, amount: checkFor$(_this4.state.amount) }], [_this4.state.customer]);
+        if (overallStatus) return _this4.props.saveByoThunk(_this4.props.token, [_this4.state, { status: overallStatus, expiry: _this4.state.expiryTemp }], [_this4.state.customer]);else return _this4.props.saveByoThunk(_this4.props.token, [_this4.state, { expiry: _this4.state.expiryTemp }], [_this4.state.customer]);
       }).then(function (res) {
         _this4.setState({ adminMode: false, expiryTemp: '' });
       }).catch(function (err) {
@@ -34312,17 +34312,17 @@ var BuyoutContainer = function (_React$Component) {
         var soonToBeSubject = '';
         var soonToBeBody = '';
         if (_this7.state.action.status === 'Approved') {
-          soonToBeSubject = 'Application Approved for ' + _this7.state.action.legalName;
-          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour application for ' + _this7.state.customer.name + ' has been approved with ' + _this7.state.action.leasingCompany + ' under application number ' + _this7.state.action.appNumber + ' for $' + _this7.state.amount + '.\n\nThe legal name is ' + _this7.state.action.legalName + '.\n\nPlease be sure to use the correct legal name on all of your lease paperwork.\n\nThanks,\n' + _this7.props.user.firstName;
+          soonToBeSubject = 'Buyout Approved for ' + _this7.state.action.legalName;
+          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour buyout for ' + _this7.state.customer.name + ' has been approved with ' + _this7.state.action.leasingCompany + ' under application number ' + _this7.state.action.appNumber + '.\n\nThe legal name is ' + _this7.state.action.legalName + '.\n\nPlease be sure to use the correct legal name on all of your lease paperwork.\n\nThanks,\n' + _this7.props.user.firstName;
         } else if (_this7.state.action.status === 'Hold') {
-          soonToBeSubject = 'Application On Hold for ' + _this7.state.customer.name;
-          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour application for ' + _this7.state.customer.name + ' is on hold. We have tried all of our options and we will need the following items to proceed.\n\n    \u2022 2 years of Audited Financials or\n    \u2022 2 years of Tax Returns\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n' + _this7.props.user.firstName;
+          soonToBeSubject = 'Buyout On Hold for ' + _this7.state.customer.name;
+          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour buyout for ' + _this7.state.customer.name + ' is on hold. We have tried all of our options and we will need the following items to proceed.\n\n    \u2022 2 years of Audited Financials or\n    \u2022 2 years of Tax Returns\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n' + _this7.props.user.firstName;
         } else if (_this7.state.action.status === 'Declined') {
-          soonToBeSubject = 'Application Declined for ' + _this7.state.customer.name;
-          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour application for ' + _this7.state.customer.name + ' has been declined by all lenders. We will need the following items in order to try again.\n\n    \u2022Personal Guarantee Information\n        \u2022 Owner\'s full name\n        \u2022 Owner\'s Address\n        \u2022 Owner\'s Social Security #\n        \u2022 Owner\'s Birth Date\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n' + _this7.props.user.firstName;
+          soonToBeSubject = 'Buyout Declined for ' + _this7.state.customer.name;
+          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour buyout for ' + _this7.state.customer.name + ' has been declined by all lenders. We will need the following items in order to try again.\n\n    \u2022Personal Guarantee Information\n        \u2022 Owner\'s full name\n        \u2022 Owner\'s Address\n        \u2022 Owner\'s Social Security #\n        \u2022 Owner\'s Birth Date\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n' + _this7.props.user.firstName;
         } else {
-          soonToBeSubject = 'Update for Application for ' + _this7.state.customer.name;
-          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour application\'s status has been set to ' + _this7.state.action.status + '.\n\nThanks,\n' + _this7.props.user.firstName;
+          soonToBeSubject = 'Update for Buyout for ' + _this7.state.customer.name;
+          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour buyout\'s status has been set to ' + _this7.state.action.status + '.\n\nThanks,\n' + _this7.props.user.firstName;
         }
         _this7.setState({
           expiryTemp: res.data,
