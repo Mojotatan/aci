@@ -302,7 +302,7 @@ class ApplicationContainer extends React.Component {
       }
       else this.props.throwAlert('red', 'Message not sent')
       
-      return axios.post('/api/logs/new', {token: this.props.token, date: new Date(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} that application ${this.state.action.appNumber} to ${this.state.action.leasingCompany} was ${this.state.action.status}`, action: this.state.action, app: this.state.id, expiry: this.state.expiryTemp})
+      return axios.post('/api/logs/new', {token: this.props.token, date: getDate(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} that application ${this.state.action.appNumber} to ${this.state.action.leasingCompany} was ${this.state.action.status}`, action: this.state.action, app: this.state.id, expiry: this.state.expiryTemp})
     })
     .then(res => {
       let overallStatus
