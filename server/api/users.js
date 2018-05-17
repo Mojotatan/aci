@@ -1,3 +1,4 @@
+const path = require('path')
 const Op = require('sequelize').Op
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
