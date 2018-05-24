@@ -22,6 +22,7 @@ class BuyoutContainer extends React.Component {
         mailDisabled: false,
         adminMode: false,
         adminView: (this.props.user) ? this.props.user.level === 'Admin' : false,
+        calcView: false,
         lightbox: false,
         expiryTemp: '',
         upload: null,
@@ -64,6 +65,8 @@ class BuyoutContainer extends React.Component {
 
     this.toggleAdminView = this.toggleAdminView.bind(this)
     this.toggleLightbox = this.toggleLightbox.bind(this)
+
+    this.toggleCalcView = this.toggleCalcView.bind(this)
 
     this.handleChangeInPDFNote = this.handleChangeInPDFNote.bind(this)
     this.handleDeletePDF = this.handleDeletePDF.bind(this)
@@ -377,6 +380,12 @@ class BuyoutContainer extends React.Component {
     })
   }
 
+  toggleCalcView(e) {
+    this.setState({
+      calcView: !this.state.calcView
+    })
+  }
+
 
   handleDeletePDF(e) {
     // let pdfs = Array.from(this.state.pdfs)
@@ -494,6 +503,7 @@ class BuyoutContainer extends React.Component {
           handleAdminMode={this.handleAdminMode}
           toggleAdminView={this.toggleAdminView}
           toggleLightbox={this.toggleLightbox}
+          toggleCalcView={this.toggleCalcView}
           handleChangeInPDFNote={this.handleChangeInPDFNote}
           handleDeletePDF={this.handleDeletePDF}
           handleChoosePDF={this.handleChoosePDF}

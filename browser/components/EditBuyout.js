@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import AdminActivity from './AdminActivity';
+import AdminActivity from './AdminActivity'
 
 export default ({
   values,
@@ -34,6 +34,7 @@ export default ({
   handleAdminMode,
   toggleAdminView,
   toggleLightbox,
+  toggleCalcView,
   handleChangeInPDFNote,
   handleDeletePDF,
   handleChoosePDF,
@@ -56,6 +57,7 @@ export default ({
       handleSaveAndNotify={handleSaveAndNotify}
       toggleAdminView={toggleAdminView}
       toggleLightbox={toggleLightbox}
+      toggleCalcView={toggleCalcView}
       handleChangeInPDFNote={handleChangeInPDFNote}
       handleDeletePDF={handleDeletePDF}
       handleChoosePDF={handleChoosePDF}
