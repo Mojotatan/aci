@@ -1,8 +1,9 @@
-import React from 'React'
+import React from 'react'
 
 export default ({
   values,
-  toggleCalcView
+  toggleCalcView,
+  handleCalcs
 }) => (
   <div className="col-sm-9">
     <form>
@@ -22,18 +23,18 @@ export default ({
           </div>
           <div className="col-sm-4">
             <div className="field-label">
-              <label>Lessee Name</label>
+              <label>Lease Company</label>
             </div>
             <div className="field-box">
-              <div></div>
+              <input name="leaseCompany" value={values.calcs.leaseCompany || ''} onChange={handleCalcs} />
             </div>
           </div>
           <div className="col-sm-4">
             <div className="field-label">
-              <label>Lessee Name</label>
+              <label>Lease Number</label>
             </div>
             <div className="field-box">
-              <div></div>
+              <input name="leaseNumber" value={values.calcs.leaseNumber || ''} onChange={handleCalcs} />
             </div>
           </div>
         </div>
@@ -41,7 +42,7 @@ export default ({
         <div className="row">
           <div className="col-sm-6">
             <div className="field-label">
-              <label></label>
+              <label>Address</label>
             </div>
             <div className="field-box">
               <div></div>
@@ -63,15 +64,15 @@ export default ({
               <label>Lease Start Date</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="startDate" value={values.calcs.startDate || ''} onChange={handleCalcs} />
             </div>
           </div>
           <div className="col-sm-6">
             <div className="field-label">
-              <label>Lease Plane End Date</label>
+              <label>Lease Plan End Date</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="endDate" value={values.calcs.endDate || ''} onChange={handleCalcs} />
             </div>
           </div>
         </div>
@@ -82,7 +83,7 @@ export default ({
               <label>Original Term</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="originalTerm" value={values.calcs.originalTerm || ''} onChange={handleCalcs} />
             </div>
           </div>
           <div className="col-sm-6">
@@ -90,7 +91,7 @@ export default ({
               <label>Remaining Term</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="remainingTerm" value={values.calcs.remainingTerm || ''} onChange={handleCalcs} />
             </div>
           </div>
         </div>
@@ -101,7 +102,7 @@ export default ({
               <label>Current Equipment Payment</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="currentEquipmentPayment" value={values.calcs.currentEquipmentPayment || ''} onChange={handleCalcs} />
             </div>
           </div>
           <div className="col-sm-4">
@@ -109,7 +110,7 @@ export default ({
               <label>Current Service/MA Payment</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="currentServicePayment" value={values.calcs.currentServicePayment || ''} onChange={handleCalcs} />
             </div>
           </div>
           <div className="col-sm-4">
@@ -117,7 +118,7 @@ export default ({
               <label>Pass Through Service</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="passThroughService" value={values.calcs.passThroughService || ''} onChange={handleCalcs} />
             </div>
           </div>
         </div>
@@ -128,7 +129,7 @@ export default ({
               <label>Total Base Payment</label>
             </div>
             <div className="field-box">
-              <div></div>
+              <div>{Number(values.calcs.currentEquipmentPayment || 0) + Number(values.calcs.currentServicePayment || 0) + Number(values.calcs.passThroughService || 0)}</div>
             </div>
           </div>
         </div>
@@ -143,7 +144,7 @@ export default ({
               <label>Upgrade to Keep</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="companyUtk" value={values.calcs.companyUtk || ''} onChange={handleCalcs} />
             </div>
           </div>
           <div className="col-sm-6">
@@ -151,7 +152,7 @@ export default ({
               <label>Upgrade to Return</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="companyUtr" value={values.calcs.companyUtr || ''} onChange={handleCalcs} />
             </div>
           </div>
         </div>
@@ -162,7 +163,7 @@ export default ({
               <label>Buyout to Keep</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="companyBtk" value={values.calcs.companyBtk || ''} onChange={handleCalcs} />
             </div>
           </div>
           <div className="col-sm-6">
@@ -170,34 +171,44 @@ export default ({
               <label>Buyout to Return</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="companyBtr" value={values.calcs.companyBtr || ''} onChange={handleCalcs} />
             </div>
           </div>
         </div>
 
         <div className="row">
-          <div className="col-sm-4">
+          <div className="col-sm-3">
+            <div className="field-label">
+              <label>%</label>
+            </div>
+            <div className="field-box">
+              <input name="percentage" value={values.calcs.percentage || ''} onChange={handleCalcs} />
+            </div>
+          </div>
+          <div className="col-sm-3">
             <div className="field-label">
               <label>Service Recovery Amount</label>
             </div>
             <div className="field-box">
-              <input />
+              {/* <input name="" value={values.calcs || ''} onChange={handleCalcs} /> */}
+              <div></div>
             </div>
           </div>
-          <div className="col-sm-4">
+          <div className="col-sm-3">
             <div className="field-label">
               <label>Pass Through Service</label>
             </div>
             <div className="field-box">
-              <input />
+              {/* <input name="" value={values.calcs || ''} onChange={handleCalcs} /> */}
+              <div></div>
             </div>
           </div>
-          <div className="col-sm-4">
+          <div className="col-sm-3">
             <div className="field-label">
               <label>MISC (SMUA)</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="smua" value={values.calcs.smua || ''} onChange={handleCalcs} />
             </div>
           </div>
         </div>
@@ -212,7 +223,8 @@ export default ({
               <label>Upgrade to Keep</label>
             </div>
             <div className="field-box">
-              <input />
+              {/* <input name="" value={values.calcs || ''} onChange={handleCalcs} /> */}
+              <div></div>
             </div>
           </div>
           <div className="col-sm-6">
@@ -220,7 +232,8 @@ export default ({
               <label>Upgrade to Return</label>
             </div>
             <div className="field-box">
-              <input />
+              {/* <input name="" value={values.calcs || ''} onChange={handleCalcs} /> */}
+              <div></div>
             </div>
           </div>
         </div>
@@ -231,7 +244,8 @@ export default ({
               <label>Buyout to Keep</label>
             </div>
             <div className="field-box">
-              <input />
+              {/* <input name="" value={values.calcs || ''} onChange={handleCalcs} /> */}
+              <div></div>
             </div>
           </div>
           <div className="col-sm-6">
@@ -239,7 +253,8 @@ export default ({
               <label>Buyout to Return</label>
             </div>
             <div className="field-box">
-              <input />
+              {/* <input name="" value={values.calcs || ''} onChange={handleCalcs} /> */}
+              <div></div>
             </div>
           </div>
         </div>
@@ -251,7 +266,7 @@ export default ({
               <label>Buyout to Keep</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="customerBtk" value={values.calcs.customerBtk || ''} onChange={handleCalcs} />
             </div>
           </div>
           <div className="col-sm-6">
@@ -259,7 +274,7 @@ export default ({
               <label>Buyout to Return</label>
             </div>
             <div className="field-box">
-              <input />
+              <input name="customerBtr" value={values.calcs.customerBtr || ''} onChange={handleCalcs} />
             </div>
           </div>
         </div>
@@ -277,7 +292,8 @@ export default ({
             Upfront Tax
           </div>
           <div className="col-sm-2">
-            9% Tax
+            <input className="sm-input" name="taxRate" value={values.calcs.taxRate || ''} onChange={handleCalcs} />
+            <span>% Tax</span>
           </div>
           <div className="col-sm-2">
             Total

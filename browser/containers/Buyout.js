@@ -26,7 +26,13 @@ class BuyoutContainer extends React.Component {
         lightbox: false,
         expiryTemp: '',
         upload: null,
-        note: ''
+        note: '',
+        calcs: {
+          percentage: '25',
+          taxRate: '9',
+          // leaseCompany: this.props.byo.leaseCompany,
+          // lease
+        }
       },
       this.props.byo,
     )
@@ -67,6 +73,7 @@ class BuyoutContainer extends React.Component {
     this.toggleLightbox = this.toggleLightbox.bind(this)
 
     this.toggleCalcView = this.toggleCalcView.bind(this)
+    this.handleCalcs = this.handleCalcs.bind(this)
 
     this.handleChangeInPDFNote = this.handleChangeInPDFNote.bind(this)
     this.handleDeletePDF = this.handleDeletePDF.bind(this)
@@ -381,9 +388,16 @@ class BuyoutContainer extends React.Component {
   }
 
   toggleCalcView(e) {
+    e.preventDefault()
     this.setState({
       calcView: !this.state.calcView
     })
+  }
+
+  handleCalcs(e) {
+    let calcs = Object.assign({}, this.state.calcs)
+    calcs[e.target.name] = e.target.value
+    this.setState({'calcs': calcs})
   }
 
 
@@ -504,6 +518,7 @@ class BuyoutContainer extends React.Component {
           toggleAdminView={this.toggleAdminView}
           toggleLightbox={this.toggleLightbox}
           toggleCalcView={this.toggleCalcView}
+          handleCalcs={this.handleCalcs}
           handleChangeInPDFNote={this.handleChangeInPDFNote}
           handleDeletePDF={this.handleDeletePDF}
           handleChoosePDF={this.handleChoosePDF}

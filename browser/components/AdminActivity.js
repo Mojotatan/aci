@@ -22,6 +22,7 @@ export default ({
   toggleAdminView,
   toggleLightbox,
   toggleCalcView,
+  handleCalcs,
   formatTerm,
   handleChangeInPDFNote,
   handleDeletePDF,
@@ -170,6 +171,7 @@ export default ({
       <BuyoutCalcs
         values={values}
         toggleCalcView={toggleCalcView}
+        handleCalcs={handleCalcs}
       />
       :
       <div className="col-sm-9">

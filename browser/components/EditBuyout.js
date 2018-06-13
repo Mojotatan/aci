@@ -35,6 +35,7 @@ export default ({
   toggleAdminView,
   toggleLightbox,
   toggleCalcView,
+  handleCalcs,
   handleChangeInPDFNote,
   handleDeletePDF,
   handleChoosePDF,
@@ -58,6 +59,7 @@ export default ({
       toggleAdminView={toggleAdminView}
       toggleLightbox={toggleLightbox}
       toggleCalcView={toggleCalcView}
+      handleCalcs={handleCalcs}
       handleChangeInPDFNote={handleChangeInPDFNote}
       handleDeletePDF={handleDeletePDF}
       handleChoosePDF={handleChoosePDF}

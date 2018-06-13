@@ -1339,3 +1339,16 @@ select.state {
 .big-bar-bot {
 	border-bottom: 2px solid #1066A3
 }
+
+.app-bg > strong {
+	display: block;
+	margin-top: 15px
+}
+
+.sm-input {
+	width: 50%;
+	text-align: right
+}
+.sm-input + span {
+	display: inline-block
+}
