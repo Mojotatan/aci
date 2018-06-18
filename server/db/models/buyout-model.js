@@ -34,6 +34,9 @@ module.exports = db => db.define('Buyout', {
   pdfNotes: {
     type: Sequelize.ARRAY(Sequelize.STRING),
     defaultValue: []
+  },
+  calcs: {
+    type: Sequelize.JSON
   }
   
 })
