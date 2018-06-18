@@ -23,6 +23,7 @@ export default ({
   toggleLightbox,
   toggleCalcView,
   handleCalcs,
+  toggleMachines,
   formatTerm,
   handleChangeInPDFNote,
   handleDeletePDF,
@@ -36,9 +37,9 @@ export default ({
       <div className="shadowbox" onClick={toggleLightbox}></div>
       <div className="container">
         {(mode === 'app') ?
-          <AppLite values={values} count={count} formatTerm={formatTerm} toggleLightbox={toggleLightbox} />
+          <AppLite values={values} count={count} formatTerm={formatTerm} toggleLightbox={toggleLightbox} toggleMachines={toggleMachines} />
           :
-          <ByoLite values={values} count={count} toggleLightbox={toggleLightbox} />
+          <ByoLite values={values} count={count} toggleLightbox={toggleLightbox} toggleMachines={toggleMachines} />
         }
       </div>
     </div>
@@ -172,6 +173,8 @@ export default ({
         values={values}
         toggleCalcView={toggleCalcView}
         handleCalcs={handleCalcs}
+        toggleMachines={toggleMachines}
+        count={1}
       />
       :
       <div className="col-sm-9">

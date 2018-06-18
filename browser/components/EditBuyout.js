@@ -60,6 +60,7 @@ export default ({
       toggleLightbox={toggleLightbox}
       toggleCalcView={toggleCalcView}
       handleCalcs={handleCalcs}
+      toggleMachines={toggleMachines}
       handleChangeInPDFNote={handleChangeInPDFNote}
       handleDeletePDF={handleDeletePDF}
       handleChoosePDF={handleChoosePDF}

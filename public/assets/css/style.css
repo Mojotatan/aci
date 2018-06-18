@@ -1346,9 +1346,19 @@ select.state {
 }
 
 .sm-input {
-	width: 50%;
+	width: 50%
+}
+.rightput {
 	text-align: right
 }
 .sm-input + span {
 	display: inline-block
+}
+
+.calcs .field-label label, .oneline {
+	white-space: nowrap
+}
+
+.breakdown .row {
+	height: 36px
 }

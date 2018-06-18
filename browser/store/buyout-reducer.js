@@ -139,7 +139,10 @@ export const createByoThunk = (token, callback) => {
       if (res.status === 201) {
         let byo = res.data
         byo.leases = []
+        byo.actions = []
+        byo.logs = []
         byo.customer = {}
+        // byo.pdfs = []
         dispatch(createByo(byo))
         if (callback) callback()
       } else {
