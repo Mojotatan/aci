@@ -7,6 +7,7 @@ module.exports = require('express').Router()
   .post('/new', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     Buyout.create({
+      calcs: JSON.stringify({percentage: '25', taxRate: '9'}),
       repId: me.id
     })
     .then(newByo => {
@@ -200,6 +201,7 @@ module.exports = require('express').Router()
         comments: req.body.byo.comments,
         pdfs: req.body.byo.pdfs,
         pdfNotes: req.body.byo.pdfNotes,
+        calcs: JSON.stringify(req.body.byo.calcs),
         repId: me.id,
         appId: req.body.byo.appId
       })
@@ -211,6 +213,7 @@ module.exports = require('express').Router()
         comments: req.body.byo.comments,
         pdfs: req.body.byo.pdfs,
         pdfNotes: req.body.byo.pdfNotes,
+        calcs: JSON.stringify(req.body.byo.calcs),
         // appId: req.body.appId
       }, {
       where: {

@@ -90,6 +90,8 @@ export const loadByosThunk = (token, callback) => {
           return (log.date <= getDate())
         })
 
+        byo.calcs = JSON.parse(byo.calcs)
+
         byo.pdfs = res.data.pdfs[index]
       })
       dispatch(loadByos(res.data.byos))
