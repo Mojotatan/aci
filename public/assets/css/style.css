@@ -1355,10 +1355,28 @@ select.state {
 	display: inline-block
 }
 
+.admin #cancel-button.calcs {
+	margin-top: 6px
+}
+.app-bg.calcs {
+	margin-top: 0
+}
+
 .calcs .field-label label, .oneline {
 	white-space: nowrap
 }
 
 .breakdown .row {
 	height: 36px
+}
+
+.to-calcs {
+	color: #1066a3;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 24px;
+	cursor: pointer;
+	margin-bottom: 30px;
+	display: inline-block
 }

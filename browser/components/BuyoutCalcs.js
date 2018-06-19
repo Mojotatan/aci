@@ -11,9 +11,6 @@ export default ({
 }) => (
   <div className="col-sm-9">
     <form>
-      <button onClick={toggleCalcView}>
-        nah jk tho
-      </button>
       <div className="app-bg col-sm-12 calcs">
         <h3>Lease Details</h3>
         <div className="row">
@@ -558,12 +555,3 @@ export default ({
     </form>
   </div>
 )
-
-{/* <div className="col-sm-4">
-  <div className="field-label">
-    <label></label>
-  </div>
-  <div className="field-box">
-    <input />
-  </div>
-</div> */}

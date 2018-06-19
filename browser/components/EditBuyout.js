@@ -49,6 +49,7 @@ export default ({
       token={token}
       count={count}
       handleChange={handleChange}
+      handleSave={handleSave}
       handleNote={handleNote}
       handleNotify={handleNotify}
       handleAdminMode={handleAdminMode}

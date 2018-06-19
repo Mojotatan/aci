@@ -12,6 +12,7 @@ export default ({
   token,
   count,
   handleChange,
+  handleSave,
   handleNote,
   handleNotify,
   handleAdminMode,
@@ -60,6 +61,12 @@ export default ({
         <div className="col-sm-6"><h2>Admin Portal</h2></div>
         {/* <div className="col-sm-3 top-buttons"><Link to='/applications' id="cancel-button" className="top">Back</Link></div> */}
 
+          {(values.calcView) ?
+          <div className="col-sm-6 top-buttons" align="right">
+            <span id="cancel-button" className="top calcs" onClick={toggleCalcView}>Cancel</span>
+            <button type="submit" id="save-button" className="top" onClick={handleSave}>Save</button>
+          </div>
+          :
           <div className="col-sm-6 top-buttons" align="right">
             {(mode === 'app') ?
               <Link to='/applications' id="cancel-button" className="top">Back</Link>
@@ -67,6 +74,7 @@ export default ({
               <Link to='/buyouts' id="cancel-button" className="top">Back</Link>
             }
           </div>
+          }
       </div>
     </div>
 
@@ -178,6 +186,12 @@ export default ({
       />
       :
       <div className="col-sm-9">
+        {(mode === 'byo') ?
+          <div className="row">
+            <div className="to-calcs" onClick={toggleCalcView}>Buyout Calculations ›</div>
+          </div>
+          : null
+        }
         <div className="row">
           <div className="col-sm-12 no-gutters">
             <div className="flux-table">
@@ -410,11 +424,6 @@ export default ({
               />
             </div>
           </div>
-          : null
-        }
-
-        {(mode === 'byo') ?
-          <button onClick={toggleCalcView}>oh shit its dem calcs whattup</button>
           : null
         }
 
