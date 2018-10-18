@@ -1339,3 +1339,44 @@ select.state {
 .big-bar-bot {
 	border-bottom: 2px solid #1066A3
 }
+
+.app-bg > strong {
+	display: block;
+	margin-top: 15px
+}
+
+.sm-input {
+	width: 50%
+}
+.rightput {
+	text-align: right
+}
+.sm-input + span {
+	display: inline-block
+}
+
+.admin #cancel-button.calcs {
+	margin-top: 6px
+}
+.app-bg.calcs {
+	margin-top: 0
+}
+
+.calcs .field-label label, .oneline {
+	white-space: nowrap
+}
+
+.breakdown .row {
+	height: 36px
+}
+
+.to-calcs {
+	color: #1066a3;
+	font-family: "Source Sans Pro";
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 24px;
+	cursor: pointer;
+	margin-bottom: 30px;
+	display: inline-block
+}

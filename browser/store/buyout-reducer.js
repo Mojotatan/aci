@@ -90,6 +90,8 @@ export const loadByosThunk = (token, callback) => {
           return (log.date <= getDate())
         })
 
+        byo.calcs = JSON.parse(byo.calcs)
+
         byo.pdfs = res.data.pdfs[index]
       })
       dispatch(loadByos(res.data.byos))
@@ -139,7 +141,10 @@ export const createByoThunk = (token, callback) => {
       if (res.status === 201) {
         let byo = res.data
         byo.leases = []
+        byo.actions = []
+        byo.logs = []
         byo.customer = {}
+        // byo.pdfs = []
         dispatch(createByo(byo))
         if (callback) callback()
       } else {

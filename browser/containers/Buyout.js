@@ -22,10 +22,17 @@ class BuyoutContainer extends React.Component {
         mailDisabled: false,
         adminMode: false,
         adminView: (this.props.user) ? this.props.user.level === 'Admin' : false,
+        calcView: false,
         lightbox: false,
         expiryTemp: '',
         upload: null,
-        note: ''
+        note: '',
+        calcs: {
+          percentage: '25',
+          taxRate: '9',
+          // leaseCompany: this.props.byo.leaseCompany,
+          // lease
+        }
       },
       this.props.byo,
     )
@@ -64,6 +71,9 @@ class BuyoutContainer extends React.Component {
 
     this.toggleAdminView = this.toggleAdminView.bind(this)
     this.toggleLightbox = this.toggleLightbox.bind(this)
+
+    this.toggleCalcView = this.toggleCalcView.bind(this)
+    this.handleCalcs = this.handleCalcs.bind(this)
 
     this.handleChangeInPDFNote = this.handleChangeInPDFNote.bind(this)
     this.handleDeletePDF = this.handleDeletePDF.bind(this)
@@ -241,8 +251,8 @@ class BuyoutContainer extends React.Component {
 
     axios.post('/api/mail', {
       token: this.props.token,
-      // to: this.state.rep.email,
-      to: 'tatan42@gmail.com',
+      to: this.state.rep.email,
+      // to: 'tatan42@gmail.com',
       cc: this.state.mailCC.split(', '),
       subject: this.state.mailSubject,
       html: this.state.mailBody
@@ -377,6 +387,19 @@ class BuyoutContainer extends React.Component {
     })
   }
 
+  toggleCalcView(e) {
+    e.preventDefault()
+    this.setState({
+      calcView: !this.state.calcView
+    })
+  }
+
+  handleCalcs(e) {
+    let calcs = Object.assign({}, this.state.calcs)
+    calcs[e.target.name] = e.target.value
+    this.setState({'calcs': calcs})
+  }
+
 
   handleDeletePDF(e) {
     // let pdfs = Array.from(this.state.pdfs)
@@ -494,6 +517,8 @@ class BuyoutContainer extends React.Component {
           handleAdminMode={this.handleAdminMode}
           toggleAdminView={this.toggleAdminView}
           toggleLightbox={this.toggleLightbox}
+          toggleCalcView={this.toggleCalcView}
+          handleCalcs={this.handleCalcs}
           handleChangeInPDFNote={this.handleChangeInPDFNote}
           handleDeletePDF={this.handleDeletePDF}
           handleChoosePDF={this.handleChoosePDF}

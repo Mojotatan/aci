@@ -112,7 +112,35 @@ export const pwCheck = (pw) => {
 }
 
 
-// export const detectRequired = reqs => {
-//   // takes array of required properties
+// Functions for Buyout Calculations
+export const sum = (...targs) => {
+  let val = 0
+  targs.forEach(n => val += checkFor$(n) || 0)
+  return monify(val)
+}
 
-// }
+export const product = (...targs) => {
+  let val = 0
+  targs.forEach((n, index) => {
+    if (index === 0) val = checkFor$(n) || 0
+    else val *= checkFor$(n) || 0
+  })
+  return String(val)
+}
+
+export const round = n => {
+  return monify(Math.round(checkFor$(n) * 100) / 100)
+}
+
+export const monify = n => {
+  let str = String(n)
+  let arr = str.split('.')
+  arr[0] = arr[0].split('')
+  arr[0] = arr[0].map((char, index) => {
+    return (index !== arr[0].length - 1 && (arr[0].length - index) % 3 === 1) ? char + ',' : char
+  }).join('')
+  if (arr.length === 1) arr.push('00')
+  else if (arr[1].length === 1) arr[1] += '0'
+  else if (arr[1].length === 0) arr[1] = '00'
+  return arr.join('.')
+}
