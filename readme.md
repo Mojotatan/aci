@@ -111,6 +111,10 @@ If process.env variables are getting overwritten or otherwise misbehaving, set u
 7. Start Passenger
 
 8. [Follow this tutorial to set up SSL](https://medium.com/@yash.kulshrestha/using-lets-encrypt-with-express-e069c7abe625)
+```
+//chmod certbot-auto a+x
+sudo ./certbot-auto certonly --webroot -w ./public -d myadmindev.xyz
+```
 
 9. After you successfully generate web certificates, create symbolic links to them:
 ```
@@ -137,6 +141,9 @@ ln -s /path/to/key /path/to/web/directory/.ssl/privkey.pem
 ```
 
 11. TODO: automate certificate renewal
+```
+certbot-auto renew
+```
 
 12. Set up a cron job to automatically backup the database:
 ```
@@ -156,6 +163,7 @@ npm install
 ```
 
 2. Change dbUrl in server/db/index.js. You may have to manually add the email password as well.
+*Addendum* You might have to do this as root b/c of permissions issues.
 
 3. Restart Passenger
 
