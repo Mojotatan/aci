@@ -74,7 +74,7 @@ var global = __webpack_require__(3);
 var core = __webpack_require__(30);
 var hide = __webpack_require__(17);
 var redefine = __webpack_require__(18);
-var ctx = __webpack_require__(26);
+var ctx = __webpack_require__(27);
 var PROTOTYPE = 'prototype';
 
 var $export = function $export(type, name, source) {
@@ -1127,66 +1127,6 @@ module.exports = {
 "use strict";
 
 
-// optional / simple context binding
-var aFunction = __webpack_require__(14);
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1:
-      return function (a) {
-        return fn.call(that, a);
-      };
-    case 2:
-      return function (a, b) {
-        return fn.call(that, a, b);
-      };
-    case 3:
-      return function (a, b, c) {
-        return fn.call(that, a, b, c);
-      };
-  }
-  return function () /* ...args */{
-    return fn.apply(that, arguments);
-  };
-};
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var toString = {}.toString;
-
-module.exports = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var fails = __webpack_require__(4);
-
-module.exports = function (method, arg) {
-  return !!method && fails(function () {
-    // eslint-disable-next-line no-useless-call
-    arg ? method.call(null, function () {/* empty */}, 1) : method.call(null);
-  });
-};
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -1297,10 +1237,105 @@ var pwCheck = exports.pwCheck = function pwCheck(pw) {
   if (checkChars.letters > 0 && checkChars.numbers > 0) return true;else return false;
 };
 
-// export const detectRequired = reqs => {
-//   // takes array of required properties
+// Functions for Buyout Calculations
+var sum = exports.sum = function sum() {
+  for (var _len = arguments.length, targs = Array(_len), _key = 0; _key < _len; _key++) {
+    targs[_key] = arguments[_key];
+  }
 
-// }
+  var val = 0;
+  targs.forEach(function (n) {
+    return val += checkFor$(n) || 0;
+  });
+  return monify(val);
+};
+
+var product = exports.product = function product() {
+  for (var _len2 = arguments.length, targs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    targs[_key2] = arguments[_key2];
+  }
+
+  var val = 0;
+  targs.forEach(function (n, index) {
+    if (index === 0) val = checkFor$(n) || 0;else val *= checkFor$(n) || 0;
+  });
+  return String(val);
+};
+
+var round = exports.round = function round(n) {
+  return monify(Math.round(checkFor$(n) * 100) / 100);
+};
+
+var monify = exports.monify = function monify(n) {
+  var str = String(n);
+  var arr = str.split('.');
+  arr[0] = arr[0].split('');
+  arr[0] = arr[0].map(function (char, index) {
+    return index !== arr[0].length - 1 && (arr[0].length - index) % 3 === 1 ? char + ',' : char;
+  }).join('');
+  if (arr.length === 1) arr.push('00');else if (arr[1].length === 1) arr[1] += '0';else if (arr[1].length === 0) arr[1] = '00';
+  return arr.join('.');
+};
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// optional / simple context binding
+var aFunction = __webpack_require__(14);
+module.exports = function (fn, that, length) {
+  aFunction(fn);
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1:
+      return function (a) {
+        return fn.call(that, a);
+      };
+    case 2:
+      return function (a, b) {
+        return fn.call(that, a, b);
+      };
+    case 3:
+      return function (a, b, c) {
+        return fn.call(that, a, b, c);
+      };
+  }
+  return function () /* ...args */{
+    return fn.apply(that, arguments);
+  };
+};
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var toString = {}.toString;
+
+module.exports = function (it) {
+  return toString.call(it).slice(8, -1);
+};
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var fails = __webpack_require__(4);
+
+module.exports = function (method, arg) {
+  return !!method && fails(function () {
+    // eslint-disable-next-line no-useless-call
+    arg ? method.call(null, function () {/* empty */}, 1) : method.call(null);
+  });
+};
 
 /***/ }),
 /* 30 */
@@ -1393,7 +1428,7 @@ module.exports = function (KEY, exec) {
 // 4 -> Array#every
 // 5 -> Array#find
 // 6 -> Array#findIndex
-var ctx = __webpack_require__(26);
+var ctx = __webpack_require__(27);
 var IObject = __webpack_require__(59);
 var toObject = __webpack_require__(11);
 var toLength = __webpack_require__(10);
@@ -1452,7 +1487,7 @@ if (__webpack_require__(8)) {
   var $export = __webpack_require__(0);
   var $typed = __webpack_require__(80);
   var $buffer = __webpack_require__(114);
-  var ctx = __webpack_require__(26);
+  var ctx = __webpack_require__(27);
   var anInstance = __webpack_require__(51);
   var propertyDesc = __webpack_require__(43);
   var hide = __webpack_require__(17);
@@ -2412,7 +2447,7 @@ module.exports = function (it, Constructor, name, forbiddenField) {
 "use strict";
 
 
-var ctx = __webpack_require__(26);
+var ctx = __webpack_require__(27);
 var call = __webpack_require__(146);
 var isArrayIter = __webpack_require__(105);
 var anObject = __webpack_require__(2);
@@ -2663,7 +2698,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__(27);
+var cof = __webpack_require__(28);
 // eslint-disable-next-line no-prototype-builtins
 module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
@@ -2686,7 +2721,7 @@ exports.f = {}.propertyIsEnumerable;
 
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
-var cof = __webpack_require__(27);
+var cof = __webpack_require__(28);
 var TAG = __webpack_require__(6)('toStringTag');
 // ES3 wrong here
 var ARG = cof(function () {
@@ -3106,7 +3141,7 @@ var _leaseReducer = __webpack_require__(88);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3306,7 +3341,7 @@ var _leaseReducer = __webpack_require__(88);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3397,6 +3432,8 @@ var loadByosThunk = exports.loadByosThunk = function loadByosThunk(token, callba
           return log.date <= (0, _utility.getDate)();
         });
 
+        byo.calcs = JSON.parse(byo.calcs);
+
         byo.pdfs = res.data.pdfs[index];
       });
       dispatch(loadByos(res.data.byos));
@@ -3449,7 +3486,10 @@ var createByoThunk = exports.createByoThunk = function createByoThunk(token, cal
       if (res.status === 201) {
         var byo = res.data;
         byo.leases = [];
+        byo.actions = [];
+        byo.logs = [];
         byo.customer = {};
+        // byo.pdfs = []
         dispatch(createByo(byo));
         if (callback) callback();
       } else {
@@ -3574,7 +3614,7 @@ exports.f = Object.getOwnPropertySymbols;
 
 
 // 7.2.2 IsArray(argument)
-var cof = __webpack_require__(27);
+var cof = __webpack_require__(28);
 module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
@@ -3588,7 +3628,7 @@ module.exports = Array.isArray || function isArray(arg) {
 
 // 7.2.8 IsRegExp(argument)
 var isObject = __webpack_require__(5);
-var cof = __webpack_require__(27);
+var cof = __webpack_require__(28);
 var MATCH = __webpack_require__(6)('match');
 module.exports = function (it) {
   var isRegExp;
@@ -3888,7 +3928,7 @@ module.exports = function (COLLECTION) {
 
 var $export = __webpack_require__(0);
 var aFunction = __webpack_require__(14);
-var ctx = __webpack_require__(26);
+var ctx = __webpack_require__(27);
 var forOf = __webpack_require__(52);
 
 module.exports = function (COLLECTION) {
@@ -4120,7 +4160,7 @@ var _customerReducer = __webpack_require__(66);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4382,7 +4422,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
   function (test, buggy, set) {
     try {
-      set = __webpack_require__(26)(Function.call, __webpack_require__(22).f(Object.prototype, '__proto__').set, 2);
+      set = __webpack_require__(27)(Function.call, __webpack_require__(22).f(Object.prototype, '__proto__').set, 2);
       set(test, []);
       buggy = !(test instanceof Array);
     } catch (e) {
@@ -4772,7 +4812,7 @@ addToUnscopables('entries');
 "use strict";
 
 
-var ctx = __webpack_require__(26);
+var ctx = __webpack_require__(27);
 var invoke = __webpack_require__(139);
 var html = __webpack_require__(93);
 var cel = __webpack_require__(89);
@@ -4816,7 +4856,7 @@ if (!setTask || !clearTask) {
     delete queue[id];
   };
   // Node.js 0.8-
-  if (__webpack_require__(27)(process) == 'process') {
+  if (__webpack_require__(28)(process) == 'process') {
     defer = function defer(id) {
       process.nextTick(ctx(run, id, 1));
     };
@@ -4870,7 +4910,7 @@ var macrotask = __webpack_require__(111).set;
 var Observer = global.MutationObserver || global.WebKitMutationObserver;
 var process = global.process;
 var Promise = global.Promise;
-var isNode = __webpack_require__(27)(process) == 'process';
+var isNode = __webpack_require__(28)(process) == 'process';
 
 module.exports = function () {
   var head, last, notify;
@@ -6468,7 +6508,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6856,7 +6896,7 @@ module.exports = 1 / $parseFloat(__webpack_require__(95) + '-0') !== -Infinity ?
 "use strict";
 
 
-var cof = __webpack_require__(27);
+var cof = __webpack_require__(28);
 module.exports = function (it, msg) {
   if (typeof it != 'number' && cof(it) != 'Number') throw TypeError(msg);
   return +it;
@@ -7105,7 +7145,7 @@ module.exports = __webpack_require__(79)(MAP, function (get) {
 var dP = __webpack_require__(9).f;
 var create = __webpack_require__(48);
 var redefineAll = __webpack_require__(53);
-var ctx = __webpack_require__(26);
+var ctx = __webpack_require__(27);
 var anInstance = __webpack_require__(51);
 var forOf = __webpack_require__(52);
 var $iterDefine = __webpack_require__(101);
@@ -7477,7 +7517,7 @@ module.exports = Reflect && Reflect.ownKeys || function ownKeys(it) {
 var isArray = __webpack_require__(73);
 var isObject = __webpack_require__(5);
 var toLength = __webpack_require__(10);
-var ctx = __webpack_require__(26);
+var ctx = __webpack_require__(27);
 var IS_CONCAT_SPREADABLE = __webpack_require__(6)('isConcatSpreadable');
 
 function flattenIntoArray(target, original, source, sourceLen, start, depth, mapper, thisArg) {
@@ -9832,7 +9872,11 @@ var _ByoLite = __webpack_require__(493);
 
 var _ByoLite2 = _interopRequireDefault(_ByoLite);
 
-var _utility = __webpack_require__(29);
+var _BuyoutCalcs = __webpack_require__(494);
+
+var _BuyoutCalcs2 = _interopRequireDefault(_BuyoutCalcs);
+
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9842,6 +9886,7 @@ exports.default = function (_ref) {
       token = _ref.token,
       count = _ref.count,
       handleChange = _ref.handleChange,
+      handleSave = _ref.handleSave,
       handleNote = _ref.handleNote,
       handleNotify = _ref.handleNotify,
       handleAdminMode = _ref.handleAdminMode,
@@ -9851,6 +9896,9 @@ exports.default = function (_ref) {
       handleChangeAction = _ref.handleChangeAction,
       toggleAdminView = _ref.toggleAdminView,
       toggleLightbox = _ref.toggleLightbox,
+      toggleCalcView = _ref.toggleCalcView,
+      handleCalcs = _ref.handleCalcs,
+      toggleMachines = _ref.toggleMachines,
       formatTerm = _ref.formatTerm,
       handleChangeInPDFNote = _ref.handleChangeInPDFNote,
       handleDeletePDF = _ref.handleDeletePDF,
@@ -9866,7 +9914,7 @@ exports.default = function (_ref) {
       _react2.default.createElement(
         'div',
         { className: 'container' },
-        mode === 'app' ? _react2.default.createElement(_AppLite2.default, { values: values, count: count, formatTerm: formatTerm, toggleLightbox: toggleLightbox }) : _react2.default.createElement(_ByoLite2.default, { values: values, count: count, toggleLightbox: toggleLightbox })
+        mode === 'app' ? _react2.default.createElement(_AppLite2.default, { values: values, count: count, formatTerm: formatTerm, toggleLightbox: toggleLightbox, toggleMachines: toggleMachines }) : _react2.default.createElement(_ByoLite2.default, { values: values, count: count, toggleLightbox: toggleLightbox, toggleMachines: toggleMachines })
       )
     ) : null,
     _react2.default.createElement(
@@ -9901,7 +9949,20 @@ exports.default = function (_ref) {
             'Admin Portal'
           )
         ),
-        _react2.default.createElement(
+        values.calcView ? _react2.default.createElement(
+          'div',
+          { className: 'col-sm-6 top-buttons', align: 'right' },
+          _react2.default.createElement(
+            'span',
+            { id: 'cancel-button', className: 'top calcs', onClick: toggleCalcView },
+            'Cancel'
+          ),
+          _react2.default.createElement(
+            'button',
+            { type: 'submit', id: 'save-button', className: 'top', onClick: handleSave },
+            'Save'
+          )
+        ) : _react2.default.createElement(
           'div',
           { className: 'col-sm-6 top-buttons', align: 'right' },
           mode === 'app' ? _react2.default.createElement(
@@ -10210,9 +10271,24 @@ exports.default = function (_ref) {
         )
       )
     ),
-    _react2.default.createElement(
+    values.calcView ? _react2.default.createElement(_BuyoutCalcs2.default, {
+      values: values,
+      toggleCalcView: toggleCalcView,
+      handleCalcs: handleCalcs,
+      toggleMachines: toggleMachines,
+      count: 1
+    }) : _react2.default.createElement(
       'div',
       { className: 'col-sm-9' },
+      mode === 'byo' ? _react2.default.createElement(
+        'div',
+        { className: 'row' },
+        _react2.default.createElement(
+          'div',
+          { className: 'to-calcs', onClick: toggleCalcView },
+          'Buyout Calculations \u203A'
+        )
+      ) : null,
       _react2.default.createElement(
         'div',
         { className: 'row' },
@@ -11674,7 +11750,7 @@ $export($export.G + $export.F * (parseFloat != $parseFloat), { parseFloat: $pars
 
 var global = __webpack_require__(3);
 var has = __webpack_require__(16);
-var cof = __webpack_require__(27);
+var cof = __webpack_require__(28);
 var inheritIfRequired = __webpack_require__(96);
 var toPrimitive = __webpack_require__(31);
 var fails = __webpack_require__(4);
@@ -12836,7 +12912,7 @@ $export($export.S, 'Array', { isArray: __webpack_require__(73) });
 "use strict";
 
 
-var ctx = __webpack_require__(26);
+var ctx = __webpack_require__(27);
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(11);
 var call = __webpack_require__(146);
@@ -12915,7 +12991,7 @@ var toIObject = __webpack_require__(21);
 var arrayJoin = [].join;
 
 // fallback for not array-like strings
-$export($export.P + $export.F * (__webpack_require__(59) != Object || !__webpack_require__(28)(arrayJoin)), 'Array', {
+$export($export.P + $export.F * (__webpack_require__(59) != Object || !__webpack_require__(29)(arrayJoin)), 'Array', {
   join: function join(separator) {
     return arrayJoin.call(toIObject(this), separator === undefined ? ',' : separator);
   }
@@ -12930,7 +13006,7 @@ $export($export.P + $export.F * (__webpack_require__(59) != Object || !__webpack
 
 var $export = __webpack_require__(0);
 var html = __webpack_require__(93);
-var cof = __webpack_require__(27);
+var cof = __webpack_require__(28);
 var toAbsoluteIndex = __webpack_require__(47);
 var toLength = __webpack_require__(10);
 var arraySlice = [].slice;
@@ -12976,7 +13052,7 @@ $export($export.P + $export.F * (fails(function () {
   // V8 bug
   test.sort(null);
   // Old WebKit
-}) || !__webpack_require__(28)($sort)), 'Array', {
+}) || !__webpack_require__(29)($sort)), 'Array', {
   // 22.1.3.25 Array.prototype.sort(comparefn)
   sort: function sort(comparefn) {
     return comparefn === undefined ? $sort.call(toObject(this)) : $sort.call(toObject(this), aFunction(comparefn));
@@ -12992,7 +13068,7 @@ $export($export.P + $export.F * (fails(function () {
 
 var $export = __webpack_require__(0);
 var $forEach = __webpack_require__(35)(0);
-var STRICT = __webpack_require__(28)([].forEach, true);
+var STRICT = __webpack_require__(29)([].forEach, true);
 
 $export($export.P + $export.F * !STRICT, 'Array', {
   // 22.1.3.10 / 15.4.4.18 Array.prototype.forEach(callbackfn [, thisArg])
@@ -13035,7 +13111,7 @@ module.exports = function (original) {
 var $export = __webpack_require__(0);
 var $map = __webpack_require__(35)(1);
 
-$export($export.P + $export.F * !__webpack_require__(28)([].map, true), 'Array', {
+$export($export.P + $export.F * !__webpack_require__(29)([].map, true), 'Array', {
   // 22.1.3.15 / 15.4.4.19 Array.prototype.map(callbackfn [, thisArg])
   map: function map(callbackfn /* , thisArg */) {
     return $map(this, callbackfn, arguments[1]);
@@ -13052,7 +13128,7 @@ $export($export.P + $export.F * !__webpack_require__(28)([].map, true), 'Array',
 var $export = __webpack_require__(0);
 var $filter = __webpack_require__(35)(2);
 
-$export($export.P + $export.F * !__webpack_require__(28)([].filter, true), 'Array', {
+$export($export.P + $export.F * !__webpack_require__(29)([].filter, true), 'Array', {
   // 22.1.3.7 / 15.4.4.20 Array.prototype.filter(callbackfn [, thisArg])
   filter: function filter(callbackfn /* , thisArg */) {
     return $filter(this, callbackfn, arguments[1]);
@@ -13069,7 +13145,7 @@ $export($export.P + $export.F * !__webpack_require__(28)([].filter, true), 'Arra
 var $export = __webpack_require__(0);
 var $some = __webpack_require__(35)(3);
 
-$export($export.P + $export.F * !__webpack_require__(28)([].some, true), 'Array', {
+$export($export.P + $export.F * !__webpack_require__(29)([].some, true), 'Array', {
   // 22.1.3.23 / 15.4.4.17 Array.prototype.some(callbackfn [, thisArg])
   some: function some(callbackfn /* , thisArg */) {
     return $some(this, callbackfn, arguments[1]);
@@ -13086,7 +13162,7 @@ $export($export.P + $export.F * !__webpack_require__(28)([].some, true), 'Array'
 var $export = __webpack_require__(0);
 var $every = __webpack_require__(35)(4);
 
-$export($export.P + $export.F * !__webpack_require__(28)([].every, true), 'Array', {
+$export($export.P + $export.F * !__webpack_require__(29)([].every, true), 'Array', {
   // 22.1.3.5 / 15.4.4.16 Array.prototype.every(callbackfn [, thisArg])
   every: function every(callbackfn /* , thisArg */) {
     return $every(this, callbackfn, arguments[1]);
@@ -13103,7 +13179,7 @@ $export($export.P + $export.F * !__webpack_require__(28)([].every, true), 'Array
 var $export = __webpack_require__(0);
 var $reduce = __webpack_require__(147);
 
-$export($export.P + $export.F * !__webpack_require__(28)([].reduce, true), 'Array', {
+$export($export.P + $export.F * !__webpack_require__(29)([].reduce, true), 'Array', {
   // 22.1.3.18 / 15.4.4.21 Array.prototype.reduce(callbackfn [, initialValue])
   reduce: function reduce(callbackfn /* , initialValue */) {
     return $reduce(this, callbackfn, arguments.length, arguments[1], false);
@@ -13120,7 +13196,7 @@ $export($export.P + $export.F * !__webpack_require__(28)([].reduce, true), 'Arra
 var $export = __webpack_require__(0);
 var $reduce = __webpack_require__(147);
 
-$export($export.P + $export.F * !__webpack_require__(28)([].reduceRight, true), 'Array', {
+$export($export.P + $export.F * !__webpack_require__(29)([].reduceRight, true), 'Array', {
   // 22.1.3.19 / 15.4.4.22 Array.prototype.reduceRight(callbackfn [, initialValue])
   reduceRight: function reduceRight(callbackfn /* , initialValue */) {
     return $reduce(this, callbackfn, arguments.length, arguments[1], true);
@@ -13139,7 +13215,7 @@ var $indexOf = __webpack_require__(71)(false);
 var $native = [].indexOf;
 var NEGATIVE_ZERO = !!$native && 1 / [1].indexOf(1, -0) < 0;
 
-$export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(28)($native)), 'Array', {
+$export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(29)($native)), 'Array', {
   // 22.1.3.11 / 15.4.4.14 Array.prototype.indexOf(searchElement [, fromIndex])
   indexOf: function indexOf(searchElement /* , fromIndex = 0 */) {
     return NEGATIVE_ZERO
@@ -13162,7 +13238,7 @@ var toLength = __webpack_require__(10);
 var $native = [].lastIndexOf;
 var NEGATIVE_ZERO = !!$native && 1 / [1].lastIndexOf(1, -0) < 0;
 
-$export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(28)($native)), 'Array', {
+$export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(29)($native)), 'Array', {
   // 22.1.3.14 / 15.4.4.15 Array.prototype.lastIndexOf(searchElement [, fromIndex])
   lastIndexOf: function lastIndexOf(searchElement /* , fromIndex = @[*-1] */) {
     // convert -0 to +0
@@ -13484,7 +13560,7 @@ __webpack_require__(77)('split', 2, function (defined, SPLIT, $split) {
 
 var LIBRARY = __webpack_require__(45);
 var global = __webpack_require__(3);
-var ctx = __webpack_require__(26);
+var ctx = __webpack_require__(27);
 var classof = __webpack_require__(61);
 var $export = __webpack_require__(0);
 var isObject = __webpack_require__(5);
@@ -14825,7 +14901,7 @@ $export($export.S, 'System', { global: __webpack_require__(3) });
 
 // https://github.com/ljharb/proposal-is-error
 var $export = __webpack_require__(0);
-var cof = __webpack_require__(27);
+var cof = __webpack_require__(28);
 
 $export($export.S, 'Error', {
   isError: function isError(it) {
@@ -15278,7 +15354,7 @@ $metadata.exp({ metadata: function metadata(metadataKey, metadataValue) {
 var $export = __webpack_require__(0);
 var microtask = __webpack_require__(112)();
 var process = __webpack_require__(3).process;
-var isNode = __webpack_require__(27)(process) == 'process';
+var isNode = __webpack_require__(28)(process) == 'process';
 
 $export($export.G, {
   asap: function asap(fn) {
@@ -29448,35 +29524,35 @@ var _Application = __webpack_require__(489);
 
 var _Application2 = _interopRequireDefault(_Application);
 
-var _BuyoutDashboard = __webpack_require__(494);
+var _BuyoutDashboard = __webpack_require__(495);
 
 var _BuyoutDashboard2 = _interopRequireDefault(_BuyoutDashboard);
 
-var _Buyout = __webpack_require__(495);
+var _Buyout = __webpack_require__(496);
 
 var _Buyout2 = _interopRequireDefault(_Buyout);
 
-var _DealerDashboard = __webpack_require__(497);
+var _DealerDashboard = __webpack_require__(498);
 
 var _DealerDashboard2 = _interopRequireDefault(_DealerDashboard);
 
-var _BranchDashboard = __webpack_require__(498);
+var _BranchDashboard = __webpack_require__(499);
 
 var _BranchDashboard2 = _interopRequireDefault(_BranchDashboard);
 
-var _RegionDashboard = __webpack_require__(499);
+var _RegionDashboard = __webpack_require__(500);
 
 var _RegionDashboard2 = _interopRequireDefault(_RegionDashboard);
 
-var _UserDashboard = __webpack_require__(500);
+var _UserDashboard = __webpack_require__(501);
 
 var _UserDashboard2 = _interopRequireDefault(_UserDashboard);
 
-var _User = __webpack_require__(501);
+var _User = __webpack_require__(502);
 
 var _User2 = _interopRequireDefault(_User);
 
-var _Alerts = __webpack_require__(503);
+var _Alerts = __webpack_require__(504);
 
 var _Alerts2 = _interopRequireDefault(_Alerts);
 
@@ -29738,7 +29814,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(38);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29986,7 +30062,7 @@ var _Menu2 = _interopRequireDefault(_Menu);
 
 var _appReducer = __webpack_require__(67);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30290,7 +30366,7 @@ var _buyoutReducer = __webpack_require__(68);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30874,7 +30950,7 @@ var _AdminActivity = __webpack_require__(195);
 
 var _AdminActivity2 = _interopRequireDefault(_AdminActivity);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32514,7 +32590,8 @@ exports.default = function (_ref) {
   var values = _ref.values,
       count = _ref.count,
       formatTerm = _ref.formatTerm,
-      toggleLightbox = _ref.toggleLightbox;
+      toggleLightbox = _ref.toggleLightbox,
+      toggleMachines = _ref.toggleMachines;
   return _react2.default.createElement(
     "div",
     { className: "col-sm-8 col-sm-offset-2 lightbox-content" },
@@ -32705,7 +32782,7 @@ exports.default = function (_ref) {
                 { className: "col-sm-2" },
                 _react2.default.createElement(
                   "span",
-                  null,
+                  { className: "oneline" },
                   lease.quote + " Quote" || ''
                 )
               )
@@ -33182,7 +33259,8 @@ exports.default = function (_ref) {
   var values = _ref.values,
       count = _ref.count,
       formatTerm = _ref.formatTerm,
-      toggleLightbox = _ref.toggleLightbox;
+      toggleLightbox = _ref.toggleLightbox,
+      toggleMachines = _ref.toggleMachines;
   return _react2.default.createElement(
     "div",
     { className: "col-sm-8 col-sm-offset-2 lightbox-content" },
@@ -33316,7 +33394,7 @@ exports.default = function (_ref) {
                 { className: "col-sm-2" },
                 _react2.default.createElement(
                   "span",
-                  null,
+                  { className: "oneline" },
                   lease.quote + " Quote" || ''
                 )
               )
@@ -33673,6 +33751,1103 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _utility = __webpack_require__(26);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (_ref) {
+  var values = _ref.values,
+      toggleCalcView = _ref.toggleCalcView,
+      handleCalcs = _ref.handleCalcs,
+      toggleMachines = _ref.toggleMachines,
+      count = _ref.count;
+  return _react2.default.createElement(
+    'div',
+    { className: 'col-sm-9' },
+    _react2.default.createElement(
+      'form',
+      null,
+      _react2.default.createElement(
+        'div',
+        { className: 'app-bg col-sm-12 calcs' },
+        _react2.default.createElement(
+          'h3',
+          null,
+          'Lease Details'
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Lease Company'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement(
+                'datalist',
+                { id: 'leaseCompanies' },
+                _react2.default.createElement('option', { value: 'EverBank' }),
+                _react2.default.createElement('option', { value: 'DLL' }),
+                _react2.default.createElement('option', { value: 'Wells' }),
+                _react2.default.createElement('option', { value: 'USB' }),
+                _react2.default.createElement('option', { value: 'CIT' }),
+                _react2.default.createElement('option', { value: 'Marlin' }),
+                _react2.default.createElement('option', { value: 'Balboa' }),
+                _react2.default.createElement('option', { value: 'EMR' }),
+                _react2.default.createElement('option', { value: 'Leaf' }),
+                _react2.default.createElement('option', { value: 'Great America' }),
+                _react2.default.createElement('option', { value: 'PNC' })
+              ),
+              _react2.default.createElement('input', { list: 'leaseCompanies', name: 'leaseCompany', value: values.calcs.leaseCompany || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Lease Number'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement('input', { name: 'leaseNumber', value: values.calcs.leaseNumber || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Lease Start Date'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement('input', { name: 'startDate', value: values.calcs.startDate || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3 col-sm-offset-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Original Term'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement('input', { name: 'originalTerm', value: values.calcs.originalTerm || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Lease Plan End Date'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement('input', { name: 'endDate', value: values.calcs.endDate || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3 col-sm-offset-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Remaining Term'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement('input', { name: 'remainingTerm', value: values.calcs.remainingTerm || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Current Equipment Payment'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'currentEquipmentPayment', value: values.calcs.currentEquipmentPayment || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Current Service/MA Payment'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'currentServicePayment', value: values.calcs.currentServicePayment || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Pass Through Service'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'passThroughService', value: values.calcs.passThroughService || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3 col-sm-offset-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Total Base Payment'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement(
+                'div',
+                null,
+                '$',
+                (0, _utility.sum)(values.calcs.currentEquipmentPayment, values.calcs.currentServicePayment, values.calcs.passThroughService)
+              )
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'app-bg col-sm-12' },
+        _react2.default.createElement(
+          'h3',
+          null,
+          'Company Numbers'
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Upgrade to Keep'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'companyUtk', value: values.calcs.companyUtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3 col-sm-offset-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Buyout to Keep'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'companyBtk', value: values.calcs.companyBtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Upgrade to Return'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'companyUtr', value: values.calcs.companyUtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3 col-sm-offset-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Buyout to Return'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'companyBtr', value: values.calcs.companyBtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                '%'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement('input', { name: 'percentage', value: values.calcs.percentage || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Service Recovery Amount'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement(
+                'div',
+                null,
+                '$',
+                (0, _utility.round)((0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100))
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Pass Through Service'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement(
+                'div',
+                null,
+                '$',
+                (0, _utility.round)((0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService))
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'MISC (SMUA)'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'smua', value: values.calcs.smua || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'app-bg col-sm-12' },
+        _react2.default.createElement(
+          'h3',
+          null,
+          'Quotes'
+        ),
+        _react2.default.createElement(
+          'strong',
+          null,
+          'Rep Numbers'
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-6' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Upgrade to Keep'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement(
+                'div',
+                null,
+                '$',
+                (0, _utility.round)((0, _utility.sum)(values.calcs.companyUtk, (0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100), (0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService), values.calcs.smua))
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-6' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Buyout to Keep'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement(
+                'div',
+                null,
+                '$',
+                (0, _utility.round)((0, _utility.sum)(values.calcs.companyBtk, (0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100), (0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService), values.calcs.smua))
+              )
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-6' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Upgrade to Return'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement(
+                'div',
+                null,
+                '$',
+                (0, _utility.round)((0, _utility.sum)(values.calcs.companyUtr, (0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100), (0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService), values.calcs.smua))
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-6' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Buyout to Return'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement(
+                'div',
+                null,
+                '$',
+                (0, _utility.round)((0, _utility.sum)(values.calcs.companyBtr, (0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100), (0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService), values.calcs.smua))
+              )
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'strong',
+          null,
+          'Customer Numbers'
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Buyout to Keep'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'customerBtk', value: values.calcs.customerBtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Buyout to Return'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box monetary' },
+              _react2.default.createElement('input', { name: 'customerBtr', value: values.calcs.customerBtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'app-bg breakdown col-sm-12' },
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-4' },
+            _react2.default.createElement(
+              'div',
+              null,
+              'Invoice Breakdown'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            'Total'
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            'Upfront Tax'
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('input', { className: 'sm-input rightput', name: 'taxRate', value: values.calcs.taxRate || '', onChange: handleCalcs, autoComplete: 'new-password' }),
+            _react2.default.createElement(
+              'span',
+              null,
+              '% Tax'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            'Total'
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-4' },
+            _react2.default.createElement(
+              'div',
+              null,
+              'Equipment Payment'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.sum)(values.calcs.currentEquipmentPayment)
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'upfrontTax', value: values.calcs.upfrontTax || '', onChange: handleCalcs, autoComplete: 'new-password' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.round)((0, _utility.sum)((0, _utility.product)(values.calcs.currentEquipmentPayment, values.calcs.taxRate / 100), (0, _utility.product)(values.calcs.upfrontTax, values.calcs.taxRate / 100)))
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.round)((0, _utility.sum)(values.calcs.currentEquipmentPayment, (0, _utility.product)(values.calcs.currentEquipmentPayment, values.calcs.taxRate / 100), values.calcs.upfrontTax, (0, _utility.product)(values.calcs.upfrontTax, values.calcs.taxRate / 100)))
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-4' },
+            _react2.default.createElement(
+              'div',
+              null,
+              'Service/MA Payment'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.sum)(values.calcs.currentServicePayment)
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.sum)(values.calcs.currentServicePayment)
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-4' },
+            _react2.default.createElement(
+              'div',
+              null,
+              'Fuel/Freight'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'fuelFreight', value: values.calcs.fuelFreight || '', onChange: handleCalcs, autoComplete: 'new-password' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.sum)(values.calcs.fuelFreight)
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-4' },
+            _react2.default.createElement(
+              'div',
+              null,
+              'Late Charges'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'lateCharges', value: values.calcs.lateCharges || '', onChange: handleCalcs, autoComplete: 'new-password' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.sum)(values.calcs.lateCharges)
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-4' },
+            _react2.default.createElement(
+              'div',
+              null,
+              'Misc. Items *See Notes'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'miscItems', value: values.calcs.miscItems || '', onChange: handleCalcs, autoComplete: 'new-password' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('div', null)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.sum)(values.calcs.miscItems)
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2 col-sm-offset-4' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.sum)(values.calcs.currentEquipmentPayment, values.calcs.currentServicePayment, values.calcs.fuelFreight, values.calcs.lateCharges, values.calcs.miscItems)
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.sum)(values.calcs.upfrontTax)
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.round)((0, _utility.sum)((0, _utility.product)(values.calcs.currentEquipmentPayment, values.calcs.taxRate / 100), (0, _utility.product)(values.calcs.upfrontTax, values.calcs.taxRate / 100)))
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement(
+              'div',
+              null,
+              '$',
+              (0, _utility.round)((0, _utility.sum)(values.calcs.currentEquipmentPayment, (0, _utility.product)(values.calcs.currentEquipmentPayment, values.calcs.taxRate / 100), values.calcs.upfrontTax, (0, _utility.product)(values.calcs.upfrontTax, values.calcs.taxRate / 100), values.calcs.currentServicePayment, values.calcs.fuelFreight, values.calcs.lateCharges, values.calcs.miscItems))
+            )
+          )
+        )
+      ),
+      values.leases ? _react2.default.createElement(
+        'div',
+        { className: 'app-bg col-sm-12' },
+        _react2.default.createElement(
+          'h3',
+          null,
+          'Equipment'
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'col-sm-12 labels lease-label' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-10 col-sm-offset-1 no-gutters' },
+            _react2.default.createElement(
+              'label',
+              { className: 'col-sm-5', id: 'lease-margin' },
+              'Lease Number'
+            ),
+            _react2.default.createElement(
+              'label',
+              { className: 'col-sm-5' },
+              'Lease Company'
+            )
+          )
+        ),
+        values.leases.map(function (lease, index) {
+          return !lease.delete ? _react2.default.createElement(
+            'div',
+            { key: 'lease-' + index, className: 'col-sm-12 lease-input' },
+            _react2.default.createElement(
+              'div',
+              { className: 'col-sm-1' },
+              _react2.default.createElement(
+                'label',
+                { className: 'index-number' },
+                count++
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'col-sm-10 field-row no-gutters' },
+              _react2.default.createElement(
+                'div',
+                { className: 'col-sm-5' },
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  lease.number || ''
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'col-sm-5' },
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  lease.company || ''
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'col-sm-2' },
+                _react2.default.createElement(
+                  'span',
+                  { className: 'oneline' },
+                  lease.quote + ' Quote' || ''
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'col-sm-10 col-sm-offset-1 no-gutters' },
+              _react2.default.createElement(
+                'div',
+                { className: 'col-sm-4' },
+                lease.quote === 'Partial' ? _react2.default.createElement(
+                  'button',
+                  { id: index + '-machines', onClick: toggleMachines, className: 'machine show-button' },
+                  lease.displayMachines ? 'Hide Machines' : 'Show Machines'
+                ) : ''
+              )
+            ),
+            lease.quote === 'Partial' && lease.displayMachines ? _react2.default.createElement(
+              'div',
+              { className: 'col-sm-12 no-gutters' },
+              _react2.default.createElement(
+                'div',
+                { className: 'col-sm-12 no-gutters labels machine-label' },
+                _react2.default.createElement(
+                  'label',
+                  { className: 'col-sm-2 col-sm-offset-1 condense-gutters' },
+                  'Serial #'
+                ),
+                _react2.default.createElement(
+                  'label',
+                  { className: 'col-sm-2 condense-gutters' },
+                  'Make'
+                ),
+                _react2.default.createElement(
+                  'label',
+                  { className: 'col-sm-2 condense-gutters' },
+                  'Model'
+                ),
+                _react2.default.createElement(
+                  'label',
+                  { className: 'col-sm-2 condense-gutters' },
+                  'Location'
+                ),
+                _react2.default.createElement(
+                  'label',
+                  { className: 'col-sm-2 condense-gutters' },
+                  'Action'
+                )
+              ),
+              lease.machines.map(function (machine, mIndex) {
+                return !machine.delete ? _react2.default.createElement(
+                  'div',
+                  { key: 'lease-' + index + '-machine-' + mIndex, className: 'col-sm-12 no-gutters machine-input' },
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-2 col-sm-offset-1 condense-gutters' },
+                    _react2.default.createElement(
+                      'p',
+                      null,
+                      machine.serial
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-2 condense-gutters' },
+                    _react2.default.createElement(
+                      'p',
+                      null,
+                      machine.make
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-2 condense-gutters' },
+                    _react2.default.createElement(
+                      'p',
+                      null,
+                      machine.model
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-2 condense-gutters' },
+                    _react2.default.createElement(
+                      'p',
+                      null,
+                      machine.location
+                    )
+                  ),
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'col-sm-2 condense-gutters' },
+                    _react2.default.createElement(
+                      'p',
+                      null,
+                      machine.action
+                    )
+                  )
+                ) : null;
+              })
+            ) : null
+          ) : null;
+        })
+      ) : null,
+      _react2.default.createElement(
+        'div',
+        { className: 'app-bg col-sm-12' },
+        _react2.default.createElement(
+          'h3',
+          null,
+          'Notes'
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-12' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-desc' },
+              _react2.default.createElement('textarea', {
+                name: 'notes',
+                value: values.calcs.notes || '',
+                onChange: handleCalcs, autoComplete: 'new-password'
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+};
+
+/***/ }),
+/* 495 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(1);
@@ -33691,7 +34866,7 @@ var _Menu2 = _interopRequireDefault(_Menu);
 
 var _buyoutReducer = __webpack_require__(68);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33935,7 +35110,7 @@ var mapDispatchToProps = { focusByo: _buyoutReducer.focusByo, sortByos: _buyoutR
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BuyoutsContainer);
 
 /***/ }),
-/* 495 */
+/* 496 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33957,7 +35132,7 @@ var _axios = __webpack_require__(12);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _EditBuyout = __webpack_require__(496);
+var _EditBuyout = __webpack_require__(497);
 
 var _EditBuyout2 = _interopRequireDefault(_EditBuyout);
 
@@ -33967,7 +35142,7 @@ var _appReducer = __webpack_require__(67);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(29);
+var _utility = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33995,10 +35170,17 @@ var BuyoutContainer = function (_React$Component) {
       mailDisabled: false,
       adminMode: false,
       adminView: _this.props.user ? _this.props.user.level === 'Admin' : false,
+      calcView: false,
       lightbox: false,
       expiryTemp: '',
       upload: null,
-      note: ''
+      note: '',
+      calcs: {
+        percentage: '25',
+        taxRate: '9'
+        // leaseCompany: this.props.byo.leaseCompany,
+        // lease
+      }
     }, _this.props.byo);
 
     _this.handleAppLink = _this.handleAppLink.bind(_this);
@@ -34035,6 +35217,9 @@ var BuyoutContainer = function (_React$Component) {
 
     _this.toggleAdminView = _this.toggleAdminView.bind(_this);
     _this.toggleLightbox = _this.toggleLightbox.bind(_this);
+
+    _this.toggleCalcView = _this.toggleCalcView.bind(_this);
+    _this.handleCalcs = _this.handleCalcs.bind(_this);
 
     _this.handleChangeInPDFNote = _this.handleChangeInPDFNote.bind(_this);
     _this.handleDeletePDF = _this.handleDeletePDF.bind(_this);
@@ -34234,8 +35419,8 @@ var BuyoutContainer = function (_React$Component) {
 
       _axios2.default.post('/api/mail', {
         token: this.props.token,
-        // to: this.state.rep.email,
-        to: 'tatan42@gmail.com',
+        to: this.state.rep.email,
+        // to: 'tatan42@gmail.com',
         cc: this.state.mailCC.split(', '),
         subject: this.state.mailSubject,
         html: this.state.mailBody
@@ -34373,6 +35558,21 @@ var BuyoutContainer = function (_React$Component) {
       });
     }
   }, {
+    key: 'toggleCalcView',
+    value: function toggleCalcView(e) {
+      e.preventDefault();
+      this.setState({
+        calcView: !this.state.calcView
+      });
+    }
+  }, {
+    key: 'handleCalcs',
+    value: function handleCalcs(e) {
+      var calcs = Object.assign({}, this.state.calcs);
+      calcs[e.target.name] = e.target.value;
+      this.setState({ 'calcs': calcs });
+    }
+  }, {
     key: 'handleDeletePDF',
     value: function handleDeletePDF(e) {
       var _this8 = this;
@@ -34498,6 +35698,8 @@ var BuyoutContainer = function (_React$Component) {
           handleAdminMode: this.handleAdminMode,
           toggleAdminView: this.toggleAdminView,
           toggleLightbox: this.toggleLightbox,
+          toggleCalcView: this.toggleCalcView,
+          handleCalcs: this.handleCalcs,
           handleChangeInPDFNote: this.handleChangeInPDFNote,
           handleDeletePDF: this.handleDeletePDF,
           handleChoosePDF: this.handleChoosePDF,
@@ -34527,7 +35729,7 @@ var mapDispatchToProps = { saveByoThunk: _buyoutReducer.saveByoThunk, loadByosTh
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BuyoutContainer);
 
 /***/ }),
-/* 496 */
+/* 497 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34581,6 +35783,8 @@ exports.default = function (_ref) {
       handleAdminMode = _ref.handleAdminMode,
       toggleAdminView = _ref.toggleAdminView,
       toggleLightbox = _ref.toggleLightbox,
+      toggleCalcView = _ref.toggleCalcView,
+      handleCalcs = _ref.handleCalcs,
       handleChangeInPDFNote = _ref.handleChangeInPDFNote,
       handleDeletePDF = _ref.handleDeletePDF,
       handleChoosePDF = _ref.handleChoosePDF,
@@ -34591,6 +35795,7 @@ exports.default = function (_ref) {
     token: token,
     count: count,
     handleChange: handleChange,
+    handleSave: handleSave,
     handleNote: handleNote,
     handleNotify: handleNotify,
     handleAdminMode: handleAdminMode,
@@ -34600,6 +35805,9 @@ exports.default = function (_ref) {
     handleSaveAndNotify: handleSaveAndNotify,
     toggleAdminView: toggleAdminView,
     toggleLightbox: toggleLightbox,
+    toggleCalcView: toggleCalcView,
+    handleCalcs: handleCalcs,
+    toggleMachines: toggleMachines,
     handleChangeInPDFNote: handleChangeInPDFNote,
     handleDeletePDF: handleDeletePDF,
     handleChoosePDF: handleChoosePDF,
@@ -35455,7 +36663,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 497 */
+/* 498 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35672,7 +36880,7 @@ var mapDispatchToProps = { loadDealersThunk: _dealerReducer.loadDealersThunk, sa
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DealerContainer);
 
 /***/ }),
-/* 498 */
+/* 499 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35924,7 +37132,7 @@ var mapDispatchToProps = { loadBranchesThunk: _branchReducer.loadBranchesThunk, 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BranchContainer);
 
 /***/ }),
-/* 499 */
+/* 500 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36121,7 +37329,7 @@ var mapDispatchToProps = { loadRegionsThunk: _regionReducer.loadRegionsThunk, sa
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(RegionContainer);
 
 /***/ }),
-/* 500 */
+/* 501 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36345,7 +37553,7 @@ var mapDispatchToProps = { focusUser: _usersReducer.focusUser, createUser: _user
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UsersContainer);
 
 /***/ }),
-/* 501 */
+/* 502 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36367,7 +37575,7 @@ var _axios = __webpack_require__(12);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _EditUser = __webpack_require__(502);
+var _EditUser = __webpack_require__(503);
 
 var _EditUser2 = _interopRequireDefault(_EditUser);
 
@@ -36485,7 +37693,7 @@ var mapDispatchToProps = { saveUserThunk: _usersReducer.saveUserThunk, createUse
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserContainer);
 
 /***/ }),
-/* 502 */
+/* 503 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36928,7 +38136,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 503 */
+/* 504 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36950,7 +38158,7 @@ var _axios = __webpack_require__(12);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _Alert = __webpack_require__(504);
+var _Alert = __webpack_require__(505);
 
 var _Alert2 = _interopRequireDefault(_Alert);
 
@@ -37004,7 +38212,7 @@ var mapDispatchToProps = { handleAlert: _alertReducer.handleAlert };
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AlertContainer);
 
 /***/ }),
-/* 504 */
+/* 505 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
