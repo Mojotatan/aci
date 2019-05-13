@@ -193,3 +193,49 @@ You can find the pid in the pid file or with
 ```
 ps aux | grep passenger
 ```
+
+**Something went catastrophically wrong and the database shut itself down**
+So this happened before and I don't know why.  Here's how I fixed it.
+
+0. If you for some reason can't log into the postgres user
+
+```
+adduser (postgres user)
+chown -R (postgres user) /usr/local/pgsql/data/
+```
+
+1. Log into postgres user and start database
+
+```
+su (postgres user)
+/usr/local/pgsql/bin/pg_ctl start -l /path/to/logfile -D /usr/local/pgsql/data/
+```
+
+You might have to recreate the impact_myadmin user
+
+```
+createuser -h localhost -U postgres
+```
+
+2. Create, delete, and recreate the aci database (idk why but I had to do this)
+
+```
+psql -h localhost -U postgres
+create database aci; drop database aci; create database aci;
+```
+
+3. Import the database dump file
+
+```
+psql -h localhost -U postgres aci < path/to/file
+```
+
+4. Start/Restart Passenger
+
+```
+passenger start
+```
+or
+```
+passenger-config restart-app
+```
