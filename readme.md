@@ -76,6 +76,7 @@ npm run build-dev
 npm run start-dev
 ```
 
+
 **How to set up on Dreamhost**
 1. Install and start PostgresQL
 
@@ -154,6 +155,7 @@ Add the following:
 01	01	04	*	*	/usr/local/pgsql/bin/pg_dump aci > /home/impact_myadmin/dbackups/$(date +\%Y\%m\%d)
 ```
 
+
 **How to update on a Remote Server**
 1. Download the updates -- make sure you download the production branch
 
@@ -194,8 +196,10 @@ You can find the pid in the pid file or with
 ps aux | grep passenger
 ```
 
-**Something went catastrophically wrong and the database shut itself down**
-So this happened before and I don't know why.  Here's how I fixed it.
+
+**How to deal with everything shutting down for no reason**
+
+So this happened on Dreamhost before and I don't know why.  Here's how I fixed it.
 
 0. If you for some reason can't log into the postgres user
 
