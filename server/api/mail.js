@@ -7,6 +7,8 @@ module.exports = require('express').Router()
       from: 'team@myadmindev.xyz',
       // to: req.body.rep.email,
       to: 'tatan42@gmail.com',
+      // bcc: ['team@myadmincentral.com'],
+      bcc: ['jbyrd@impactnetworking.com'],
       subject: `Application Received for ${req.body.customer.name}`,
       // html: `<p>Hi ${req.body.rep.firstName},</p><p>We have received your application for ${req.body.customer.name}. We will email your approval/decision as soon as possible.</p><p>Should you have any questions please feel free to contact us at <a href="mailto:team@myadmincentral.com">team@myadmincentral.com</a>.</p><p>Thank you for the Application!</p><p>Sincerely,<br>Myadmincentral.com</p>`
       html: `<p>Dear ${req.body.rep.fullName},</p>
@@ -35,6 +37,8 @@ module.exports = require('express').Router()
       from: 'team@myadmindev.xyz',
       // to: req.body.rep.email,
       to: 'tatan42@gmail.com',
+      // bcc: ['team@myadmincentral.com'],
+      bcc: ['jbyrd@impactnetworking.com'],
       subject: `Buyout Request Received for ${req.body.customer.name}`,
       // html: `<p>Hi ${req.body.rep.firstName},</p><p>We have received your application for ${req.body.customer.name}. We will email your approval/decision as soon as possible.</p><p>Should you have any questions please feel free to contact us at <a href="mailto:team@myadmincentral.com">team@myadmincentral.com</a>.</p><p>Thank you for the Application!</p><p>Sincerely,<br>Myadmincentral.com</p>`
       html: `<p>Dear ${req.body.rep.fullName},</p>

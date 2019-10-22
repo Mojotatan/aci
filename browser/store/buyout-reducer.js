@@ -140,6 +140,7 @@ export const createByoThunk = (token, callback) => {
     .then(res => {
       if (res.status === 201) {
         let byo = res.data
+        byo.calcs = JSON.parse(byo.calcs)
         byo.leases = []
         byo.actions = []
         byo.logs = []
