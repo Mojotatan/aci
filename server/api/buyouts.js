@@ -8,6 +8,7 @@ module.exports = require('express').Router()
     let me = whoAmI(req.body.token)
     Buyout.create({
       calcs: JSON.stringify({percentage: '25', taxRate: '9'}),
+      comments: 'If you need release information, please indicate in the comment section.',
       repId: me.id
     })
     .then(newByo => {
