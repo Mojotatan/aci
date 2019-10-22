@@ -562,5 +562,12 @@ export default ({
 
       </div>
     }
+    {(values.calcView) ?
+      <div className="col-sm-12 top-buttons" align="right">
+        <span id="cancel-button" className="top calcs" onClick={toggleCalcView}>Cancel</span>
+        <button type="submit" id="save-button" className="top" onClick={handleSave}>Save</button>
+      </div>
+      : null
+    }
   </div>
 )
