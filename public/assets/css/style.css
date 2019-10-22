@@ -49,6 +49,7 @@ h5 {
 }
 input, textarea {
 	padding-left: 5px;
+	padding-right: 5px
 }
 .required::after {
 	content: "*";
@@ -59,6 +60,15 @@ input, textarea {
 	position: absolute;
 	margin-left: -10px;
 	line-height: 36px
+}
+.percentage::after {
+	content: "%";
+	position: absolute;
+	margin-left: 2px;
+	line-height: 36px;
+}
+.percentage input {
+	text-align: right
 }
 .right-justify {
 	text-align: right

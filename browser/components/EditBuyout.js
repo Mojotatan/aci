@@ -62,6 +62,9 @@ export default ({
       toggleCalcView={toggleCalcView}
       handleCalcs={handleCalcs}
       toggleMachines={toggleMachines}
+      handleNewMachine={handleNewMachine}
+      handleChangeInMachine={handleChangeInMachine}
+      handleRemoveMachine={handleRemoveMachine}
       handleChangeInPDFNote={handleChangeInPDFNote}
       handleDeletePDF={handleDeletePDF}
       handleChoosePDF={handleChoosePDF}

@@ -7,10 +7,12 @@ export default ({
   // toggleCalcView,
   handleCalcs,
   toggleMachines,
-  count
+  handleNewMachine,
+  handleChangeInMachine,
+  handleRemoveMachine
 }) => {
-  let workbook = values.leases[values.calcTarget].workbook
-  console.log(workbook)
+  let lease = values.leases[values.calcTarget]
+  let workbook = lease.workbook
   return (
     <div className="col-sm-9">
       <form>
@@ -27,10 +29,19 @@ export default ({
             </div> */}
             <div className="col-sm-3">
               <div className="field-label">
+                <label>Lease Number</label>
+              </div>
+              <div className="field-box">
+                {/* <input name="leaseNumber" value={workbook.leaseNumber || ''} onChange={handleCalcs} autoComplete="new-password" /> */}
+                <div>{lease.number}</div>
+              </div>
+            </div>
+            <div className="col-sm-3">
+              <div className="field-label">
                 <label>Lease Company</label>
               </div>
               <div className="field-box">
-                <datalist id="leaseCompanies">
+                {/* <datalist id="leaseCompanies">
                   <option value="EverBank"></option>
                   <option value="DLL"></option>
                   <option value="Wells"></option>
@@ -42,16 +53,9 @@ export default ({
                   <option value="Leaf"></option>
                   <option value="Great America"></option>
                   <option value="PNC"></option>
-                </datalist>
-                <input list="leaseCompanies" name="leaseCompany" value={workbook.leaseCompany || ''} onChange={handleCalcs} autoComplete="new-password" />
-              </div>
-            </div>
-            <div className="col-sm-3">
-              <div className="field-label">
-                <label>Lease Number</label>
-              </div>
-              <div className="field-box">
-                <input name="leaseNumber" value={workbook.leaseNumber || ''} onChange={handleCalcs} autoComplete="new-password" />
+                </datalist> */}
+                {/* <input list="leaseCompanies" name="leaseCompany" value={workbook.leaseCompany || ''} onChange={handleCalcs} autoComplete="new-password" /> */}
+                <div>{lease.company}</div>
               </div>
             </div>
           </div>
@@ -189,9 +193,9 @@ export default ({
           <div className="row">
             <div className="col-sm-3">
               <div className="field-label">
-                <label>%</label>
+                <label>Percentage</label>
               </div>
-              <div className="field-box">
+              <div className="field-box percentage">
                 <input name="percentage" value={workbook.percentage || ''} onChange={handleCalcs} autoComplete="new-password" />
               </div>
             </div>
@@ -457,89 +461,78 @@ export default ({
           </div>
         </div>
 
-        {(values.leases) ?
-          <div className="app-bg col-sm-12">
-            <h3>Equipment</h3>
-            <div className="col-sm-12 labels lease-label">
-              <div className="col-sm-10 col-sm-offset-1 no-gutters">
-                <label className="col-sm-5" id="lease-margin">Lease Number</label>
-                <label className="col-sm-5">Lease Company</label>
+        <div className="app-bg col-sm-12">
+          <h3>Equipment</h3>
+          <div className="row">
+            <div className="col-sm-12 no-gutters">
+              <div className="col-sm-12 no-gutters labels machine-label">
+                <label className="col-sm-2 condense-gutters">Serial #</label>
+                <label className="col-sm-2 condense-gutters">Make</label>
+                <label className="col-sm-3 condense-gutters">Model</label>
+                <label className="col-sm-2 condense-gutters">Location</label>
+                <label className="col-sm-2 condense-gutters">Action</label>
               </div>
-            </div>
-            {values.leases.map((lease, index) => {
-              return ((!lease.delete) ?
-                <div key={`lease-${index}`} className="col-sm-12 lease-input">
-                  <div className="col-sm-1"><label className="index-number">{count++}</label></div>
-                  <div className="col-sm-10 field-row no-gutters">
-                    <div className="col-sm-5">
-                      <span>{lease.number || ''}</span>
+              {lease.machines.map((machine, index) => {
+                return ((!machine.delete) ?
+                  <div key={`lease-${index}-machine-${index}`} className="col-sm-12 no-gutters machine-input">
+                    <div className="col-sm-2 condense-gutters">
+                      <input
+                        onChange={handleChangeInMachine}
+                        id={`${values.calcTarget}-${index}-serial`}
+                        value={machine.serial || ''}
+                        autoComplete="new-password"
+                      />
                     </div>
-                    <div className="col-sm-5">
-                      <span>{lease.company || ''}</span>
+                    <div className="col-sm-2 condense-gutters">
+                      <input
+                        onChange={handleChangeInMachine}
+                        id={`${values.calcTarget}-${index}-make`}
+                        value={machine.make || ''}
+                        autoComplete="new-password"
+                      />
                     </div>
-                    <div className="col-sm-2">
-                      <span className="oneline">{`${lease.quote} Quote` || ''}</span>
+                    <div className="col-sm-3 condense-gutters">
+                      <input
+                        onChange={handleChangeInMachine}
+                        id={`${values.calcTarget}-${index}-model`}
+                        value={machine.model || ''}
+                        autoComplete="new-password"
+                      />
+                    </div>
+                    <div className="col-sm-2 condense-gutters">
+                      <input
+                        onChange={handleChangeInMachine}
+                        id={`${values.calcTarget}-${index}-location`}
+                        value={machine.location || ''}
+                        autoComplete="new-password"
+                      />
+                    </div>
+                    <div className="col-sm-2 condense-gutters">
+                      <select
+                      onChange={handleChangeInMachine}
+                      id={`${values.calcTarget}-${index}-action`}
+                      value={machine.action || ''}
+                      autoComplete="new-password"
+                      >
+                        <option value="Release">Release</option>
+                        <option value="Upgrade to Keep">Upgrade to Keep</option>
+                        <option value="Upgrade to Return">Upgrade to Return</option>
+                        <option value="Buyout to Keep">Buyout to Keep</option>
+                        <option value="Buyout to Return">Buyout to Return</option>
+                        <option value="Leave on Lease">Leave on Lease</option>
+                      </select>
+                    </div>
+                    <div className="col-sm-1">
+                      <button value={`${values.calcTarget}-${index}`} onClick={handleRemoveMachine} className="remove-button"></button>
                     </div>
                   </div>
-                  <div className="col-sm-10 col-sm-offset-1 no-gutters">
-                    <div className="col-sm-4">
-                      {(lease.quote === 'Partial') ?
-                      <button id={`${index}-machines`} onClick={toggleMachines} className="machine show-button" >
-                        {lease.displayMachines ?
-                          'Hide Machines'
-                          :
-                          'Show Machines'
-                        }
-                      </button>
-                      : ''
-                      }
-                    </div>
-                  </div>
-                  
-                  {(lease.quote === 'Partial' && lease.displayMachines) ?
-                    <div className="col-sm-12 no-gutters">
-                      <div className="col-sm-12 no-gutters labels machine-label">
-                        <label className="col-sm-2 col-sm-offset-1 condense-gutters">Serial #</label>
-                        <label className="col-sm-2 condense-gutters">Make</label>
-                        <label className="col-sm-2 condense-gutters">Model</label>
-                        <label className="col-sm-2 condense-gutters">Location</label>
-                        <label className="col-sm-2 condense-gutters">Action</label>
-                      </div>
-                      {lease.machines.map((machine, mIndex) => {
-                        return ((!machine.delete) ?
-                          <div key={`lease-${index}-machine-${mIndex}`} className="col-sm-12 no-gutters machine-input">
-                            <div className="col-sm-2 col-sm-offset-1 condense-gutters">
-                              <p>{machine.serial}</p>
-                            </div>
-                            <div className="col-sm-2 condense-gutters">
-                              <p>{machine.make}</p>
-                            </div>
-                            <div className="col-sm-2 condense-gutters">
-                              <p>{machine.model}</p>
-                            </div>
-                            <div className="col-sm-2 condense-gutters">
-                              <p>{machine.location}</p>
-                            </div>
-                            <div className="col-sm-2 condense-gutters">
-                              <p>{machine.action}</p>
-                            </div>
-                          </div>
-                          : null
-                        )
-                      })}
-                    </div>
-                    :
-                    null
-                  }
-                </div>
-                :
-                null
+                  : null
                 )
-            })
-            }
+              })}
+              <div><button id={`${values.calcTarget}-newMachine`} onClick={handleNewMachine} className="machine add-button">Add Machine</button></div>
+            </div>
           </div>
-          : null
-          }
+        </div>
 
         <div className="app-bg col-sm-12">
           <h3>Notes</h3>

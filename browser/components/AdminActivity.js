@@ -25,6 +25,9 @@ export default ({
   toggleCalcView,
   handleCalcs,
   toggleMachines,
+  handleNewMachine,
+  handleChangeInMachine,
+  handleRemoveMachine,
   formatTerm,
   handleChangeInPDFNote,
   handleDeletePDF,
@@ -182,6 +185,9 @@ export default ({
         toggleCalcView={toggleCalcView}
         handleCalcs={handleCalcs}
         toggleMachines={toggleMachines}
+        handleNewMachine={handleNewMachine}
+        handleChangeInMachine={handleChangeInMachine}
+        handleRemoveMachine={handleRemoveMachine}
         count={1}
       />
       :
