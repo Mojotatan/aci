@@ -82,6 +82,9 @@ export const loadByosThunk = (token, callback) => {
       // and a list of pdf associations
       res.data.byos.forEach((byo, index) => {
         byo.leases = res.data.leases[index]
+        byo.leases.forEach(lease => {
+          lease.workbook = JSON.parse(lease.workbook)
+        })
 
         let actions = res.data.actions[index]
         byo.actions = []
@@ -95,7 +98,7 @@ export const loadByosThunk = (token, callback) => {
           return (log.date <= getDate())
         })
 
-        byo.calcs = JSON.parse(byo.calcs)
+        // byo.calcs = JSON.parse(byo.calcs)
 
         byo.pdfs = res.data.pdfs[index]
       })
@@ -145,7 +148,7 @@ export const createByoThunk = (token, callback) => {
     .then(res => {
       if (res.status === 201) {
         let byo = res.data
-        byo.calcs = JSON.parse(byo.calcs)
+        // byo.calcs = JSON.parse(byo.calcs)
         byo.leases = []
         byo.actions = []
         byo.logs = []

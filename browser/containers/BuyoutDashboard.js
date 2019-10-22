@@ -91,7 +91,7 @@ class BuyoutsContainer extends React.Component {
             <tbody>
               <tr className={`app-header-bottom${(this.props.reverse) ? ' reverse' : ''}`} key="head">
                 <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</td>
-                <td id="leases-0-number" className={(this.props.sort.join('-') === "leases-0-number") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Lease Number</td>
+                <td id="leases-0-number" className={(this.props.sort.join('-') === "leases-0-number") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Lease Number(s)</td>
                 <td id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Customer Name</td>
                 <td id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Address</td>
                 <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</td>

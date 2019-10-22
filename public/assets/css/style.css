@@ -608,6 +608,24 @@ input, textarea {
 	width: 5%
 }
 
+.flux-table .leaseNumber {
+	width: 30%
+}
+.flux-table .leaseCompany {
+	width: 30%
+}
+.flux-table .quote {
+	width: 20%
+}
+.flux-table .calcs {
+	width: 20%;
+	color: #1066A3;
+	cursor: pointer
+}
+.flux-table .calcs:hover {
+	text-decoration: underline
+}
+
 .index-number {
 	/* margin-top: 8px;
 	margin-right: 12px !important;

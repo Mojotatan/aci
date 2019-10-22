@@ -27,12 +27,7 @@ class BuyoutContainer extends React.Component {
         expiryTemp: '',
         upload: null,
         note: '',
-        calcs: {
-          percentage: '25',
-          taxRate: '9',
-          // leaseCompany: this.props.byo.leaseCompany,
-          // lease
-        }
+        calcTarget: null
       },
       this.props.byo,
     )
@@ -390,14 +385,15 @@ class BuyoutContainer extends React.Component {
   toggleCalcView(e) {
     e.preventDefault()
     this.setState({
+      calcTarget: (this.state.calcView) ? false : Number(e.target.id.slice(6)),
       calcView: !this.state.calcView
     })
   }
 
   handleCalcs(e) {
-    let calcs = Object.assign({}, this.state.calcs)
-    calcs[e.target.name] = e.target.value
-    this.setState({'calcs': calcs})
+    let leases = Array.from(this.state.leases)
+    leases[this.state.calcTarget].workbook[e.target.name] = e.target.value
+    this.setState({'leases': leases})
   }
 
 
