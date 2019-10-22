@@ -220,6 +220,9 @@ input, textarea {
 .sortable:hover, .sorting:hover {
 	cursor: pointer
 }
+.reverse > .sorting::after {
+	content: url(../img/Arrow_Up.svg)
+}
 .app-header-top {
 	position: relative;
 	background-color: #f0f7fb;

@@ -88,7 +88,7 @@ class ApplicationsContainer extends React.Component {
         </div>
         <div className="col-sm-12 no-gutters margin-drop">
           <div className="app-table">
-            <div className="app-header-bottom" key="head">
+            <div className={`app-header-bottom${(this.props.reverse) ? ' reverse' : ''}`} key="head">
               <span id="date" className={(this.props.sort.join('-') === "date") ? 'date sorting' : 'date sortable'} onClick={this.handleSort}>Date Submitted</span>
               <span id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'customer sorting' : 'customer sortable'} onClick={this.handleSort}>Customer Name</span>
               <span id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'address sorting' : 'address sortable'} onClick={this.handleSort}>Address</span>
@@ -140,7 +140,8 @@ const mapStateToProps = (state) => {
     token: state.login.token,
     user: state.login.user,
     apps: state.app.apps,
-    sort: state.app.sort
+    sort: state.app.sort,
+    reverse: state.app.reverse
   }
 }
 
