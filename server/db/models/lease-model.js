@@ -13,6 +13,8 @@ module.exports = db => db.define('Lease', {
   quote: {
     type: Sequelize.ENUM('Full', 'Partial'),
     defaultValue: 'Full'
+  },
+  workbook: {
+    type: Sequelize.JSON
   }
-
 })
