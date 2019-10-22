@@ -4,10 +4,10 @@ import {loadCustomersThunk} from './customer-reducer'
 import {loadLeasesThunk} from './lease-reducer'
 import {throwAlert} from './alert-reducer'
 
-import {sortBy, getDate} from '../utility'
+import {sortBy, areArraysEqual, getDate} from '../utility'
 
 // initial state
-const initialState = {byos: [], focus: null, sort: ['date']}
+const initialState = {byos: [], focus: null, sort: ['date'], reverse: false}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -25,8 +25,13 @@ const reducer = (prevState = initialState, action) => {
       newState.focus = action.byo.id
       return newState
     case SORT_BYOS:
-      newState.sort = action.field
-      newState.byos.sort(sortBy(action.field))
+      if (areArraysEqual(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse
+      } else {
+        newState.reverse = false
+        newState.sort = action.field
+      }
+      newState.byos.sort(sortBy(action.field, newState.reverse))
       return newState
     case FLUSH_BYOS:
       newState.byos = []

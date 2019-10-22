@@ -82,7 +82,7 @@ input, textarea {
 .contactus {
 	width: 130px;
 	float: right;
-	display: inline-block;
+	/* display: inline-block; */
 	background: url(../img/email-symbol.svg);
 	background-position-x: left;
 	background-position-y: 17px;
@@ -1103,10 +1103,10 @@ button.disabled {
 input.on + label {
 	font-weight: 600
 }
-.admin {
-	/* border-top: 2px solid #1066A3; */
-	/* margin-bottom: 90px */
-}
+/* .admin {
+	border-top: 2px solid #1066A3;
+	margin-bottom: 90px
+} */
 .admin h2 {
 	margin-bottom: 20px
 }

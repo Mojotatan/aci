@@ -89,7 +89,7 @@ class BuyoutsContainer extends React.Component {
         <div className="col-sm-12 no-gutters margin-drop">
           <table className="app-table" id="thetable">
             <tbody>
-              <tr className="app-header-bottom" key="head">
+              <tr className={`app-header-bottom${(this.props.reverse) ? ' reverse' : ''}`} key="head">
                 <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</td>
                 <td id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Customer Name</td>
                 <td id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Address</td>
@@ -134,7 +134,8 @@ const mapStateToProps = (state) => {
     token: state.login.token,
     user: state.login.user,
     byos: state.byo.byos,
-    sort: state.byo.sort
+    sort: state.byo.sort,
+    reverse: state.byo.reverse
   }
 }
 
