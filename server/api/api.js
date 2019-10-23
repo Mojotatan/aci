@@ -10,7 +10,6 @@ api
   .use('/leases', require('./leases'))
   .use('/login', require('./login'))
   .use('/mail', require('./mail'))
-  .use('/pdf', require('./pdf'))
   .use('/regions', require('./regions'))
   .use('/uploads', require('./uploads'))
   .use('/users', require('./users'))

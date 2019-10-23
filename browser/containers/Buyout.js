@@ -9,6 +9,7 @@ import {focusApp} from '../store/app-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
 import {getDate, reformatDate, product, round} from '../utility'
+import {getPdf} from '../pdf'
 
 class BuyoutContainer extends React.Component {
   constructor(props) {
@@ -421,28 +422,29 @@ class BuyoutContainer extends React.Component {
   }
 
   generatePdf() {
+    getPdf()
     // kill me
-    axios.post('/api/pdf', {
-      token: this.props.token,
-      values: this.state
-    })
-    .then(res => {
-      console.log(res)
-      let a = document.createElement('a')
-      let url = URL.createObjectURL(res.data)
-      a.href = url
-      a.download = 'TITLE'
-      document.body.appendChild(a)
-      a.click()
-      setTimeout(() => {
-          document.body.removeChild(a)
-          window.URL.revokeObjectURL(url)
-      }, 3000)
-      // window.open(res.data)
-    })
-    .catch(err => {
-      console.error(err)
-    })
+    // axios.post('/api/pdf', {
+    //   token: this.props.token,
+    //   values: this.state
+    // })
+    // .then(res => {
+    //   console.log(res)
+    //   let a = document.createElement('a')
+    //   let url = URL.createObjectURL(res.data)
+    //   a.href = url
+    //   a.download = 'TITLE'
+    //   document.body.appendChild(a)
+    //   a.click()
+    //   setTimeout(() => {
+    //       document.body.removeChild(a)
+    //       window.URL.revokeObjectURL(url)
+    //   }, 3000)
+    //   // window.open(res.data)
+    // })
+    // .catch(err => {
+    //   console.error(err)
+    // })
   }
 
 
