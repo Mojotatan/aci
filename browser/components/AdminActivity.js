@@ -24,6 +24,8 @@ export default ({
   toggleLightbox,
   toggleCalcView,
   handleCalcs,
+  handleCascade,
+  handleTaxes,
   toggleMachines,
   handleNewMachine,
   handleChangeInMachine,
@@ -184,6 +186,8 @@ export default ({
         values={values}
         toggleCalcView={toggleCalcView}
         handleCalcs={handleCalcs}
+        handleCascade={handleCascade}
+        handleTaxes={handleTaxes}
         toggleMachines={toggleMachines}
         handleNewMachine={handleNewMachine}
         handleChangeInMachine={handleChangeInMachine}

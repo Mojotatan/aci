@@ -36,6 +36,8 @@ export default ({
   toggleLightbox,
   toggleCalcView,
   handleCalcs,
+  handleCascade,
+  handleTaxes,
   handleChangeInPDFNote,
   handleDeletePDF,
   handleChoosePDF,
@@ -61,6 +63,8 @@ export default ({
       toggleLightbox={toggleLightbox}
       toggleCalcView={toggleCalcView}
       handleCalcs={handleCalcs}
+      handleCascade={handleCascade}
+      handleTaxes={handleTaxes}
       toggleMachines={toggleMachines}
       handleNewMachine={handleNewMachine}
       handleChangeInMachine={handleChangeInMachine}

@@ -8,7 +8,7 @@ import {saveByoThunk, loadByosThunk, deleteByoThunk} from '../store/buyout-reduc
 import {focusApp} from '../store/app-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
-import {getDate, reformatDate} from '../utility'
+import {getDate, reformatDate, product, round} from '../utility'
 
 class BuyoutContainer extends React.Component {
   constructor(props) {
@@ -69,6 +69,8 @@ class BuyoutContainer extends React.Component {
 
     this.toggleCalcView = this.toggleCalcView.bind(this)
     this.handleCalcs = this.handleCalcs.bind(this)
+    this.handleCascade = this.handleCascade.bind(this)
+    this.handleTaxes = this.handleTaxes.bind(this)
 
     this.handleChangeInPDFNote = this.handleChangeInPDFNote.bind(this)
     this.handleDeletePDF = this.handleDeletePDF.bind(this)
@@ -396,6 +398,27 @@ class BuyoutContainer extends React.Component {
     this.setState({'leases': leases})
   }
 
+  handleCascade(e) {
+    let name = e.target.name
+    let leases = Array.from(this.state.leases)
+    leases[this.state.calcTarget].workbook[name] = e.target.value
+    leases[this.state.calcTarget].workbook[name + 'Upfront'] = round(product(e.target.value, leases[this.state.calcTarget].workbook.upfrontTax / 100))
+    leases[this.state.calcTarget].workbook[name + 'Monthly'] = round(product(e.target.value, leases[this.state.calcTarget].workbook.monthlyTax / 100))
+    this.setState({'leases': leases})
+  }
+
+  handleTaxes(e) {
+    let type = (e.target.name === 'upfrontTax') ? 'Upfront' : 'Monthly'
+    let leases = Array.from(this.state.leases)
+    leases[this.state.calcTarget].workbook[e.target.name] = e.target.value
+    leases[this.state.calcTarget].workbook['currentEquipmentPayment' + type] = round(product(leases[this.state.calcTarget].workbook.currentEquipmentPayment, e.target.value / 100))
+    leases[this.state.calcTarget].workbook['currentServicePayment' + type] = round(product(leases[this.state.calcTarget].workbook.currentServicePayment, e.target.value / 100))
+    leases[this.state.calcTarget].workbook['fuelFreight' + type] = round(product(leases[this.state.calcTarget].workbook.fuelFreight, e.target.value / 100))
+    leases[this.state.calcTarget].workbook['lateCharges' + type] = round(product(leases[this.state.calcTarget].workbook.lateCharges, e.target.value / 100))
+    leases[this.state.calcTarget].workbook['miscItems' + type] = round(product(leases[this.state.calcTarget].workbook.miscItems, e.target.value / 100))
+    this.setState({'leases': leases})
+  }
+
 
   handleDeletePDF(e) {
     // let pdfs = Array.from(this.state.pdfs)
@@ -515,6 +538,8 @@ class BuyoutContainer extends React.Component {
           toggleLightbox={this.toggleLightbox}
           toggleCalcView={this.toggleCalcView}
           handleCalcs={this.handleCalcs}
+          handleCascade={this.handleCascade}
+          handleTaxes={this.handleTaxes}
           handleChangeInPDFNote={this.handleChangeInPDFNote}
           handleDeletePDF={this.handleDeletePDF}
           handleChoosePDF={this.handleChoosePDF}

@@ -6,7 +6,9 @@ export default ({
   values,
   // toggleCalcView,
   handleCalcs,
-  toggleMachines,
+  handleCascade,
+  handleTaxes,
+  // toggleMachines,
   handleNewMachine,
   handleChangeInMachine,
   handleRemoveMachine
@@ -115,7 +117,7 @@ export default ({
                 <label>Current Equipment Payment</label>
               </div>
               <div className="field-box monetary">
-                <input name="currentEquipmentPayment" value={workbook.currentEquipmentPayment || ''} onChange={handleCalcs} autoComplete="new-password" />
+                <input name="currentEquipmentPayment" value={workbook.currentEquipmentPayment || ''} onChange={handleCascade} autoComplete="new-password" />
               </div>
             </div>
           </div>
@@ -125,7 +127,7 @@ export default ({
                 <label>Current Service/MA Payment</label>
               </div>
               <div className="field-box monetary">
-                <input name="currentServicePayment" value={workbook.currentServicePayment || ''} onChange={handleCalcs} autoComplete="new-password" />
+                <input name="currentServicePayment" value={workbook.currentServicePayment || ''} onChange={handleCascade} autoComplete="new-password" />
               </div>
             </div>
           </div>
@@ -315,6 +317,19 @@ export default ({
         </div>
         
         <div className="app-bg breakdown col-sm-12">
+          {/* <div className="row">
+            <div className="col-sm-4 col-sm-offset-6">Default Tax Rates</div>
+          </div> */}
+          <div className="row">
+            <div className="col-sm-2 col-sm-offset-6">
+              <input className="sm-input rightput" name="upfrontTax" value={workbook.upfrontTax || ''} onChange={handleTaxes} autoComplete="new-password" />
+              <span>%</span>
+            </div>
+            <div className="col-sm-2">
+              <input className="sm-input rightput" name="monthlyTax" value={workbook.monthlyTax || ''} onChange={handleTaxes} autoComplete="new-password" />
+              <span>%</span>
+            </div>
+          </div>
           <div className="row">
             <div className="col-sm-4">
               <div>Invoice Breakdown</div>
@@ -326,8 +341,7 @@ export default ({
               Upfront Tax
             </div>
             <div className="col-sm-2">
-              <input className="sm-input rightput" name="taxRate" value={workbook.taxRate || ''} onChange={handleCalcs} autoComplete="new-password" />
-              <span>% Tax</span>
+              Monthly Tax
             </div>
             <div className="col-sm-2">
               Total
@@ -341,21 +355,13 @@ export default ({
               <div>${sum(workbook.currentEquipmentPayment)}</div>            
             </div>
             <div className="col-sm-2">
-              $<input className="sm-input" name="upfrontTax" value={workbook.upfrontTax || ''} onChange={handleCalcs} autoComplete="new-password" />
+              $<input className="sm-input" name="currentEquipmentPaymentUpfront" value={workbook.currentEquipmentPaymentUpfront || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div>${round(sum(
-                product(workbook.currentEquipmentPayment, workbook.taxRate / 100),
-                product(workbook.upfrontTax, workbook.taxRate / 100)
-              ))}</div>
+              $<input className="sm-input" name="currentEquipmentPaymentMonthly" value={workbook.currentEquipmentPaymentMonthly || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div>${round(sum(
-                workbook.currentEquipmentPayment,
-                product(workbook.currentEquipmentPayment, workbook.taxRate / 100),
-                workbook.upfrontTax,
-                product(workbook.upfrontTax, workbook.taxRate / 100)
-              ))}</div>
+              <div>${round(sum(workbook.currentEquipmentPayment, workbook.currentEquipmentPaymentUpfront, workbook.currentEquipmentPaymentMonthly))}</div>
             </div>
           </div>
           <div className="row">
@@ -366,13 +372,13 @@ export default ({
               <div>${sum(workbook.currentServicePayment)}</div>
             </div>
             <div className="col-sm-2">
-              <div></div>
+              $<input className="sm-input" name="currentServicePaymentUpfront" value={workbook.currentServicePaymentUpfront || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div></div>
+              $<input className="sm-input" name="currentServicePaymentMonthly" value={workbook.currentServicePaymentMonthly || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div>${sum(workbook.currentServicePayment)}</div>
+              <div>${round(sum(workbook.currentServicePayment, workbook.currentServicePaymentUpfront, workbook.currentServicePaymentMonthly))}</div>
             </div>
           </div>
           <div className="row">
@@ -380,16 +386,16 @@ export default ({
               <div>Fuel/Freight</div>
             </div>
             <div className="col-sm-2">
-              $<input className="sm-input" name="fuelFreight" value={workbook.fuelFreight || ''} onChange={handleCalcs} autoComplete="new-password" />
+              $<input className="sm-input" name="fuelFreight" value={workbook.fuelFreight || ''} onChange={handleCascade} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div></div>
+              $<input className="sm-input" name="fuelFreightUpfront" value={workbook.fuelFreightUpfront || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div></div>
+              $<input className="sm-input" name="fuelFreightMonthly" value={workbook.fuelFreightMonthly || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div>${sum(workbook.fuelFreight)}</div>
+              <div>${round(sum(workbook.fuelFreight, workbook.fuelFreightUpfront, workbook.fuelFreightMonthly))}</div>
             </div>
           </div>
           <div className="row">
@@ -397,16 +403,16 @@ export default ({
               <div>Late Charges</div>
             </div>
             <div className="col-sm-2">
-              $<input className="sm-input" name="lateCharges" value={workbook.lateCharges || ''} onChange={handleCalcs} autoComplete="new-password" />
+              $<input className="sm-input" name="lateCharges" value={workbook.lateCharges || ''} onChange={handleCascade} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div></div>
+              $<input className="sm-input" name="lateChargesUpfront" value={workbook.lateChargesUpfront || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div></div>
+              $<input className="sm-input" name="lateChargesMonthly" value={workbook.lateChargesMonthly || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div>${sum(workbook.lateCharges)}</div>
+              <div>${round(sum(workbook.lateCharges, workbook.lateChargesUpfront, workbook.lateChargesMonthly))}</div>
             </div>
           </div>
           <div className="row">
@@ -414,16 +420,16 @@ export default ({
               <div>Misc. Items *See Notes</div>
             </div>
             <div className="col-sm-2">
-              $<input className="sm-input" name="miscItems" value={workbook.miscItems || ''} onChange={handleCalcs} autoComplete="new-password" />
+              $<input className="sm-input" name="miscItems" value={workbook.miscItems || ''} onChange={handleCascade} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div></div>
+              $<input className="sm-input" name="miscItemsUpfront" value={workbook.miscItemsUpfront || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div></div>
+              $<input className="sm-input" name="miscItemsMonthly" value={workbook.miscItemsMonthly || ''} onChange={handleCalcs} autoComplete="new-password" />
             </div>
             <div className="col-sm-2">
-              <div>${sum(workbook.miscItems)}</div>
+              <div>${round(sum(workbook.miscItems, workbook.miscItemsUpfront, workbook.miscItemsMonthly))}</div>
             </div>
           </div>
           <div className="row">
@@ -437,25 +443,30 @@ export default ({
               )}</div>
             </div>
             <div className="col-sm-2">
-              <div>${sum(workbook.upfrontTax)}</div>
+              <div>${sum(
+                workbook.currentEquipmentPaymentUpfront,
+                workbook.currentServicePaymentUpfront,
+                workbook.fuelFreightUpfront,
+                workbook.lateChargesUpfront,
+                workbook.miscItemsUpfront
+              )}</div>
+            </div>
+            <div className="col-sm-2">
+              <div>${sum(
+                workbook.currentEquipmentPaymentMonthly,
+                workbook.currentServicePaymentMonthly,
+                workbook.fuelFreightMonthly,
+                workbook.lateChargesMonthly,
+                workbook.miscItemsMonthly
+              )}</div>
             </div>
             <div className="col-sm-2">
               <div>${round(sum(
-                product(workbook.currentEquipmentPayment, workbook.taxRate / 100),
-                product(workbook.upfrontTax, workbook.taxRate / 100)
-              ))}</div>
-            </div>
-            <div className="col-sm-2">
-              <div>${round(sum(
-                workbook.currentEquipmentPayment,
-                product(workbook.currentEquipmentPayment, workbook.taxRate / 100),
-                workbook.upfrontTax,
-                product(workbook.upfrontTax, workbook.taxRate / 100),
-
-                workbook.currentServicePayment,
-                workbook.fuelFreight,
-                workbook.lateCharges,
-                workbook.miscItems
+                workbook.currentEquipmentPayment, workbook.currentEquipmentPaymentUpfront, workbook.currentEquipmentPaymentMonthly,
+                workbook.currentServicePayment, workbook.currentServicePaymentUpfront, workbook.currentServicePaymentMonthly,
+                workbook.fuelFreight, workbook.fuelFreightUpfront, workbook.fuelFreightMonthly,
+                workbook.lateCharges, workbook.lateChargesUpfront, workbook.lateChargesMonthly,
+                workbook.miscItems, workbook.miscItemsUpfront, workbook.miscItemsMonthly
               ))}</div>
             </div>
           </div>

@@ -276,7 +276,7 @@ module.exports = require('express').Router()
             number: lse.number,
             company: lse.company,
             quote: lse.quote,
-            workbook: JSON.stringify({percentage: '25', taxRate: '9'}),
+            workbook: JSON.stringify({percentage: '25', upfrontTax: '0', monthlyTax: '9'}),
             buyoutId: theByo.id,
             dealerId: me.dealer
           })
