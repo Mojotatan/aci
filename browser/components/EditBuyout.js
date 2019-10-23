@@ -38,6 +38,7 @@ export default ({
   handleCalcs,
   handleCascade,
   handleTaxes,
+  generatePdf,
   handleChangeInPDFNote,
   handleDeletePDF,
   handleChoosePDF,
@@ -69,6 +70,7 @@ export default ({
       handleNewMachine={handleNewMachine}
       handleChangeInMachine={handleChangeInMachine}
       handleRemoveMachine={handleRemoveMachine}
+      generatePdf={generatePdf}
       handleChangeInPDFNote={handleChangeInPDFNote}
       handleDeletePDF={handleDeletePDF}
       handleChoosePDF={handleChoosePDF}

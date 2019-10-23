@@ -8,6 +8,7 @@ import {saveByoThunk, loadByosThunk, deleteByoThunk} from '../store/buyout-reduc
 import {focusApp} from '../store/app-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
+import {getPdf} from '../pdf'
 import {getDate, reformatDate, product, round} from '../utility'
 
 class BuyoutContainer extends React.Component {
@@ -71,6 +72,7 @@ class BuyoutContainer extends React.Component {
     this.handleCalcs = this.handleCalcs.bind(this)
     this.handleCascade = this.handleCascade.bind(this)
     this.handleTaxes = this.handleTaxes.bind(this)
+    this.generatePdf = this.generatePdf.bind(this)
 
     this.handleChangeInPDFNote = this.handleChangeInPDFNote.bind(this)
     this.handleDeletePDF = this.handleDeletePDF.bind(this)
@@ -419,6 +421,10 @@ class BuyoutContainer extends React.Component {
     this.setState({'leases': leases})
   }
 
+  generatePdf() {
+    getPdf('woof')
+  }
+
 
   handleDeletePDF(e) {
     // let pdfs = Array.from(this.state.pdfs)
@@ -540,6 +546,7 @@ class BuyoutContainer extends React.Component {
           handleCalcs={this.handleCalcs}
           handleCascade={this.handleCascade}
           handleTaxes={this.handleTaxes}
+          generatePdf={this.generatePdf}
           handleChangeInPDFNote={this.handleChangeInPDFNote}
           handleDeletePDF={this.handleDeletePDF}
           handleChoosePDF={this.handleChoosePDF}

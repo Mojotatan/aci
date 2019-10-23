@@ -1115,6 +1115,15 @@ button.disabled {
 	line-height: 24px;
 	background-color: #4490e4;
 }
+.pdf-btn {
+	margin-left: 30px;
+	color: #1066a3;
+	font-size: 18px;
+	font-weight: 600;
+	font-family: "Source Sans Pro";
+	line-height: 36px;
+	cursor: pointer
+}
 .buttons {
 	margin-top: 30px;
 	margin-bottom: 30px;
