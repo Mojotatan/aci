@@ -8,7 +8,6 @@ import {saveByoThunk, loadByosThunk, deleteByoThunk} from '../store/buyout-reduc
 import {focusApp} from '../store/app-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
-import {getPdf} from '../pdf'
 import {getDate, reformatDate, product, round} from '../utility'
 
 class BuyoutContainer extends React.Component {
@@ -422,7 +421,28 @@ class BuyoutContainer extends React.Component {
   }
 
   generatePdf() {
-    getPdf('woof')
+    // kill me
+    axios.post('/api/pdf', {
+      token: this.props.token,
+      values: this.state
+    })
+    .then(res => {
+      console.log(res)
+      let a = document.createElement('a')
+      let url = URL.createObjectURL(res.data)
+      a.href = url
+      a.download = 'TITLE'
+      document.body.appendChild(a)
+      a.click()
+      setTimeout(() => {
+          document.body.removeChild(a)
+          window.URL.revokeObjectURL(url)
+      }, 3000)
+      // window.open(res.data)
+    })
+    .catch(err => {
+      console.error(err)
+    })
   }
 
 
