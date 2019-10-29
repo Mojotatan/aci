@@ -73,10 +73,40 @@ export const getPdf = val => {
 
     // term box
     doc.rect(margin, 232, quarterCol, 411).stroke('#ced0da')
-    doc.font('Helvetica-Bold')
 
+    doc.font('Helvetica-Bold').text('Original term:', margin + 15, 244)
+    doc.rect(margin + 15, 258, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.font('Helvetica').text('insert', margin + 25, 263)
 
-    // #F1F4F8
+    doc.font('Helvetica-Bold').text('Remaining Unbilled Payments:', margin + 15, 290, {width: quarterCol - 30})
+    doc.rect(margin + 15, 318, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.font('Helvetica').text('insert', margin + 25, 323)
+
+    doc.font('Helvetica-Bold').text('Payment Amount:', margin + 15, 350)
+    doc.font('Helvetica').text('(pre-tax)', margin + 15, 364)
+    doc.rect(margin + 15, 378, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.text('insert', margin + 25, 383)
+
+    doc.font('Helvetica-Bold').text('Quote Good Through:', margin + 15, 410)
+    doc.rect(margin + 15, 424, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.font('Helvetica').text('insert', margin + 25, 429)
+
+    doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
+    doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.font('Helvetica').text('insert', margin + 25, 475)
+
+    doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
+    doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.font('Helvetica').text('insert', margin + 25, 521)
+
+    doc.font('Helvetica-Bold').text('Upgrade to Keep:', margin + 15, 548)
+    doc.rect(margin + 15, 562, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.font('Helvetica').text('insert', margin + 25, 567)
+
+    doc.font('Helvetica-Bold').text('Upgrade to Return:', margin + 15, 594)
+    doc.rect(margin + 15, 608, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.font('Helvetica').text('insert', margin + 25, 613)
+
 
     // gear box
     doc.rect(margin + quarterCol, 232, halfCol + quarterCol, 411).stroke('#ced0da')
@@ -86,12 +116,48 @@ export const getPdf = val => {
     doc.text('Plan', margin + quarterCol + 248, 244)
     doc.text('Included in', margin + quarterCol + 301, 244)
 
-    doc.rect(margin + quarterCol + 15, 258, halfCol + quarterCol - 30, 16).fillAndStroke('#f8f8f8', '#f8f8f8').fillColor('#000000')
+    doc.rect(margin + quarterCol + 15, 258, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+
+    doc.rect(margin + quarterCol + 15, 298, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.rect(margin + quarterCol + 15, 338, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.rect(margin + quarterCol + 15, 378, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    // doc.rect(margin + quarterCol + 15, 418, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
 
 
     // invoice box
-    doc.moveTo(margin + quarterCol, 438).lineTo(margin + docInnerWidth, 438).stroke('#ced0da')
+    doc.moveTo(margin + quarterCol, 432).lineTo(margin + docInnerWidth, 432).stroke('#ced0da')
     doc.font('Helvetica-Bold')
+    doc.text('Current Invoice Breakdown:', margin + quarterCol + 15, 444)
+    doc.text('Upfront', margin + quarterCol + 15 + 242, 444)
+    doc.text('Monthly', margin + quarterCol + 15 + 314, 444)
+
+    doc.text('Payment', margin + quarterCol + 15 + 170, 460)
+    doc.text('Tax', margin + quarterCol + 15 + 242, 460)
+    doc.text('Tax', margin + quarterCol + 15 + 314, 460)
+
+    doc.font('Helvetica')
+    
+    doc.rect(margin + quarterCol + 15, 474, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.text('Equipment Payment:', margin + quarterCol + 25, 479)
+
+    doc.text('Service/MA Payment:', margin + quarterCol + 25, 499)
+
+    doc.rect(margin + quarterCol + 15, 514, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.text('Fuel/Freight:', margin + quarterCol + 25, 519)
+
+    doc.text('Late Charges:', margin + quarterCol + 25, 539)
+
+    doc.rect(margin + quarterCol + 15, 554, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+    doc.text('Misc. Items (see Notes):', margin + quarterCol + 25, 559)
+
+    doc.moveTo(margin + quarterCol + 15, 583).lineTo(margin + docInnerWidth - 15, 583).stroke('#000000')
+    doc.text('(to9tal)', margin + quarterCol + 15 + 170, 594)
+
+    doc.rect(docWidth - margin - 15 - 160, 613, 80, 20).fillAndStroke('#edf5fd', '#ced0da').fillColor('#000000')
+    doc.moveTo(docWidth - margin - 15 - 80, 613).lineTo(docWidth - margin - 15, 613).lineTo(docWidth - margin - 15, 633).lineTo(docWidth - margin - 15 - 80, 633).stroke('#ced0da')
+    doc.font('Helvetica-Bold').text('TOTAL:', docWidth - margin - 15 - 160 + 10, 618)
+    doc.font('Helvetica').text('$423.54', docWidth - margin - 15 - 10 - doc.widthOfString('$423.54'), 618)
+
 
     // note box
     doc.rect(margin, 648, docInnerWidth, 94).stroke('#ced0da')
