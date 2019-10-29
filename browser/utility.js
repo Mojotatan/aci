@@ -140,7 +140,8 @@ export const round = n => {
   return monify(Math.round(checkFor$(n) * 100) / 100)
 }
 
-export const monify = n => {
+export const monify = (n, fallback) => {
+  if (!n && fallback) return fallback
   let str = String(n)
   let arr = str.split('.')
   arr[0] = arr[0].split('')

@@ -422,7 +422,7 @@ class BuyoutContainer extends React.Component {
   }
 
   generatePdf() {
-    getPdf()
+    getPdf(this.state)
     // kill me
     // axios.post('/api/pdf', {
     //   token: this.props.token,

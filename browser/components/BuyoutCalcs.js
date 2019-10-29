@@ -434,31 +434,31 @@ export default ({
           </div>
           <div className="row">
             <div className="col-sm-2 col-sm-offset-4">
-              <div>${sum(
+              <div>${round(sum(
                 workbook.currentEquipmentPayment,
                 workbook.currentServicePayment,
                 workbook.fuelFreight,
                 workbook.lateCharges,
                 workbook.miscItems
-              )}</div>
+              ))}</div>
             </div>
             <div className="col-sm-2">
-              <div>${sum(
+              <div>${round(sum(
                 workbook.currentEquipmentPaymentUpfront,
                 workbook.currentServicePaymentUpfront,
                 workbook.fuelFreightUpfront,
                 workbook.lateChargesUpfront,
                 workbook.miscItemsUpfront
-              )}</div>
+              ))}</div>
             </div>
             <div className="col-sm-2">
-              <div>${sum(
+              <div>${round(sum(
                 workbook.currentEquipmentPaymentMonthly,
                 workbook.currentServicePaymentMonthly,
                 workbook.fuelFreightMonthly,
                 workbook.lateChargesMonthly,
                 workbook.miscItemsMonthly
-              )}</div>
+              ))}</div>
             </div>
             <div className="col-sm-2">
               <div>${round(sum(
