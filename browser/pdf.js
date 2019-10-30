@@ -36,50 +36,54 @@ export const getPdf = values => {
     })
 
     // header
-    // console.log(aciLogo, impactLogo)
-    doc.image(aciLogo, docWidth - margin - 120, margin, {width: 120})
-    doc.image(impactLogo, margin, margin, {width: 120})
-    doc.font('Helvetica').fontSize(8)
-    doc.text('myadmincentral.com', {align: 'right'})
+    // discrete function so it can be called at the top of each page
+    let header = () => {
+      // logos
+      // console.log(aciLogo, impactLogo)
+      doc.image(aciLogo, docWidth - margin - 120, margin, {width: 120})
+      doc.image(impactLogo, margin, margin, {width: 120})
+      doc.font('Helvetica').fontSize(8)
+      doc.text('myadmincentral.com', {align: 'right'})
 
-    doc.fillColor('#1066a3').font('Helvetica-Bold').fontSize(20)
-    doc.text('Sales Quote', margin, 110)
-
-    // by box
-    doc.rect(357, 80, 205, 48).stroke('#ced0da')
-    doc.fillColor('#000000').fontSize(10)
-    doc.text('Requested by:', 367, 90)
-    doc.text('Manager:', 367, 108)
-    doc.font('Helvetica')
-    doc.text(values.rep.fullName || '', docWidth - margin - 10 - doc.widthOfString(values.rep.fullName), 90)
-    if (values.rep.manager) doc.text(values.rep.manager.fullName || '', docWidth - margin - 10 - doc.widthOfString(values.rep.manager.fullName), 108)
+      doc.fillColor('#1066a3').font('Helvetica-Bold').fontSize(20)
+      doc.text('Sales Quote', margin, 110)
 
 
-    // customer box
-    doc.rect(margin, 133, docInnerWidth, 94).stroke('#ced0da')
-    doc.moveTo(margin + 10, 193).lineTo(margin + docInnerWidth - 10, 191).stroke('#ced0da')
-    doc.font('Helvetica-Bold')
-    doc.text('Customer Name:', margin + 15, 145)
-    doc.text('Customer Address:', margin + 179, 145)
-    doc.text('Leasing Company:', margin + 358, 145)
-
-    doc.text('Quote Type:', margin + 15, 205)
-    doc.text('Lease Number:', margin + 179, 205)
-    doc.rect((values.leases[values.calcTarget].quote === 'Full') ? 81 + margin : 122 + margin, 205, 8, 8).fillAndStroke('#1066a3', '#1066a3').fillColor('#000000')
-    doc.rect((values.leases[values.calcTarget].quote === 'Full') ? 122 + margin : 81 + margin, 205, 8, 8).stroke('#ced0da')
-    
-    doc.font('Helvetica')
-    doc.text('Full', margin + 94, 205)
-    doc.text('Partial', margin + 135, 205)
-
-    if (values.customer) {
-      doc.text(values.customer.name || '', margin + 15, 159, {width: 154})
-      doc.text(values.customer.address || '', margin + 179, 159, {width: 169})
+      // by box
+      doc.rect(357, 80, 205, 48).stroke('#ced0da')
+      doc.fillColor('#000000').fontSize(10)
+      doc.text('Requested by:', 367, 90)
+      doc.text('Manager:', 367, 108)
+      doc.font('Helvetica')
+      doc.text(values.rep.fullName || '', docWidth - margin - 10 - doc.widthOfString(values.rep.fullName), 90)
+      if (values.rep.manager) doc.text(values.rep.manager.fullName || '', docWidth - margin - 10 - doc.widthOfString(values.rep.manager.fullName), 108)
+  
+  
+      // customer box
+      doc.rect(margin, 133, docInnerWidth, 94).stroke('#ced0da')
+      doc.moveTo(margin + 10, 193).lineTo(margin + docInnerWidth - 10, 191).stroke('#ced0da')
+      doc.font('Helvetica-Bold')
+      doc.text('Customer Name:', margin + 15, 145)
+      doc.text('Customer Address:', margin + 179, 145)
+      doc.text('Leasing Company:', margin + 358, 145)
+  
+      doc.text('Quote Type:', margin + 15, 205)
+      doc.text('Lease Number:', margin + 179, 205)
+      doc.rect((values.leases[values.calcTarget].quote === 'Full') ? 81 + margin : 122 + margin, 205, 8, 8).fillAndStroke('#1066a3', '#1066a3').fillColor('#000000')
+      doc.rect((values.leases[values.calcTarget].quote === 'Full') ? 122 + margin : 81 + margin, 205, 8, 8).stroke('#ced0da')
+      
+      doc.font('Helvetica')
+      doc.text('Full', margin + 94, 205)
+      doc.text('Partial', margin + 135, 205)
+  
+      if (values.customer) {
+        doc.text(values.customer.name || '', margin + 15, 159, {width: 154})
+        doc.text(values.customer.address || '', margin + 179, 159, {width: 169})
+      }
+      doc.text(values.leases[values.calcTarget].company || '', margin + 358, 159, {width: 144})
+      doc.text(values.leases[values.calcTarget].number || '', margin + 258, 205)
     }
-    doc.text(values.leases[values.calcTarget].company || '', margin + 358, 159, {width: 144})
-    doc.text(values.leases[values.calcTarget].number || '', margin + 258, 205)
-
-
+    header()
 
     // term box
     doc.rect(margin, 232, quarterCol, 411).stroke('#ced0da')
@@ -129,17 +133,17 @@ export const getPdf = values => {
 
     doc.font('Helvetica')
 
-    if (values.leases[values.calcTarget].machines.length <= 8) {
-      values.leases[values.calcTarget].machines.forEach((machine, index) => {
-        let count = 258 + 20 * index
-        if (index % 2 === 0) doc.rect(margin + quarterCol + 15, count, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-        doc.text(machine.make || '', margin + quarterCol + 25, count + 5)
-        doc.text(machine.model || '', margin + quarterCol + 142, count + 5)
-        doc.text(machine.action || '', margin + quarterCol + 248, count + 5)
-        doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
-      })
-    } else {
-      console.log('FUCKING PANIC')
+    let machineCount = (values.leases[values.calcTarget].machines.length > 8) ? 7 : 8
+    values.leases[values.calcTarget].machines.slice(0, machineCount).forEach((machine, index) => {
+      let count = 258 + 20 * index
+      if (index % 2 === 0) doc.rect(margin + quarterCol + 15, count, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.text(machine.model || '', margin + quarterCol + 25, count + 5)
+      doc.text(machine.serial || '', margin + quarterCol + 142, count + 5)
+      doc.text(machine.action || '', margin + quarterCol + 248, count + 5)
+      doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
+    })
+    if (machineCount === 7) {
+      doc.text('Continued on next page', margin + quarterCol + 25, 403)
     }
 
 
@@ -225,6 +229,41 @@ export const getPdf = values => {
     doc.rect(margin, 648, docInnerWidth, 94).stroke('#ced0da')
     doc.font('Helvetica-Bold').text('Notes:', margin + 15, 660)
     doc.font('Helvetica').text(workbook.notes || '', margin + 15, 676, {width: docInnerWidth - 30})
+
+
+    // second page (gear overflow)
+    while (machineCount < values.leases[values.calcTarget].machines.length) {
+      doc.addPage({
+        margin: margin
+      })
+      header()
+      doc.rect(margin, 232, docInnerWidth, 510).stroke('#ced0da')
+
+      doc.font('Helvetica-Bold')
+      doc.text('Gear:', margin + 25, 244)
+      doc.text('Serial Number', margin + 179, 244)
+      doc.text('Plan', margin + 307, 244)
+      doc.text('Included in', docWidth - margin - 15 - doc.widthOfString('Included in'), 244)
+      doc.font('Helvetica')
+
+      // can fit 23 per page
+      values.leases[values.calcTarget].machines.slice(machineCount, machineCount + 23).forEach((machine, index) => {
+        let count = 258 + 20 * index
+        if (index === 22 && machineCount + 23 < values.leases[values.calcTarget].machines.length) {
+          doc.text('Continued on next page', margin + 25, count + 5)
+        } else {
+          if (index === 22) machineCount++ // handling case of exactly 23 remaining machines
+          if (index % 2 === 0) doc.rect(margin + 15, count, docInnerWidth - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+          doc.text(machine.model || '', margin + 25, count + 5)
+          doc.text(machine.serial || '', margin + 179, count + 5)
+          doc.text(machine.action || '', margin + 307, count + 5)
+          doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
+        }
+      })
+
+      machineCount += 22
+    }
+
 
     doc.end()
     stream.on('finish', () => {
