@@ -113,7 +113,7 @@ module.exports = require('express').Router()
             }
           },
           include: ['machines'],
-          order: [['createdAt', 'ASC'], ['machines', 'createdAt', 'ASC']],
+          order: [['id', 'ASC'], ['machines', 'id', 'ASC']],
         })
       }))
     })
