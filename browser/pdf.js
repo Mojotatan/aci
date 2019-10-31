@@ -14,8 +14,9 @@ const getDataUri = (url, callback) => {
   image.src = url
 }
 
-export const getPdf = (values, customer) => {
+export const getPdf = values => {
   const workbook = values.leases[values.calcTarget].workbook
+  const machines = values.leases[values.calcTarget].machines.filter(machine => !machine.delete)
 
   // go isn't invoked until logo images load in (see bottom)
   const go = customer => {
@@ -101,20 +102,22 @@ export const getPdf = (values, customer) => {
     doc.font('Helvetica-Bold').text('Payment Amount:', margin + 15, 350)
     doc.font('Helvetica').text('(pre-tax)', margin + 15, 364)
     doc.rect(margin + 15, 378, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.text('$' + sum(workbook.currentEquipmentPayment, workbook.currentServicePayment, workbook.passThroughService), margin + 25, 383)
+    doc.text('$' + workbook.currentEquipmentPayment || '', margin + 25, 383)
 
     doc.font('Helvetica-Bold').text('Quote Good Through:', margin + 15, 410)
     doc.rect(margin + 15, 424, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.font('Helvetica').text('???', margin + 25, 429)
+    doc.font('Helvetica').text(values.expiry || '', margin + 25, 429)
     
     if (customer) {
       doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
       doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + monify(workbook.customerBtk || ''), margin + 25, 475)
+      doc.font('Helvetica').text('$' + workbook.customerBtk || '', margin + 25, 475)
+      // doc.font('Helvetica').text((workbook.customerBtk) ? '$' + workbook.customerBtk : 'N/A', margin + 25, 475)
 
       doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
       doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + monify(workbook.customerBtr || ''), margin + 25, 521)
+      doc.font('Helvetica').text('$' + workbook.customerBtr || '', margin + 25, 521)
+      // doc.font('Helvetica').text((workbook.customerBtr) ? '$' + workbook.customerBtr : 'N/A', margin + 25, 521)
     } else {
       doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
       doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
@@ -158,20 +161,30 @@ export const getPdf = (values, customer) => {
     doc.rect(margin + quarterCol, 232, halfCol + quarterCol, 411).stroke('#ced0da')
     doc.font('Helvetica-Bold')
     doc.text('Gear:', margin + quarterCol + 15, 244)
-    doc.text('Serial Number', margin + quarterCol + 142, 244)
-    doc.text('Plan', margin + quarterCol + 248, 244)
-    doc.text('Included in', docWidth - margin - 15 - doc.widthOfString('Included in'), 244)
+    if (values.leases[values.calcTarget].quote === 'Full') {
+      doc.text('Serial Number', margin + quarterCol + 212 + 25, 244)
+    } else {
+      doc.text('Serial Number', 357, 244)
+      doc.text('Plan', docWidth - margin - 15 - 82, 244)
+      // doc.text('Plan', margin + quarterCol + 248, 244)
+      // doc.text('Included in', docWidth - margin - 15 - doc.widthOfString('Included in'), 244)
+    }
 
     doc.font('Helvetica')
 
-    let machineCount = (values.leases[values.calcTarget].machines.length > 8) ? 7 : 8
-    values.leases[values.calcTarget].machines.slice(0, machineCount).forEach((machine, index) => {
+    let machineCount = (machines.length > 8) ? 7 : 8
+    machines.slice(0, machineCount).forEach((machine, index) => {
       let count = 258 + 20 * index
       if (index % 2 === 0) doc.rect(margin + quarterCol + 15, count, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
       doc.text(machine.model || '', margin + quarterCol + 25, count + 5)
-      doc.text(machine.serial || '', margin + quarterCol + 142, count + 5)
-      doc.text(machine.action || '', margin + quarterCol + 248, count + 5)
-      doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
+      if (values.leases[values.calcTarget].quote === 'Full') {
+        doc.text(machine.serial || '', margin + quarterCol + 212 + 25, count + 5)
+      } else {
+        doc.text(machine.serial || '', 357, count + 5)
+        doc.text(machine.action, docWidth - margin - 15 - 82, count + 5)
+        // doc.text(machine.action || '', margin + quarterCol + 248, count + 5)
+        // doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
+      }
     })
     if (machineCount === 7) {
       doc.text('Continued on next page', margin + quarterCol + 25, 403)
@@ -263,7 +276,7 @@ export const getPdf = (values, customer) => {
 
 
     // second page (gear overflow)
-    while (machineCount < values.leases[values.calcTarget].machines.length) {
+    while (machineCount < machines.length) {
       doc.addPage({
         margin: margin
       })
@@ -273,22 +286,28 @@ export const getPdf = (values, customer) => {
       doc.font('Helvetica-Bold')
       doc.text('Gear:', margin + 25, 244)
       doc.text('Serial Number', margin + 179, 244)
-      doc.text('Plan', margin + 307, 244)
-      doc.text('Included in', docWidth - margin - 15 - doc.widthOfString('Included in'), 244)
+      if (values.leases[values.calcTarget].quote === 'Partial') {
+        doc.text('Plan', docWidth - margin - 15 - 82, 244)
+        // doc.text('Plan', margin + 307, 244)
+        // doc.text('Included in', docWidth - margin - 15 - doc.widthOfString('Included in'), 244)
+      }
       doc.font('Helvetica')
 
       // can fit 23 per page
-      values.leases[values.calcTarget].machines.slice(machineCount, machineCount + 23).forEach((machine, index) => {
+      machines.slice(machineCount, machineCount + 23).forEach((machine, index) => {
         let count = 258 + 20 * index
-        if (index === 22 && machineCount + 23 < values.leases[values.calcTarget].machines.length) {
+        if (index === 22 && machineCount + 23 < machines.length) {
           doc.text('Continued on next page', margin + 25, count + 5)
         } else {
           if (index === 22) machineCount++ // handling case of exactly 23 remaining machines
           if (index % 2 === 0) doc.rect(margin + 15, count, docInnerWidth - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
           doc.text(machine.model || '', margin + 25, count + 5)
           doc.text(machine.serial || '', margin + 179, count + 5)
-          doc.text(machine.action || '', margin + 307, count + 5)
-          doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
+          if (values.leases[values.calcTarget].quote === 'Partial') {
+            doc.text(machine.action, docWidth - margin - 15 - 82, count + 5)
+            // doc.text(machine.action || '', margin + 307, count + 5)
+            // doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
+          }
         }
       })
 

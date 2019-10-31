@@ -227,6 +227,7 @@ class BuyoutContainer extends React.Component {
       make: '',
       model: '', 
       location: '',
+      action: 'Release',
       LeaseId: leases[index].id
     })
     this.setState({'leases': leases})

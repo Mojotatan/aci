@@ -544,30 +544,33 @@ export default ({
 
 
         {/* log */}
-        <div className="row app-bg log">
-          <div className="col-sm-12">
-            <h3>Activity Log</h3>
-          </div>
-          {(values.logs) ?
+        {(mode === 'app') ?
+          <div className="row app-bg log">
             <div className="col-sm-12">
-              {values.logs.map((log, index) => (
-                <div key={log.id} className="log-entry">
-                  <div>
-                    {log.activity.split('<b>').map((words, index) => {
-                      if (index !== 1) {
-                        return (<span key={index}>{words}</span>)
-                      } else {
-                        return (<strong key={index}>{words}</strong>)
-                      }
-                    })}
-                  </div>
-                  <div className="log-date">{reformatDate(log.date)}</div>
-                </div>
-              ))}
+              <h3>Activity Log</h3>
             </div>
-            : null
-          }
-        </div>
+            {(values.logs) ?
+              <div className="col-sm-12">
+                {values.logs.map((log, index) => (
+                  <div key={log.id} className="log-entry">
+                    <div>
+                      {log.activity.split('<b>').map((words, index) => {
+                        if (index !== 1) {
+                          return (<span key={index}>{words}</span>)
+                        } else {
+                          return (<strong key={index}>{words}</strong>)
+                        }
+                      })}
+                    </div>
+                    <div className="log-date">{reformatDate(log.date)}</div>
+                  </div>
+                ))}
+              </div>
+              : null
+            }
+          </div>
+          : null
+        }
 
       </div>
     }

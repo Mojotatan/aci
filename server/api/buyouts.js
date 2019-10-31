@@ -199,8 +199,8 @@ module.exports = require('express').Router()
         date: req.body.byo.date,
         expiry: req.body.byo.expiry,
         comments: req.body.byo.comments,
-        pdfs: req.body.byo.pdfs,
-        pdfNotes: req.body.byo.pdfNotes,
+        // pdfs: req.body.byo.pdfs,
+        // pdfNotes: req.body.byo.pdfNotes,
         // calcs: JSON.stringify(req.body.byo.calcs),
         repId: me.id,
         appId: req.body.byo.appId
@@ -211,8 +211,8 @@ module.exports = require('express').Router()
         date: req.body.byo.date,
         expiry: req.body.byo.expiry,
         comments: req.body.byo.comments,
-        pdfs: req.body.byo.pdfs,
-        pdfNotes: req.body.byo.pdfNotes,
+        // pdfs: req.body.byo.pdfs,
+        // pdfNotes: req.body.byo.pdfNotes,
         // calcs: JSON.stringify(req.body.byo.calcs),
         // appId: req.body.appId
       }, {
