@@ -66,7 +66,7 @@ export default ({
       <div className="row">
         <div className={(values.calcView) ? 'col-sm-3' : 'col-sm-6'}><h2>Admin Portal</h2></div>
         {(values.calcView) ?
-          <div className="col-sm-3 top-buttons"><a className="pdf-btn" onClick={generatePdf}>Generate PDF</a></div>
+          <div className="col-sm-3 top-buttons"><a className="pdf-btn" onClick={generatePdf}>Generate PDFs</a></div>
           : null
         }
         {/* <div className="col-sm-3 top-buttons"><Link to='/applications' id="cancel-button" className="top">Back</Link></div> */}

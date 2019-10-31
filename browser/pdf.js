@@ -1,4 +1,4 @@
-import {sum, round, monify} from './utility'
+import {sum, product, round, monify} from './utility'
 
 const getDataUri = (url, callback) => {
   let image = new Image()
@@ -14,15 +14,17 @@ const getDataUri = (url, callback) => {
   image.src = url
 }
 
-export const getPdf = values => {
+export const getPdf = (values, customer) => {
   const workbook = values.leases[values.calcTarget].workbook
 
   // go isn't invoked until logo images load in (see bottom)
-  const go = () => {
+  const go = customer => {
     let doc = new PDFDocument({autoFirstPage: false})
     let stream = doc.pipe(blobStream())
-    console.log(doc)
-    console.log(values)
+    if (!customer) {
+      console.log(doc)
+      console.log(values)
+    }
 
     const docWidth = 612
     const docHeight = 792
@@ -105,22 +107,51 @@ export const getPdf = values => {
     doc.rect(margin + 15, 424, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
     doc.font('Helvetica').text('???', margin + 25, 429)
     
-    // this must vary depending for rep vs customer pdf
-    doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
-    doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.font('Helvetica').text(workbook.companyBtk || '', margin + 25, 475)
+    if (customer) {
+      doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
+      doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.font('Helvetica').text('$' + monify(workbook.customerBtk || ''), margin + 25, 475)
 
-    doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
-    doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.font('Helvetica').text(workbook.companyBtr || '', margin + 25, 521)
+      doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
+      doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.font('Helvetica').text('$' + monify(workbook.customerBtr || ''), margin + 25, 521)
+    } else {
+      doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
+      doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.font('Helvetica').text('$' + round(sum(
+        workbook.companyBtk,
+        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+        product(workbook.remainingTerm, workbook.passThroughService),
+        workbook.smua
+      )), margin + 25, 475)
 
-    doc.font('Helvetica-Bold').text('Upgrade to Keep:', margin + 15, 548)
-    doc.rect(margin + 15, 562, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.font('Helvetica').text(workbook.companyUtk || '', margin + 25, 567)
+      doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
+      doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.font('Helvetica').text('$' + round(sum(
+        workbook.companyBtr,
+        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+        product(workbook.remainingTerm, workbook.passThroughService),
+        workbook.smua
+      )), margin + 25, 521)
 
-    doc.font('Helvetica-Bold').text('Upgrade to Return:', margin + 15, 594)
-    doc.rect(margin + 15, 608, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.font('Helvetica').text(workbook.companyUtr || '', margin + 25, 613)
+      doc.font('Helvetica-Bold').text('Upgrade to Keep:', margin + 15, 548)
+      doc.rect(margin + 15, 562, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.font('Helvetica').text('$' + round(sum(
+        workbook.companyUtk,
+        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+        product(workbook.remainingTerm, workbook.passThroughService),
+        workbook.smua
+      )), margin + 25, 567)
+
+      doc.font('Helvetica-Bold').text('Upgrade to Return:', margin + 15, 594)
+      doc.rect(margin + 15, 608, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.font('Helvetica').text('$' + round(sum(
+        workbook.companyUtr,
+        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+        product(workbook.remainingTerm, workbook.passThroughService),
+        workbook.smua
+      )), margin + 25, 613)
+    }
 
 
     // gear box
@@ -272,7 +303,7 @@ export const getPdf = values => {
       let url = URL.createObjectURL(blob)
       a.href = url
   
-      a.download = 'TITLE'
+      a.download = `Lease-${values.leases[values.calcTarget].number}-${(customer) ? 'Customer' : 'Rep'}-Quote`
       document.body.appendChild(a)
       a.click()
       setTimeout(() => {
@@ -288,7 +319,8 @@ export const getPdf = values => {
     aciLogo = dataUri
     getDataUri('/assets/img/impact_logo.svg', dataUri => {
       impactLogo = dataUri
-      go()
+      go() // rep pdf
+      go('customer') // customer pdf
     })
   })
 }
