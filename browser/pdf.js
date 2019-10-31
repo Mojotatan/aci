@@ -284,7 +284,7 @@ export const getPdf = values => {
   // loading logos as data uris
   let aciLogo
   let impactLogo
-  getDataUri('/assets/img/myadmin_logo.svg', dataUri => {
+  getDataUri('/assets/img/myadmin_logo_FINAL.png', dataUri => {
     aciLogo = dataUri
     getDataUri('/assets/img/impact_logo.svg', dataUri => {
       impactLogo = dataUri
