@@ -99,7 +99,7 @@ export const getPdf = values => {
     doc.font('Helvetica-Bold').text('Payment Amount:', margin + 15, 350)
     doc.font('Helvetica').text('(pre-tax)', margin + 15, 364)
     doc.rect(margin + 15, 378, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.text('???', margin + 25, 383)
+    doc.text('$' + sum(workbook.currentEquipmentPayment, workbook.currentServicePayment, workbook.passThroughService), margin + 25, 383)
 
     doc.font('Helvetica-Bold').text('Quote Good Through:', margin + 15, 410)
     doc.rect(margin + 15, 424, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')

@@ -473,73 +473,73 @@ export default ({
           : null
         }
 
-        {//(mode === 'byo') ?
-          // <div className="row">
-          //   <div className="app-bg col-sm-12">
-          //     <h3>PDFs</h3>
-          //     <div className="row">
-          //       <div className="col-sm-3">
-          //         <div className="field-label">
-          //           <label>PDF</label>
-          //         </div>
-          //       </div>
-          //       <div className="col-sm-6">
-          //         <div className="field-label">
-          //           <label>Notes</label>
-          //         </div>
-          //       </div>
-          //     </div>
-          //   {(values.pdfs) ?
-          //     <div className="pdfs">
-          //       {values.pdfs.map(pdf => (
-          //         <div key={`pdf-${pdf.id}`} className="row">
-          //           <div className="col-sm-3">
-          //             <div className="field-box">
-          //               <p><a href={`/api/uploads/${pdf.id}/${pdf.name}?access_token=${token}`} download>{pdf.name}</a></p>
-          //             </div>
-          //           </div>
-          //           <div className="col-sm-6">
-          //             <div className="field-box">
-          //               <p>{pdf.notes || ''}</p>
-          //             </div>
-          //           </div>
-          //           <div className="col-sm-3" align="center">
-          //             <div className="field-box">
-          //               <button id={pdf.id} className="fields-button" onClick={handleDeletePDF}>Delete</button>
-          //             </div>
-          //           </div>
-          //         </div>
-          //       ))}
-          //     </div>
-          //     : null
-          //   }
-          //   </div>
-          //   <div id="byo-desc" className="col-sm-12">
-          //     <div className="row">
-          //       <div className="col-sm-6">
-          //         {/* <div className="field-label">
-          //           <label>Upload new PDF</label>
-          //         </div> */}
-          //         <h3>Upload New PDF</h3>
-          //         <div className="field-box">
-          //           <form onSubmit={handleUploadPDF}>
-          //             <div className="col-sm-12">
-          //               <input className="upload-button" type="file" onChange={handleChoosePDF} accept="application/pdf" />
-          //             </div>
-          //             <div className="col-sm-12">
-          //               <div className="field-label"><label>Note</label></div>
-          //               <div className="field-box pdfs"><textarea onChange={handleChangeInPDFNote} value={values.note} /></div>
-          //             </div>
-          //             <div className="col-sm-12" align="right">
-          //               <button id="save-button" type="submit">Submit</button>
-          //             </div>
-          //           </form>
-          //         </div>
-          //       </div>
-          //     </div>
-          //   </div>
-          // </div>
-          // : null
+        {(mode === 'byo') ?
+          <div className="row">
+            <div className="app-bg col-sm-12">
+              <h3>PDFs</h3>
+              <div className="row">
+                <div className="col-sm-3">
+                  <div className="field-label">
+                    <label>PDF</label>
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="field-label">
+                    <label>Notes</label>
+                  </div>
+                </div>
+              </div>
+            {(values.pdfs) ?
+              <div className="pdfs">
+                {values.pdfs.map(pdf => (
+                  <div key={`pdf-${pdf.id}`} className="row">
+                    <div className="col-sm-3">
+                      <div className="field-box">
+                        <p><a href={`/api/uploads/${pdf.id}/${pdf.name}?access_token=${token}`} download>{pdf.name}</a></p>
+                      </div>
+                    </div>
+                    <div className="col-sm-6">
+                      <div className="field-box">
+                        <p>{pdf.notes || ''}</p>
+                      </div>
+                    </div>
+                    <div className="col-sm-3" align="center">
+                      <div className="field-box">
+                        <button id={pdf.id} className="fields-button" onClick={handleDeletePDF}>Delete</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              : null
+            }
+            </div>
+            <div id="byo-desc" className="col-sm-12">
+              <div className="row">
+                <div className="col-sm-6">
+                  {/* <div className="field-label">
+                    <label>Upload new PDF</label>
+                  </div> */}
+                  <h3>Upload New PDF</h3>
+                  <div className="field-box">
+                    <form onSubmit={handleUploadPDF}>
+                      <div className="col-sm-12">
+                        <input className="upload-button" type="file" onChange={handleChoosePDF} accept="application/pdf" />
+                      </div>
+                      <div className="col-sm-12">
+                        <div className="field-label"><label>Note</label></div>
+                        <div className="field-box pdfs"><textarea onChange={handleChangeInPDFNote} value={values.note} /></div>
+                      </div>
+                      <div className="col-sm-12" align="right">
+                        <button id="save-button" type="submit">Submit</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          : null
         }
 
 
