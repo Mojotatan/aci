@@ -328,7 +328,7 @@ export const getPdf = values => {
       setTimeout(() => {
         document.body.removeChild(a)
         window.URL.revokeObjectURL(url)
-      }, 3000)
+      }, 30000)
     })
   }
   // loading logos as data uris

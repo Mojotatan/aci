@@ -50,6 +50,7 @@ class ApplicationContainer extends React.Component {
     this.generateErrors = this.generateErrors.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleResubmit = this.handleResubmit.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
 
     this.handleCheckbox = this.handleCheckbox.bind(this)
@@ -262,6 +263,21 @@ class ApplicationContainer extends React.Component {
 
       this.props.history.push('/applications')
     }
+  }
+
+  handleResubmit(e) {
+    // nevermind, not even using this
+    e.preventDefault()
+    this.props.saveAppThunk(
+      this.props.token,
+      [this.state, {
+        status: 'Draft',
+        date: null,
+        expiry: null,
+        amount: checkFor$(this.state.amount)
+      }],
+      [this.state.customer]
+    )
   }
 
   handleDelete(e) {
@@ -497,6 +513,7 @@ class ApplicationContainer extends React.Component {
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={(disabled) ? this.generateErrors(errors) : this.handleSave}
           handleSubmit={(disabled) ? this.generateErrors(errors) : this.handleSubmit}
+          handleResubmit={(disabled) ? this.generateErrors(errors) : this.handleResubmit}
           handleDelete={this.handleDelete}
           handleChangeCustomer={this.handleChangeCustomer}
           handleCheckbox={this.handleCheckbox}

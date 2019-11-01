@@ -125,6 +125,10 @@ class ApplicationsContainer extends React.Component {
                       Resubmit
                     </span>
                   }
+                  {(this.props.user.level !== 'Admin' && app.status !== 'Expired' && app.status !== 'Draft') ?
+                    <span id={app.id} className="options floating-resubmit" onClick={this.handleResubmit}>Resubmit</span>
+                    : null
+                  }
                 </div>
               )
             })}

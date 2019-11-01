@@ -98,6 +98,9 @@ class BuyoutsContainer extends React.Component {
                 <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expiration Date</td>
                 <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</td>
                 <td className="table-right"></td>
+                {(this.props.user.level !== 'Admin') ?
+                  <td className="table-right"></td> : null
+                }
               </tr>
               {this.props.byos.map((byo, index) => {
                 return (
@@ -119,6 +122,10 @@ class BuyoutsContainer extends React.Component {
                       <td id={byo.id} className="edit table-right" onClick={this.handleResubmit}>
                         Resubmit
                       </td>
+                    }
+                    {(this.props.user.level !== 'Admin' && byo.status !== 'Expired' && byo.status !== 'Draft') ?
+                      <td id={byo.id} className="edit table-right" onClick={this.handleResubmit}>Resubmit</td>
+                      : <td className="table-right"></td>
                     }
                   </tr>
                 )
