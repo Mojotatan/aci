@@ -3,11 +3,11 @@ import React from 'react'
 import {match, cleanHeader} from '../utility'
 
 // Fair warning, this code is ugly... turn back now with your sanity
-export default ({uniClass, controller, fields, dropdowns, rows, handleChange, handleSubmit, handleCancel, handleController, handleCreate, handleDelete}) => (
+export default ({uniClass, controller, fields, dropdowns, uploads, rows, handleChange, handleChoosePDF, handleSubmit, handleCancel, handleController, handleCreate, handleDelete}) => (
   <div className={`edit-fields-box ${uniClass}`}>
     <div className="app-table-edit col-sm-12 no-gutters">
       <div className="app-header-bottom">
-        {[...Object.keys(fields), ...Object.keys(dropdowns)].map(key => {
+        {[...Object.keys(fields), ...Object.keys(dropdowns), ...Object.keys(uploads)].map(key => {
           return(
             <span key={key}>
               {cleanHeader(key)}
@@ -72,20 +72,37 @@ export default ({uniClass, controller, fields, dropdowns, rows, handleChange, ha
                       </span>
                     )
                   })}
+                  {Object.keys(uploads).map(key => {
+                    return (controller == index) ?
+                    (
+                      <span key={`${row.id}-${key}`} className="upload">
+                        <input className="upload-button" type="file" onChange={handleChoosePDF} accept="image/*" />
+                      </span>
+                    )
+                    :
+                    (
+                      <span key={`${row.id}-${key}`} className="upload">
+                        {(row[key]) ?
+                          <img src={'/assets/logo/' + row[key]} />
+                          : null
+                        }
+                      </span>
+                    )
+                  })}
                   {(!controller) ?
-                    <span>
+                    <span className="tail-end">
                       <button value={index} onClick={handleController} className ="fields-button">Edit</button>
                     </span>
                     : null
                   }
                   {(!controller) ?
-                    <span>
+                    <span className="tail-end">
                       <button value={row.id} onClick={handleDelete} className ="fields-button right-margin">Delete</button>
                     </span>
                     : null
                   }
                   {(controller) ?
-                    <span>
+                    <span className="tail-end">
                       {(controller == index) ?
                         <button onClick={handleCancel} className ="fields-button">Cancel</button>
                         : null
@@ -94,7 +111,7 @@ export default ({uniClass, controller, fields, dropdowns, rows, handleChange, ha
                     : null
                   }
                   {(controller) ?
-                    <span>
+                    <span className="tail-end">
                       {(controller == index) ?
                         <button type="submit" className ="fields-button right-margin">Save</button>
                         : null

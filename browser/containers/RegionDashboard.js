@@ -113,6 +113,7 @@ class RegionContainer extends React.Component {
               select: this.state.dealerName
             }
           }}
+          uploads={{}}
           rows={this.props.regions}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}

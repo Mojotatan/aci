@@ -389,10 +389,14 @@ class BuyoutContainer extends React.Component {
 
   toggleCalcView(e) {
     e.preventDefault()
+    let currentView = this.state.calcView
     this.setState({
-      calcTarget: (this.state.calcView) ? false : Number(e.target.id.slice(6)),
-      calcView: !this.state.calcView
+      calcTarget: (currentView) ? false : Number(e.target.id.slice(6)),
+      calcView: !currentView
     })
+    if (!currentView) {
+      this.props.loadByosThunk(this.props.token)
+    }
   }
 
   handleCalcs(e) {

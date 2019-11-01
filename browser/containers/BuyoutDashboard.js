@@ -123,9 +123,11 @@ class BuyoutsContainer extends React.Component {
                         Resubmit
                       </td>
                     }
-                    {(this.props.user.level !== 'Admin' && byo.status !== 'Expired' && byo.status !== 'Draft') ?
-                      <td id={byo.id} className="edit table-right" onClick={this.handleResubmit}>Resubmit</td>
-                      : <td className="table-right"></td>
+                    {(this.props.user.level !== 'Admin') ?
+                      (byo.status !== 'Expired' && byo.status !== 'Draft') ?
+                        <td id={byo.id} className="edit table-right" onClick={this.handleResubmit}>Resubmit</td>
+                        : <td className="table-right"></td>
+                      : null
                     }
                   </tr>
                 )

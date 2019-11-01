@@ -59,23 +59,25 @@ export const loadDealersThunk = (token) => {
   }
 }
 
-export const saveDealerThunk = (token, dealer) => {
+export const saveDealerThunk = (token, dealer, callback) => {
   return dispatch => {
     return axios.put('/api/dealers', {token, dealer})
     .then(res => {
       dispatch(loadDealersThunk(token))
       dispatch(focusDealer(null))
+      if (callback) callback(dealer.id)
     })
     .catch(err => console.error(err))
   }
 }
 
-export const createDealerThunk = (token, dealer) => {
+export const createDealerThunk = (token, dealer, callback) => {
   return dispatch => {
     return axios.post('/api/dealers/new', {token, dealer})
     .then(res => {
       dispatch(loadDealersThunk(token))
       dispatch(focusDealer(null))
+      if (callback) callback(res.data.id)
     })
     .catch(err => console.error(err))
   }

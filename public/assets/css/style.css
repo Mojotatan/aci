@@ -805,7 +805,13 @@ form .app-table-edit {
 	width: 25%
 }
 .edit-fields-box.dealer span {
-	width: 12.5%
+	width: 11%
+}
+.edit-fields-box.dealer .upload {
+	width: 22%
+}
+.edit-fields-box.dealer .tail-end {
+	width: 6%
 }
 /* .street {
 	width: 200px !important;

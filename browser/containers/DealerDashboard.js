@@ -18,10 +18,13 @@ class DealerContainer extends React.Component {
       street: '',
       city: '',
       state: '',
-      zip: ''}
+      zip: '',
+      logo: '',
+      upload: null}
     )
 
     this.handleChange = this.handleChange.bind(this)
+    this.handleChoosePDF = this.handleChoosePDF.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleController = this.handleController.bind(this)
@@ -30,15 +33,37 @@ class DealerContainer extends React.Component {
   }
 
   handleChange(e) {
-    let [index, field] = e.target.name.split('-')
+    // let [index, field] = e.target.name.split('-')
 
     this.setState({
       [e.target.name.split('-')[1]]: e.target.value
     })
   }
 
+  handleChoosePDF(e) {
+    this.setState({upload: e.target.files[0]})
+  }
+
   handleSubmit(e) {
     e.preventDefault()
+    let formData, callback
+
+    if (this.state.upload) {
+      formData = new FormData()
+      formData.append('file', this.state.upload)
+      callback = id => {
+        axios.post(`/api/uploads/logo/${id}?access_token=${this.props.token}`, formData, {'content-type': 'multipart/form-data'})
+        .then(res => {
+          if (res.data.color) this.props.throwAlert(res.data.color, res.data.message)
+          // else console.log(res.data)
+          this.props.loadDealersThunk(this.props.token)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+      }
+    }
+    
     if (this.state.create) {
       this.props.createDealerThunk(this.props.token, {
         name: this.state.name,
@@ -47,7 +72,7 @@ class DealerContainer extends React.Component {
         city: this.state.city,
         state: this.state.state,
         zip: this.state.zip
-      })
+      }, callback)
     } else {
       this.setState({create: false})
       this.props.saveDealerThunk(this.props.token, {
@@ -58,12 +83,12 @@ class DealerContainer extends React.Component {
         city: this.state.city,
         state: this.state.state,
         zip: this.state.zip
-      })
+      }, callback)
     }
   }
 
   handleCancel(e) {
-    this.setState({create: false})
+    this.setState({create: false, upload: null})
     this.props.focusDealer(null)
     this.props.loadDealersThunk(this.props.token)
   }
@@ -89,7 +114,8 @@ class DealerContainer extends React.Component {
       street: '',
       city: '',
       state: '',
-      zip: ''
+      zip: '',
+      logo: ''
     })
     this.props.createDealer({
       name: '',
@@ -97,7 +123,8 @@ class DealerContainer extends React.Component {
       street: '',
       city: '',
       state: '',
-      zip: ''
+      zip: '',
+      logo: ''
     })
   }
 
@@ -121,6 +148,7 @@ class DealerContainer extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     return(
       <div className="ex-table">
         <Menu />
@@ -136,8 +164,12 @@ class DealerContainer extends React.Component {
             zip: this.state.zip
           }}
           dropdowns={{}}
+          uploads={{
+            logo: this.state.logo
+          }}
           rows={this.props.dealers}
           handleChange={this.handleChange}
+          handleChoosePDF={this.handleChoosePDF}
           handleSubmit={this.handleSubmit}
           handleCancel={this.handleCancel}
           handleController={this.handleController}

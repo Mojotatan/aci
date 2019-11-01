@@ -42,9 +42,9 @@ export const getPdf = values => {
     // discrete function so it can be called at the top of each page
     let header = () => {
       // logos
-      // console.log(aciLogo, impactLogo)
+      // console.log(aciLogo, dealerLogo)
       doc.image(aciLogo, docWidth - margin - 120, margin, {width: 120})
-      doc.image(impactLogo, margin, margin, {width: 120})
+      if (dealerLogo) doc.image(dealerLogo, margin, margin, {width: 120})
       doc.font('Helvetica').fontSize(8)
       doc.text('myadmincentral.com', {align: 'right'})
 
@@ -333,13 +333,18 @@ export const getPdf = values => {
   }
   // loading logos as data uris
   let aciLogo
-  let impactLogo
+  let dealerLogo
   getDataUri('/assets/img/myadmin_logo_FINAL.png', dataUri => {
     aciLogo = dataUri
-    getDataUri('/assets/img/impact_logo.svg', dataUri => {
-      impactLogo = dataUri
+    if (values.rep.dealer && values.rep.dealer.logo) {
+      getDataUri('/assets/logo/' + values.rep.dealer.logo, dataUri => {
+        dealerLogo = dataUri
+        go() // rep pdf
+        go('customer') // customer pdf
+      })
+    } else {
       go() // rep pdf
       go('customer') // customer pdf
-    })
+    }
   })
 }

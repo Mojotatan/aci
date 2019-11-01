@@ -159,6 +159,7 @@ class BranchContainer extends React.Component {
               select: this.state.regionName
             }
           }}
+          uploads={{}}
           rows={this.props.branches}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}

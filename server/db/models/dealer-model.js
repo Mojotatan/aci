@@ -28,6 +28,9 @@ module.exports = db => db.define('Dealer', {
   },
   zip: {
     type: Sequelize.STRING
+  },
+  logo: {
+    type: Sequelize.STRING
   }
 }, {
   getterMethods: {

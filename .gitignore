@@ -8,6 +8,10 @@ public/bundle.js
 
 server/uploads
 
+server/temp
+
+public/assets/logo
+
 .configsecrets
 
 .devCert
