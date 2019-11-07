@@ -15,7 +15,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_APPS:
       newState.apps = action.apps
-      if (newState.sort) newState.apps.sort(sortBy(newState.sort))
+      if (newState.sort) newState.apps.sort(sortBy(newState.sort, newState.reverse))
       return newState
     case FOCUS_APP:
       newState.focus = action.id

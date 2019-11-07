@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import EditFields from '../components/EditFields'
 import Menu from './Menu'
 
-import {loadRegionsThunk, saveRegionThunk, createRegionThunk, createRegion, focusRegion} from '../store/region-reducer'
+import {loadRegionsThunk, saveRegionThunk, createRegionThunk, createRegion, sortRegions, focusRegion} from '../store/region-reducer'
 
 import axios from 'axios'
 
@@ -23,6 +23,7 @@ class RegionContainer extends React.Component {
     this.handleController = this.handleController.bind(this)
     this.handleCreate = this.handleCreate.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleSort = this.handleSort.bind(this)
   }
 
   handleChange(e) {
@@ -87,6 +88,12 @@ class RegionContainer extends React.Component {
     .catch(err => console.error(err))
   }
 
+  handleSort(e) {
+    // need to cancel any open forms b/c otherwise there are unintended side effects
+    if (this.props.focus) this.handleCancel()
+    this.props.sortRegions(e.target.id.split('-'))
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     else this.props.loadRegionsThunk(this.props.token)
@@ -107,7 +114,7 @@ class RegionContainer extends React.Component {
             name: this.state.name,
           }}
           dropdowns={{
-            dealerName: {
+            'dealer-name': {
               values: this.props.dealers.map(dlr => dlr.name),
               match: ['dealer', 'name'],
               select: this.state.dealerName
@@ -121,6 +128,9 @@ class RegionContainer extends React.Component {
           handleController={this.handleController}
           handleCreate={this.handleCreate}
           handleDelete={this.handleDelete}
+          handleSort={this.handleSort}
+          reverse={this.props.reverse}
+          sort={this.props.sort}
         />
       </div>
     )
@@ -132,10 +142,12 @@ const mapStateToProps = (state) => {
     token: state.login.token,
     regions: state.region.regions,
     focus: state.region.focus,
+    sort: state.region.sort,
+    reverse: state.region.reverse,
     dealers: state.dlr.dealers
   }
 }
 
-const mapDispatchToProps = {loadRegionsThunk, saveRegionThunk, createRegionThunk, createRegion, focusRegion}
+const mapDispatchToProps = {loadRegionsThunk, saveRegionThunk, createRegionThunk, createRegion, sortRegions, focusRegion}
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegionContainer)

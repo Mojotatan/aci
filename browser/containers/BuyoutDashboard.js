@@ -31,7 +31,7 @@ class BuyoutsContainer extends React.Component {
 
   handleSort(e) {
     this.props.sortByos(e.target.id.split('-'))
-    this.setState({sortingBy: e.target.id})
+    // this.setState({sortingBy: e.target.id})
   }
 
   handleResubmit(e) {

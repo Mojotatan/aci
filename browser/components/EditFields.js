@@ -3,13 +3,15 @@ import React from 'react'
 import {match, cleanHeader} from '../utility'
 
 // Fair warning, this code is ugly... turn back now with your sanity
-export default ({uniClass, controller, fields, dropdowns, uploads, rows, handleChange, handleChoosePDF, handleSubmit, handleCancel, handleController, handleCreate, handleDelete}) => (
+export default ({uniClass, controller, fields, dropdowns, uploads, rows, handleChange, handleChoosePDF, handleSubmit, handleCancel, handleController, handleCreate, handleDelete, handleSort, reverse, sort}) => (
   <div className={`edit-fields-box ${uniClass}`}>
     <div className="app-table-edit col-sm-12 no-gutters">
-      <div className="app-header-bottom">
+      <div className={`app-header-bottom${(reverse) ? ' reverse' : ''}`}>
         {[...Object.keys(fields), ...Object.keys(dropdowns), ...Object.keys(uploads)].map(key => {
           return(
-            <span key={key}>
+            <span key={key} id={key}
+            className={(sort.join('-') === key) ? 'sorting' : 'sortable'}
+            onClick={handleSort}>
               {cleanHeader(key)}
             </span>
           )
@@ -20,7 +22,7 @@ export default ({uniClass, controller, fields, dropdowns, uploads, rows, handleC
     </div>
     {rows.map((row, index) => {
       return (
-        <form key={row.id} onSubmit={handleSubmit} autoComplete="off">
+        <form key={row.id} className="col-sm-12 no-gutters" onSubmit={handleSubmit} autoComplete="off">
           <div className="app-table-edit col-sm-12 no-gutters">
               <div className={`${(index % 2 === 0) ? 'even' : 'odd'} ${!(controller == index) ? ' ' : 'highlighted'}`} >
                   {Object.keys(fields).map(key => {

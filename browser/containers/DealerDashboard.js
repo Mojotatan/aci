@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import EditFields from '../components/EditFields'
 import Menu from './Menu'
 
-import {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, focusDealer} from '../store/dealer-reducer'
+import {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, sortDealers, focusDealer} from '../store/dealer-reducer'
 
 import axios from 'axios'
 
@@ -30,6 +30,7 @@ class DealerContainer extends React.Component {
     this.handleController = this.handleController.bind(this)
     this.handleCreate = this.handleCreate.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleSort = this.handleSort.bind(this)
   }
 
   handleChange(e) {
@@ -138,6 +139,12 @@ class DealerContainer extends React.Component {
     .catch(err => console.error(err))
   }
 
+  handleSort(e) {
+    // need to cancel any open forms b/c otherwise there are unintended side effects
+    if (this.props.focus) this.handleCancel()
+    this.props.sortDealers(e.target.id.split('-'))
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     else this.props.loadDealersThunk(this.props.token)
@@ -175,6 +182,9 @@ class DealerContainer extends React.Component {
           handleController={this.handleController}
           handleCreate={this.handleCreate}
           handleDelete={this.handleDelete}
+          handleSort={this.handleSort}
+          reverse={this.props.reverse}
+          sort={this.props.sort}
         />
       </div>
     )
@@ -185,10 +195,12 @@ const mapStateToProps = (state) => {
   return {
     token: state.login.token,
     dealers: state.dlr.dealers,
-    focus: state.dlr.focus
+    focus: state.dlr.focus,
+    sort: state.dlr.sort,
+    reverse: state.dlr.reverse
   }
 }
 
-const mapDispatchToProps = {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, focusDealer}
+const mapDispatchToProps = {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, sortDealers, focusDealer}
 
 export default connect(mapStateToProps, mapDispatchToProps)(DealerContainer)

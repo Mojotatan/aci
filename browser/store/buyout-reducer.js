@@ -15,7 +15,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_BYOS:
       newState.byos = action.byos
-      if (newState.sort) newState.byos.sort(sortBy(newState.sort))
+      if (newState.sort) newState.byos.sort(sortBy(newState.sort, newState.reverse))
       return newState
     case FOCUS_BYO:
       newState.focus = action.id

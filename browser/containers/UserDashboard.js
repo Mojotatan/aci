@@ -29,7 +29,7 @@ class UsersContainer extends React.Component {
 
   handleSort(e) {
     this.props.sortUsers(e.target.id.split('-'))
-    this.setState({sortingBy: e.target.id})
+    // this.setState({sortingBy: e.target.id})
   }
 
   componentWillMount() {

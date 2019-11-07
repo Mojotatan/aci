@@ -98,8 +98,7 @@ export const areArraysEqual = (a, b) => {
 
 export const cleanHeader = key => {
   let clean = key
-  clean = clean[0].toUpperCase() + clean.slice(1)
-  if (clean.slice(-4) === 'Name' && clean.length > 4) clean = clean.slice(0, -4) + ' ' + clean.slice(-4)
+  clean = clean.split('-').map(word => word[0].toUpperCase() + word.slice(1)).join(' ')
   return clean
 }
 

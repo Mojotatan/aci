@@ -31,7 +31,7 @@ class ApplicationsContainer extends React.Component {
 
   handleSort(e) {
     this.props.sortApps(e.target.id.split('-'))
-    this.setState({sortingBy: e.target.id})
+    // this.setState({sortingBy: e.target.id})
   }
 
   handleResubmit(e) {

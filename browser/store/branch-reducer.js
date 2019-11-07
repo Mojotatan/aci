@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+import {sortBy, areArraysEqual} from '../utility'
+
 // initial state
-const initialState = {branches: [], focus: null}
+const initialState = {branches: [], focus: null, sort: ['id'], reverse: false}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -9,6 +11,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_BRANCHES:
       newState.branches = action.branches
+      if (newState.sort) newState.branches.sort(sortBy(newState.sort, newState.reverse))
       return newState
     case FOCUS_BRANCH:
       newState.focus = action.index
@@ -17,6 +20,15 @@ const reducer = (prevState = initialState, action) => {
       newState.branches.push(action.branch)
       newState.focus = newState.branches.length - 1
       newState.branches[newState.focus].id = 'new'
+      return newState
+    case SORT_BRANCHES:
+      if (areArraysEqual(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse
+      } else {
+        newState.reverse = false
+        newState.sort = action.field
+      }
+      newState.branches.sort(sortBy(action.field, newState.reverse))
       return newState
     case FLUSH_BRANCHES:
       newState.branches = []
@@ -41,6 +53,12 @@ export const focusBranch = (index) => {
 const CREATE_BRANCH = 'CREATE_BRANCH'
 export const createBranch = (branch) => {
   return {type: CREATE_BRANCH, branch}
+}
+
+const SORT_BRANCHES = 'SORT_BRANCHES'
+export const sortBranches = (fieldArg) => {
+  let field = (typeof fieldArg === 'string') ? [fieldArg] : fieldArg
+  return {type: SORT_BRANCHES, field}
 }
 
 const FLUSH_BRANCHES = 'FLUSH_BRANCHES'
