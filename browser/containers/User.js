@@ -85,7 +85,7 @@ class UserContainer extends React.Component {
             usr.dealerId == this.state.dealerId && usr.id != this.state.id
             && peckingOrder(this.state, usr) && sameTeams(this.state, usr)
           )).sort((a, b) => {
-            if (a.fullName > b.fullName) return 1
+            if (a.fullName.toLowerCase() > b.fullName.toLowerCase()) return 1
             else return -1
           })}
           dealers={this.props.dealers}
