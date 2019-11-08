@@ -34,6 +34,10 @@ class UserContainer extends React.Component {
       this.setState({
         branchId: 0
       })
+    } else if (e.target.name === 'managerId' && e.target.value == '0') {
+      this.setState({
+        managerId: null
+      })
     }
   }
 
