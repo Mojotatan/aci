@@ -67,7 +67,7 @@ module.exports = require('express').Router()
     let message = {
       from: 'team@myadmindev.xyz',
       to: req.body.to,
-      cc: req.body.cc,
+      // cc: req.body.cc,
       // bcc: ['team@myadmincentral.com'],
       bcc: 'jbyrd@impactnetworking.com',
       subject: req.body.subject,
@@ -79,6 +79,12 @@ module.exports = require('express').Router()
         cid: 'logo'
       }]
     }
+    req.body.attachments.forEach(attachment => {
+      message.attachments.push({
+        filename: attachment.name,
+        path: path.resolve(__dirname, `../uploads/${attachment.id}/${attachment.name}`)
+      })
+    })
     mailTransporter.sendMail(message)
     .then(data => {
       res.send({accepted: true})

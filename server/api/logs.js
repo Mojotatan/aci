@@ -38,3 +38,28 @@ module.exports = require('express').Router()
     })
     .catch(err => console.error(err))
   })
+
+  .post('/new2', isLoggedIn, (req, res) => {
+    let me = whoAmI(req.body.token)
+    let now = new Date()
+    Log.destroy({
+      where: {
+        date: {
+          [Op.gt]: now
+        }
+      }
+    })
+    .then(success => { 
+      return Log.create({
+        date: req.body.date,
+        activity: req.body.activity,
+        adminId: me.id,
+        appId: req.body.app,
+        buyoutId: req.body.byo
+      })
+    })
+    .then(success => {
+      res.send('fishion accomplished')
+    })
+    .catch(err => console.error(err))
+  })

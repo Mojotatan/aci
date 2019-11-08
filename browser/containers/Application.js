@@ -317,6 +317,7 @@ class ApplicationContainer extends React.Component {
       // to: this.state.rep.email,
       to: 'tatan42@gmail.com',
       cc: this.state.mailCC.split(', '),
+      attachments: this.state.mailAttachments,
       subject: this.state.mailSubject,
       html: this.state.mailBody
     })
@@ -326,7 +327,7 @@ class ApplicationContainer extends React.Component {
       this.setState({mailDisabled: false})
       if (res.data.accepted) {
         this.props.throwAlert('green', 'Message sent')
-        this.setState({mailSubject: '', mailBody: '', mailCC: ''})
+        this.setState({mailSubject: '', mailBody: '', mailCC: '', mailAttachments: []})
       }
       else this.props.throwAlert('red', 'Message not sent')
       

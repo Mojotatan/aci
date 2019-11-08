@@ -250,7 +250,6 @@ class BuyoutContainer extends React.Component {
 
   // For Admin section
   handleNotify(e) {
-    // WARNING THIS IS OBSOLETE
     e.preventDefault()
 
     this.setState({mailDisabled: true})
@@ -262,6 +261,7 @@ class BuyoutContainer extends React.Component {
       to: this.state.rep.email,
       // to: 'tatan42@gmail.com',
       cc: this.state.mailCC.split(', '),
+      attachments: this.state.mailAttachments,
       subject: this.state.mailSubject,
       html: this.state.mailBody
     })
@@ -365,6 +365,7 @@ class BuyoutContainer extends React.Component {
   handleWorkbookNotify(e) {
     this.setState({
       adminMode: 'notifyByo',
+      calcTarget: Number(e.target.id.slice(6)),
       mailSubject: '',
       mailBody: '',
       mailAttachments: [],
@@ -373,7 +374,33 @@ class BuyoutContainer extends React.Component {
   }
 
   handleWorkbookNotifySend(e) {
+    e.preventDefault()
+    this.setState({mailDisabled: true})
 
+    axios.post('/api/mail', {
+      token: this.props.token,
+      // to: this.state.rep.email,
+      to: 'tatan42@gmail.com',
+      cc: this.state.mailCC.split(', '),
+      attachments: this.state.mailAttachments,
+      subject: this.state.mailSubject,
+      html: this.state.mailBody
+    })
+    .then(res => {
+      this.setState({mailDisabled: false})
+      if (res.data.accepted) {
+        this.props.throwAlert('green', 'Message sent')
+        this.setState({mailSubject: '', mailBody: '', mailCC: '', mailAttachments: []})
+      }
+      else this.props.throwAlert('red', 'Message not sent')
+
+      return axios.post('/api/logs/new2', {token: this.props.token, date: getDate(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} about lease ${this.state.leases[this.state.calcTarget].number}`, action: this.state.action, byo: this.state.id})
+      .then(res => {
+        this.props.loadByosThunk(this.props.token)
+        this.setState({adminMode: 'byo', calcTarget: null})
+      })
+      .catch(err => console.error(err))
+    })
   }
 
   handleAdminMode(e) {
@@ -391,7 +418,8 @@ class BuyoutContainer extends React.Component {
       })
     } else if (e.target.id === 'cancel-notify') {
       this.setState({
-        adminMode: 'byo'
+        adminMode: 'byo',
+        calcTarget: null
       })
     } else {
       let index = e.target.id.split('-')[1]
@@ -553,7 +581,7 @@ class BuyoutContainer extends React.Component {
 
 
   render() {
-    console.log('state', this.state)
+    // console.log('state', this.state)
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
 
