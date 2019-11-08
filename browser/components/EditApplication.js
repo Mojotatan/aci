@@ -37,7 +37,9 @@ export default ({
   handleSaveAndNotify,
   handleAdminMode,
   toggleAdminView,
-  toggleLightbox
+  toggleLightbox,
+  handleAddAttachment,
+  handleRemoveAttachment
 }) => (
   (admin && values.adminView) ?
   (
@@ -56,6 +58,8 @@ export default ({
     toggleAdminView={toggleAdminView}
     toggleLightbox={toggleLightbox}
     formatTerm={formatTerm}
+    handleAddAttachment={handleAddAttachment}
+    handleRemoveAttachment={handleRemoveAttachment}
   />
   )
   :

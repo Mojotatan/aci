@@ -20,6 +20,8 @@ class BuyoutContainer extends React.Component {
         mailBody: '',
         mailSubject: '',
         mailCC: '',
+        mailAttachments: [],
+        focusedAttachment: '',
         mailDisabled: false,
         adminMode: false,
         adminView: (this.props.user) ? this.props.user.level === 'Admin' : false,
@@ -56,6 +58,8 @@ class BuyoutContainer extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
 
     this.handleNotify = this.handleNotify.bind(this)
+    this.handleWorkbookNotify = this.handleWorkbookNotify.bind(this)
+    this.handleWorkbookNotifySend = this.handleWorkbookNotifySend.bind(this)
     
     this.handleNote = this.handleNote.bind(this)
     this.handleChangeAction = this.handleChangeAction.bind(this)
@@ -78,6 +82,9 @@ class BuyoutContainer extends React.Component {
     this.handleDeletePDF = this.handleDeletePDF.bind(this)
     this.handleChoosePDF = this.handleChoosePDF.bind(this)
     this.handleUploadPDF = this.handleUploadPDF.bind(this)
+
+    this.handleAddAttachment = this.handleAddAttachment.bind(this)
+    this.handleRemoveAttachment = this.handleRemoveAttachment.bind(this)
   }
 
   handleAppLink(e) {
@@ -243,6 +250,7 @@ class BuyoutContainer extends React.Component {
 
   // For Admin section
   handleNotify(e) {
+    // WARNING THIS IS OBSOLETE
     e.preventDefault()
 
     this.setState({mailDisabled: true})
@@ -263,7 +271,7 @@ class BuyoutContainer extends React.Component {
       this.setState({mailDisabled: false})
       if (res.data.accepted) {
         this.props.throwAlert('green', 'Message sent')
-        this.setState({mailSubject: '', mailBody: '', mailCC: ''})
+        this.setState({mailSubject: '', mailBody: '', mailCC: '', mailAttachments: []})
       }
       else this.props.throwAlert('red', 'Message not sent')
       
@@ -344,7 +352,8 @@ class BuyoutContainer extends React.Component {
         expiryTemp: res.data,
         adminMode: 'notify',
         mailSubject: soonToBeSubject,
-        mailBody: soonToBeBody
+        mailBody: soonToBeBody,
+        mailAttachments: []
       })
     })
     .catch(err => {
@@ -353,11 +362,25 @@ class BuyoutContainer extends React.Component {
     })
   }
 
+  handleWorkbookNotify(e) {
+    this.setState({
+      adminMode: 'notifyByo',
+      mailSubject: '',
+      mailBody: '',
+      mailAttachments: [],
+      mailCC: (this.state.rep.manager) ? this.state.rep.manager.email : ''
+    })
+  }
+
+  handleWorkbookNotifySend(e) {
+
+  }
+
   handleAdminMode(e) {
     // console.log('trigger', e.target.id)
     if (e.target.id === 'cancel-button' || e.target.id === 'cancel') {
       this.setState({adminMode: false})
-    } else if (e.target.id === 'submit-button' || e.target.id === 'app-button'){
+    } else if (e.target.id === 'submit-button' || e.target.id === 'app-button') {
       this.setState({
         adminMode: 'action',
         action: {
@@ -365,6 +388,10 @@ class BuyoutContainer extends React.Component {
           date: getDate(),
           buyoutId: this.state.id
         }
+      })
+    } else if (e.target.id === 'cancel-notify') {
+      this.setState({
+        adminMode: 'byo'
       })
     } else {
       let index = e.target.id.split('-')[1]
@@ -469,6 +496,25 @@ class BuyoutContainer extends React.Component {
     }
   }
 
+  handleAddAttachment(e) {
+    e.preventDefault()
+    let attachments = this.state.mailAttachments
+    attachments.push(this.state.pdfs[Number(this.state.focusedAttachment)])
+    this.setState({
+      focusedAttachment: '',
+      mailAttachments: attachments
+    })
+  }
+
+  handleRemoveAttachment(e) {
+    e.preventDefault()
+    let attachments = this.state.mailAttachments
+    attachments = [...attachments.slice(0, Number(e.target.id)), ...attachments.slice(Number(e.target.id) + 1)]
+    this.setState({
+      mailAttachments: attachments
+    })
+  }
+
 
   componentWillReceiveProps(newProps){
     // console.log('component receiving props')
@@ -507,7 +553,7 @@ class BuyoutContainer extends React.Component {
 
 
   render() {
-    // console.log('state', this.state.pdfs)
+    console.log('state', this.state)
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
 
@@ -539,6 +585,8 @@ class BuyoutContainer extends React.Component {
           handleChangeInMachine={this.handleChangeInMachine}
           handleRemoveMachine={this.handleRemoveMachine}
           handleNotify={this.handleNotify}
+          handleWorkbookNotify={this.handleWorkbookNotify}
+          handleWorkbookNotifySend={this.handleWorkbookNotifySend}
           handleNote={this.handleNote}
           handleChangeAction={this.handleChangeAction}
           handleActionDelete={this.handleActionDelete}
@@ -556,6 +604,8 @@ class BuyoutContainer extends React.Component {
           handleDeletePDF={this.handleDeletePDF}
           handleChoosePDF={this.handleChoosePDF}
           handleUploadPDF={this.handleUploadPDF}
+          handleAddAttachment={this.handleAddAttachment}
+          handleRemoveAttachment={this.handleRemoveAttachment}
         />
       </div>
     )

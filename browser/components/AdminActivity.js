@@ -15,6 +15,8 @@ export default ({
   handleSave,
   handleNote,
   handleNotify,
+  handleWorkbookNotify,
+  handleWorkbookNotifySend,
   handleAdminMode,
   handleActionDelete,
   handleSaveAction,
@@ -35,7 +37,9 @@ export default ({
   handleChangeInPDFNote,
   handleDeletePDF,
   handleChoosePDF,
-  handleUploadPDF
+  handleUploadPDF,
+  handleAddAttachment,
+  handleRemoveAttachment
 }) => (
   <div className="row edit-apps-page admin">
 
@@ -212,6 +216,7 @@ export default ({
                     <div className="leaseCompany">Lease Company</div>
                     <div className="quote">Quote</div>
                     <div className="calcs"></div>
+                    <div className="letEmKnow"></div>
                   </div>
                 </div>
                 {(values.leases && values.leases.length > 0) ?
@@ -222,6 +227,7 @@ export default ({
                         <div className="leaseCompany">{lease.company}</div>
                         <div className="quote">{lease.quote}</div>
                         <div id={`lease-${index}`} className="calcs" onClick={toggleCalcView}>Calculations</div>
+                        <div id={`lease-${index}`} className="letEmKnow" onClick={handleWorkbookNotify}>Notify</div>
                       </div>
                     </div>
                   ))
@@ -467,6 +473,27 @@ export default ({
               handleChange={handleChange}
               handleNotify={handleNotify}
               handleAdminMode={handleAdminMode}
+              cancelProtocol={`edit-${values.action.index}`}
+              handleAddAttachment={handleAddAttachment}
+              handleRemoveAttachment={handleRemoveAttachment}
+              />
+            </div>
+          </div>
+          : null
+        }
+
+        {(values.adminMode === 'notifyByo') ?
+          <div className="notify lightbox">
+            <div id='cancel-notify' className="shadowbox" onClick={handleAdminMode}></div>
+            <div className="container">
+              <NotifyRep
+              values={values}
+              handleChange={handleChange}
+              handleNotify={handleWorkbookNotifySend}
+              handleAdminMode={handleAdminMode}
+              cancelProtocol='cancel-notify'
+              handleAddAttachment={handleAddAttachment}
+              handleRemoveAttachment={handleRemoveAttachment}
               />
             </div>
           </div>
@@ -544,33 +571,30 @@ export default ({
 
 
         {/* log */}
-        {(mode === 'app') ?
-          <div className="row app-bg log">
-            <div className="col-sm-12">
-              <h3>Activity Log</h3>
-            </div>
-            {(values.logs) ?
-              <div className="col-sm-12">
-                {values.logs.map((log, index) => (
-                  <div key={log.id} className="log-entry">
-                    <div>
-                      {log.activity.split('<b>').map((words, index) => {
-                        if (index !== 1) {
-                          return (<span key={index}>{words}</span>)
-                        } else {
-                          return (<strong key={index}>{words}</strong>)
-                        }
-                      })}
-                    </div>
-                    <div className="log-date">{reformatDate(log.date)}</div>
-                  </div>
-                ))}
-              </div>
-              : null
-            }
+        <div className="row app-bg log">
+          <div className="col-sm-12">
+            <h3>Activity Log</h3>
           </div>
-          : null
-        }
+          {(values.logs) ?
+            <div className="col-sm-12">
+              {values.logs.map((log, index) => (
+                <div key={log.id} className="log-entry">
+                  <div>
+                    {log.activity.split('<b>').map((words, index) => {
+                      if (index !== 1) {
+                        return (<span key={index}>{words}</span>)
+                      } else {
+                        return (<strong key={index}>{words}</strong>)
+                      }
+                    })}
+                  </div>
+                  <div className="log-date">{reformatDate(log.date)}</div>
+                </div>
+              ))}
+            </div>
+            : null
+          }
+        </div>
 
       </div>
     }
