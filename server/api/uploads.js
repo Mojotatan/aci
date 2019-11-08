@@ -21,8 +21,55 @@ module.exports = require('express').Router()
     if (!me) res.send('Please log in')
     if (me.level !== 'Admin') res.send('Admin access required')
     if (me && me.level === 'Admin') {
-
       Upload.create({buyoutId: Number(req.params.id)}, {returning: true})
+      .then(newUpload => {
+        fs.mkdirSync(path.resolve(__dirname, `../uploads/${newUpload.id}`))
+        let form = new formidable.IncomingForm()
+        form.uploadDir = path.resolve(__dirname, `../uploads/${newUpload.id}`)
+        form.parse(req, (err, fields, files) => {
+          let oldPath = files.file.path
+          // console.log('fields', fields)
+          // console.log('files', files)
+          let newPath = path.resolve(__dirname, `../uploads/${newUpload.id}/${files.file.name}`)
+          fs.rename(oldPath, newPath, err => {
+            if (err) res.send({color: 'red', message: 'Something went wrong with the upload'})
+            else {
+              let fileName = newPath.split('/').pop()
+              Upload.update({
+                name: fileName,
+                notes: fields.note
+              }, {
+                where: {
+                  id: {
+                    [Op.eq]: newUpload.id
+                  }
+                },
+                returning: true
+              })
+              .then(() => {
+                res.send({color: 'green', message: 'File uploaded successfully'})
+              })
+              .catch(err => {
+                console.error(err)
+                res.send({color: 'red', message: 'Something went wrong with the database'})
+              })
+            }
+          })
+        })
+      })
+      .catch(err => {
+        console.error(err)
+        res.send({color: 'red', message: 'Something went wrong with the database'})
+      })
+    }
+  })
+
+  .post('/app/:id', /*isLoggedIn, isAdmin,*/ (req, res) => {
+    let me = whoAmI(req.query.access_token)
+    if (!me) res.send('Please log in')
+    if (me.level !== 'Admin') res.send('Admin access required')
+    if (me && me.level === 'Admin') {
+      Upload.create({appId: Number(req.params.id)}, {returning: true})
       .then(newUpload => {
         fs.mkdirSync(path.resolve(__dirname, `../uploads/${newUpload.id}`))
         let form = new formidable.IncomingForm()

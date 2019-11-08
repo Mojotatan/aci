@@ -97,6 +97,8 @@ export const loadAppsThunk = (token, callback) => {
         app.logs = res.data.logs[index].filter(log => {
           return (log.date <= getDate())
         })
+
+        app.pdfs = res.data.pdfs[index]
       })
       dispatch(loadApps(res.data.apps))
       // dispatch(loadLeases(leases))

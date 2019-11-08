@@ -70,6 +70,7 @@ let {User, Dealer, Region, Branch, Application, Action, Log, Guarantee, Customer
   // Machine.belongsTo(Lease, {as: 'lease'})
 
   Upload.belongsTo(Buyout, {as: 'buyout'})
+  Upload.belongsTo(Application, {as: 'app'})
 
 
 

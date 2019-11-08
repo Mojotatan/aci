@@ -8,6 +8,7 @@ export default ({
   errors,
   iAmAuthor,
   admin,
+  token,
   customers,
   leases,
   count,
@@ -38,6 +39,10 @@ export default ({
   handleAdminMode,
   toggleAdminView,
   toggleLightbox,
+  handleChangeInPDFNote,
+  handleDeletePDF,
+  handleChoosePDF,
+  handleUploadPDF,
   handleAddAttachment,
   handleRemoveAttachment
 }) => (
@@ -46,6 +51,7 @@ export default ({
   <AdminActivity
     mode={'app'}
     values={values}
+    token={token}
     count={count}
     handleChange={handleChange}
     handleNote={handleNote}
@@ -58,6 +64,10 @@ export default ({
     toggleAdminView={toggleAdminView}
     toggleLightbox={toggleLightbox}
     formatTerm={formatTerm}
+    handleChangeInPDFNote={handleChangeInPDFNote}
+    handleDeletePDF={handleDeletePDF}
+    handleChoosePDF={handleChoosePDF}
+    handleUploadPDF={handleUploadPDF}
     handleAddAttachment={handleAddAttachment}
     handleRemoveAttachment={handleRemoveAttachment}
   />

@@ -1,7 +1,7 @@
 const Op = require('sequelize').Op
 const formidable = require('formidable')
 
-const {User, Application, Customer, Lease, Machine, Action, Log} = require('../db').db.models
+const {User, Application, Customer, Lease, Machine, Action, Log, Upload} = require('../db').db.models
 const {isLoggedIn, whoAmI, isAdmin} = require('./auth')
 
 module.exports = require('express').Router()
@@ -29,7 +29,7 @@ module.exports = require('express').Router()
   .post('/', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     // defining variables here for scope purposes
-    let appsToReturn, leasesToReturn, actionsToReturn
+    let appsToReturn, leasesToReturn, actionsToReturn, pdfsToReturn
 
     let usr
     if (me.level === 'Admin') {
@@ -136,6 +136,18 @@ module.exports = require('express').Router()
     .then(appActions => {
       actionsToReturn = appActions
       return Promise.all(appsToReturn.map(app => {
+        return Upload.findAll({
+          where: {
+            appId: {
+              [Op.eq]: app.id
+            }
+          }
+        })
+      }))
+    })
+    .then(appPdfs => {
+      pdfsToReturn = appPdfs
+      return Promise.all(appsToReturn.map(app => {
         return Log.findAll({
           where: {
             appId: {
@@ -152,6 +164,7 @@ module.exports = require('express').Router()
         apps: appsToReturn,
         leases: leasesToReturn,
         actions: actionsToReturn,
+        pdfs: pdfsToReturn,
         logs: appLogs
       })
     })
