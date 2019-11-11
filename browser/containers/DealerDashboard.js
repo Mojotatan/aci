@@ -75,7 +75,6 @@ class DealerContainer extends React.Component {
         zip: this.state.zip
       }, callback)
     } else {
-      this.setState({create: false})
       this.props.saveDealerThunk(this.props.token, {
         id: this.props.dealers[this.props.focus].id,
         name: this.state.name,
@@ -86,6 +85,7 @@ class DealerContainer extends React.Component {
         zip: this.state.zip
       }, callback)
     }
+    this.setState({create: false})
   }
 
   handleCancel(e) {

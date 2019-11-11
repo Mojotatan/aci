@@ -42,13 +42,13 @@ class RegionContainer extends React.Component {
         dealerName: this.state.dealerName
       })
     } else {
-      this.setState({create: false})
       this.props.saveRegionThunk(this.props.token, {
         id: this.props.regions[this.props.focus].id,
         name: this.state.name,
         dealerName: this.state.dealerName
       })
     }
+    this.setState({create: false})
   }
 
   handleCancel(e) {

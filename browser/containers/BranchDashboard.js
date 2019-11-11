@@ -54,7 +54,6 @@ class BranchContainer extends React.Component {
         regionName: this.state.regionName
       })
     } else {
-      this.setState({create: false})
       this.props.saveBranchThunk(this.props.token, {
         id: this.props.branches[this.props.focus].id,
         name: this.state.name,
@@ -67,6 +66,7 @@ class BranchContainer extends React.Component {
         regionName: this.state.regionName
       })
     }
+    this.setState({create: false})
   }
 
   handleCancel(e) {
