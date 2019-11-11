@@ -128,7 +128,7 @@ export default ({uniClass, controller, fields, dropdowns, uploads, rows, handleC
     })}
     {(!controller) ?
       <button onClick={handleCreate} className="new-button">New</button>
-      : null
+      : <div className="bottom-guard"></div>
     }
   </div>
 )
