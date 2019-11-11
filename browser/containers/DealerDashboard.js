@@ -34,10 +34,10 @@ class DealerContainer extends React.Component {
   }
 
   handleChange(e) {
-    // let [index, field] = e.target.name.split('-')
-
+    let name = e.target.name.split('-')
+    if (name.length > 2) name[2] = name[2][0].toUpperCase() + name[2].slice(1)
     this.setState({
-      [e.target.name.split('-')[1]]: e.target.value
+      [name.slice(1).join('')]: e.target.value
     })
   }
 
