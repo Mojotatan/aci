@@ -8,7 +8,8 @@ import {saveByoThunk, loadByosThunk, deleteByoThunk} from '../store/buyout-reduc
 import {focusApp} from '../store/app-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
-import {getDate, reformatDate} from '../utility'
+import {getDate, reformatDate, product, round} from '../utility'
+import {getPdf} from '../pdf'
 
 class BuyoutContainer extends React.Component {
   constructor(props) {
@@ -19,6 +20,8 @@ class BuyoutContainer extends React.Component {
         mailBody: '',
         mailSubject: '',
         mailCC: '',
+        mailAttachments: [],
+        focusedAttachment: '',
         mailDisabled: false,
         adminMode: false,
         adminView: (this.props.user) ? this.props.user.level === 'Admin' : false,
@@ -27,12 +30,7 @@ class BuyoutContainer extends React.Component {
         expiryTemp: '',
         upload: null,
         note: '',
-        calcs: {
-          percentage: '25',
-          taxRate: '9',
-          // leaseCompany: this.props.byo.leaseCompany,
-          // lease
-        }
+        calcTarget: null
       },
       this.props.byo,
     )
@@ -60,6 +58,8 @@ class BuyoutContainer extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
 
     this.handleNotify = this.handleNotify.bind(this)
+    this.handleWorkbookNotify = this.handleWorkbookNotify.bind(this)
+    this.handleWorkbookNotifySend = this.handleWorkbookNotifySend.bind(this)
     
     this.handleNote = this.handleNote.bind(this)
     this.handleChangeAction = this.handleChangeAction.bind(this)
@@ -74,11 +74,17 @@ class BuyoutContainer extends React.Component {
 
     this.toggleCalcView = this.toggleCalcView.bind(this)
     this.handleCalcs = this.handleCalcs.bind(this)
+    this.handleCascade = this.handleCascade.bind(this)
+    this.handleTaxes = this.handleTaxes.bind(this)
+    this.generatePdf = this.generatePdf.bind(this)
 
     this.handleChangeInPDFNote = this.handleChangeInPDFNote.bind(this)
     this.handleDeletePDF = this.handleDeletePDF.bind(this)
     this.handleChoosePDF = this.handleChoosePDF.bind(this)
     this.handleUploadPDF = this.handleUploadPDF.bind(this)
+
+    this.handleAddAttachment = this.handleAddAttachment.bind(this)
+    this.handleRemoveAttachment = this.handleRemoveAttachment.bind(this)
   }
 
   handleAppLink(e) {
@@ -228,6 +234,7 @@ class BuyoutContainer extends React.Component {
       make: '',
       model: '', 
       location: '',
+      action: 'Release',
       LeaseId: leases[index].id
     })
     this.setState({'leases': leases})
@@ -254,6 +261,7 @@ class BuyoutContainer extends React.Component {
       to: this.state.rep.email,
       // to: 'tatan42@gmail.com',
       cc: this.state.mailCC.split(', '),
+      attachments: this.state.mailAttachments,
       subject: this.state.mailSubject,
       html: this.state.mailBody
     })
@@ -263,7 +271,7 @@ class BuyoutContainer extends React.Component {
       this.setState({mailDisabled: false})
       if (res.data.accepted) {
         this.props.throwAlert('green', 'Message sent')
-        this.setState({mailSubject: '', mailBody: '', mailCC: ''})
+        this.setState({mailSubject: '', mailBody: '', mailCC: '', mailAttachments: []})
       }
       else this.props.throwAlert('red', 'Message not sent')
       
@@ -344,7 +352,8 @@ class BuyoutContainer extends React.Component {
         expiryTemp: res.data,
         adminMode: 'notify',
         mailSubject: soonToBeSubject,
-        mailBody: soonToBeBody
+        mailBody: soonToBeBody,
+        mailAttachments: []
       })
     })
     .catch(err => {
@@ -353,11 +362,52 @@ class BuyoutContainer extends React.Component {
     })
   }
 
+  handleWorkbookNotify(e) {
+    this.setState({
+      adminMode: 'notifyByo',
+      calcTarget: Number(e.target.id.slice(6)),
+      mailSubject: '',
+      mailBody: '',
+      mailAttachments: [],
+      mailCC: (this.state.rep.manager) ? this.state.rep.manager.email : ''
+    })
+  }
+
+  handleWorkbookNotifySend(e) {
+    e.preventDefault()
+    this.setState({mailDisabled: true})
+
+    axios.post('/api/mail', {
+      token: this.props.token,
+      // to: this.state.rep.email,
+      to: 'tatan42@gmail.com',
+      cc: this.state.mailCC.split(', '),
+      attachments: this.state.mailAttachments,
+      subject: this.state.mailSubject,
+      html: this.state.mailBody
+    })
+    .then(res => {
+      this.setState({mailDisabled: false})
+      if (res.data.accepted) {
+        this.props.throwAlert('green', 'Message sent')
+        this.setState({mailSubject: '', mailBody: '', mailCC: '', mailAttachments: []})
+      }
+      else this.props.throwAlert('red', 'Message not sent')
+
+      return axios.post('/api/logs/new2', {token: this.props.token, date: getDate(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} about lease ${this.state.leases[this.state.calcTarget].number}`, action: this.state.action, byo: this.state.id})
+      .then(res => {
+        this.props.loadByosThunk(this.props.token)
+        this.setState({adminMode: 'byo', calcTarget: null})
+      })
+      .catch(err => console.error(err))
+    })
+  }
+
   handleAdminMode(e) {
     // console.log('trigger', e.target.id)
     if (e.target.id === 'cancel-button' || e.target.id === 'cancel') {
       this.setState({adminMode: false})
-    } else if (e.target.id === 'submit-button' || e.target.id === 'app-button'){
+    } else if (e.target.id === 'submit-button' || e.target.id === 'app-button') {
       this.setState({
         adminMode: 'action',
         action: {
@@ -365,6 +415,11 @@ class BuyoutContainer extends React.Component {
           date: getDate(),
           buyoutId: this.state.id
         }
+      })
+    } else if (e.target.id === 'cancel-notify') {
+      this.setState({
+        adminMode: 'byo',
+        calcTarget: null
       })
     } else {
       let index = e.target.id.split('-')[1]
@@ -389,15 +444,45 @@ class BuyoutContainer extends React.Component {
 
   toggleCalcView(e) {
     e.preventDefault()
+    let currentView = this.state.calcView
     this.setState({
-      calcView: !this.state.calcView
+      calcTarget: (currentView) ? false : Number(e.target.id.slice(6)),
+      calcView: !currentView
     })
+    if (!currentView) {
+      this.props.loadByosThunk(this.props.token)
+    }
   }
 
   handleCalcs(e) {
-    let calcs = Object.assign({}, this.state.calcs)
-    calcs[e.target.name] = e.target.value
-    this.setState({'calcs': calcs})
+    let leases = Array.from(this.state.leases)
+    leases[this.state.calcTarget].workbook[e.target.name] = e.target.value
+    this.setState({'leases': leases})
+  }
+
+  handleCascade(e) {
+    let name = e.target.name
+    let leases = Array.from(this.state.leases)
+    leases[this.state.calcTarget].workbook[name] = e.target.value
+    leases[this.state.calcTarget].workbook[name + 'Upfront'] = round(product(e.target.value, leases[this.state.calcTarget].workbook.upfrontTax / 100))
+    leases[this.state.calcTarget].workbook[name + 'Monthly'] = round(product(e.target.value, leases[this.state.calcTarget].workbook.monthlyTax / 100))
+    this.setState({'leases': leases})
+  }
+
+  handleTaxes(e) {
+    let type = (e.target.name === 'upfrontTax') ? 'Upfront' : 'Monthly'
+    let leases = Array.from(this.state.leases)
+    leases[this.state.calcTarget].workbook[e.target.name] = e.target.value
+    leases[this.state.calcTarget].workbook['currentEquipmentPayment' + type] = round(product(leases[this.state.calcTarget].workbook.currentEquipmentPayment, e.target.value / 100))
+    leases[this.state.calcTarget].workbook['currentServicePayment' + type] = round(product(leases[this.state.calcTarget].workbook.currentServicePayment, e.target.value / 100))
+    leases[this.state.calcTarget].workbook['fuelFreight' + type] = round(product(leases[this.state.calcTarget].workbook.fuelFreight, e.target.value / 100))
+    leases[this.state.calcTarget].workbook['lateCharges' + type] = round(product(leases[this.state.calcTarget].workbook.lateCharges, e.target.value / 100))
+    leases[this.state.calcTarget].workbook['miscItems' + type] = round(product(leases[this.state.calcTarget].workbook.miscItems, e.target.value / 100))
+    this.setState({'leases': leases})
+  }
+
+  generatePdf() {
+    getPdf(this.state)
   }
 
 
@@ -439,6 +524,25 @@ class BuyoutContainer extends React.Component {
     }
   }
 
+  handleAddAttachment(e) {
+    e.preventDefault()
+    let attachments = this.state.mailAttachments
+    attachments.push(this.state.pdfs[Number(this.state.focusedAttachment)])
+    this.setState({
+      focusedAttachment: '',
+      mailAttachments: attachments
+    })
+  }
+
+  handleRemoveAttachment(e) {
+    e.preventDefault()
+    let attachments = this.state.mailAttachments
+    attachments = [...attachments.slice(0, Number(e.target.id)), ...attachments.slice(Number(e.target.id) + 1)]
+    this.setState({
+      mailAttachments: attachments
+    })
+  }
+
 
   componentWillReceiveProps(newProps){
     // console.log('component receiving props')
@@ -477,7 +581,7 @@ class BuyoutContainer extends React.Component {
 
 
   render() {
-    // console.log('state', this.state.pdfs)
+    // console.log('state', this.state)
     let errors = this.validateFields()
     let disabled = Object.keys(errors).some(n => errors[n])
 
@@ -509,6 +613,8 @@ class BuyoutContainer extends React.Component {
           handleChangeInMachine={this.handleChangeInMachine}
           handleRemoveMachine={this.handleRemoveMachine}
           handleNotify={this.handleNotify}
+          handleWorkbookNotify={this.handleWorkbookNotify}
+          handleWorkbookNotifySend={this.handleWorkbookNotifySend}
           handleNote={this.handleNote}
           handleChangeAction={this.handleChangeAction}
           handleActionDelete={this.handleActionDelete}
@@ -519,10 +625,15 @@ class BuyoutContainer extends React.Component {
           toggleLightbox={this.toggleLightbox}
           toggleCalcView={this.toggleCalcView}
           handleCalcs={this.handleCalcs}
+          handleCascade={this.handleCascade}
+          handleTaxes={this.handleTaxes}
+          generatePdf={this.generatePdf}
           handleChangeInPDFNote={this.handleChangeInPDFNote}
           handleDeletePDF={this.handleDeletePDF}
           handleChoosePDF={this.handleChoosePDF}
           handleUploadPDF={this.handleUploadPDF}
+          handleAddAttachment={this.handleAddAttachment}
+          handleRemoveAttachment={this.handleRemoveAttachment}
         />
       </div>
     )

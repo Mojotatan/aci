@@ -72,8 +72,8 @@
 
 var global = __webpack_require__(3);
 var core = __webpack_require__(30);
-var hide = __webpack_require__(17);
-var redefine = __webpack_require__(18);
+var hide = __webpack_require__(18);
+var redefine = __webpack_require__(19);
 var ctx = __webpack_require__(27);
 var PROTOTYPE = 'prototype';
 
@@ -534,13 +534,180 @@ module.exports = warning;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var getDate = exports.getDate = function getDate() {
+  var now = new Date();
+  var obj = {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    day: now.getDate()
+  };
+  if (obj.month.toString().length === 1) obj.month = '0' + obj.month;
+  if (obj.day.toString().length === 1) obj.day = '0' + obj.day;
+  return obj.year + '-' + obj.month + '-' + obj.day;
+};
+
+var getPrettyDate = exports.getPrettyDate = function getPrettyDate() {
+  var now = new Date();
+  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var obj = {
+    year: now.getFullYear(),
+    month: months[now.getMonth()],
+    date: now.getDate(),
+    day: days[now.getDay()]
+  };
+  return obj.day + ', ' + obj.month + ' ' + obj.date + ', ' + obj.year;
+};
+
+var reformatDate = exports.reformatDate = function reformatDate(date) {
+  if (!date) return '';
+  // expecting date in form of 'YYYY-MM-DD'
+  else if (date.length !== 10) return date; // prevent repeated reformattings
+  var dateArr = date.split('-');
+  return dateArr[1] + '/' + dateArr[2] + '/' + dateArr[0].slice(2); // returns 'MM/DD/YY'
+};
+
+var deformatDate = exports.deformatDate = function deformatDate(date) {
+  if (!date) return '';
+  // expecting date in form of 'MM-DD-YY'
+  var dateArr = date.split('-');
+  return '20' + dateArr[2] + '-' + dateArr[0] + '-' + dateArr[1]; // returns 'YYYY-MM-DD
+};
+
+var getPrettyNumber = exports.getPrettyNumber = function getPrettyNumber(num, prefix) {
+  if (!num && num != 0) return num;
+  var str = String(num);
+  var arr = str.split('.');
+  arr[0] = arr[0].split('');
+  arr[0] = arr[0].map(function (char, index) {
+    return index !== arr[0].length - 1 && (arr[0].length - index) % 3 === 1 ? char + ',' : char;
+  }).join('');
+  return prefix ? prefix + arr.join('.') : arr.join('.');
+};
+
+var checkFor$ = exports.checkFor$ = function checkFor$(num) {
+  if (typeof num === 'string') {
+    var str = num.split('');
+    str = str.filter(function (char) {
+      return char !== '$' && char !== ',';
+    }).join('');
+    return Number(str);
+  } else return num;
+};
+
+var sortBy = exports.sortBy = function sortBy(field, reverse) {
+  var reverseConstant = reverse ? -1 : 1;
+  return function (a, b) {
+    // handle cases where a field is empty
+    if (!match(field, a) && !match(field, b)) return (a.id - b.id) * reverseConstant;
+    if (!match(field, b)) return -1 * reverseConstant;
+    if (!match(field, a)) return 1 * reverseConstant;
+
+    // sort based on field array
+    if (handleCase(match(field, a)) > handleCase(match(field, b))) return 1 * reverseConstant;
+    if (handleCase(match(field, a)) < handleCase(match(field, b))) return -1 * reverseConstant;
+
+    // tiebreaker
+    return (a.id - b.id) * reverseConstant;
+  };
+};
+
+var handleCase = function handleCase(variable) {
+  return typeof variable === 'string' ? variable.toLowerCase() : variable;
+};
+
+var match = exports.match = function match(arr, obj) {
+  if (!obj) return '';else if (arr.length === 1) return obj[arr[0]];else return match(arr.slice(1), obj[arr[0]]);
+};
+
+// check if two one-dimensional arrays are equal
+var areArraysEqual = exports.areArraysEqual = function areArraysEqual(a, b) {
+  if (a.length !== b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+};
+
+var cleanHeader = exports.cleanHeader = function cleanHeader(key) {
+  var clean = key;
+  clean = clean.split('-').map(function (word) {
+    return word[0].toUpperCase() + word.slice(1);
+  }).join(' ');
+  return clean;
+};
+
+// Password must consist of at least 8 characters with at least 1 letter and 1 number
+
+var pwCheck = exports.pwCheck = function pwCheck(pw) {
+  if (typeof pw !== 'string') return false;
+  if (pw.length < 8) return false;
+  var checkChars = { letters: 0, numbers: 0 };
+  var notAllowed = ['@$\.,/'];
+  pw.split('').forEach(function (char) {
+    if (notAllowed.includes(char)) return false;else if (Number(char) || Number(char) === 0) checkChars.numbers++;else checkChars.letters++;
+  });
+  if (checkChars.letters > 0 && checkChars.numbers > 0) return true;else return false;
+};
+
+// Functions for Buyout Calculations
+var sum = exports.sum = function sum() {
+  for (var _len = arguments.length, targs = Array(_len), _key = 0; _key < _len; _key++) {
+    targs[_key] = arguments[_key];
+  }
+
+  var val = 0;
+  targs.forEach(function (n) {
+    return val += checkFor$(n) || 0;
+  });
+  return monify(val);
+};
+
+var product = exports.product = function product() {
+  for (var _len2 = arguments.length, targs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    targs[_key2] = arguments[_key2];
+  }
+
+  var val = 0;
+  targs.forEach(function (n, index) {
+    if (index === 0) val = checkFor$(n) || 0;else val *= checkFor$(n) || 0;
+  });
+  return String(val);
+};
+
+var round = exports.round = function round(n) {
+  return monify(Math.round(checkFor$(n) * 100) / 100);
+};
+
+var monify = exports.monify = function monify(n, fallback) {
+  if (!n && fallback) return fallback;
+  var str = String(n);
+  var arr = str.split('.');
+  arr[0] = arr[0].split('');
+  arr[0] = arr[0].map(function (char, index) {
+    return index !== arr[0].length - 1 && (arr[0].length - index) % 3 === 1 ? char + ',' : char;
+  }).join('');
+  if (arr.length === 1) arr.push('00');else if (arr[1].length === 1) arr[1] += '0';else if (arr[1].length === 0) arr[1] = '00';
+  return arr.join('.');
+};
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 module.exports = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -574,7 +741,7 @@ if (process.env.NODE_ENV !== 'production') {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -586,7 +753,7 @@ module.exports = function (it, key) {
 };
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -602,15 +769,15 @@ module.exports = __webpack_require__(8) ? function (object, key, value) {
 };
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var global = __webpack_require__(3);
-var hide = __webpack_require__(17);
-var has = __webpack_require__(16);
+var hide = __webpack_require__(18);
+var has = __webpack_require__(17);
 var SRC = __webpack_require__(44)('src');
 var TO_STRING = 'toString';
 var $toString = Function[TO_STRING];
@@ -641,7 +808,7 @@ __webpack_require__(30).inspectSource = function (it) {
 });
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -668,7 +835,7 @@ module.exports = function (NAME, exec) {
 };
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -699,7 +866,7 @@ exports.connectAdvanced = _connectAdvanced2.default;
 exports.connect = _connect2.default;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -713,7 +880,7 @@ module.exports = function (it) {
 };
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -721,9 +888,9 @@ module.exports = function (it) {
 
 var pIE = __webpack_require__(60);
 var createDesc = __webpack_require__(43);
-var toIObject = __webpack_require__(21);
+var toIObject = __webpack_require__(22);
 var toPrimitive = __webpack_require__(31);
-var has = __webpack_require__(16);
+var has = __webpack_require__(17);
 var IE8_DOM_DEFINE = __webpack_require__(132);
 var gOPD = Object.getOwnPropertyDescriptor;
 
@@ -737,14 +904,14 @@ exports.f = __webpack_require__(8) ? gOPD : function getOwnPropertyDescriptor(O,
 };
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__(16);
+var has = __webpack_require__(17);
 var toObject = __webpack_require__(11);
 var IE_PROTO = __webpack_require__(91)('IE_PROTO');
 var ObjectProto = Object.prototype;
@@ -758,7 +925,7 @@ module.exports = Object.getPrototypeOf || function (O) {
 };
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -813,7 +980,7 @@ module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1121,163 +1288,6 @@ module.exports = {
 };
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var getDate = exports.getDate = function getDate() {
-  var now = new Date();
-  var obj = {
-    year: now.getFullYear(),
-    month: now.getMonth() + 1,
-    day: now.getDate()
-  };
-  if (obj.month.toString().length === 1) obj.month = '0' + obj.month;
-  if (obj.day.toString().length === 1) obj.day = '0' + obj.day;
-  return obj.year + '-' + obj.month + '-' + obj.day;
-};
-
-var getPrettyDate = exports.getPrettyDate = function getPrettyDate() {
-  var now = new Date();
-  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  var obj = {
-    year: now.getFullYear(),
-    month: months[now.getMonth()],
-    date: now.getDate(),
-    day: days[now.getDay()]
-  };
-  return obj.day + ', ' + obj.month + ' ' + obj.date + ', ' + obj.year;
-};
-
-var reformatDate = exports.reformatDate = function reformatDate(date) {
-  if (!date) return '';
-  // expecting date in form of 'YYYY-MM-DD'
-  else if (date.length !== 10) return date; // prevent repeated reformattings
-  var dateArr = date.split('-');
-  return dateArr[1] + '/' + dateArr[2] + '/' + dateArr[0].slice(2); // returns 'MM/DD/YY'
-};
-
-var deformatDate = exports.deformatDate = function deformatDate(date) {
-  if (!date) return '';
-  // expecting date in form of 'MM-DD-YY'
-  var dateArr = date.split('-');
-  return '20' + dateArr[2] + '-' + dateArr[0] + '-' + dateArr[1]; // returns 'YYYY-MM-DD
-};
-
-var getPrettyNumber = exports.getPrettyNumber = function getPrettyNumber(num, prefix) {
-  if (!num && num != 0) return num;
-  var str = String(num);
-  var arr = str.split('.');
-  arr[0] = arr[0].split('');
-  arr[0] = arr[0].map(function (char, index) {
-    return index !== arr[0].length - 1 && (arr[0].length - index) % 3 === 1 ? char + ',' : char;
-  }).join('');
-  return prefix ? prefix + arr.join('.') : arr.join('.');
-};
-
-var checkFor$ = exports.checkFor$ = function checkFor$(num) {
-  if (typeof num === 'string') {
-    var str = num.split('');
-    str = str.filter(function (char) {
-      return char !== '$' && char !== ',';
-    }).join('');
-    return Number(str);
-  } else return num;
-};
-
-var sortBy = exports.sortBy = function sortBy(field) {
-  return function (a, b) {
-    // handle cases where a field is empty
-    if (!match(field, a) && !match(field, b)) return a.id - b.id;
-    if (!match(field, b)) return -1;
-    if (!match(field, a)) return 1;
-
-    // sort based on field array
-    if (handleCase(match(field, a)) > handleCase(match(field, b))) return 1;
-    if (handleCase(match(field, a)) < handleCase(match(field, b))) return -1;
-
-    // tiebreaker
-    return a.id - b.id;
-
-    return 0;
-  };
-};
-
-var handleCase = function handleCase(variable) {
-  return typeof variable === 'string' ? variable.toLowerCase() : variable;
-};
-
-var match = exports.match = function match(arr, obj) {
-  if (!obj) return '';else if (arr.length === 1) return obj[arr[0]];else return match(arr.slice(1), obj[arr[0]]);
-};
-
-var cleanHeader = exports.cleanHeader = function cleanHeader(key) {
-  var clean = key;
-  clean = clean[0].toUpperCase() + clean.slice(1);
-  if (clean.slice(-4) === 'Name' && clean.length > 4) clean = clean.slice(0, -4) + ' ' + clean.slice(-4);
-  return clean;
-};
-
-// Password must consist of at least 8 characters with at least 1 letter and 1 number
-
-var pwCheck = exports.pwCheck = function pwCheck(pw) {
-  if (typeof pw !== 'string') return false;
-  if (pw.length < 8) return false;
-  var checkChars = { letters: 0, numbers: 0 };
-  var notAllowed = ['@$\.,/'];
-  pw.split('').forEach(function (char) {
-    if (notAllowed.includes(char)) return false;else if (Number(char) || Number(char) === 0) checkChars.numbers++;else checkChars.letters++;
-  });
-  if (checkChars.letters > 0 && checkChars.numbers > 0) return true;else return false;
-};
-
-// Functions for Buyout Calculations
-var sum = exports.sum = function sum() {
-  for (var _len = arguments.length, targs = Array(_len), _key = 0; _key < _len; _key++) {
-    targs[_key] = arguments[_key];
-  }
-
-  var val = 0;
-  targs.forEach(function (n) {
-    return val += checkFor$(n) || 0;
-  });
-  return monify(val);
-};
-
-var product = exports.product = function product() {
-  for (var _len2 = arguments.length, targs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-    targs[_key2] = arguments[_key2];
-  }
-
-  var val = 0;
-  targs.forEach(function (n, index) {
-    if (index === 0) val = checkFor$(n) || 0;else val *= checkFor$(n) || 0;
-  });
-  return String(val);
-};
-
-var round = exports.round = function round(n) {
-  return monify(Math.round(checkFor$(n) * 100) / 100);
-};
-
-var monify = exports.monify = function monify(n) {
-  var str = String(n);
-  var arr = str.split('.');
-  arr[0] = arr[0].split('');
-  arr[0] = arr[0].map(function (char, index) {
-    return index !== arr[0].length - 1 && (arr[0].length - index) % 3 === 1 ? char + ',' : char;
-  }).join('');
-  if (arr.length === 1) arr.push('00');else if (arr[1].length === 1) arr[1] += '0';else if (arr[1].length === 0) arr[1] = '00';
-  return arr.join('.');
-};
-
-/***/ }),
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1285,7 +1295,7 @@ var monify = exports.monify = function monify(n) {
 
 
 // optional / simple context binding
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 module.exports = function (fn, that, length) {
   aFunction(fn);
   if (that === undefined) return fn;
@@ -1490,20 +1500,20 @@ if (__webpack_require__(8)) {
   var ctx = __webpack_require__(27);
   var anInstance = __webpack_require__(51);
   var propertyDesc = __webpack_require__(43);
-  var hide = __webpack_require__(17);
+  var hide = __webpack_require__(18);
   var redefineAll = __webpack_require__(53);
   var toInteger = __webpack_require__(33);
   var toLength = __webpack_require__(10);
   var toIndex = __webpack_require__(158);
   var toAbsoluteIndex = __webpack_require__(47);
   var toPrimitive = __webpack_require__(31);
-  var has = __webpack_require__(16);
+  var has = __webpack_require__(17);
   var classof = __webpack_require__(61);
   var isObject = __webpack_require__(5);
   var toObject = __webpack_require__(11);
   var isArrayIter = __webpack_require__(105);
   var create = __webpack_require__(48);
-  var getPrototypeOf = __webpack_require__(23);
+  var getPrototypeOf = __webpack_require__(24);
   var gOPN = __webpack_require__(49).f;
   var getIterFn = __webpack_require__(107);
   var uid = __webpack_require__(44);
@@ -1518,7 +1528,7 @@ if (__webpack_require__(8)) {
   var arrayFill = __webpack_require__(109);
   var arrayCopyWithin = __webpack_require__(148);
   var $DP = __webpack_require__(9);
-  var $GOPD = __webpack_require__(22);
+  var $GOPD = __webpack_require__(23);
   var dP = $DP.f;
   var gOPD = $GOPD.f;
   var RangeError = global.RangeError;
@@ -2114,7 +2124,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var META = __webpack_require__(44)('meta');
 var isObject = __webpack_require__(5);
-var has = __webpack_require__(16);
+var has = __webpack_require__(17);
 var setDesc = __webpack_require__(9).f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
@@ -2176,7 +2186,7 @@ var meta = module.exports = {
 // 22.1.3.31 Array.prototype[@@unscopables]
 var UNSCOPABLES = __webpack_require__(6)('unscopables');
 var ArrayProto = Array.prototype;
-if (ArrayProto[UNSCOPABLES] == undefined) __webpack_require__(17)(ArrayProto, UNSCOPABLES, {});
+if (ArrayProto[UNSCOPABLES] == undefined) __webpack_require__(18)(ArrayProto, UNSCOPABLES, {});
 module.exports = function (key) {
   ArrayProto[UNSCOPABLES][key] = true;
 };
@@ -2482,7 +2492,7 @@ _exports.RETURN = RETURN;
 "use strict";
 
 
-var redefine = __webpack_require__(18);
+var redefine = __webpack_require__(19);
 module.exports = function (target, src, safe) {
   for (var key in src) {
     redefine(target, key, src[key], safe);
@@ -2497,7 +2507,7 @@ module.exports = function (target, src, safe) {
 
 
 var def = __webpack_require__(9).f;
-var has = __webpack_require__(16);
+var has = __webpack_require__(17);
 var TAG = __webpack_require__(6)('toStringTag');
 
 module.exports = function (it, tag, stat) {
@@ -2583,7 +2593,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(38);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3141,14 +3151,14 @@ var _leaseReducer = __webpack_require__(88);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 // initial state
-var initialState = { apps: [], focus: null, sort: ['date']
+var initialState = { apps: [], focus: null, sort: ['date'], reverse: false
 
   // reducer
 };var reducer = function reducer() {
@@ -3159,7 +3169,7 @@ var initialState = { apps: [], focus: null, sort: ['date']
   switch (action.type) {
     case LOAD_APPS:
       newState.apps = action.apps;
-      if (newState.sort) newState.apps.sort((0, _utility.sortBy)(newState.sort));
+      if (newState.sort) newState.apps.sort((0, _utility.sortBy)(newState.sort, newState.reverse));
       return newState;
     case FOCUS_APP:
       newState.focus = action.id;
@@ -3169,8 +3179,13 @@ var initialState = { apps: [], focus: null, sort: ['date']
       newState.focus = action.app.id;
       return newState;
     case SORT_APPS:
-      newState.sort = action.field;
-      newState.apps.sort((0, _utility.sortBy)(action.field));
+      if ((0, _utility.areArraysEqual)(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse;
+      } else {
+        newState.reverse = false;
+        newState.sort = action.field;
+      }
+      newState.apps.sort((0, _utility.sortBy)(action.field, newState.reverse));
       return newState;
     case FLUSH_APPS:
       newState.apps = [];
@@ -3234,6 +3249,8 @@ var loadAppsThunk = exports.loadAppsThunk = function loadAppsThunk(token, callba
         app.logs = res.data.logs[index].filter(function (log) {
           return log.date <= (0, _utility.getDate)();
         });
+
+        app.pdfs = res.data.pdfs[index];
       });
       dispatch(loadApps(res.data.apps));
       // dispatch(loadLeases(leases))
@@ -3341,14 +3358,14 @@ var _leaseReducer = __webpack_require__(88);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 // initial state
-var initialState = { byos: [], focus: null, sort: ['date']
+var initialState = { byos: [], focus: null, sort: ['date'], reverse: false
 
   // reducer
 };var reducer = function reducer() {
@@ -3359,7 +3376,7 @@ var initialState = { byos: [], focus: null, sort: ['date']
   switch (action.type) {
     case LOAD_BYOS:
       newState.byos = action.byos;
-      if (newState.sort) newState.byos.sort((0, _utility.sortBy)(newState.sort));
+      if (newState.sort) newState.byos.sort((0, _utility.sortBy)(newState.sort, newState.reverse));
       return newState;
     case FOCUS_BYO:
       newState.focus = action.id;
@@ -3369,8 +3386,13 @@ var initialState = { byos: [], focus: null, sort: ['date']
       newState.focus = action.byo.id;
       return newState;
     case SORT_BYOS:
-      newState.sort = action.field;
-      newState.byos.sort((0, _utility.sortBy)(action.field));
+      if ((0, _utility.areArraysEqual)(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse;
+      } else {
+        newState.reverse = false;
+        newState.sort = action.field;
+      }
+      newState.byos.sort((0, _utility.sortBy)(action.field, newState.reverse));
       return newState;
     case FLUSH_BYOS:
       newState.byos = [];
@@ -3420,6 +3442,9 @@ var loadByosThunk = exports.loadByosThunk = function loadByosThunk(token, callba
       // and a list of pdf associations
       res.data.byos.forEach(function (byo, index) {
         byo.leases = res.data.leases[index];
+        byo.leases.forEach(function (lease) {
+          lease.workbook = JSON.parse(lease.workbook);
+        });
 
         var actions = res.data.actions[index];
         byo.actions = [];
@@ -3432,7 +3457,7 @@ var loadByosThunk = exports.loadByosThunk = function loadByosThunk(token, callba
           return log.date <= (0, _utility.getDate)();
         });
 
-        byo.calcs = JSON.parse(byo.calcs);
+        // byo.calcs = JSON.parse(byo.calcs)
 
         byo.pdfs = res.data.pdfs[index];
       });
@@ -3485,6 +3510,7 @@ var createByoThunk = exports.createByoThunk = function createByoThunk(token, cal
     return _axios2.default.post('/api/byos/new', { token: token }).then(function (res) {
       if (res.status === 201) {
         var byo = res.data;
+        // byo.calcs = JSON.parse(byo.calcs)
         byo.leases = [];
         byo.actions = [];
         byo.logs = [];
@@ -3573,7 +3599,7 @@ module.exports = function (key) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(21);
+var toIObject = __webpack_require__(22);
 var toLength = __webpack_require__(10);
 var toAbsoluteIndex = __webpack_require__(47);
 module.exports = function (IS_INCLUDES) {
@@ -3700,8 +3726,8 @@ module.exports = function () {
 "use strict";
 
 
-var hide = __webpack_require__(17);
-var redefine = __webpack_require__(18);
+var hide = __webpack_require__(18);
+var redefine = __webpack_require__(19);
 var fails = __webpack_require__(4);
 var defined = __webpack_require__(32);
 var wks = __webpack_require__(6);
@@ -3742,7 +3768,7 @@ module.exports = function (KEY, length, exec) {
 
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
 var anObject = __webpack_require__(2);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var SPECIES = __webpack_require__(6)('species');
 module.exports = function (O, D) {
   var C = anObject(O).constructor;
@@ -3759,7 +3785,7 @@ module.exports = function (O, D) {
 
 var global = __webpack_require__(3);
 var $export = __webpack_require__(0);
-var redefine = __webpack_require__(18);
+var redefine = __webpack_require__(19);
 var redefineAll = __webpack_require__(53);
 var meta = __webpack_require__(39);
 var forOf = __webpack_require__(52);
@@ -3856,7 +3882,7 @@ module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
 
 
 var global = __webpack_require__(3);
-var hide = __webpack_require__(17);
+var hide = __webpack_require__(18);
 var uid = __webpack_require__(44);
 var TYPED = uid('typed_array');
 var VIEW = uid('view');
@@ -3927,7 +3953,7 @@ module.exports = function (COLLECTION) {
 // https://tc39.github.io/proposal-setmap-offrom/
 
 var $export = __webpack_require__(0);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var ctx = __webpack_require__(27);
 var forOf = __webpack_require__(52);
 
@@ -4160,12 +4186,12 @@ var _customerReducer = __webpack_require__(66);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // initial state
-var initialState = { users: [], focus: null, sort: ['id']
+var initialState = { users: [], focus: null, sort: ['id'], reverse: false
 
   // reducer
 };var reducer = function reducer() {
@@ -4176,7 +4202,7 @@ var initialState = { users: [], focus: null, sort: ['id']
   switch (action.type) {
     case LOAD_USERS:
       newState.users = action.users;
-      if (newState.sort && Array.isArray(newState.users)) newState.users.sort((0, _utility.sortBy)(newState.sort));
+      if (newState.sort && Array.isArray(newState.users)) newState.users.sort((0, _utility.sortBy)(newState.sort, newState.reverse));
       return newState;
     case FOCUS_USER:
       newState.focus = action.index;
@@ -4187,8 +4213,13 @@ var initialState = { users: [], focus: null, sort: ['id']
       newState.users[newState.focus].id = 'new';
       return newState;
     case SORT_USERS:
-      newState.sort = action.field;
-      if (Array.isArray(newState.users)) newState.users.sort((0, _utility.sortBy)(action.field));
+      if ((0, _utility.areArraysEqual)(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse;
+      } else {
+        newState.reverse = false;
+        newState.sort = action.field;
+      }
+      if (Array.isArray(newState.users)) newState.users.sort((0, _utility.sortBy)(action.field, newState.reverse));
       return newState;
     case FLUSH_USERS:
       newState.users = [];
@@ -4422,7 +4453,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
   function (test, buggy, set) {
     try {
-      set = __webpack_require__(27)(Function.call, __webpack_require__(22).f(Object.prototype, '__proto__').set, 2);
+      set = __webpack_require__(27)(Function.call, __webpack_require__(23).f(Object.prototype, '__proto__').set, 2);
       set(test, []);
       buggy = !(test instanceof Array);
     } catch (e) {
@@ -4545,13 +4576,13 @@ module.exports = function (TO_STRING) {
 
 var LIBRARY = __webpack_require__(45);
 var $export = __webpack_require__(0);
-var redefine = __webpack_require__(18);
-var hide = __webpack_require__(17);
-var has = __webpack_require__(16);
+var redefine = __webpack_require__(19);
+var hide = __webpack_require__(18);
+var has = __webpack_require__(17);
 var Iterators = __webpack_require__(56);
 var $iterCreate = __webpack_require__(102);
 var setToStringTag = __webpack_require__(54);
-var getPrototypeOf = __webpack_require__(23);
+var getPrototypeOf = __webpack_require__(24);
 var ITERATOR = __webpack_require__(6)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
 var FF_ITERATOR = '@@iterator';
@@ -4638,7 +4669,7 @@ var setToStringTag = __webpack_require__(54);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__webpack_require__(17)(IteratorPrototype, __webpack_require__(6)('iterator'), function () {
+__webpack_require__(18)(IteratorPrototype, __webpack_require__(6)('iterator'), function () {
   return this;
 });
 
@@ -4774,7 +4805,7 @@ module.exports = function fill(value /* , start = 0, end = @length */) {
 var addToUnscopables = __webpack_require__(40);
 var step = __webpack_require__(149);
 var Iterators = __webpack_require__(56);
-var toIObject = __webpack_require__(21);
+var toIObject = __webpack_require__(22);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
@@ -4981,7 +5012,7 @@ module.exports = function () {
 
 // 25.4.1.5 NewPromiseCapability(C)
 
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 
 function PromiseCapability(C) {
   var resolve, reject;
@@ -5009,7 +5040,7 @@ var global = __webpack_require__(3);
 var DESCRIPTORS = __webpack_require__(8);
 var LIBRARY = __webpack_require__(45);
 var $typed = __webpack_require__(80);
-var hide = __webpack_require__(17);
+var hide = __webpack_require__(18);
 var redefineAll = __webpack_require__(53);
 var fails = __webpack_require__(4);
 var anInstance = __webpack_require__(51);
@@ -5606,7 +5637,7 @@ var _warning = __webpack_require__(13);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -5614,7 +5645,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -6095,7 +6126,7 @@ exports.default = isPlainObject;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 var normalizeHeaderName = __webpack_require__(467);
 
 var DEFAULT_CONTENT_TYPE = {
@@ -6191,16 +6222,18 @@ module.exports = defaults;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createDealerThunk = exports.saveDealerThunk = exports.loadDealersThunk = exports.flushDealers = exports.createDealer = exports.focusDealer = exports.loadDealers = undefined;
+exports.createDealerThunk = exports.saveDealerThunk = exports.loadDealersThunk = exports.flushDealers = exports.sortDealers = exports.createDealer = exports.focusDealer = exports.loadDealers = undefined;
 
 var _axios = __webpack_require__(12);
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _utility = __webpack_require__(14);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // initial state
-var initialState = { dealers: [], focus: null
+var initialState = { dealers: [], focus: null, sort: ['id'], reverse: false
 
   // reducer
 };var reducer = function reducer() {
@@ -6211,6 +6244,7 @@ var initialState = { dealers: [], focus: null
   switch (action.type) {
     case LOAD_DEALERS:
       newState.dealers = action.dealers;
+      if (newState.sort) newState.dealers.sort((0, _utility.sortBy)(newState.sort, newState.reverse));
       return newState;
     case FOCUS_DEALER:
       newState.focus = action.index;
@@ -6219,6 +6253,15 @@ var initialState = { dealers: [], focus: null
       newState.dealers.push(action.dealer);
       newState.focus = newState.dealers.length - 1;
       newState.dealers[newState.focus].id = 'new';
+      return newState;
+    case SORT_DEALERS:
+      if ((0, _utility.areArraysEqual)(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse;
+      } else {
+        newState.reverse = false;
+        newState.sort = action.field;
+      }
+      newState.dealers.sort((0, _utility.sortBy)(action.field, newState.reverse));
       return newState;
     case FLUSH_DEALERS:
       newState.dealers = [];
@@ -6245,6 +6288,12 @@ var createDealer = exports.createDealer = function createDealer(dealer) {
   return { type: CREATE_DEALER, dealer: dealer };
 };
 
+var SORT_DEALERS = 'SORT_DEALERS';
+var sortDealers = exports.sortDealers = function sortDealers(fieldArg) {
+  var field = typeof fieldArg === 'string' ? [fieldArg] : fieldArg;
+  return { type: SORT_DEALERS, field: field };
+};
+
 var FLUSH_DEALERS = 'FLUSH_DEALERS';
 var flushDealers = exports.flushDealers = function flushDealers() {
   return { type: FLUSH_DEALERS };
@@ -6261,22 +6310,24 @@ var loadDealersThunk = exports.loadDealersThunk = function loadDealersThunk(toke
   };
 };
 
-var saveDealerThunk = exports.saveDealerThunk = function saveDealerThunk(token, dealer) {
+var saveDealerThunk = exports.saveDealerThunk = function saveDealerThunk(token, dealer, callback) {
   return function (dispatch) {
     return _axios2.default.put('/api/dealers', { token: token, dealer: dealer }).then(function (res) {
       dispatch(loadDealersThunk(token));
       dispatch(focusDealer(null));
+      if (callback) callback(dealer.id);
     }).catch(function (err) {
       return console.error(err);
     });
   };
 };
 
-var createDealerThunk = exports.createDealerThunk = function createDealerThunk(token, dealer) {
+var createDealerThunk = exports.createDealerThunk = function createDealerThunk(token, dealer, callback) {
   return function (dispatch) {
     return _axios2.default.post('/api/dealers/new', { token: token, dealer: dealer }).then(function (res) {
       dispatch(loadDealersThunk(token));
       dispatch(focusDealer(null));
+      if (callback) callback(res.data.id);
     }).catch(function (err) {
       return console.error(err);
     });
@@ -6295,16 +6346,18 @@ exports.default = reducer;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createBranchThunk = exports.saveBranchThunk = exports.loadBranchesThunk = exports.flushBranches = exports.createBranch = exports.focusBranch = exports.loadBranches = undefined;
+exports.createBranchThunk = exports.saveBranchThunk = exports.loadBranchesThunk = exports.flushBranches = exports.sortBranches = exports.createBranch = exports.focusBranch = exports.loadBranches = undefined;
 
 var _axios = __webpack_require__(12);
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _utility = __webpack_require__(14);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // initial state
-var initialState = { branches: [], focus: null
+var initialState = { branches: [], focus: null, sort: ['id'], reverse: false
 
   // reducer
 };var reducer = function reducer() {
@@ -6315,6 +6368,7 @@ var initialState = { branches: [], focus: null
   switch (action.type) {
     case LOAD_BRANCHES:
       newState.branches = action.branches;
+      if (newState.sort) newState.branches.sort((0, _utility.sortBy)(newState.sort, newState.reverse));
       return newState;
     case FOCUS_BRANCH:
       newState.focus = action.index;
@@ -6323,6 +6377,15 @@ var initialState = { branches: [], focus: null
       newState.branches.push(action.branch);
       newState.focus = newState.branches.length - 1;
       newState.branches[newState.focus].id = 'new';
+      return newState;
+    case SORT_BRANCHES:
+      if ((0, _utility.areArraysEqual)(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse;
+      } else {
+        newState.reverse = false;
+        newState.sort = action.field;
+      }
+      newState.branches.sort((0, _utility.sortBy)(action.field, newState.reverse));
       return newState;
     case FLUSH_BRANCHES:
       newState.branches = [];
@@ -6347,6 +6410,12 @@ var focusBranch = exports.focusBranch = function focusBranch(index) {
 var CREATE_BRANCH = 'CREATE_BRANCH';
 var createBranch = exports.createBranch = function createBranch(branch) {
   return { type: CREATE_BRANCH, branch: branch };
+};
+
+var SORT_BRANCHES = 'SORT_BRANCHES';
+var sortBranches = exports.sortBranches = function sortBranches(fieldArg) {
+  var field = typeof fieldArg === 'string' ? [fieldArg] : fieldArg;
+  return { type: SORT_BRANCHES, field: field };
 };
 
 var FLUSH_BRANCHES = 'FLUSH_BRANCHES';
@@ -6399,16 +6468,18 @@ exports.default = reducer;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createRegionThunk = exports.saveRegionThunk = exports.loadRegionsThunk = exports.flushRegions = exports.createRegion = exports.focusRegion = exports.loadRegions = undefined;
+exports.createRegionThunk = exports.saveRegionThunk = exports.loadRegionsThunk = exports.flushRegions = exports.sortRegions = exports.createRegion = exports.focusRegion = exports.loadRegions = undefined;
 
 var _axios = __webpack_require__(12);
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _utility = __webpack_require__(14);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // initial state
-var initialState = { regions: [], focus: null
+var initialState = { regions: [], focus: null, sort: ['id'], reverse: false
 
   // reducer
 };var reducer = function reducer() {
@@ -6419,6 +6490,7 @@ var initialState = { regions: [], focus: null
   switch (action.type) {
     case LOAD_REGIONS:
       newState.regions = action.regions;
+      if (newState.sort) newState.regions.sort((0, _utility.sortBy)(newState.sort, newState.reverse));
       return newState;
     case FOCUS_REGION:
       newState.focus = action.index;
@@ -6431,6 +6503,15 @@ var initialState = { regions: [], focus: null
     case FLUSH_REGIONS:
       newState.regions = [];
       newState.focus = null;
+      return newState;
+    case SORT_REGIONS:
+      if ((0, _utility.areArraysEqual)(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse;
+      } else {
+        newState.reverse = false;
+        newState.sort = action.field;
+      }
+      newState.regions.sort((0, _utility.sortBy)(action.field, newState.reverse));
       return newState;
     default:
       return newState;
@@ -6451,6 +6532,12 @@ var focusRegion = exports.focusRegion = function focusRegion(index) {
 var CREATE_REGION = 'CREATE_REGION';
 var createRegion = exports.createRegion = function createRegion(region) {
   return { type: CREATE_REGION, region: region };
+};
+
+var SORT_REGIONS = 'SORT_REGIONS';
+var sortRegions = exports.sortRegions = function sortRegions(fieldArg) {
+  var field = typeof fieldArg === 'string' ? [fieldArg] : fieldArg;
+  return { type: SORT_REGIONS, field: field };
 };
 
 var FLUSH_REGIONS = 'FLUSH_REGIONS';
@@ -6508,7 +6595,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6520,13 +6607,18 @@ exports.default = function (_ref) {
       controller = _ref.controller,
       fields = _ref.fields,
       dropdowns = _ref.dropdowns,
+      uploads = _ref.uploads,
       rows = _ref.rows,
       handleChange = _ref.handleChange,
+      handleChoosePDF = _ref.handleChoosePDF,
       handleSubmit = _ref.handleSubmit,
       handleCancel = _ref.handleCancel,
       handleController = _ref.handleController,
       handleCreate = _ref.handleCreate,
-      handleDelete = _ref.handleDelete;
+      handleDelete = _ref.handleDelete,
+      handleSort = _ref.handleSort,
+      reverse = _ref.reverse,
+      sort = _ref.sort;
   return _react2.default.createElement(
     'div',
     { className: 'edit-fields-box ' + uniClass },
@@ -6535,11 +6627,13 @@ exports.default = function (_ref) {
       { className: 'app-table-edit col-sm-12 no-gutters' },
       _react2.default.createElement(
         'div',
-        { className: 'app-header-bottom' },
-        [].concat(_toConsumableArray(Object.keys(fields)), _toConsumableArray(Object.keys(dropdowns))).map(function (key) {
+        { className: 'app-header-bottom' + (reverse ? ' reverse' : '') },
+        [].concat(_toConsumableArray(Object.keys(fields)), _toConsumableArray(Object.keys(dropdowns)), _toConsumableArray(Object.keys(uploads))).map(function (key) {
           return _react2.default.createElement(
             'span',
-            { key: key },
+            { key: key, id: key,
+              className: sort.join('-') === key ? 'sorting' : 'sortable',
+              onClick: handleSort },
             (0, _utility.cleanHeader)(key)
           );
         }),
@@ -6550,7 +6644,7 @@ exports.default = function (_ref) {
     rows.map(function (row, index) {
       return _react2.default.createElement(
         'form',
-        { key: row.id, onSubmit: handleSubmit, autoComplete: 'off' },
+        { key: row.id, className: 'col-sm-12 no-gutters', onSubmit: handleSubmit, autoComplete: 'off' },
         _react2.default.createElement(
           'div',
           { className: 'app-table-edit col-sm-12 no-gutters' },
@@ -6606,9 +6700,20 @@ exports.default = function (_ref) {
                 })
               );
             }),
+            Object.keys(uploads).map(function (key) {
+              return controller == index ? _react2.default.createElement(
+                'span',
+                { key: row.id + '-' + key, className: 'upload' },
+                _react2.default.createElement('input', { className: 'upload-button', type: 'file', onChange: handleChoosePDF, accept: 'image/*' })
+              ) : _react2.default.createElement(
+                'span',
+                { key: row.id + '-' + key, className: 'upload' },
+                row[key] ? _react2.default.createElement('img', { src: '/assets/logo/' + row[key] }) : null
+              );
+            }),
             !controller ? _react2.default.createElement(
               'span',
-              null,
+              { className: 'tail-end' },
               _react2.default.createElement(
                 'button',
                 { value: index, onClick: handleController, className: 'fields-button' },
@@ -6617,7 +6722,7 @@ exports.default = function (_ref) {
             ) : null,
             !controller ? _react2.default.createElement(
               'span',
-              null,
+              { className: 'tail-end' },
               _react2.default.createElement(
                 'button',
                 { value: row.id, onClick: handleDelete, className: 'fields-button right-margin' },
@@ -6626,7 +6731,7 @@ exports.default = function (_ref) {
             ) : null,
             controller ? _react2.default.createElement(
               'span',
-              null,
+              { className: 'tail-end' },
               controller == index ? _react2.default.createElement(
                 'button',
                 { onClick: handleCancel, className: 'fields-button' },
@@ -6635,7 +6740,7 @@ exports.default = function (_ref) {
             ) : null,
             controller ? _react2.default.createElement(
               'span',
-              null,
+              { className: 'tail-end' },
               controller == index ? _react2.default.createElement(
                 'button',
                 { type: 'submit', className: 'fields-button right-margin' },
@@ -6650,7 +6755,7 @@ exports.default = function (_ref) {
       'button',
       { onClick: handleCreate, className: 'new-button' },
       'New'
-    ) : null
+    ) : _react2.default.createElement('div', { className: 'bottom-guard' })
   );
 };
 
@@ -6683,8 +6788,8 @@ exports.f = __webpack_require__(6);
 "use strict";
 
 
-var has = __webpack_require__(16);
-var toIObject = __webpack_require__(21);
+var has = __webpack_require__(17);
+var toIObject = __webpack_require__(22);
 var arrayIndexOf = __webpack_require__(71)(false);
 var IE_PROTO = __webpack_require__(91)('IE_PROTO');
 
@@ -6735,7 +6840,7 @@ module.exports = __webpack_require__(8) ? Object.defineProperties : function def
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = __webpack_require__(21);
+var toIObject = __webpack_require__(22);
 var gOPN = __webpack_require__(49).f;
 var toString = {}.toString;
 
@@ -6806,7 +6911,7 @@ module.exports = !$assign || __webpack_require__(4)(function () {
 "use strict";
 
 
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var isObject = __webpack_require__(5);
 var invoke = __webpack_require__(139);
 var arraySlice = [].slice;
@@ -6986,7 +7091,7 @@ module.exports = function (iterator, fn, value, entries) {
 "use strict";
 
 
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var toObject = __webpack_require__(11);
 var IObject = __webpack_require__(59);
 var toLength = __webpack_require__(10);
@@ -7320,7 +7425,7 @@ module.exports = __webpack_require__(79)(SET, function (get) {
 
 
 var each = __webpack_require__(35)(0);
-var redefine = __webpack_require__(18);
+var redefine = __webpack_require__(19);
 var meta = __webpack_require__(39);
 var assign = __webpack_require__(137);
 var weak = __webpack_require__(157);
@@ -7394,7 +7499,7 @@ var isObject = __webpack_require__(5);
 var anInstance = __webpack_require__(51);
 var forOf = __webpack_require__(52);
 var createArrayMethod = __webpack_require__(35);
-var $has = __webpack_require__(16);
+var $has = __webpack_require__(17);
 var validate = __webpack_require__(57);
 var arrayFind = createArrayMethod(5);
 var arrayFindIndex = createArrayMethod(6);
@@ -7584,7 +7689,7 @@ module.exports = function (that, maxLength, fillString, left) {
 
 
 var getKeys = __webpack_require__(46);
-var toIObject = __webpack_require__(21);
+var toIObject = __webpack_require__(22);
 var isEnum = __webpack_require__(60).f;
 module.exports = function (isEntries) {
   return function (it) {
@@ -8212,11 +8317,11 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -8375,7 +8480,7 @@ var _warning = __webpack_require__(13);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -8383,7 +8488,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -8689,7 +8794,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.storeShape = exports.subscriptionShape = undefined;
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -8727,7 +8832,7 @@ var _hoistNonReactStatics = __webpack_require__(180);
 
 var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -9608,7 +9713,7 @@ module.exports = function bind(fn, thisArg) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 var settle = __webpack_require__(468);
 var buildURL = __webpack_require__(470);
 var parseHeaders = __webpack_require__(471);
@@ -9876,7 +9981,7 @@ var _BuyoutCalcs = __webpack_require__(494);
 
 var _BuyoutCalcs2 = _interopRequireDefault(_BuyoutCalcs);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9889,6 +9994,8 @@ exports.default = function (_ref) {
       handleSave = _ref.handleSave,
       handleNote = _ref.handleNote,
       handleNotify = _ref.handleNotify,
+      handleWorkbookNotify = _ref.handleWorkbookNotify,
+      handleWorkbookNotifySend = _ref.handleWorkbookNotifySend,
       handleAdminMode = _ref.handleAdminMode,
       handleActionDelete = _ref.handleActionDelete,
       handleSaveAction = _ref.handleSaveAction,
@@ -9898,12 +10005,20 @@ exports.default = function (_ref) {
       toggleLightbox = _ref.toggleLightbox,
       toggleCalcView = _ref.toggleCalcView,
       handleCalcs = _ref.handleCalcs,
+      handleCascade = _ref.handleCascade,
+      handleTaxes = _ref.handleTaxes,
       toggleMachines = _ref.toggleMachines,
+      handleNewMachine = _ref.handleNewMachine,
+      handleChangeInMachine = _ref.handleChangeInMachine,
+      handleRemoveMachine = _ref.handleRemoveMachine,
+      generatePdf = _ref.generatePdf,
       formatTerm = _ref.formatTerm,
       handleChangeInPDFNote = _ref.handleChangeInPDFNote,
       handleDeletePDF = _ref.handleDeletePDF,
       handleChoosePDF = _ref.handleChoosePDF,
-      handleUploadPDF = _ref.handleUploadPDF;
+      handleUploadPDF = _ref.handleUploadPDF,
+      handleAddAttachment = _ref.handleAddAttachment,
+      handleRemoveAttachment = _ref.handleRemoveAttachment;
   return _react2.default.createElement(
     'div',
     { className: 'row edit-apps-page admin' },
@@ -9942,13 +10057,22 @@ exports.default = function (_ref) {
         { className: 'row' },
         _react2.default.createElement(
           'div',
-          { className: 'col-sm-6' },
+          { className: values.calcView ? 'col-sm-3' : 'col-sm-6' },
           _react2.default.createElement(
             'h2',
             null,
             'Admin Portal'
           )
         ),
+        values.calcView ? _react2.default.createElement(
+          'div',
+          { className: 'col-sm-3 top-buttons' },
+          _react2.default.createElement(
+            'a',
+            { className: 'pdf-btn', onClick: generatePdf },
+            'Generate PDFs'
+          )
+        ) : null,
         values.calcView ? _react2.default.createElement(
           'div',
           { className: 'col-sm-6 top-buttons', align: 'right' },
@@ -10275,7 +10399,12 @@ exports.default = function (_ref) {
       values: values,
       toggleCalcView: toggleCalcView,
       handleCalcs: handleCalcs,
+      handleCascade: handleCascade,
+      handleTaxes: handleTaxes,
       toggleMachines: toggleMachines,
+      handleNewMachine: handleNewMachine,
+      handleChangeInMachine: handleChangeInMachine,
+      handleRemoveMachine: handleRemoveMachine,
       count: 1
     }) : _react2.default.createElement(
       'div',
@@ -10285,10 +10414,88 @@ exports.default = function (_ref) {
         { className: 'row' },
         _react2.default.createElement(
           'div',
-          { className: 'to-calcs', onClick: toggleCalcView },
-          'Buyout Calculations \u203A'
+          { className: 'col-sm-12 no-gutters' },
+          _react2.default.createElement(
+            'div',
+            { className: 'flux-table' },
+            _react2.default.createElement(
+              'div',
+              { className: 'flux-top' },
+              _react2.default.createElement(
+                'span',
+                { className: 'flux-float col-sm-6', align: 'left' },
+                _react2.default.createElement(
+                  'h2',
+                  null,
+                  'Leases'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'col-sm-12' },
+                _react2.default.createElement(
+                  'div',
+                  { className: 'leaseNumber' },
+                  'Lease Number'
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'leaseCompany' },
+                  'Lease Company'
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'quote' },
+                  'Quote'
+                ),
+                _react2.default.createElement('div', { className: 'calcs' }),
+                _react2.default.createElement('div', { className: 'letEmKnow' })
+              )
+            ),
+            values.leases && values.leases.length > 0 ? values.leases.map(function (lease, index) {
+              return _react2.default.createElement(
+                'div',
+                { key: lease.id, className: index % 2 === 0 ? 'even' : 'odd' },
+                _react2.default.createElement(
+                  'div',
+                  { className: 'retracted' },
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'leaseNumber' },
+                    lease.number
+                  ),
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'leaseCompany' },
+                    lease.company
+                  ),
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'quote' },
+                    lease.quote
+                  ),
+                  _react2.default.createElement(
+                    'div',
+                    { id: 'lease-' + index, className: 'calcs', onClick: toggleCalcView },
+                    'Calculations'
+                  ),
+                  _react2.default.createElement(
+                    'div',
+                    { id: 'lease-' + index, className: 'letEmKnow', onClick: handleWorkbookNotify },
+                    'Notify'
+                  )
+                )
+              );
+            }) : _react2.default.createElement(
+              'div',
+              { className: 'even' },
+              _react2.default.createElement('div', { className: 'retracted' })
+            )
+          )
         )
       ) : null,
+      mode === 'app' ?
+      // credit applications (only on apps)
       _react2.default.createElement(
         'div',
         { className: 'row' },
@@ -10394,7 +10601,7 @@ exports.default = function (_ref) {
             )
           )
         )
-      ),
+      ) : null,
       values.action && values.adminMode === 'action' ? _react2.default.createElement(
         'div',
         { className: 'action lightbox' },
@@ -10670,11 +10877,32 @@ exports.default = function (_ref) {
             values: values,
             handleChange: handleChange,
             handleNotify: handleNotify,
-            handleAdminMode: handleAdminMode
+            handleAdminMode: handleAdminMode,
+            cancelProtocol: 'edit-' + values.action.index,
+            handleAddAttachment: handleAddAttachment,
+            handleRemoveAttachment: handleRemoveAttachment
           })
         )
       ) : null,
-      mode === 'byo' ? _react2.default.createElement(
+      values.adminMode === 'notifyByo' ? _react2.default.createElement(
+        'div',
+        { className: 'notify lightbox' },
+        _react2.default.createElement('div', { id: 'cancel-notify', className: 'shadowbox', onClick: handleAdminMode }),
+        _react2.default.createElement(
+          'div',
+          { className: 'container' },
+          _react2.default.createElement(_NotifyRep2.default, {
+            values: values,
+            handleChange: handleChange,
+            handleNotify: handleWorkbookNotifySend,
+            handleAdminMode: handleAdminMode,
+            cancelProtocol: 'cancel-notify',
+            handleAddAttachment: handleAddAttachment,
+            handleRemoveAttachment: handleRemoveAttachment
+          })
+        )
+      ) : null,
+      _react2.default.createElement(
         'div',
         { className: 'row' },
         _react2.default.createElement(
@@ -10826,7 +11054,7 @@ exports.default = function (_ref) {
             )
           )
         )
-      ) : null,
+      ),
       _react2.default.createElement(
         'div',
         { className: 'row app-bg log' },
@@ -10874,7 +11102,21 @@ exports.default = function (_ref) {
           })
         ) : null
       )
-    )
+    ),
+    values.calcView ? _react2.default.createElement(
+      'div',
+      { className: 'col-sm-12 top-buttons', align: 'right' },
+      _react2.default.createElement(
+        'span',
+        { id: 'cancel-button', className: 'top calcs', onClick: toggleCalcView },
+        'Cancel'
+      ),
+      _react2.default.createElement(
+        'button',
+        { type: 'submit', id: 'save-button', className: 'top', onClick: handleSave },
+        'Save'
+      )
+    ) : null
   );
 };
 
@@ -11137,10 +11379,10 @@ module.exports = __webpack_require__(30);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var global = __webpack_require__(3);
-var has = __webpack_require__(16);
+var has = __webpack_require__(17);
 var DESCRIPTORS = __webpack_require__(8);
 var $export = __webpack_require__(0);
-var redefine = __webpack_require__(18);
+var redefine = __webpack_require__(19);
 var META = __webpack_require__(39).KEY;
 var $fails = __webpack_require__(4);
 var shared = __webpack_require__(70);
@@ -11153,12 +11395,12 @@ var enumKeys = __webpack_require__(200);
 var isArray = __webpack_require__(73);
 var anObject = __webpack_require__(2);
 var isObject = __webpack_require__(5);
-var toIObject = __webpack_require__(21);
+var toIObject = __webpack_require__(22);
 var toPrimitive = __webpack_require__(31);
 var createDesc = __webpack_require__(43);
 var _create = __webpack_require__(48);
 var gOPNExt = __webpack_require__(136);
-var $GOPD = __webpack_require__(22);
+var $GOPD = __webpack_require__(23);
 var $DP = __webpack_require__(9);
 var $keys = __webpack_require__(46);
 var gOPD = $GOPD.f;
@@ -11368,7 +11610,7 @@ $JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
 });
 
 // 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
-$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(17)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
+$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(18)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
 // 19.4.3.5 Symbol.prototype[@@toStringTag]
 setToStringTag($Symbol, 'Symbol');
 // 20.2.1.9 Math[@@toStringTag]
@@ -11442,8 +11684,8 @@ $export($export.S + $export.F * !__webpack_require__(8), 'Object', { definePrope
 
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject = __webpack_require__(21);
-var $getOwnPropertyDescriptor = __webpack_require__(22).f;
+var toIObject = __webpack_require__(22);
+var $getOwnPropertyDescriptor = __webpack_require__(23).f;
 
 __webpack_require__(34)('getOwnPropertyDescriptor', function () {
   return function getOwnPropertyDescriptor(it, key) {
@@ -11460,7 +11702,7 @@ __webpack_require__(34)('getOwnPropertyDescriptor', function () {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
 var toObject = __webpack_require__(11);
-var $getPrototypeOf = __webpack_require__(23);
+var $getPrototypeOf = __webpack_require__(24);
 
 __webpack_require__(34)('getPrototypeOf', function () {
   return function getPrototypeOf(it) {
@@ -11655,7 +11897,7 @@ var classof = __webpack_require__(61);
 var test = {};
 test[__webpack_require__(6)('toStringTag')] = 'z';
 if (test + '' != '[object z]') {
-  __webpack_require__(18)(Object.prototype, 'toString', function toString() {
+  __webpack_require__(19)(Object.prototype, 'toString', function toString() {
     return '[object ' + classof(this) + ']';
   }, true);
 }
@@ -11704,7 +11946,7 @@ NAME in FProto || __webpack_require__(8) && dP(FProto, NAME, {
 
 
 var isObject = __webpack_require__(5);
-var getPrototypeOf = __webpack_require__(23);
+var getPrototypeOf = __webpack_require__(24);
 var HAS_INSTANCE = __webpack_require__(6)('hasInstance');
 var FunctionProto = Function.prototype;
 // 19.2.3.6 Function.prototype[@@hasInstance](V)
@@ -11749,13 +11991,13 @@ $export($export.G + $export.F * (parseFloat != $parseFloat), { parseFloat: $pars
 
 
 var global = __webpack_require__(3);
-var has = __webpack_require__(16);
+var has = __webpack_require__(17);
 var cof = __webpack_require__(28);
 var inheritIfRequired = __webpack_require__(96);
 var toPrimitive = __webpack_require__(31);
 var fails = __webpack_require__(4);
 var gOPN = __webpack_require__(49).f;
-var gOPD = __webpack_require__(22).f;
+var gOPD = __webpack_require__(23).f;
 var dP = __webpack_require__(9).f;
 var $trim = __webpack_require__(55).trim;
 var NUMBER = 'Number';
@@ -11816,7 +12058,7 @@ if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
   }
   $Number.prototype = proto;
   proto.constructor = $Number;
-  __webpack_require__(18)(global, NUMBER, $Number);
+  __webpack_require__(19)(global, NUMBER, $Number);
 }
 
 /***/ }),
@@ -12427,7 +12669,7 @@ $export($export.S + $export.F * (!!$fromCodePoint && $fromCodePoint.length != 1)
 
 
 var $export = __webpack_require__(0);
-var toIObject = __webpack_require__(21);
+var toIObject = __webpack_require__(22);
 var toLength = __webpack_require__(10);
 
 $export($export.S, 'String', {
@@ -12587,7 +12829,7 @@ $export($export.P + $export.F * __webpack_require__(104)(STARTS_WITH), 'String',
 
 // B.2.3.2 String.prototype.anchor(name)
 
-__webpack_require__(19)('anchor', function (createHTML) {
+__webpack_require__(20)('anchor', function (createHTML) {
   return function anchor(name) {
     return createHTML(this, 'a', 'name', name);
   };
@@ -12601,7 +12843,7 @@ __webpack_require__(19)('anchor', function (createHTML) {
 
 // B.2.3.3 String.prototype.big()
 
-__webpack_require__(19)('big', function (createHTML) {
+__webpack_require__(20)('big', function (createHTML) {
   return function big() {
     return createHTML(this, 'big', '', '');
   };
@@ -12615,7 +12857,7 @@ __webpack_require__(19)('big', function (createHTML) {
 
 // B.2.3.4 String.prototype.blink()
 
-__webpack_require__(19)('blink', function (createHTML) {
+__webpack_require__(20)('blink', function (createHTML) {
   return function blink() {
     return createHTML(this, 'blink', '', '');
   };
@@ -12629,7 +12871,7 @@ __webpack_require__(19)('blink', function (createHTML) {
 
 // B.2.3.5 String.prototype.bold()
 
-__webpack_require__(19)('bold', function (createHTML) {
+__webpack_require__(20)('bold', function (createHTML) {
   return function bold() {
     return createHTML(this, 'b', '', '');
   };
@@ -12643,7 +12885,7 @@ __webpack_require__(19)('bold', function (createHTML) {
 
 // B.2.3.6 String.prototype.fixed()
 
-__webpack_require__(19)('fixed', function (createHTML) {
+__webpack_require__(20)('fixed', function (createHTML) {
   return function fixed() {
     return createHTML(this, 'tt', '', '');
   };
@@ -12657,7 +12899,7 @@ __webpack_require__(19)('fixed', function (createHTML) {
 
 // B.2.3.7 String.prototype.fontcolor(color)
 
-__webpack_require__(19)('fontcolor', function (createHTML) {
+__webpack_require__(20)('fontcolor', function (createHTML) {
   return function fontcolor(color) {
     return createHTML(this, 'font', 'color', color);
   };
@@ -12671,7 +12913,7 @@ __webpack_require__(19)('fontcolor', function (createHTML) {
 
 // B.2.3.8 String.prototype.fontsize(size)
 
-__webpack_require__(19)('fontsize', function (createHTML) {
+__webpack_require__(20)('fontsize', function (createHTML) {
   return function fontsize(size) {
     return createHTML(this, 'font', 'size', size);
   };
@@ -12685,7 +12927,7 @@ __webpack_require__(19)('fontsize', function (createHTML) {
 
 // B.2.3.9 String.prototype.italics()
 
-__webpack_require__(19)('italics', function (createHTML) {
+__webpack_require__(20)('italics', function (createHTML) {
   return function italics() {
     return createHTML(this, 'i', '', '');
   };
@@ -12699,7 +12941,7 @@ __webpack_require__(19)('italics', function (createHTML) {
 
 // B.2.3.10 String.prototype.link(url)
 
-__webpack_require__(19)('link', function (createHTML) {
+__webpack_require__(20)('link', function (createHTML) {
   return function link(url) {
     return createHTML(this, 'a', 'href', url);
   };
@@ -12713,7 +12955,7 @@ __webpack_require__(19)('link', function (createHTML) {
 
 // B.2.3.11 String.prototype.small()
 
-__webpack_require__(19)('small', function (createHTML) {
+__webpack_require__(20)('small', function (createHTML) {
   return function small() {
     return createHTML(this, 'small', '', '');
   };
@@ -12727,7 +12969,7 @@ __webpack_require__(19)('small', function (createHTML) {
 
 // B.2.3.12 String.prototype.strike()
 
-__webpack_require__(19)('strike', function (createHTML) {
+__webpack_require__(20)('strike', function (createHTML) {
   return function strike() {
     return createHTML(this, 'strike', '', '');
   };
@@ -12741,7 +12983,7 @@ __webpack_require__(19)('strike', function (createHTML) {
 
 // B.2.3.13 String.prototype.sub()
 
-__webpack_require__(19)('sub', function (createHTML) {
+__webpack_require__(20)('sub', function (createHTML) {
   return function sub() {
     return createHTML(this, 'sub', '', '');
   };
@@ -12755,7 +12997,7 @@ __webpack_require__(19)('sub', function (createHTML) {
 
 // B.2.3.14 String.prototype.sup()
 
-__webpack_require__(19)('sup', function (createHTML) {
+__webpack_require__(20)('sup', function (createHTML) {
   return function sup() {
     return createHTML(this, 'sup', '', '');
   };
@@ -12858,7 +13100,7 @@ var TO_STRING = 'toString';
 var $toString = DateProto[TO_STRING];
 var getTime = DateProto.getTime;
 if (new Date(NaN) + '' != INVALID_DATE) {
-  __webpack_require__(18)(DateProto, TO_STRING, function toString() {
+  __webpack_require__(19)(DateProto, TO_STRING, function toString() {
     var value = getTime.call(this);
     // eslint-disable-next-line no-self-compare
     return value === value ? $toString.call(this) : INVALID_DATE;
@@ -12875,7 +13117,7 @@ if (new Date(NaN) + '' != INVALID_DATE) {
 var TO_PRIMITIVE = __webpack_require__(6)('toPrimitive');
 var proto = Date.prototype;
 
-if (!(TO_PRIMITIVE in proto)) __webpack_require__(17)(proto, TO_PRIMITIVE, __webpack_require__(281));
+if (!(TO_PRIMITIVE in proto)) __webpack_require__(18)(proto, TO_PRIMITIVE, __webpack_require__(281));
 
 /***/ }),
 /* 281 */
@@ -12987,7 +13229,7 @@ $export($export.S + $export.F * __webpack_require__(4)(function () {
 // 22.1.3.13 Array.prototype.join(separator)
 
 var $export = __webpack_require__(0);
-var toIObject = __webpack_require__(21);
+var toIObject = __webpack_require__(22);
 var arrayJoin = [].join;
 
 // fallback for not array-like strings
@@ -13039,7 +13281,7 @@ $export($export.P + $export.F * __webpack_require__(4)(function () {
 
 
 var $export = __webpack_require__(0);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var toObject = __webpack_require__(11);
 var fails = __webpack_require__(4);
 var $sort = [].sort;
@@ -13232,7 +13474,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(29)($nati
 
 
 var $export = __webpack_require__(0);
-var toIObject = __webpack_require__(21);
+var toIObject = __webpack_require__(22);
 var toInteger = __webpack_require__(33);
 var toLength = __webpack_require__(10);
 var $native = [].lastIndexOf;
@@ -13384,7 +13626,7 @@ if (__webpack_require__(8) && (!CORRECT_NEW || __webpack_require__(4)(function (
     proxy(keys[i++]);
   }proto.constructor = $RegExp;
   $RegExp.prototype = proto;
-  __webpack_require__(18)(global, 'RegExp', $RegExp);
+  __webpack_require__(19)(global, 'RegExp', $RegExp);
 }
 
 __webpack_require__(50)('RegExp');
@@ -13404,7 +13646,7 @@ var TO_STRING = 'toString';
 var $toString = /./[TO_STRING];
 
 var define = function define(fn) {
-  __webpack_require__(18)(RegExp.prototype, TO_STRING, fn, true);
+  __webpack_require__(19)(RegExp.prototype, TO_STRING, fn, true);
 };
 
 // 21.2.5.14 RegExp.prototype.toString()
@@ -13564,7 +13806,7 @@ var ctx = __webpack_require__(27);
 var classof = __webpack_require__(61);
 var $export = __webpack_require__(0);
 var isObject = __webpack_require__(5);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var anInstance = __webpack_require__(51);
 var forOf = __webpack_require__(52);
 var speciesConstructor = __webpack_require__(78);
@@ -14044,7 +14286,7 @@ __webpack_require__(36)('Float64', 8, function (init) {
 
 // 26.1.1 Reflect.apply(target, thisArgument, argumentsList)
 var $export = __webpack_require__(0);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var anObject = __webpack_require__(2);
 var rApply = (__webpack_require__(3).Reflect || {}).apply;
 var fApply = Function.apply;
@@ -14069,7 +14311,7 @@ $export($export.S + $export.F * !__webpack_require__(4)(function () {
 // 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
 var $export = __webpack_require__(0);
 var create = __webpack_require__(48);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var anObject = __webpack_require__(2);
 var isObject = __webpack_require__(5);
 var fails = __webpack_require__(4);
@@ -14159,7 +14401,7 @@ $export($export.S + $export.F * __webpack_require__(4)(function () {
 
 // 26.1.4 Reflect.deleteProperty(target, propertyKey)
 var $export = __webpack_require__(0);
-var gOPD = __webpack_require__(22).f;
+var gOPD = __webpack_require__(23).f;
 var anObject = __webpack_require__(2);
 
 $export($export.S, 'Reflect', {
@@ -14212,9 +14454,9 @@ $export($export.S, 'Reflect', {
 
 
 // 26.1.6 Reflect.get(target, propertyKey [, receiver])
-var gOPD = __webpack_require__(22);
-var getPrototypeOf = __webpack_require__(23);
-var has = __webpack_require__(16);
+var gOPD = __webpack_require__(23);
+var getPrototypeOf = __webpack_require__(24);
+var has = __webpack_require__(17);
 var $export = __webpack_require__(0);
 var isObject = __webpack_require__(5);
 var anObject = __webpack_require__(2);
@@ -14237,7 +14479,7 @@ $export($export.S, 'Reflect', { get: get });
 
 
 // 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
-var gOPD = __webpack_require__(22);
+var gOPD = __webpack_require__(23);
 var $export = __webpack_require__(0);
 var anObject = __webpack_require__(2);
 
@@ -14256,7 +14498,7 @@ $export($export.S, 'Reflect', {
 
 // 26.1.8 Reflect.getPrototypeOf(target)
 var $export = __webpack_require__(0);
-var getProto = __webpack_require__(23);
+var getProto = __webpack_require__(24);
 var anObject = __webpack_require__(2);
 
 $export($export.S, 'Reflect', {
@@ -14345,9 +14587,9 @@ $export($export.S, 'Reflect', {
 
 // 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
 var dP = __webpack_require__(9);
-var gOPD = __webpack_require__(22);
-var getPrototypeOf = __webpack_require__(23);
-var has = __webpack_require__(16);
+var gOPD = __webpack_require__(23);
+var getPrototypeOf = __webpack_require__(24);
+var has = __webpack_require__(17);
 var $export = __webpack_require__(0);
 var createDesc = __webpack_require__(43);
 var anObject = __webpack_require__(2);
@@ -14429,7 +14671,7 @@ var $export = __webpack_require__(0);
 var flattenIntoArray = __webpack_require__(160);
 var toObject = __webpack_require__(11);
 var toLength = __webpack_require__(10);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var arraySpeciesCreate = __webpack_require__(108);
 
 $export($export.P, 'Array', {
@@ -14622,8 +14864,8 @@ __webpack_require__(90)('observable');
 // https://github.com/tc39/proposal-object-getownpropertydescriptors
 var $export = __webpack_require__(0);
 var ownKeys = __webpack_require__(159);
-var toIObject = __webpack_require__(21);
-var gOPD = __webpack_require__(22);
+var toIObject = __webpack_require__(22);
+var gOPD = __webpack_require__(23);
 var createProperty = __webpack_require__(106);
 
 $export($export.S, 'Object', {
@@ -14685,7 +14927,7 @@ $export($export.S, 'Object', {
 
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(11);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var $defineProperty = __webpack_require__(9);
 
 // B.2.2.2 Object.prototype.__defineGetter__(P, getter)
@@ -14704,7 +14946,7 @@ __webpack_require__(8) && $export($export.P + __webpack_require__(81), 'Object',
 
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(11);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var $defineProperty = __webpack_require__(9);
 
 // B.2.2.3 Object.prototype.__defineSetter__(P, setter)
@@ -14724,8 +14966,8 @@ __webpack_require__(8) && $export($export.P + __webpack_require__(81), 'Object',
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(11);
 var toPrimitive = __webpack_require__(31);
-var getPrototypeOf = __webpack_require__(23);
-var getOwnPropertyDescriptor = __webpack_require__(22).f;
+var getPrototypeOf = __webpack_require__(24);
+var getOwnPropertyDescriptor = __webpack_require__(23).f;
 
 // B.2.2.4 Object.prototype.__lookupGetter__(P)
 __webpack_require__(8) && $export($export.P + __webpack_require__(81), 'Object', {
@@ -14749,8 +14991,8 @@ __webpack_require__(8) && $export($export.P + __webpack_require__(81), 'Object',
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(11);
 var toPrimitive = __webpack_require__(31);
-var getPrototypeOf = __webpack_require__(23);
-var getOwnPropertyDescriptor = __webpack_require__(22).f;
+var getPrototypeOf = __webpack_require__(24);
+var getOwnPropertyDescriptor = __webpack_require__(23).f;
 
 // B.2.2.5 Object.prototype.__lookupSetter__(P)
 __webpack_require__(8) && $export($export.P + __webpack_require__(81), 'Object', {
@@ -15209,7 +15451,7 @@ metadata.exp({ deleteMetadata: function deleteMetadata(metadataKey, target /* , 
 
 var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
-var getPrototypeOf = __webpack_require__(23);
+var getPrototypeOf = __webpack_require__(24);
 var ordinaryHasOwnMetadata = metadata.has;
 var ordinaryGetOwnMetadata = metadata.get;
 var toMetaKey = metadata.key;
@@ -15236,7 +15478,7 @@ var Set = __webpack_require__(155);
 var from = __webpack_require__(164);
 var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
-var getPrototypeOf = __webpack_require__(23);
+var getPrototypeOf = __webpack_require__(24);
 var ordinaryOwnMetadataKeys = metadata.keys;
 var toMetaKey = metadata.key;
 
@@ -15293,7 +15535,7 @@ metadata.exp({ getOwnMetadataKeys: function getOwnMetadataKeys(target /* , targe
 
 var metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
-var getPrototypeOf = __webpack_require__(23);
+var getPrototypeOf = __webpack_require__(24);
 var ordinaryHasOwnMetadata = metadata.has;
 var toMetaKey = metadata.key;
 
@@ -15333,7 +15575,7 @@ metadata.exp({ hasOwnMetadata: function hasOwnMetadata(metadataKey, target /* , 
 
 var $metadata = __webpack_require__(37);
 var anObject = __webpack_require__(2);
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var toMetaKey = $metadata.key;
 var ordinaryDefineOwnMetadata = $metadata.set;
 
@@ -15376,11 +15618,11 @@ var global = __webpack_require__(3);
 var core = __webpack_require__(30);
 var microtask = __webpack_require__(112)();
 var OBSERVABLE = __webpack_require__(6)('observable');
-var aFunction = __webpack_require__(14);
+var aFunction = __webpack_require__(15);
 var anObject = __webpack_require__(2);
 var anInstance = __webpack_require__(51);
 var redefineAll = __webpack_require__(53);
-var hide = __webpack_require__(17);
+var hide = __webpack_require__(18);
 var forOf = __webpack_require__(52);
 var RETURN = forOf.RETURN;
 
@@ -15630,9 +15872,9 @@ $export($export.G + $export.B, {
 
 var $iterators = __webpack_require__(110);
 var getKeys = __webpack_require__(46);
-var redefine = __webpack_require__(18);
+var redefine = __webpack_require__(19);
 var global = __webpack_require__(3);
-var hide = __webpack_require__(17);
+var hide = __webpack_require__(18);
 var Iterators = __webpack_require__(56);
 var wks = __webpack_require__(6);
 var ITERATOR = wks('iterator');
@@ -16458,7 +16700,7 @@ var _reactDom = __webpack_require__(402);
 
 var _reactRouterDom = __webpack_require__(38);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _store = __webpack_require__(461);
 
@@ -23230,7 +23472,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -23917,7 +24159,7 @@ var _warning = __webpack_require__(13);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -24233,7 +24475,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -24327,7 +24569,7 @@ var _warning = __webpack_require__(13);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -24683,7 +24925,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -24963,7 +25205,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -25540,11 +25782,11 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -25673,7 +25915,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -25681,7 +25923,7 @@ var _warning = __webpack_require__(13);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -25864,7 +26106,7 @@ var _warning = __webpack_require__(13);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -26188,7 +26430,7 @@ var _warning = __webpack_require__(13);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -26739,7 +26981,7 @@ var _warning = __webpack_require__(13);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -26747,7 +26989,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -26977,7 +27219,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -26985,7 +27227,7 @@ var _warning = __webpack_require__(13);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _invariant = __webpack_require__(24);
+var _invariant = __webpack_require__(25);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -27133,7 +27375,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -27204,7 +27446,7 @@ exports.createProvider = createProvider;
 
 var _react = __webpack_require__(1);
 
-var _propTypes = __webpack_require__(15);
+var _propTypes = __webpack_require__(16);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -28642,7 +28884,7 @@ exports.default = reducer;
 "use strict";
 
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 var bind = __webpack_require__(190);
 var Axios = __webpack_require__(466);
 var defaults = __webpack_require__(127);
@@ -28730,7 +28972,7 @@ function isSlowBuffer(obj) {
 
 
 var defaults = __webpack_require__(127);
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 var InterceptorManager = __webpack_require__(475);
 var dispatchRequest = __webpack_require__(476);
 
@@ -28814,7 +29056,7 @@ module.exports = Axios;
 "use strict";
 
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -28886,7 +29128,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 "use strict";
 
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 
 function encode(val) {
   return encodeURIComponent(val).replace(/%40/gi, '@').replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, '+').replace(/%5B/gi, '[').replace(/%5D/gi, ']');
@@ -28953,7 +29195,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 "use strict";
 
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 
 // Headers whose duplicates are ignored by node
 // c.f. https://nodejs.org/api/http.html#http_message_headers
@@ -29009,7 +29251,7 @@ module.exports = function parseHeaders(headers) {
 "use strict";
 
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 
 module.exports = utils.isStandardBrowserEnv() ?
 
@@ -29119,7 +29361,7 @@ module.exports = btoa;
 "use strict";
 
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 
 module.exports = utils.isStandardBrowserEnv() ?
 
@@ -29178,7 +29420,7 @@ function nonStandardBrowserEnv() {
 "use strict";
 
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -29236,7 +29478,7 @@ module.exports = InterceptorManager;
 "use strict";
 
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 var transformData = __webpack_require__(477);
 var isCancel = __webpack_require__(193);
 var defaults = __webpack_require__(127);
@@ -29309,7 +29551,7 @@ module.exports = function dispatchRequest(config) {
 "use strict";
 
 
-var utils = __webpack_require__(25);
+var utils = __webpack_require__(26);
 
 /**
  * Transform the data for a request or a response
@@ -29532,27 +29774,27 @@ var _Buyout = __webpack_require__(496);
 
 var _Buyout2 = _interopRequireDefault(_Buyout);
 
-var _DealerDashboard = __webpack_require__(498);
+var _DealerDashboard = __webpack_require__(499);
 
 var _DealerDashboard2 = _interopRequireDefault(_DealerDashboard);
 
-var _BranchDashboard = __webpack_require__(499);
+var _BranchDashboard = __webpack_require__(500);
 
 var _BranchDashboard2 = _interopRequireDefault(_BranchDashboard);
 
-var _RegionDashboard = __webpack_require__(500);
+var _RegionDashboard = __webpack_require__(501);
 
 var _RegionDashboard2 = _interopRequireDefault(_RegionDashboard);
 
-var _UserDashboard = __webpack_require__(501);
+var _UserDashboard = __webpack_require__(502);
 
 var _UserDashboard2 = _interopRequireDefault(_UserDashboard);
 
-var _User = __webpack_require__(502);
+var _User = __webpack_require__(503);
 
 var _User2 = _interopRequireDefault(_User);
 
-var _Alerts = __webpack_require__(504);
+var _Alerts = __webpack_require__(505);
 
 var _Alerts2 = _interopRequireDefault(_Alerts);
 
@@ -29601,7 +29843,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(38);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _loginReducer = __webpack_require__(189);
 
@@ -29705,6 +29947,9 @@ var LogInContainer = function (_React$Component) {
             _this2.props.loadRegionsThunk(res.data.token);
             _this2.props.loadUsersThunk(res.data.token);
           }
+
+          // wipe alerts on a successful login
+          _this2.props.handleAlert();
         } else {
           _this2.props.throwAlert('red', res.data);
         }
@@ -29737,6 +29982,7 @@ var LogInContainer = function (_React$Component) {
     key: 'logOut',
     value: function logOut(e) {
       // empty redux store
+      this.props.handleAlert();
       this.props.flushToken();
       this.props.flushApps();
       this.props.flushByos();
@@ -29792,7 +30038,7 @@ var mapDispatchToProps = {
   loadCustomersThunk: _customerReducer.loadCustomersThunk, flushCustomers: _customerReducer.flushCustomers,
   loadUsersThunk: _usersReducer.loadUsersThunk, flushUsers: _usersReducer.flushUsers,
   loadLeasesThunk: _leaseReducer.loadLeasesThunk, flushLeases: _leaseReducer.flushLeases,
-  throwAlert: _alertReducer.throwAlert
+  throwAlert: _alertReducer.throwAlert, handleAlert: _alertReducer.handleAlert
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _reactRouterDom.withRouter)(LogInContainer));
@@ -29814,7 +30060,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(38);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30054,7 +30300,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _Menu = __webpack_require__(58);
 
@@ -30062,7 +30308,7 @@ var _Menu2 = _interopRequireDefault(_Menu);
 
 var _appReducer = __webpack_require__(67);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30110,7 +30356,7 @@ var ApplicationsContainer = function (_React$Component) {
     key: 'handleSort',
     value: function handleSort(e) {
       this.props.sortApps(e.target.id.split('-'));
-      this.setState({ sortingBy: e.target.id });
+      // this.setState({sortingBy: e.target.id})
     }
   }, {
     key: 'handleResubmit',
@@ -30202,7 +30448,7 @@ var ApplicationsContainer = function (_React$Component) {
             { className: 'app-table' },
             _react2.default.createElement(
               'div',
-              { className: 'app-header-bottom', key: 'head' },
+              { className: 'app-header-bottom' + (this.props.reverse ? ' reverse' : ''), key: 'head' },
               _react2.default.createElement(
                 'span',
                 { id: 'date', className: this.props.sort.join('-') === "date" ? 'date sorting' : 'date sortable', onClick: this.handleSort },
@@ -30308,7 +30554,12 @@ var ApplicationsContainer = function (_React$Component) {
                   'span',
                   { id: app.id, className: 'options edit', onClick: _this4.handleResubmit },
                   'Resubmit'
-                )
+                ),
+                _this4.props.user.level !== 'Admin' && app.status !== 'Expired' && app.status !== 'Draft' ? _react2.default.createElement(
+                  'span',
+                  { id: app.id, className: 'options floating-resubmit', onClick: _this4.handleResubmit },
+                  'Resubmit'
+                ) : null
               );
             })
           )
@@ -30325,7 +30576,8 @@ var mapStateToProps = function mapStateToProps(state) {
     token: state.login.token,
     user: state.login.user,
     apps: state.app.apps,
-    sort: state.app.sort
+    sort: state.app.sort,
+    reverse: state.app.reverse
   };
 };
 
@@ -30350,7 +30602,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _axios = __webpack_require__(12);
 
@@ -30366,9 +30618,11 @@ var _buyoutReducer = __webpack_require__(68);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -30391,11 +30645,15 @@ var ApplicationContainer = function (_React$Component) {
       mailBody: '',
       mailSubject: '',
       mailCC: '',
+      mailAttachments: [],
+      focusedAttachment: '',
       mailDisabled: false,
       adminMode: false,
       adminView: _this.props.user ? _this.props.user.level === 'Admin' : false,
       lightbox: false,
-      expiryTemp: ''
+      expiryTemp: '',
+      upload: null,
+      note: ''
     }, _this.props.app);
 
     _this.handleByoLink = _this.handleByoLink.bind(_this);
@@ -30420,6 +30678,7 @@ var ApplicationContainer = function (_React$Component) {
     _this.generateErrors = _this.generateErrors.bind(_this);
     _this.handleSave = _this.handleSave.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
+    _this.handleResubmit = _this.handleResubmit.bind(_this);
     _this.handleDelete = _this.handleDelete.bind(_this);
 
     _this.handleCheckbox = _this.handleCheckbox.bind(_this);
@@ -30436,6 +30695,14 @@ var ApplicationContainer = function (_React$Component) {
 
     _this.toggleAdminView = _this.toggleAdminView.bind(_this);
     _this.toggleLightbox = _this.toggleLightbox.bind(_this);
+
+    _this.handleChangeInPDFNote = _this.handleChangeInPDFNote.bind(_this);
+    _this.handleDeletePDF = _this.handleDeletePDF.bind(_this);
+    _this.handleChoosePDF = _this.handleChoosePDF.bind(_this);
+    _this.handleUploadPDF = _this.handleUploadPDF.bind(_this);
+
+    _this.handleAddAttachment = _this.handleAddAttachment.bind(_this);
+    _this.handleRemoveAttachment = _this.handleRemoveAttachment.bind(_this);
 
     return _this;
   }
@@ -30641,6 +30908,18 @@ var ApplicationContainer = function (_React$Component) {
       }
     }
   }, {
+    key: 'handleResubmit',
+    value: function handleResubmit(e) {
+      // nevermind, not even using this
+      e.preventDefault();
+      this.props.saveAppThunk(this.props.token, [this.state, {
+        status: 'Draft',
+        date: null,
+        expiry: null,
+        amount: (0, _utility.checkFor$)(this.state.amount)
+      }], [this.state.customer]);
+    }
+  }, {
     key: 'handleDelete',
     value: function handleDelete(e) {
       var _this4 = this;
@@ -30677,6 +30956,7 @@ var ApplicationContainer = function (_React$Component) {
         to: this.state.rep.email,
         // to: 'tatan42@gmail.com',
         cc: this.state.mailCC.split(', '),
+        attachments: this.state.mailAttachments,
         subject: this.state.mailSubject,
         html: this.state.mailBody
       }).then(function (res) {
@@ -30685,7 +30965,7 @@ var ApplicationContainer = function (_React$Component) {
         _this5.setState({ mailDisabled: false });
         if (res.data.accepted) {
           _this5.props.throwAlert('green', 'Message sent');
-          _this5.setState({ mailSubject: '', mailBody: '', mailCC: '' });
+          _this5.setState({ mailSubject: '', mailBody: '', mailCC: '', mailAttachments: [] });
         } else _this5.props.throwAlert('red', 'Message not sent');
 
         return _axios2.default.post('/api/logs/new', { token: _this5.props.token, date: (0, _utility.getDate)(), activity: '<b>' + _this5.props.user.fullName + '<b> notified rep ' + _this5.state.rep.fullName + ' that application ' + _this5.state.action.appNumber + ' to ' + _this5.state.action.leasingCompany + ' was ' + _this5.state.action.status, action: _this5.state.action, app: _this5.state.id, expiry: _this5.state.expiryTemp });
@@ -30813,6 +31093,69 @@ var ApplicationContainer = function (_React$Component) {
       });
     }
   }, {
+    key: 'handleDeletePDF',
+    value: function handleDeletePDF(e) {
+      var _this9 = this;
+
+      // let pdfs = Array.from(this.state.pdfs)
+
+      // this.props.saveByoThunk(this.props.token, [this.state, {pdfNotes, pdfs}], [this.state.customer])
+      _axios2.default.delete('/api/uploads/' + e.target.id + '?access_token=' + this.props.token).then(function (res) {
+        console.log(res.data);
+        _this9.props.loadAppsThunk(_this9.props.token);
+      });
+    }
+  }, {
+    key: 'handleChangeInPDFNote',
+    value: function handleChangeInPDFNote(e) {
+      this.setState({ note: e.target.value });
+    }
+  }, {
+    key: 'handleChoosePDF',
+    value: function handleChoosePDF(e) {
+      this.setState({ upload: e.target.files[0] });
+    }
+  }, {
+    key: 'handleUploadPDF',
+    value: function handleUploadPDF(e) {
+      var _this10 = this;
+
+      e.preventDefault();
+      if (this.state.upload) {
+        var formData = new FormData();
+        formData.append('file', this.state.upload);
+        formData.append('note', this.state.note);
+        _axios2.default.post('/api/uploads/app/' + this.state.id + '?access_token=' + this.props.token, formData, { 'content-type': 'multipart/form-data' }).then(function (res) {
+          if (res.data.color) _this10.props.throwAlert(res.data.color, res.data.message);else console.log(res.data);
+          _this10.props.loadAppsThunk(_this10.props.token);
+        }).catch(function (err) {
+          console.error(err);
+        });
+        this.setState({ upload: null });
+      }
+    }
+  }, {
+    key: 'handleAddAttachment',
+    value: function handleAddAttachment(e) {
+      e.preventDefault();
+      var attachments = this.state.mailAttachments;
+      attachments.push(this.state.pdfs[Number(this.state.focusedAttachment)]);
+      this.setState({
+        focusedAttachment: '',
+        mailAttachments: attachments
+      });
+    }
+  }, {
+    key: 'handleRemoveAttachment',
+    value: function handleRemoveAttachment(e) {
+      e.preventDefault();
+      var attachments = this.state.mailAttachments;
+      attachments = [].concat(_toConsumableArray(attachments.slice(0, Number(e.target.id))), _toConsumableArray(attachments.slice(Number(e.target.id) + 1)));
+      this.setState({
+        mailAttachments: attachments
+      });
+    }
+  }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(newProps) {
       // console.log('component receiving props')
@@ -30872,6 +31215,7 @@ var ApplicationContainer = function (_React$Component) {
         _react2.default.createElement(_EditApplication2.default, {
           values: this.state,
           errors: errors,
+          token: this.props.token,
           iAmAuthor: this.props.user ? this.props.user.email === this.state.rep.email : false,
           admin: this.props.user ? this.props.user.level === 'Admin' : false,
           customers: this.props.customers ? this.props.customers.map(function (customer) {
@@ -30891,6 +31235,7 @@ var ApplicationContainer = function (_React$Component) {
           handleChangeInCustomer: this.handleChangeInCustomer,
           handleSave: disabled ? this.generateErrors(errors) : this.handleSave,
           handleSubmit: disabled ? this.generateErrors(errors) : this.handleSubmit,
+          handleResubmit: disabled ? this.generateErrors(errors) : this.handleResubmit,
           handleDelete: this.handleDelete,
           handleChangeCustomer: this.handleChangeCustomer,
           handleCheckbox: this.handleCheckbox,
@@ -30904,7 +31249,13 @@ var ApplicationContainer = function (_React$Component) {
           handleSaveAndNotify: this.handleSaveAndNotify,
           handleAdminMode: this.handleAdminMode,
           toggleAdminView: this.toggleAdminView,
-          toggleLightbox: this.toggleLightbox
+          toggleLightbox: this.toggleLightbox,
+          handleChangeInPDFNote: this.handleChangeInPDFNote,
+          handleDeletePDF: this.handleDeletePDF,
+          handleChoosePDF: this.handleChoosePDF,
+          handleUploadPDF: this.handleUploadPDF,
+          handleAddAttachment: this.handleAddAttachment,
+          handleRemoveAttachment: this.handleRemoveAttachment
         })
       );
     }
@@ -30950,7 +31301,7 @@ var _AdminActivity = __webpack_require__(195);
 
 var _AdminActivity2 = _interopRequireDefault(_AdminActivity);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30959,6 +31310,7 @@ exports.default = function (_ref) {
       errors = _ref.errors,
       iAmAuthor = _ref.iAmAuthor,
       admin = _ref.admin,
+      token = _ref.token,
       customers = _ref.customers,
       leases = _ref.leases,
       count = _ref.count,
@@ -30974,6 +31326,7 @@ exports.default = function (_ref) {
       handleChangeInCustomer = _ref.handleChangeInCustomer,
       handleSave = _ref.handleSave,
       handleSubmit = _ref.handleSubmit,
+      handleResubmit = _ref.handleResubmit,
       handleDelete = _ref.handleDelete,
       handleCheckbox = _ref.handleCheckbox,
       handleChangeCustomer = _ref.handleChangeCustomer,
@@ -30987,10 +31340,17 @@ exports.default = function (_ref) {
       handleSaveAndNotify = _ref.handleSaveAndNotify,
       handleAdminMode = _ref.handleAdminMode,
       toggleAdminView = _ref.toggleAdminView,
-      toggleLightbox = _ref.toggleLightbox;
+      toggleLightbox = _ref.toggleLightbox,
+      handleChangeInPDFNote = _ref.handleChangeInPDFNote,
+      handleDeletePDF = _ref.handleDeletePDF,
+      handleChoosePDF = _ref.handleChoosePDF,
+      handleUploadPDF = _ref.handleUploadPDF,
+      handleAddAttachment = _ref.handleAddAttachment,
+      handleRemoveAttachment = _ref.handleRemoveAttachment;
   return admin && values.adminView ? _react2.default.createElement(_AdminActivity2.default, {
     mode: 'app',
     values: values,
+    token: token,
     count: count,
     handleChange: handleChange,
     handleNote: handleNote,
@@ -31002,7 +31362,13 @@ exports.default = function (_ref) {
     handleSaveAndNotify: handleSaveAndNotify,
     toggleAdminView: toggleAdminView,
     toggleLightbox: toggleLightbox,
-    formatTerm: formatTerm
+    formatTerm: formatTerm,
+    handleChangeInPDFNote: handleChangeInPDFNote,
+    handleDeletePDF: handleDeletePDF,
+    handleChoosePDF: handleChoosePDF,
+    handleUploadPDF: handleUploadPDF,
+    handleAddAttachment: handleAddAttachment,
+    handleRemoveAttachment: handleRemoveAttachment
   }) : _react2.default.createElement(
     'div',
     { className: 'row edit-apps-page' },
@@ -31217,7 +31583,12 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box' },
-              _react2.default.createElement(
+              admin ? _react2.default.createElement('input', {
+                onChange: handleChange,
+                name: 'expiry',
+                value: values.expiry || '',
+                placeholder: 'MM-DD-YY'
+              }) : _react2.default.createElement(
                 'p',
                 null,
                 values.expiry || ''
@@ -32379,7 +32750,9 @@ exports.default = function (_ref) {
             'button',
             { onClick: handleSubmit, type: 'submit', id: 'submit-button' },
             'Submit'
-          ) : null
+          )
+          // : <button onClick={handleResubmit} type="submit" id="submit-button">Resubmit</button>
+          : null
         ) : _react2.default.createElement(
           'div',
           { className: 'col-sm-12 buttons', align: 'right' },
@@ -32415,14 +32788,17 @@ exports.default = function (_ref) {
   var values = _ref.values,
       handleNotify = _ref.handleNotify,
       handleChange = _ref.handleChange,
-      handleAdminMode = _ref.handleAdminMode;
+      handleAdminMode = _ref.handleAdminMode,
+      cancelProtocol = _ref.cancelProtocol,
+      handleAddAttachment = _ref.handleAddAttachment,
+      handleRemoveAttachment = _ref.handleRemoveAttachment;
   return _react2.default.createElement(
     "div",
     { className: "row lightbox-content" },
     _react2.default.createElement(
       "div",
-      { id: "edit-" + values.action.index, className: "exit-lightbox", onClick: handleAdminMode },
-      _react2.default.createElement("img", { id: "edit-" + values.action.index, src: "/assets/img/Cross_Reverse.svg" })
+      { id: cancelProtocol, className: "exit-lightbox", onClick: handleAdminMode },
+      _react2.default.createElement("img", { id: cancelProtocol, src: "/assets/img/Cross_Reverse.svg" })
     ),
     _react2.default.createElement(
       "div",
@@ -32524,6 +32900,72 @@ exports.default = function (_ref) {
                 _react2.default.createElement(
                   "label",
                   null,
+                  "Attachments"
+                )
+              ),
+              _react2.default.createElement(
+                "div",
+                { className: "field-box" },
+                _react2.default.createElement(
+                  "select",
+                  {
+                    name: "focusedAttachment",
+                    value: values.focusedAttachment,
+                    onChange: handleChange
+                  },
+                  _react2.default.createElement(
+                    "option",
+                    { key: 0, value: "" },
+                    "Select a pdf to upload"
+                  ),
+                  values.pdfs.map(function (pdf, index) {
+                    return _react2.default.createElement(
+                      "option",
+                      { key: index + 1, value: index },
+                      pdf.name
+                    );
+                  })
+                ),
+                _react2.default.createElement(
+                  "span",
+                  { className: "attach-btn", onClick: handleAddAttachment },
+                  "Add"
+                )
+              ),
+              _react2.default.createElement(
+                "div",
+                { className: "attache" },
+                values.mailAttachments.map(function (attachment, index) {
+                  return _react2.default.createElement(
+                    "div",
+                    { key: index },
+                    _react2.default.createElement(
+                      "span",
+                      null,
+                      attachment.name
+                    ),
+                    _react2.default.createElement(
+                      "span",
+                      { id: index, onClick: handleRemoveAttachment },
+                      "Remove"
+                    )
+                  );
+                })
+              )
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "row" },
+            _react2.default.createElement(
+              "div",
+              { className: "col-sm-12" },
+              _react2.default.createElement(
+                "div",
+                { className: "field-label" },
+                _react2.default.createElement(
+                  "label",
+                  null,
                   "Message"
                 )
               ),
@@ -32542,7 +32984,7 @@ exports.default = function (_ref) {
               { className: "col-sm-6", align: "left" },
               _react2.default.createElement(
                 "span",
-                { id: "edit-" + values.action.index, className: "cancel-button", onClick: handleAdminMode },
+                { id: cancelProtocol, className: "cancel-button", onClick: handleAdminMode },
                 "Cancel"
               )
             ),
@@ -33755,16 +34197,21 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (_ref) {
   var values = _ref.values,
-      toggleCalcView = _ref.toggleCalcView,
       handleCalcs = _ref.handleCalcs,
-      toggleMachines = _ref.toggleMachines,
-      count = _ref.count;
+      handleCascade = _ref.handleCascade,
+      handleTaxes = _ref.handleTaxes,
+      handleNewMachine = _ref.handleNewMachine,
+      handleChangeInMachine = _ref.handleChangeInMachine,
+      handleRemoveMachine = _ref.handleRemoveMachine;
+
+  var lease = values.leases[values.calcTarget];
+  var workbook = lease.workbook;
   return _react2.default.createElement(
     'div',
     { className: 'col-sm-9' },
@@ -33791,28 +34238,17 @@ exports.default = function (_ref) {
               _react2.default.createElement(
                 'label',
                 null,
-                'Lease Company'
+                'Lease Number'
               )
             ),
             _react2.default.createElement(
               'div',
               { className: 'field-box' },
               _react2.default.createElement(
-                'datalist',
-                { id: 'leaseCompanies' },
-                _react2.default.createElement('option', { value: 'EverBank' }),
-                _react2.default.createElement('option', { value: 'DLL' }),
-                _react2.default.createElement('option', { value: 'Wells' }),
-                _react2.default.createElement('option', { value: 'USB' }),
-                _react2.default.createElement('option', { value: 'CIT' }),
-                _react2.default.createElement('option', { value: 'Marlin' }),
-                _react2.default.createElement('option', { value: 'Balboa' }),
-                _react2.default.createElement('option', { value: 'EMR' }),
-                _react2.default.createElement('option', { value: 'Leaf' }),
-                _react2.default.createElement('option', { value: 'Great America' }),
-                _react2.default.createElement('option', { value: 'PNC' })
-              ),
-              _react2.default.createElement('input', { list: 'leaseCompanies', name: 'leaseCompany', value: values.calcs.leaseCompany || '', onChange: handleCalcs, autoComplete: 'new-password' })
+                'div',
+                null,
+                lease.number
+              )
             )
           ),
           _react2.default.createElement(
@@ -33824,13 +34260,17 @@ exports.default = function (_ref) {
               _react2.default.createElement(
                 'label',
                 null,
-                'Lease Number'
+                'Lease Company'
               )
             ),
             _react2.default.createElement(
               'div',
               { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'leaseNumber', value: values.calcs.leaseNumber || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement(
+                'div',
+                null,
+                lease.company
+              )
             )
           )
         ),
@@ -33852,7 +34292,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'startDate', value: values.calcs.startDate || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'startDate', value: workbook.startDate || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           ),
           _react2.default.createElement(
@@ -33870,7 +34310,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'originalTerm', value: values.calcs.originalTerm || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'originalTerm', value: workbook.originalTerm || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           )
         ),
@@ -33892,7 +34332,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'endDate', value: values.calcs.endDate || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'endDate', value: workbook.endDate || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           ),
           _react2.default.createElement(
@@ -33910,7 +34350,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'remainingTerm', value: values.calcs.remainingTerm || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'remainingTerm', value: workbook.remainingTerm || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           )
         ),
@@ -33932,7 +34372,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'currentEquipmentPayment', value: values.calcs.currentEquipmentPayment || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'currentEquipmentPayment', value: workbook.currentEquipmentPayment || '', onChange: handleCascade, autoComplete: 'new-password' })
             )
           )
         ),
@@ -33954,7 +34394,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'currentServicePayment', value: values.calcs.currentServicePayment || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'currentServicePayment', value: workbook.currentServicePayment || '', onChange: handleCascade, autoComplete: 'new-password' })
             )
           )
         ),
@@ -33976,7 +34416,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'passThroughService', value: values.calcs.passThroughService || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'passThroughService', value: workbook.passThroughService || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           ),
           _react2.default.createElement(
@@ -33998,7 +34438,7 @@ exports.default = function (_ref) {
                 'div',
                 null,
                 '$',
-                (0, _utility.sum)(values.calcs.currentEquipmentPayment, values.calcs.currentServicePayment, values.calcs.passThroughService)
+                (0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentServicePayment, workbook.passThroughService)
               )
             )
           )
@@ -34030,7 +34470,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'companyUtk', value: values.calcs.companyUtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'companyUtk', value: workbook.companyUtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           ),
           _react2.default.createElement(
@@ -34048,7 +34488,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'companyBtk', value: values.calcs.companyBtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'companyBtk', value: workbook.companyBtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           )
         ),
@@ -34070,7 +34510,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'companyUtr', value: values.calcs.companyUtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'companyUtr', value: workbook.companyUtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           ),
           _react2.default.createElement(
@@ -34088,7 +34528,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'companyBtr', value: values.calcs.companyBtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'companyBtr', value: workbook.companyBtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           )
         ),
@@ -34104,13 +34544,13 @@ exports.default = function (_ref) {
               _react2.default.createElement(
                 'label',
                 null,
-                '%'
+                'Percentage'
               )
             ),
             _react2.default.createElement(
               'div',
-              { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'percentage', value: values.calcs.percentage || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              { className: 'field-box percentage' },
+              _react2.default.createElement('input', { name: 'percentage', value: workbook.percentage || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           ),
           _react2.default.createElement(
@@ -34132,7 +34572,7 @@ exports.default = function (_ref) {
                 'div',
                 null,
                 '$',
-                (0, _utility.round)((0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100))
+                (0, _utility.round)((0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100))
               )
             )
           ),
@@ -34155,7 +34595,7 @@ exports.default = function (_ref) {
                 'div',
                 null,
                 '$',
-                (0, _utility.round)((0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService))
+                (0, _utility.round)((0, _utility.product)(workbook.remainingTerm, workbook.passThroughService))
               )
             )
           ),
@@ -34174,7 +34614,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'smua', value: values.calcs.smua || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'smua', value: workbook.smua || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           )
         )
@@ -34214,7 +34654,7 @@ exports.default = function (_ref) {
                 'div',
                 null,
                 '$',
-                (0, _utility.round)((0, _utility.sum)(values.calcs.companyUtk, (0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100), (0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService), values.calcs.smua))
+                (0, _utility.round)((0, _utility.sum)(workbook.companyUtk, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua))
               )
             )
           ),
@@ -34237,7 +34677,7 @@ exports.default = function (_ref) {
                 'div',
                 null,
                 '$',
-                (0, _utility.round)((0, _utility.sum)(values.calcs.companyBtk, (0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100), (0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService), values.calcs.smua))
+                (0, _utility.round)((0, _utility.sum)(workbook.companyBtk, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua))
               )
             )
           )
@@ -34264,7 +34704,7 @@ exports.default = function (_ref) {
                 'div',
                 null,
                 '$',
-                (0, _utility.round)((0, _utility.sum)(values.calcs.companyUtr, (0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100), (0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService), values.calcs.smua))
+                (0, _utility.round)((0, _utility.sum)(workbook.companyUtr, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua))
               )
             )
           ),
@@ -34287,7 +34727,7 @@ exports.default = function (_ref) {
                 'div',
                 null,
                 '$',
-                (0, _utility.round)((0, _utility.sum)(values.calcs.companyBtr, (0, _utility.product)(values.calcs.remainingTerm, values.calcs.currentServicePayment, values.calcs.percentage / 100), (0, _utility.product)(values.calcs.remainingTerm, values.calcs.passThroughService), values.calcs.smua))
+                (0, _utility.round)((0, _utility.sum)(workbook.companyBtr, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua))
               )
             )
           )
@@ -34315,7 +34755,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'customerBtk', value: values.calcs.customerBtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'customerBtk', value: workbook.customerBtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           )
         ),
@@ -34337,7 +34777,7 @@ exports.default = function (_ref) {
             _react2.default.createElement(
               'div',
               { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'customerBtr', value: values.calcs.customerBtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              _react2.default.createElement('input', { name: 'customerBtr', value: workbook.customerBtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
             )
           )
         )
@@ -34345,6 +34785,30 @@ exports.default = function (_ref) {
       _react2.default.createElement(
         'div',
         { className: 'app-bg breakdown col-sm-12' },
+        _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2 col-sm-offset-6' },
+            _react2.default.createElement('input', { className: 'sm-input rightput', name: 'upfrontTax', value: workbook.upfrontTax || '', onChange: handleTaxes, autoComplete: 'new-password' }),
+            _react2.default.createElement(
+              'span',
+              null,
+              '%'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            _react2.default.createElement('input', { className: 'sm-input rightput', name: 'monthlyTax', value: workbook.monthlyTax || '', onChange: handleTaxes, autoComplete: 'new-password' }),
+            _react2.default.createElement(
+              'span',
+              null,
+              '%'
+            )
+          )
+        ),
         _react2.default.createElement(
           'div',
           { className: 'row' },
@@ -34370,12 +34834,7 @@ exports.default = function (_ref) {
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
-            _react2.default.createElement('input', { className: 'sm-input rightput', name: 'taxRate', value: values.calcs.taxRate || '', onChange: handleCalcs, autoComplete: 'new-password' }),
-            _react2.default.createElement(
-              'span',
-              null,
-              '% Tax'
-            )
+            'Monthly Tax'
           ),
           _react2.default.createElement(
             'div',
@@ -34402,14 +34861,20 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.sum)(values.calcs.currentEquipmentPayment)
+              (0, _utility.sum)(workbook.currentEquipmentPayment)
             )
           ),
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
             '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'upfrontTax', value: values.calcs.upfrontTax || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            _react2.default.createElement('input', { className: 'sm-input', name: 'currentEquipmentPaymentUpfront', value: workbook.currentEquipmentPaymentUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-2' },
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'currentEquipmentPaymentMonthly', value: workbook.currentEquipmentPaymentMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
@@ -34418,17 +34883,7 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.round)((0, _utility.sum)((0, _utility.product)(values.calcs.currentEquipmentPayment, values.calcs.taxRate / 100), (0, _utility.product)(values.calcs.upfrontTax, values.calcs.taxRate / 100)))
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            _react2.default.createElement(
-              'div',
-              null,
-              '$',
-              (0, _utility.round)((0, _utility.sum)(values.calcs.currentEquipmentPayment, (0, _utility.product)(values.calcs.currentEquipmentPayment, values.calcs.taxRate / 100), values.calcs.upfrontTax, (0, _utility.product)(values.calcs.upfrontTax, values.calcs.taxRate / 100)))
+              (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentEquipmentPaymentUpfront, workbook.currentEquipmentPaymentMonthly))
             )
           )
         ),
@@ -34451,18 +34906,20 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.sum)(values.calcs.currentServicePayment)
+              (0, _utility.sum)(workbook.currentServicePayment)
             )
           ),
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
-            _react2.default.createElement('div', null)
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'currentServicePaymentUpfront', value: workbook.currentServicePaymentUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
-            _react2.default.createElement('div', null)
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'currentServicePaymentMonthly', value: workbook.currentServicePaymentMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
@@ -34471,7 +34928,7 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.sum)(values.calcs.currentServicePayment)
+              (0, _utility.round)((0, _utility.sum)(workbook.currentServicePayment, workbook.currentServicePaymentUpfront, workbook.currentServicePaymentMonthly))
             )
           )
         ),
@@ -34491,17 +34948,19 @@ exports.default = function (_ref) {
             'div',
             { className: 'col-sm-2' },
             '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'fuelFreight', value: values.calcs.fuelFreight || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            _react2.default.createElement('input', { className: 'sm-input', name: 'fuelFreight', value: workbook.fuelFreight || '', onChange: handleCascade, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
-            _react2.default.createElement('div', null)
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'fuelFreightUpfront', value: workbook.fuelFreightUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
-            _react2.default.createElement('div', null)
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'fuelFreightMonthly', value: workbook.fuelFreightMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
@@ -34510,7 +34969,7 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.sum)(values.calcs.fuelFreight)
+              (0, _utility.round)((0, _utility.sum)(workbook.fuelFreight, workbook.fuelFreightUpfront, workbook.fuelFreightMonthly))
             )
           )
         ),
@@ -34530,17 +34989,19 @@ exports.default = function (_ref) {
             'div',
             { className: 'col-sm-2' },
             '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'lateCharges', value: values.calcs.lateCharges || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            _react2.default.createElement('input', { className: 'sm-input', name: 'lateCharges', value: workbook.lateCharges || '', onChange: handleCascade, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
-            _react2.default.createElement('div', null)
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'lateChargesUpfront', value: workbook.lateChargesUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
-            _react2.default.createElement('div', null)
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'lateChargesMonthly', value: workbook.lateChargesMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
@@ -34549,7 +35010,7 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.sum)(values.calcs.lateCharges)
+              (0, _utility.round)((0, _utility.sum)(workbook.lateCharges, workbook.lateChargesUpfront, workbook.lateChargesMonthly))
             )
           )
         ),
@@ -34569,17 +35030,19 @@ exports.default = function (_ref) {
             'div',
             { className: 'col-sm-2' },
             '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'miscItems', value: values.calcs.miscItems || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            _react2.default.createElement('input', { className: 'sm-input', name: 'miscItems', value: workbook.miscItems || '', onChange: handleCascade, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
-            _react2.default.createElement('div', null)
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'miscItemsUpfront', value: workbook.miscItemsUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
             { className: 'col-sm-2' },
-            _react2.default.createElement('div', null)
+            '$',
+            _react2.default.createElement('input', { className: 'sm-input', name: 'miscItemsMonthly', value: workbook.miscItemsMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
           ),
           _react2.default.createElement(
             'div',
@@ -34588,7 +35051,7 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.sum)(values.calcs.miscItems)
+              (0, _utility.round)((0, _utility.sum)(workbook.miscItems, workbook.miscItemsUpfront, workbook.miscItemsMonthly))
             )
           )
         ),
@@ -34602,7 +35065,7 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.sum)(values.calcs.currentEquipmentPayment, values.calcs.currentServicePayment, values.calcs.fuelFreight, values.calcs.lateCharges, values.calcs.miscItems)
+              (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentServicePayment, workbook.fuelFreight, workbook.lateCharges, workbook.miscItems))
             )
           ),
           _react2.default.createElement(
@@ -34612,7 +35075,7 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.sum)(values.calcs.upfrontTax)
+              (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPaymentUpfront, workbook.currentServicePaymentUpfront, workbook.fuelFreightUpfront, workbook.lateChargesUpfront, workbook.miscItemsUpfront))
             )
           ),
           _react2.default.createElement(
@@ -34622,7 +35085,7 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.round)((0, _utility.sum)((0, _utility.product)(values.calcs.currentEquipmentPayment, values.calcs.taxRate / 100), (0, _utility.product)(values.calcs.upfrontTax, values.calcs.taxRate / 100)))
+              (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPaymentMonthly, workbook.currentServicePaymentMonthly, workbook.fuelFreightMonthly, workbook.lateChargesMonthly, workbook.miscItemsMonthly))
             )
           ),
           _react2.default.createElement(
@@ -34632,12 +35095,12 @@ exports.default = function (_ref) {
               'div',
               null,
               '$',
-              (0, _utility.round)((0, _utility.sum)(values.calcs.currentEquipmentPayment, (0, _utility.product)(values.calcs.currentEquipmentPayment, values.calcs.taxRate / 100), values.calcs.upfrontTax, (0, _utility.product)(values.calcs.upfrontTax, values.calcs.taxRate / 100), values.calcs.currentServicePayment, values.calcs.fuelFreight, values.calcs.lateCharges, values.calcs.miscItems))
+              (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentEquipmentPaymentUpfront, workbook.currentEquipmentPaymentMonthly, workbook.currentServicePayment, workbook.currentServicePaymentUpfront, workbook.currentServicePaymentMonthly, workbook.fuelFreight, workbook.fuelFreightUpfront, workbook.fuelFreightMonthly, workbook.lateCharges, workbook.lateChargesUpfront, workbook.lateChargesMonthly, workbook.miscItems, workbook.miscItemsUpfront, workbook.miscItemsMonthly))
             )
           )
         )
       ),
-      values.leases ? _react2.default.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'app-bg col-sm-12' },
         _react2.default.createElement(
@@ -34647,166 +35110,145 @@ exports.default = function (_ref) {
         ),
         _react2.default.createElement(
           'div',
-          { className: 'col-sm-12 labels lease-label' },
+          { className: 'row' },
           _react2.default.createElement(
             'div',
-            { className: 'col-sm-10 col-sm-offset-1 no-gutters' },
-            _react2.default.createElement(
-              'label',
-              { className: 'col-sm-5', id: 'lease-margin' },
-              'Lease Number'
-            ),
-            _react2.default.createElement(
-              'label',
-              { className: 'col-sm-5' },
-              'Lease Company'
-            )
-          )
-        ),
-        values.leases.map(function (lease, index) {
-          return !lease.delete ? _react2.default.createElement(
-            'div',
-            { key: 'lease-' + index, className: 'col-sm-12 lease-input' },
+            { className: 'col-sm-12 no-gutters' },
             _react2.default.createElement(
               'div',
-              { className: 'col-sm-1' },
+              { className: 'col-sm-12 no-gutters labels machine-label' },
               _react2.default.createElement(
                 'label',
-                { className: 'index-number' },
-                count++
-              )
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'col-sm-10 field-row no-gutters' },
-              _react2.default.createElement(
-                'div',
-                { className: 'col-sm-5' },
-                _react2.default.createElement(
-                  'span',
-                  null,
-                  lease.number || ''
-                )
+                { className: 'col-sm-2 condense-gutters' },
+                'Serial #'
               ),
               _react2.default.createElement(
-                'div',
-                { className: 'col-sm-5' },
-                _react2.default.createElement(
-                  'span',
-                  null,
-                  lease.company || ''
-                )
+                'label',
+                { className: 'col-sm-2 condense-gutters' },
+                'Make'
               ),
               _react2.default.createElement(
-                'div',
-                { className: 'col-sm-2' },
-                _react2.default.createElement(
-                  'span',
-                  { className: 'oneline' },
-                  lease.quote + ' Quote' || ''
-                )
-              )
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'col-sm-10 col-sm-offset-1 no-gutters' },
-              _react2.default.createElement(
-                'div',
-                { className: 'col-sm-4' },
-                lease.quote === 'Partial' ? _react2.default.createElement(
-                  'button',
-                  { id: index + '-machines', onClick: toggleMachines, className: 'machine show-button' },
-                  lease.displayMachines ? 'Hide Machines' : 'Show Machines'
-                ) : ''
-              )
-            ),
-            lease.quote === 'Partial' && lease.displayMachines ? _react2.default.createElement(
-              'div',
-              { className: 'col-sm-12 no-gutters' },
-              _react2.default.createElement(
-                'div',
-                { className: 'col-sm-12 no-gutters labels machine-label' },
-                _react2.default.createElement(
-                  'label',
-                  { className: 'col-sm-2 col-sm-offset-1 condense-gutters' },
-                  'Serial #'
-                ),
-                _react2.default.createElement(
-                  'label',
-                  { className: 'col-sm-2 condense-gutters' },
-                  'Make'
-                ),
-                _react2.default.createElement(
-                  'label',
-                  { className: 'col-sm-2 condense-gutters' },
-                  'Model'
-                ),
-                _react2.default.createElement(
-                  'label',
-                  { className: 'col-sm-2 condense-gutters' },
-                  'Location'
-                ),
-                _react2.default.createElement(
-                  'label',
-                  { className: 'col-sm-2 condense-gutters' },
-                  'Action'
-                )
+                'label',
+                { className: 'col-sm-3 condense-gutters' },
+                'Model'
               ),
-              lease.machines.map(function (machine, mIndex) {
-                return !machine.delete ? _react2.default.createElement(
+              _react2.default.createElement(
+                'label',
+                { className: 'col-sm-2 condense-gutters' },
+                'Location'
+              ),
+              _react2.default.createElement(
+                'label',
+                { className: 'col-sm-2 condense-gutters' },
+                'Action'
+              )
+            ),
+            lease.machines.map(function (machine, index) {
+              return !machine.delete ? _react2.default.createElement(
+                'div',
+                { key: 'lease-' + index + '-machine-' + index, className: 'col-sm-12 no-gutters machine-input' },
+                _react2.default.createElement(
                   'div',
-                  { key: 'lease-' + index + '-machine-' + mIndex, className: 'col-sm-12 no-gutters machine-input' },
+                  { className: 'col-sm-2 condense-gutters' },
+                  _react2.default.createElement('input', {
+                    onChange: handleChangeInMachine,
+                    id: values.calcTarget + '-' + index + '-serial',
+                    value: machine.serial || '',
+                    autoComplete: 'new-password'
+                  })
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'col-sm-2 condense-gutters' },
+                  _react2.default.createElement('input', {
+                    onChange: handleChangeInMachine,
+                    id: values.calcTarget + '-' + index + '-make',
+                    value: machine.make || '',
+                    autoComplete: 'new-password'
+                  })
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'col-sm-3 condense-gutters' },
+                  _react2.default.createElement('input', {
+                    onChange: handleChangeInMachine,
+                    id: values.calcTarget + '-' + index + '-model',
+                    value: machine.model || '',
+                    autoComplete: 'new-password'
+                  })
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'col-sm-2 condense-gutters' },
+                  _react2.default.createElement('input', {
+                    onChange: handleChangeInMachine,
+                    id: values.calcTarget + '-' + index + '-location',
+                    value: machine.location || '',
+                    autoComplete: 'new-password'
+                  })
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'col-sm-2 condense-gutters' },
                   _react2.default.createElement(
-                    'div',
-                    { className: 'col-sm-2 col-sm-offset-1 condense-gutters' },
+                    'select',
+                    {
+                      onChange: handleChangeInMachine,
+                      id: values.calcTarget + '-' + index + '-action',
+                      value: machine.action || '',
+                      autoComplete: 'new-password'
+                    },
                     _react2.default.createElement(
-                      'p',
-                      null,
-                      machine.serial
-                    )
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'col-sm-2 condense-gutters' },
+                      'option',
+                      { value: 'Release' },
+                      'Release'
+                    ),
                     _react2.default.createElement(
-                      'p',
-                      null,
-                      machine.make
-                    )
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'col-sm-2 condense-gutters' },
+                      'option',
+                      { value: 'Upgrade to Keep' },
+                      'Upgrade to Keep'
+                    ),
                     _react2.default.createElement(
-                      'p',
-                      null,
-                      machine.model
-                    )
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'col-sm-2 condense-gutters' },
+                      'option',
+                      { value: 'Upgrade to Return' },
+                      'Upgrade to Return'
+                    ),
                     _react2.default.createElement(
-                      'p',
-                      null,
-                      machine.location
-                    )
-                  ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'col-sm-2 condense-gutters' },
+                      'option',
+                      { value: 'Buyout to Keep' },
+                      'Buyout to Keep'
+                    ),
                     _react2.default.createElement(
-                      'p',
-                      null,
-                      machine.action
+                      'option',
+                      { value: 'Buyout to Return' },
+                      'Buyout to Return'
+                    ),
+                    _react2.default.createElement(
+                      'option',
+                      { value: 'Leave on Lease' },
+                      'Leave on Lease'
                     )
                   )
-                ) : null;
-              })
-            ) : null
-          ) : null;
-        })
-      ) : null,
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'col-sm-1' },
+                  _react2.default.createElement('button', { value: values.calcTarget + '-' + index, onClick: handleRemoveMachine, className: 'remove-button' })
+                )
+              ) : null;
+            }),
+            _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(
+                'button',
+                { id: values.calcTarget + '-newMachine', onClick: handleNewMachine, className: 'machine add-button' },
+                'Add Machine'
+              )
+            )
+          )
+        )
+      ),
       _react2.default.createElement(
         'div',
         { className: 'app-bg col-sm-12' },
@@ -34826,7 +35268,7 @@ exports.default = function (_ref) {
               { className: 'field-desc' },
               _react2.default.createElement('textarea', {
                 name: 'notes',
-                value: values.calcs.notes || '',
+                value: workbook.notes || '',
                 onChange: handleCalcs, autoComplete: 'new-password'
               })
             )
@@ -34854,7 +35296,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _axios = __webpack_require__(12);
 
@@ -34866,7 +35308,7 @@ var _Menu2 = _interopRequireDefault(_Menu);
 
 var _buyoutReducer = __webpack_require__(68);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34913,7 +35355,7 @@ var BuyoutsContainer = function (_React$Component) {
     key: 'handleSort',
     value: function handleSort(e) {
       this.props.sortByos(e.target.id.split('-'));
-      this.setState({ sortingBy: e.target.id });
+      // this.setState({sortingBy: e.target.id})
     }
   }, {
     key: 'handleResubmit',
@@ -35008,11 +35450,16 @@ var BuyoutsContainer = function (_React$Component) {
               null,
               _react2.default.createElement(
                 'tr',
-                { className: 'app-header-bottom', key: 'head' },
+                { className: 'app-header-bottom' + (this.props.reverse ? ' reverse' : ''), key: 'head' },
                 _react2.default.createElement(
                   'td',
                   { id: 'date', className: this.props.sort.join('-') === "date" ? 'sorting' : 'sortable', onClick: this.handleSort },
                   'Date Submitted'
+                ),
+                _react2.default.createElement(
+                  'td',
+                  { id: 'leases-0-number', className: this.props.sort.join('-') === "leases-0-number" ? 'sorting' : 'sortable', onClick: this.handleSort },
+                  'Lease Number(s)'
                 ),
                 _react2.default.createElement(
                   'td',
@@ -35039,7 +35486,8 @@ var BuyoutsContainer = function (_React$Component) {
                   { id: 'rep-fullName', className: this.props.sort.join('-') === "rep-fullName" ? 'sorting' : 'sortable', onClick: this.handleSort },
                   'Rep Name'
                 ),
-                _react2.default.createElement('td', { className: 'table-right' })
+                _react2.default.createElement('td', { className: 'table-right' }),
+                this.props.user.level !== 'Admin' ? _react2.default.createElement('td', { className: 'table-right' }) : null
               ),
               this.props.byos.map(function (byo, index) {
                 return _react2.default.createElement(
@@ -35049,6 +35497,13 @@ var BuyoutsContainer = function (_React$Component) {
                     'td',
                     null,
                     (0, _utility.reformatDate)(byo.date)
+                  ),
+                  _react2.default.createElement(
+                    'td',
+                    null,
+                    byo.leases ? byo.leases.map(function (lease) {
+                      return lease.number;
+                    }).join(', ') : ''
                   ),
                   _react2.default.createElement(
                     'td',
@@ -35083,7 +35538,12 @@ var BuyoutsContainer = function (_React$Component) {
                     'td',
                     { id: byo.id, className: 'edit table-right', onClick: _this4.handleResubmit },
                     'Resubmit'
-                  )
+                  ),
+                  _this4.props.user.level !== 'Admin' ? byo.status !== 'Expired' && byo.status !== 'Draft' ? _react2.default.createElement(
+                    'td',
+                    { id: byo.id, className: 'edit table-right', onClick: _this4.handleResubmit },
+                    'Resubmit'
+                  ) : _react2.default.createElement('td', { className: 'table-right' }) : null
                 );
               })
             )
@@ -35101,7 +35561,8 @@ var mapStateToProps = function mapStateToProps(state) {
     token: state.login.token,
     user: state.login.user,
     byos: state.byo.byos,
-    sort: state.byo.sort
+    sort: state.byo.sort,
+    reverse: state.byo.reverse
   };
 };
 
@@ -35126,7 +35587,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _axios = __webpack_require__(12);
 
@@ -35142,9 +35603,13 @@ var _appReducer = __webpack_require__(67);
 
 var _alertReducer = __webpack_require__(42);
 
-var _utility = __webpack_require__(26);
+var _utility = __webpack_require__(14);
+
+var _pdf = __webpack_require__(498);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -35167,6 +35632,8 @@ var BuyoutContainer = function (_React$Component) {
       mailBody: '',
       mailSubject: '',
       mailCC: '',
+      mailAttachments: [],
+      focusedAttachment: '',
       mailDisabled: false,
       adminMode: false,
       adminView: _this.props.user ? _this.props.user.level === 'Admin' : false,
@@ -35175,12 +35642,7 @@ var BuyoutContainer = function (_React$Component) {
       expiryTemp: '',
       upload: null,
       note: '',
-      calcs: {
-        percentage: '25',
-        taxRate: '9'
-        // leaseCompany: this.props.byo.leaseCompany,
-        // lease
-      }
+      calcTarget: null
     }, _this.props.byo);
 
     _this.handleAppLink = _this.handleAppLink.bind(_this);
@@ -35206,6 +35668,8 @@ var BuyoutContainer = function (_React$Component) {
     _this.handleDelete = _this.handleDelete.bind(_this);
 
     _this.handleNotify = _this.handleNotify.bind(_this);
+    _this.handleWorkbookNotify = _this.handleWorkbookNotify.bind(_this);
+    _this.handleWorkbookNotifySend = _this.handleWorkbookNotifySend.bind(_this);
 
     _this.handleNote = _this.handleNote.bind(_this);
     _this.handleChangeAction = _this.handleChangeAction.bind(_this);
@@ -35220,11 +35684,17 @@ var BuyoutContainer = function (_React$Component) {
 
     _this.toggleCalcView = _this.toggleCalcView.bind(_this);
     _this.handleCalcs = _this.handleCalcs.bind(_this);
+    _this.handleCascade = _this.handleCascade.bind(_this);
+    _this.handleTaxes = _this.handleTaxes.bind(_this);
+    _this.generatePdf = _this.generatePdf.bind(_this);
 
     _this.handleChangeInPDFNote = _this.handleChangeInPDFNote.bind(_this);
     _this.handleDeletePDF = _this.handleDeletePDF.bind(_this);
     _this.handleChoosePDF = _this.handleChoosePDF.bind(_this);
     _this.handleUploadPDF = _this.handleUploadPDF.bind(_this);
+
+    _this.handleAddAttachment = _this.handleAddAttachment.bind(_this);
+    _this.handleRemoveAttachment = _this.handleRemoveAttachment.bind(_this);
     return _this;
   }
 
@@ -35390,6 +35860,7 @@ var BuyoutContainer = function (_React$Component) {
         make: '',
         model: '',
         location: '',
+        action: 'Release',
         LeaseId: leases[index].id
       });
       this.setState({ 'leases': leases });
@@ -35422,6 +35893,7 @@ var BuyoutContainer = function (_React$Component) {
         to: this.state.rep.email,
         // to: 'tatan42@gmail.com',
         cc: this.state.mailCC.split(', '),
+        attachments: this.state.mailAttachments,
         subject: this.state.mailSubject,
         html: this.state.mailBody
       }).then(function (res) {
@@ -35430,7 +35902,7 @@ var BuyoutContainer = function (_React$Component) {
         _this4.setState({ mailDisabled: false });
         if (res.data.accepted) {
           _this4.props.throwAlert('green', 'Message sent');
-          _this4.setState({ mailSubject: '', mailBody: '', mailCC: '' });
+          _this4.setState({ mailSubject: '', mailBody: '', mailCC: '', mailAttachments: [] });
         } else _this4.props.throwAlert('red', 'Message not sent');
 
         return _axios2.default.post('/api/logs/new', { token: _this4.props.token, date: (0, _utility.getDate)(), activity: '<b>' + _this4.props.user.fullName + '<b> notified rep ' + _this4.state.rep.fullName + ' that application ' + _this4.state.action.appNumber + ' to ' + _this4.state.action.leasingCompany + ' was ' + _this4.state.action.status, action: _this4.state.action, byo: _this4.state.id, expiry: _this4.state.expiryTemp });
@@ -35513,11 +35985,55 @@ var BuyoutContainer = function (_React$Component) {
           expiryTemp: res.data,
           adminMode: 'notify',
           mailSubject: soonToBeSubject,
-          mailBody: soonToBeBody
+          mailBody: soonToBeBody,
+          mailAttachments: []
         });
       }).catch(function (err) {
         console.error(err);
         _this7.props.throwAlert('red', 'Something went wrong');
+      });
+    }
+  }, {
+    key: 'handleWorkbookNotify',
+    value: function handleWorkbookNotify(e) {
+      this.setState({
+        adminMode: 'notifyByo',
+        calcTarget: Number(e.target.id.slice(6)),
+        mailSubject: '',
+        mailBody: '',
+        mailAttachments: [],
+        mailCC: this.state.rep.manager ? this.state.rep.manager.email : ''
+      });
+    }
+  }, {
+    key: 'handleWorkbookNotifySend',
+    value: function handleWorkbookNotifySend(e) {
+      var _this8 = this;
+
+      e.preventDefault();
+      this.setState({ mailDisabled: true });
+
+      _axios2.default.post('/api/mail', {
+        token: this.props.token,
+        // to: this.state.rep.email,
+        to: 'tatan42@gmail.com',
+        cc: this.state.mailCC.split(', '),
+        attachments: this.state.mailAttachments,
+        subject: this.state.mailSubject,
+        html: this.state.mailBody
+      }).then(function (res) {
+        _this8.setState({ mailDisabled: false });
+        if (res.data.accepted) {
+          _this8.props.throwAlert('green', 'Message sent');
+          _this8.setState({ mailSubject: '', mailBody: '', mailCC: '', mailAttachments: [] });
+        } else _this8.props.throwAlert('red', 'Message not sent');
+
+        return _axios2.default.post('/api/logs/new2', { token: _this8.props.token, date: (0, _utility.getDate)(), activity: '<b>' + _this8.props.user.fullName + '<b> notified rep ' + _this8.state.rep.fullName + ' about lease ' + _this8.state.leases[_this8.state.calcTarget].number, action: _this8.state.action, byo: _this8.state.id }).then(function (res) {
+          _this8.props.loadByosThunk(_this8.props.token);
+          _this8.setState({ adminMode: 'byo', calcTarget: null });
+        }).catch(function (err) {
+          return console.error(err);
+        });
       });
     }
   }, {
@@ -35534,6 +36050,11 @@ var BuyoutContainer = function (_React$Component) {
             date: (0, _utility.getDate)(),
             buyoutId: this.state.id
           }
+        });
+      } else if (e.target.id === 'cancel-notify') {
+        this.setState({
+          adminMode: 'byo',
+          calcTarget: null
         });
       } else {
         var index = e.target.id.split('-')[1];
@@ -35561,28 +36082,61 @@ var BuyoutContainer = function (_React$Component) {
     key: 'toggleCalcView',
     value: function toggleCalcView(e) {
       e.preventDefault();
+      var currentView = this.state.calcView;
       this.setState({
-        calcView: !this.state.calcView
+        calcTarget: currentView ? false : Number(e.target.id.slice(6)),
+        calcView: !currentView
       });
+      if (!currentView) {
+        this.props.loadByosThunk(this.props.token);
+      }
     }
   }, {
     key: 'handleCalcs',
     value: function handleCalcs(e) {
-      var calcs = Object.assign({}, this.state.calcs);
-      calcs[e.target.name] = e.target.value;
-      this.setState({ 'calcs': calcs });
+      var leases = Array.from(this.state.leases);
+      leases[this.state.calcTarget].workbook[e.target.name] = e.target.value;
+      this.setState({ 'leases': leases });
+    }
+  }, {
+    key: 'handleCascade',
+    value: function handleCascade(e) {
+      var name = e.target.name;
+      var leases = Array.from(this.state.leases);
+      leases[this.state.calcTarget].workbook[name] = e.target.value;
+      leases[this.state.calcTarget].workbook[name + 'Upfront'] = (0, _utility.round)((0, _utility.product)(e.target.value, leases[this.state.calcTarget].workbook.upfrontTax / 100));
+      leases[this.state.calcTarget].workbook[name + 'Monthly'] = (0, _utility.round)((0, _utility.product)(e.target.value, leases[this.state.calcTarget].workbook.monthlyTax / 100));
+      this.setState({ 'leases': leases });
+    }
+  }, {
+    key: 'handleTaxes',
+    value: function handleTaxes(e) {
+      var type = e.target.name === 'upfrontTax' ? 'Upfront' : 'Monthly';
+      var leases = Array.from(this.state.leases);
+      leases[this.state.calcTarget].workbook[e.target.name] = e.target.value;
+      leases[this.state.calcTarget].workbook['currentEquipmentPayment' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.currentEquipmentPayment, e.target.value / 100));
+      leases[this.state.calcTarget].workbook['currentServicePayment' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.currentServicePayment, e.target.value / 100));
+      leases[this.state.calcTarget].workbook['fuelFreight' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.fuelFreight, e.target.value / 100));
+      leases[this.state.calcTarget].workbook['lateCharges' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.lateCharges, e.target.value / 100));
+      leases[this.state.calcTarget].workbook['miscItems' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.miscItems, e.target.value / 100));
+      this.setState({ 'leases': leases });
+    }
+  }, {
+    key: 'generatePdf',
+    value: function generatePdf() {
+      (0, _pdf.getPdf)(this.state);
     }
   }, {
     key: 'handleDeletePDF',
     value: function handleDeletePDF(e) {
-      var _this8 = this;
+      var _this9 = this;
 
       // let pdfs = Array.from(this.state.pdfs)
 
       // this.props.saveByoThunk(this.props.token, [this.state, {pdfNotes, pdfs}], [this.state.customer])
       _axios2.default.delete('/api/uploads/' + e.target.id + '?access_token=' + this.props.token).then(function (res) {
         console.log(res.data);
-        _this8.props.loadByosThunk(_this8.props.token);
+        _this9.props.loadByosThunk(_this9.props.token);
       });
     }
   }, {
@@ -35598,7 +36152,7 @@ var BuyoutContainer = function (_React$Component) {
   }, {
     key: 'handleUploadPDF',
     value: function handleUploadPDF(e) {
-      var _this9 = this;
+      var _this10 = this;
 
       e.preventDefault();
       if (this.state.upload) {
@@ -35606,13 +36160,34 @@ var BuyoutContainer = function (_React$Component) {
         formData.append('file', this.state.upload);
         formData.append('note', this.state.note);
         _axios2.default.post('/api/uploads/buyout/' + this.state.id + '?access_token=' + this.props.token, formData, { 'content-type': 'multipart/form-data' }).then(function (res) {
-          if (res.data.color) _this9.props.throwAlert(res.data.color, res.data.message);else console.log(res.data);
-          _this9.props.loadByosThunk(_this9.props.token);
+          if (res.data.color) _this10.props.throwAlert(res.data.color, res.data.message);else console.log(res.data);
+          _this10.props.loadByosThunk(_this10.props.token);
         }).catch(function (err) {
           console.error(err);
         });
         this.setState({ upload: null });
       }
+    }
+  }, {
+    key: 'handleAddAttachment',
+    value: function handleAddAttachment(e) {
+      e.preventDefault();
+      var attachments = this.state.mailAttachments;
+      attachments.push(this.state.pdfs[Number(this.state.focusedAttachment)]);
+      this.setState({
+        focusedAttachment: '',
+        mailAttachments: attachments
+      });
+    }
+  }, {
+    key: 'handleRemoveAttachment',
+    value: function handleRemoveAttachment(e) {
+      e.preventDefault();
+      var attachments = this.state.mailAttachments;
+      attachments = [].concat(_toConsumableArray(attachments.slice(0, Number(e.target.id))), _toConsumableArray(attachments.slice(Number(e.target.id) + 1)));
+      this.setState({
+        mailAttachments: attachments
+      });
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -35653,7 +36228,7 @@ var BuyoutContainer = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      // console.log('state', this.state.pdfs)
+      // console.log('state', this.state)
       var errors = this.validateFields();
       var disabled = Object.keys(errors).some(function (n) {
         return errors[n];
@@ -35690,6 +36265,8 @@ var BuyoutContainer = function (_React$Component) {
           handleChangeInMachine: this.handleChangeInMachine,
           handleRemoveMachine: this.handleRemoveMachine,
           handleNotify: this.handleNotify,
+          handleWorkbookNotify: this.handleWorkbookNotify,
+          handleWorkbookNotifySend: this.handleWorkbookNotifySend,
           handleNote: this.handleNote,
           handleChangeAction: this.handleChangeAction,
           handleActionDelete: this.handleActionDelete,
@@ -35700,10 +36277,15 @@ var BuyoutContainer = function (_React$Component) {
           toggleLightbox: this.toggleLightbox,
           toggleCalcView: this.toggleCalcView,
           handleCalcs: this.handleCalcs,
+          handleCascade: this.handleCascade,
+          handleTaxes: this.handleTaxes,
+          generatePdf: this.generatePdf,
           handleChangeInPDFNote: this.handleChangeInPDFNote,
           handleDeletePDF: this.handleDeletePDF,
           handleChoosePDF: this.handleChoosePDF,
-          handleUploadPDF: this.handleUploadPDF
+          handleUploadPDF: this.handleUploadPDF,
+          handleAddAttachment: this.handleAddAttachment,
+          handleRemoveAttachment: this.handleRemoveAttachment
         })
       );
     }
@@ -35775,6 +36357,8 @@ exports.default = function (_ref) {
       handleChangeInMachine = _ref.handleChangeInMachine,
       handleRemoveMachine = _ref.handleRemoveMachine,
       handleNotify = _ref.handleNotify,
+      handleWorkbookNotify = _ref.handleWorkbookNotify,
+      handleWorkbookNotifySend = _ref.handleWorkbookNotifySend,
       handleNote = _ref.handleNote,
       handleChangeAction = _ref.handleChangeAction,
       handleActionDelete = _ref.handleActionDelete,
@@ -35785,10 +36369,15 @@ exports.default = function (_ref) {
       toggleLightbox = _ref.toggleLightbox,
       toggleCalcView = _ref.toggleCalcView,
       handleCalcs = _ref.handleCalcs,
+      handleCascade = _ref.handleCascade,
+      handleTaxes = _ref.handleTaxes,
+      generatePdf = _ref.generatePdf,
       handleChangeInPDFNote = _ref.handleChangeInPDFNote,
       handleDeletePDF = _ref.handleDeletePDF,
       handleChoosePDF = _ref.handleChoosePDF,
-      handleUploadPDF = _ref.handleUploadPDF;
+      handleUploadPDF = _ref.handleUploadPDF,
+      handleAddAttachment = _ref.handleAddAttachment,
+      handleRemoveAttachment = _ref.handleRemoveAttachment;
   return admin && values.adminView ? _react2.default.createElement(_AdminActivity2.default, {
     mode: 'byo',
     values: values,
@@ -35798,6 +36387,8 @@ exports.default = function (_ref) {
     handleSave: handleSave,
     handleNote: handleNote,
     handleNotify: handleNotify,
+    handleWorkbookNotify: handleWorkbookNotify,
+    handleWorkbookNotifySend: handleWorkbookNotifySend,
     handleAdminMode: handleAdminMode,
     handleActionDelete: handleActionDelete,
     handleChangeAction: handleChangeAction,
@@ -35807,11 +36398,19 @@ exports.default = function (_ref) {
     toggleLightbox: toggleLightbox,
     toggleCalcView: toggleCalcView,
     handleCalcs: handleCalcs,
+    handleCascade: handleCascade,
+    handleTaxes: handleTaxes,
     toggleMachines: toggleMachines,
+    handleNewMachine: handleNewMachine,
+    handleChangeInMachine: handleChangeInMachine,
+    handleRemoveMachine: handleRemoveMachine,
+    generatePdf: generatePdf,
     handleChangeInPDFNote: handleChangeInPDFNote,
     handleDeletePDF: handleDeletePDF,
     handleChoosePDF: handleChoosePDF,
-    handleUploadPDF: handleUploadPDF
+    handleUploadPDF: handleUploadPDF,
+    handleAddAttachment: handleAddAttachment,
+    handleRemoveAttachment: handleRemoveAttachment
   }) : _react2.default.createElement(
     'div',
     { className: 'row edit-byo-page' },
@@ -36672,8 +37271,320 @@ exports.default = function (_ref) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getPdf = undefined;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+var _utility = __webpack_require__(14);
+
+var getDataUri = function getDataUri(url, callback) {
+  var image = new Image();
+  image.onload = function () {
+    var canvas = document.createElement('canvas');
+    canvas.width = this.naturalWidth;
+    canvas.height = this.naturalHeight;
+
+    canvas.getContext('2d').drawImage(this, 0, 0);
+
+    callback(canvas.toDataURL('image/jpg'));
+  };
+  image.src = url;
+};
+
+var getPdf = exports.getPdf = function getPdf(values) {
+  var workbook = values.leases[values.calcTarget].workbook;
+  var machines = values.leases[values.calcTarget].machines.filter(function (machine) {
+    return !machine.delete;
+  });
+
+  // go isn't invoked until logo images load in (see bottom)
+  var go = function go(customer) {
+    var doc = new PDFDocument({ autoFirstPage: false });
+    var stream = doc.pipe(blobStream());
+    if (!customer) {
+      console.log(doc);
+      console.log(values);
+    }
+
+    var docWidth = 612;
+    var docHeight = 792;
+    var margin = 50;
+    var docInnerWidth = docWidth - margin * 2;
+    var halfCol = docInnerWidth / 2;
+    var quarterCol = docInnerWidth / 4;
+
+    doc.addPage({
+      margin: margin
+    });
+
+    // header
+    // discrete function so it can be called at the top of each page
+    var header = function header() {
+      // logos
+      // console.log(aciLogo, dealerLogo)
+      doc.image(aciLogo, docWidth - margin - 120, margin, { width: 120 });
+      if (dealerLogo) doc.image(dealerLogo, margin, margin, { width: 120 });
+      doc.font('Helvetica').fontSize(8);
+      doc.text('myadmincentral.com', { align: 'right' });
+
+      doc.fillColor('#1066a3').font('Helvetica-Bold').fontSize(20);
+      doc.text('Sales Quote', margin, 110);
+
+      // by box
+      doc.rect(357, 80, 205, 48).stroke('#ced0da');
+      doc.fillColor('#000000').fontSize(10);
+      doc.text('Requested by:', 367, 90);
+      doc.text('Manager:', 367, 108);
+      doc.font('Helvetica');
+      doc.text(values.rep.fullName || '', docWidth - margin - 10 - doc.widthOfString(values.rep.fullName), 90);
+      if (values.rep.manager) doc.text(values.rep.manager.fullName || '', docWidth - margin - 10 - doc.widthOfString(values.rep.manager.fullName), 108);
+
+      // customer box
+      doc.rect(margin, 133, docInnerWidth, 94).stroke('#ced0da');
+      doc.moveTo(margin + 10, 193).lineTo(margin + docInnerWidth - 10, 191).stroke('#ced0da');
+      doc.font('Helvetica-Bold');
+      doc.text('Customer Name:', margin + 15, 145);
+      doc.text('Customer Address:', margin + 179, 145);
+      doc.text('Leasing Company:', margin + 358, 145);
+
+      doc.text('Quote Type:', margin + 15, 205);
+      doc.text('Lease Number:', margin + 179, 205);
+      doc.rect(values.leases[values.calcTarget].quote === 'Full' ? 81 + margin : 122 + margin, 205, 8, 8).fillAndStroke('#1066a3', '#1066a3').fillColor('#000000');
+      doc.rect(values.leases[values.calcTarget].quote === 'Full' ? 122 + margin : 81 + margin, 205, 8, 8).stroke('#ced0da');
+
+      doc.font('Helvetica');
+      doc.text('Full', margin + 94, 205);
+      doc.text('Partial', margin + 135, 205);
+
+      if (values.customer) {
+        doc.text(values.customer.name || '', margin + 15, 159, { width: 154 });
+        doc.text(values.customer.address || '', margin + 179, 159, { width: 169 });
+      }
+      doc.text(values.leases[values.calcTarget].company || '', margin + 358, 159, { width: 144 });
+      doc.text(values.leases[values.calcTarget].number || '', margin + 258, 205);
+    };
+    header();
+
+    // term box
+    doc.rect(margin, 232, quarterCol, 411).stroke('#ced0da');
+
+    doc.font('Helvetica-Bold').text('Original term:', margin + 15, 244);
+    doc.rect(margin + 15, 258, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+    doc.font('Helvetica').text(workbook.originalTerm || '', margin + 25, 263);
+
+    doc.font('Helvetica-Bold').text('Remaining Unbilled Payments:', margin + 15, 290, { width: quarterCol - 30 });
+    doc.rect(margin + 15, 318, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+    doc.font('Helvetica').text(workbook.remainingTerm || '', margin + 25, 323);
+
+    doc.font('Helvetica-Bold').text('Payment Amount:', margin + 15, 350);
+    doc.font('Helvetica').text('(pre-tax)', margin + 15, 364);
+    doc.rect(margin + 15, 378, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+    doc.text('$' + workbook.currentEquipmentPayment || '', margin + 25, 383);
+
+    doc.font('Helvetica-Bold').text('Quote Good Through:', margin + 15, 410);
+    doc.rect(margin + 15, 424, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+    doc.font('Helvetica').text(values.expiry || '', margin + 25, 429);
+
+    if (customer) {
+      doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456);
+      doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+      doc.font('Helvetica').text('$' + workbook.customerBtk || '', margin + 25, 475);
+      // doc.font('Helvetica').text((workbook.customerBtk) ? '$' + workbook.customerBtk : 'N/A', margin + 25, 475)
+
+      doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502);
+      doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+      doc.font('Helvetica').text('$' + workbook.customerBtr || '', margin + 25, 521);
+      // doc.font('Helvetica').text((workbook.customerBtr) ? '$' + workbook.customerBtr : 'N/A', margin + 25, 521)
+    } else {
+      doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456);
+      doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+      doc.font('Helvetica').text('$' + (0, _utility.round)((0, _utility.sum)(workbook.companyBtk, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua)), margin + 25, 475);
+
+      doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502);
+      doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+      doc.font('Helvetica').text('$' + (0, _utility.round)((0, _utility.sum)(workbook.companyBtr, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua)), margin + 25, 521);
+
+      doc.font('Helvetica-Bold').text('Upgrade to Keep:', margin + 15, 548);
+      doc.rect(margin + 15, 562, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+      doc.font('Helvetica').text('$' + (0, _utility.round)((0, _utility.sum)(workbook.companyUtk, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua)), margin + 25, 567);
+
+      doc.font('Helvetica-Bold').text('Upgrade to Return:', margin + 15, 594);
+      doc.rect(margin + 15, 608, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+      doc.font('Helvetica').text('$' + (0, _utility.round)((0, _utility.sum)(workbook.companyUtr, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua)), margin + 25, 613);
+    }
+
+    // gear box
+    doc.rect(margin + quarterCol, 232, halfCol + quarterCol, 411).stroke('#ced0da');
+    doc.font('Helvetica-Bold');
+    doc.text('Gear:', margin + quarterCol + 15, 244);
+    if (values.leases[values.calcTarget].quote === 'Full') {
+      doc.text('Serial Number', margin + quarterCol + 212 + 25, 244);
+    } else {
+      doc.text('Serial Number', 357, 244);
+      doc.text('Plan', docWidth - margin - 15 - 82, 244);
+      // doc.text('Plan', margin + quarterCol + 248, 244)
+      // doc.text('Included in', docWidth - margin - 15 - doc.widthOfString('Included in'), 244)
+    }
+
+    doc.font('Helvetica');
+
+    var machineCount = machines.length > 8 ? 7 : 8;
+    machines.slice(0, machineCount).forEach(function (machine, index) {
+      var count = 258 + 20 * index;
+      if (index % 2 === 0) doc.rect(margin + quarterCol + 15, count, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+      doc.text(machine.model || '', margin + quarterCol + 25, count + 5);
+      if (values.leases[values.calcTarget].quote === 'Full') {
+        doc.text(machine.serial || '', margin + quarterCol + 212 + 25, count + 5);
+      } else {
+        doc.text(machine.serial || '', 357, count + 5);
+        doc.text(machine.action, docWidth - margin - 15 - 82, count + 5);
+        // doc.text(machine.action || '', margin + quarterCol + 248, count + 5)
+        // doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
+      }
+    });
+    if (machineCount === 7) {
+      doc.text('Continued on next page', margin + quarterCol + 25, 403);
+    }
+
+    // invoice box
+    doc.moveTo(margin + quarterCol, 432).lineTo(margin + docInnerWidth, 432).stroke('#ced0da');
+    doc.font('Helvetica-Bold');
+    doc.text('Current Invoice Breakdown:', margin + quarterCol + 15, 444);
+    doc.text('Upfront', margin + quarterCol + 15 + 242, 444);
+    doc.text('Monthly', margin + quarterCol + 15 + 314, 444);
+
+    doc.text('Payment', margin + quarterCol + 15 + 170, 460);
+    doc.text('Tax', margin + quarterCol + 15 + 242, 460);
+    doc.text('Tax', margin + quarterCol + 15 + 314, 460);
+
+    doc.font('Helvetica');
+
+    doc.rect(margin + quarterCol + 15, 474, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+    doc.text('Equipment Payment:', margin + quarterCol + 25, 479);
+    doc.text('$' + (0, _utility.monify)(workbook.currentEquipmentPayment, ' - '), margin + quarterCol + 15 + 170, 479);
+    doc.text('$' + (0, _utility.monify)(workbook.currentEquipmentPaymentUpfront, ' - '), margin + quarterCol + 15 + 242, 479);
+    doc.text('$' + (0, _utility.monify)(workbook.currentEquipmentPaymentMonthly, ' - '), margin + quarterCol + 15 + 314, 479);
+
+    doc.text('Service/MA Payment:', margin + quarterCol + 25, 499);
+    doc.text('$' + (0, _utility.monify)(workbook.currentServicePayment, ' - '), margin + quarterCol + 15 + 170, 499);
+    doc.text('$' + (0, _utility.monify)(workbook.currentServicePaymentUpfront, ' - '), margin + quarterCol + 15 + 242, 499);
+    doc.text('$' + (0, _utility.monify)(workbook.currentServicePaymentMonthly, ' - '), margin + quarterCol + 15 + 314, 499);
+
+    doc.rect(margin + quarterCol + 15, 514, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+    doc.text('Fuel/Freight:', margin + quarterCol + 25, 519);
+    doc.text('$' + (0, _utility.monify)(workbook.fuelFreight, ' - '), margin + quarterCol + 15 + 170, 519);
+    doc.text('$' + (0, _utility.monify)(workbook.fuelFreightUpfront, ' - '), margin + quarterCol + 15 + 242, 519);
+    doc.text('$' + (0, _utility.monify)(workbook.fuelFreightMonthly, ' - '), margin + quarterCol + 15 + 314, 519);
+
+    doc.text('Late Charges:', margin + quarterCol + 25, 539);
+    doc.text('$' + (0, _utility.monify)(workbook.lateCharges, ' - '), margin + quarterCol + 15 + 170, 539);
+    doc.text('$' + (0, _utility.monify)(workbook.lateChargesUpfront, ' - '), margin + quarterCol + 15 + 242, 539);
+    doc.text('$' + (0, _utility.monify)(workbook.lateChargesMonthly, ' - '), margin + quarterCol + 15 + 314, 539);
+
+    doc.rect(margin + quarterCol + 15, 554, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+    doc.text('Misc. Items (see Notes):', margin + quarterCol + 25, 559);
+    doc.text('$' + (0, _utility.monify)(workbook.miscItems, ' - '), margin + quarterCol + 15 + 170, 559);
+    doc.text('$' + (0, _utility.monify)(workbook.miscItemsUpfront, ' - '), margin + quarterCol + 15 + 242, 559);
+    doc.text('$' + (0, _utility.monify)(workbook.miscItemsMonthly, ' - '), margin + quarterCol + 15 + 314, 559);
+
+    doc.moveTo(margin + quarterCol + 15, 583).lineTo(margin + docInnerWidth - 15, 583).stroke('#000000');
+    doc.text('$' + (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentServicePayment, workbook.fuelFreight, workbook.lateCharges, workbook.miscItems)), margin + quarterCol + 15 + 170, 594);
+    doc.text('$' + (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPaymentUpfront, workbook.currentServicePaymentUpfront, workbook.fuelFreightUpfront, workbook.lateChargesUpfront, workbook.miscItemsUpfront)), margin + quarterCol + 15 + 242, 594);
+    doc.text('$' + (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPaymentMonthly, workbook.currentServicePaymentMonthly, workbook.fuelFreightMonthly, workbook.lateChargesMonthly, workbook.miscItemsMonthly)), margin + quarterCol + 15 + 314, 594);
+
+    doc.rect(docWidth - margin - 15 - 160, 613, 80, 20).fillAndStroke('#edf5fd', '#ced0da').fillColor('#000000');
+    doc.moveTo(docWidth - margin - 15 - 80, 613).lineTo(docWidth - margin - 15, 613).lineTo(docWidth - margin - 15, 633).lineTo(docWidth - margin - 15 - 80, 633).stroke('#ced0da');
+    doc.font('Helvetica-Bold').text('TOTAL:', docWidth - margin - 15 - 160 + 10, 618);
+
+    var total = (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentEquipmentPaymentUpfront, workbook.currentEquipmentPaymentMonthly, workbook.currentServicePayment, workbook.currentServicePaymentUpfront, workbook.currentServicePaymentMonthly, workbook.fuelFreight, workbook.fuelFreightUpfront, workbook.fuelFreightMonthly, workbook.lateCharges, workbook.lateChargesUpfront, workbook.lateChargesMonthly, workbook.miscItems, workbook.miscItemsUpfront, workbook.miscItemsMonthly));
+    doc.font('Helvetica').text('$' + total, docWidth - margin - 15 - 10 - doc.widthOfString('$' + total), 618);
+
+    // note box
+    doc.rect(margin, 648, docInnerWidth, 94).stroke('#ced0da');
+    doc.font('Helvetica-Bold').text('Notes:', margin + 15, 660);
+    doc.font('Helvetica').text(workbook.notes || '', margin + 15, 676, { width: docInnerWidth - 30 });
+
+    // second page (gear overflow)
+    while (machineCount < machines.length) {
+      doc.addPage({
+        margin: margin
+      });
+      header();
+      doc.rect(margin, 232, docInnerWidth, 510).stroke('#ced0da');
+
+      doc.font('Helvetica-Bold');
+      doc.text('Gear:', margin + 25, 244);
+      doc.text('Serial Number', margin + 179, 244);
+      if (values.leases[values.calcTarget].quote === 'Partial') {
+        doc.text('Plan', docWidth - margin - 15 - 82, 244);
+        // doc.text('Plan', margin + 307, 244)
+        // doc.text('Included in', docWidth - margin - 15 - doc.widthOfString('Included in'), 244)
+      }
+      doc.font('Helvetica');
+
+      // can fit 23 per page
+      machines.slice(machineCount, machineCount + 23).forEach(function (machine, index) {
+        var count = 258 + 20 * index;
+        if (index === 22 && machineCount + 23 < machines.length) {
+          doc.text('Continued on next page', margin + 25, count + 5);
+        } else {
+          if (index === 22) machineCount++; // handling case of exactly 23 remaining machines
+          if (index % 2 === 0) doc.rect(margin + 15, count, docInnerWidth - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000');
+          doc.text(machine.model || '', margin + 25, count + 5);
+          doc.text(machine.serial || '', margin + 179, count + 5);
+          if (values.leases[values.calcTarget].quote === 'Partial') {
+            doc.text(machine.action, docWidth - margin - 15 - 82, count + 5);
+            // doc.text(machine.action || '', margin + 307, count + 5)
+            // doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
+          }
+        }
+      });
+
+      machineCount += 22;
+    }
+
+    doc.end();
+    stream.on('finish', function () {
+      var blob = stream.toBlob('application/pdf');
+      var a = document.createElement('a');
+      var url = URL.createObjectURL(blob);
+      a.href = url;
+
+      a.download = 'Lease-' + values.leases[values.calcTarget].number + '-' + (customer ? 'Customer' : 'Rep') + '-Quote';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 30000);
+    });
+  };
+  // loading logos as data uris
+  var aciLogo = void 0;
+  var dealerLogo = void 0;
+  getDataUri('/assets/img/myadmin_logo_FINAL.png', function (dataUri) {
+    aciLogo = dataUri;
+    if (values.rep.dealer && values.rep.dealer.logo) {
+      getDataUri('/assets/logo/' + values.rep.dealer.logo, function (dataUri) {
+        dealerLogo = dataUri;
+        go(); // rep pdf
+        go('customer'); // customer pdf
+      });
+    } else {
+      go(); // rep pdf
+      go('customer'); // customer pdf
+    }
+  });
+};
+
+/***/ }),
+/* 499 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -36681,7 +37592,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _EditFields = __webpack_require__(131);
 
@@ -36721,31 +37632,56 @@ var DealerContainer = function (_React$Component) {
       street: '',
       city: '',
       state: '',
-      zip: '' });
+      zip: '',
+      logo: '',
+      upload: null });
 
     _this.handleChange = _this.handleChange.bind(_this);
+    _this.handleChoosePDF = _this.handleChoosePDF.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
     _this.handleCancel = _this.handleCancel.bind(_this);
     _this.handleController = _this.handleController.bind(_this);
     _this.handleCreate = _this.handleCreate.bind(_this);
     _this.handleDelete = _this.handleDelete.bind(_this);
+    _this.handleSort = _this.handleSort.bind(_this);
     return _this;
   }
 
   _createClass(DealerContainer, [{
     key: 'handleChange',
     value: function handleChange(e) {
-      var _e$target$name$split = e.target.name.split('-'),
-          _e$target$name$split2 = _slicedToArray(_e$target$name$split, 2),
-          index = _e$target$name$split2[0],
-          field = _e$target$name$split2[1];
-
-      this.setState(_defineProperty({}, e.target.name.split('-')[1], e.target.value));
+      var name = e.target.name.split('-');
+      if (name.length > 2) name[2] = name[2][0].toUpperCase() + name[2].slice(1);
+      this.setState(_defineProperty({}, name.slice(1).join(''), e.target.value));
+    }
+  }, {
+    key: 'handleChoosePDF',
+    value: function handleChoosePDF(e) {
+      this.setState({ upload: e.target.files[0] });
     }
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
+      var _this2 = this;
+
       e.preventDefault();
+      var formData = void 0,
+          callback = void 0;
+
+      if (this.state.upload) {
+        formData = new FormData();
+        formData.append('file', this.state.upload);
+        callback = function callback(id) {
+          _axios2.default.post('/api/uploads/logo/' + id + '?access_token=' + _this2.props.token, formData, { 'content-type': 'multipart/form-data' }).then(function (res) {
+            if (res.data.color) _this2.props.throwAlert(res.data.color, res.data.message);
+            // else console.log(res.data)
+            _this2.props.loadDealersThunk(_this2.props.token);
+          }).catch(function (err) {
+            console.error(err);
+          });
+        };
+      }
+
       if (this.state.create) {
         this.props.createDealerThunk(this.props.token, {
           name: this.state.name,
@@ -36754,9 +37690,8 @@ var DealerContainer = function (_React$Component) {
           city: this.state.city,
           state: this.state.state,
           zip: this.state.zip
-        });
+        }, callback);
       } else {
-        this.setState({ create: false });
         this.props.saveDealerThunk(this.props.token, {
           id: this.props.dealers[this.props.focus].id,
           name: this.state.name,
@@ -36765,13 +37700,14 @@ var DealerContainer = function (_React$Component) {
           city: this.state.city,
           state: this.state.state,
           zip: this.state.zip
-        });
+        }, callback);
       }
+      this.setState({ create: false });
     }
   }, {
     key: 'handleCancel',
     value: function handleCancel(e) {
-      this.setState({ create: false });
+      this.setState({ create: false, upload: null });
       this.props.focusDealer(null);
       this.props.loadDealersThunk(this.props.token);
     }
@@ -36799,7 +37735,8 @@ var DealerContainer = function (_React$Component) {
         street: '',
         city: '',
         state: '',
-        zip: ''
+        zip: '',
+        logo: ''
       });
       this.props.createDealer({
         name: '',
@@ -36807,21 +37744,29 @@ var DealerContainer = function (_React$Component) {
         street: '',
         city: '',
         state: '',
-        zip: ''
+        zip: '',
+        logo: ''
       });
     }
   }, {
     key: 'handleDelete',
     value: function handleDelete(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
 
       _axios2.default.put('/api/dealers/delete', { token: this.props.token, dealer: e.target.value }).then(function (res) {
-        _this2.props.loadDealersThunk(_this2.props.token);
+        _this3.props.loadDealersThunk(_this3.props.token);
       }).catch(function (err) {
         return console.error(err);
       });
+    }
+  }, {
+    key: 'handleSort',
+    value: function handleSort(e) {
+      // need to cancel any open forms b/c otherwise there are unintended side effects
+      if (this.props.focus) this.handleCancel();
+      this.props.sortDealers(e.target.id.split('-'));
     }
   }, {
     key: 'componentWillMount',
@@ -36836,6 +37781,7 @@ var DealerContainer = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      // console.log(this.props)
       return _react2.default.createElement(
         'div',
         { className: 'ex-table' },
@@ -36852,13 +37798,20 @@ var DealerContainer = function (_React$Component) {
             zip: this.state.zip
           },
           dropdowns: {},
+          uploads: {
+            logo: this.state.logo
+          },
           rows: this.props.dealers,
           handleChange: this.handleChange,
+          handleChoosePDF: this.handleChoosePDF,
           handleSubmit: this.handleSubmit,
           handleCancel: this.handleCancel,
           handleController: this.handleController,
           handleCreate: this.handleCreate,
-          handleDelete: this.handleDelete
+          handleDelete: this.handleDelete,
+          handleSort: this.handleSort,
+          reverse: this.props.reverse,
+          sort: this.props.sort
         })
       );
     }
@@ -36871,16 +37824,18 @@ var mapStateToProps = function mapStateToProps(state) {
   return {
     token: state.login.token,
     dealers: state.dlr.dealers,
-    focus: state.dlr.focus
+    focus: state.dlr.focus,
+    sort: state.dlr.sort,
+    reverse: state.dlr.reverse
   };
 };
 
-var mapDispatchToProps = { loadDealersThunk: _dealerReducer.loadDealersThunk, saveDealerThunk: _dealerReducer.saveDealerThunk, createDealerThunk: _dealerReducer.createDealerThunk, createDealer: _dealerReducer.createDealer, focusDealer: _dealerReducer.focusDealer };
+var mapDispatchToProps = { loadDealersThunk: _dealerReducer.loadDealersThunk, saveDealerThunk: _dealerReducer.saveDealerThunk, createDealerThunk: _dealerReducer.createDealerThunk, createDealer: _dealerReducer.createDealer, sortDealers: _dealerReducer.sortDealers, focusDealer: _dealerReducer.focusDealer };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DealerContainer);
 
 /***/ }),
-/* 499 */
+/* 500 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36890,15 +37845,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _EditFields = __webpack_require__(131);
 
@@ -36948,18 +37901,16 @@ var BranchContainer = function (_React$Component) {
     _this.handleController = _this.handleController.bind(_this);
     _this.handleCreate = _this.handleCreate.bind(_this);
     _this.handleDelete = _this.handleDelete.bind(_this);
+    _this.handleSort = _this.handleSort.bind(_this);
     return _this;
   }
 
   _createClass(BranchContainer, [{
     key: 'handleChange',
     value: function handleChange(e) {
-      var _e$target$name$split = e.target.name.split('-'),
-          _e$target$name$split2 = _slicedToArray(_e$target$name$split, 2),
-          index = _e$target$name$split2[0],
-          field = _e$target$name$split2[1];
-
-      this.setState(_defineProperty({}, e.target.name.split('-')[1], e.target.value));
+      var name = e.target.name.split('-');
+      if (name.length > 2) name[2] = name[2][0].toUpperCase() + name[2].slice(1);
+      this.setState(_defineProperty({}, name.slice(1).join(''), e.target.value));
     }
   }, {
     key: 'handleSubmit',
@@ -36977,7 +37928,6 @@ var BranchContainer = function (_React$Component) {
           regionName: this.state.regionName
         });
       } else {
-        this.setState({ create: false });
         this.props.saveBranchThunk(this.props.token, {
           id: this.props.branches[this.props.focus].id,
           name: this.state.name,
@@ -36990,6 +37940,7 @@ var BranchContainer = function (_React$Component) {
           regionName: this.state.regionName
         });
       }
+      this.setState({ create: false });
     }
   }, {
     key: 'handleCancel',
@@ -37053,15 +38004,22 @@ var BranchContainer = function (_React$Component) {
       });
     }
   }, {
+    key: 'handleSort',
+    value: function handleSort(e) {
+      // need to cancel any open forms b/c otherwise there are unintended side effects
+      if (this.props.focus) this.handleCancel();
+      this.props.sortBranches(e.target.id.split('-'));
+    }
+  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
       if (!this.props.token) this.props.history.push('/');else this.props.loadBranchesThunk(this.props.token);
     }
-  }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps() {
-      // console.log('props received', this.state)
-    }
+
+    // componentWillReceiveProps() {
+    //   console.log('props received', this.state)
+    // }
+
   }, {
     key: 'render',
     value: function render() {
@@ -37083,14 +38041,16 @@ var BranchContainer = function (_React$Component) {
             zip: this.state.zip
           },
           dropdowns: {
-            dealerName: {
+            'dealer-name': {
+              id: 'dealer-name',
               values: this.props.dealers.map(function (dlr) {
                 return dlr.name;
               }),
               match: ['dealer', 'name'],
               select: this.state.dealerName
             },
-            regionName: {
+            'region-name': {
+              id: 'region-name',
               values: this.props.regions.filter(function (reg) {
                 if (reg.dealer) {
                   return reg.dealer.name === _this3.state.dealerName;
@@ -37102,13 +38062,17 @@ var BranchContainer = function (_React$Component) {
               select: this.state.regionName
             }
           },
+          uploads: {},
           rows: this.props.branches,
           handleChange: this.handleChange,
           handleSubmit: this.handleSubmit,
           handleCancel: this.handleCancel,
           handleController: this.handleController,
           handleCreate: this.handleCreate,
-          handleDelete: this.handleDelete
+          handleDelete: this.handleDelete,
+          handleSort: this.handleSort,
+          reverse: this.props.reverse,
+          sort: this.props.sort
         })
       );
     }
@@ -37122,17 +38086,19 @@ var mapStateToProps = function mapStateToProps(state) {
     token: state.login.token,
     branches: state.branch.branches,
     focus: state.branch.focus,
+    sort: state.branch.sort,
+    reverse: state.branch.reverse,
     dealers: state.dlr.dealers,
     regions: state.region.regions
   };
 };
 
-var mapDispatchToProps = { loadBranchesThunk: _branchReducer.loadBranchesThunk, saveBranchThunk: _branchReducer.saveBranchThunk, createBranchThunk: _branchReducer.createBranchThunk, createBranch: _branchReducer.createBranch, focusBranch: _branchReducer.focusBranch };
+var mapDispatchToProps = { loadBranchesThunk: _branchReducer.loadBranchesThunk, saveBranchThunk: _branchReducer.saveBranchThunk, createBranchThunk: _branchReducer.createBranchThunk, createBranch: _branchReducer.createBranch, sortBranches: _branchReducer.sortBranches, focusBranch: _branchReducer.focusBranch };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BranchContainer);
 
 /***/ }),
-/* 500 */
+/* 501 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37142,15 +38108,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _EditFields = __webpack_require__(131);
 
@@ -37194,18 +38158,16 @@ var RegionContainer = function (_React$Component) {
     _this.handleController = _this.handleController.bind(_this);
     _this.handleCreate = _this.handleCreate.bind(_this);
     _this.handleDelete = _this.handleDelete.bind(_this);
+    _this.handleSort = _this.handleSort.bind(_this);
     return _this;
   }
 
   _createClass(RegionContainer, [{
     key: 'handleChange',
     value: function handleChange(e) {
-      var _e$target$name$split = e.target.name.split('-'),
-          _e$target$name$split2 = _slicedToArray(_e$target$name$split, 2),
-          index = _e$target$name$split2[0],
-          field = _e$target$name$split2[1];
-
-      this.setState(_defineProperty({}, e.target.name.split('-')[1], e.target.value));
+      var name = e.target.name.split('-');
+      if (name.length > 2) name[2] = name[2][0].toUpperCase() + name[2].slice(1);
+      this.setState(_defineProperty({}, name.slice(1).join(''), e.target.value));
     }
   }, {
     key: 'handleSubmit',
@@ -37217,13 +38179,13 @@ var RegionContainer = function (_React$Component) {
           dealerName: this.state.dealerName
         });
       } else {
-        this.setState({ create: false });
         this.props.saveRegionThunk(this.props.token, {
           id: this.props.regions[this.props.focus].id,
           name: this.state.name,
           dealerName: this.state.dealerName
         });
       }
+      this.setState({ create: false });
     }
   }, {
     key: 'handleCancel',
@@ -37269,6 +38231,13 @@ var RegionContainer = function (_React$Component) {
       });
     }
   }, {
+    key: 'handleSort',
+    value: function handleSort(e) {
+      // need to cancel any open forms b/c otherwise there are unintended side effects
+      if (this.props.focus) this.handleCancel();
+      this.props.sortRegions(e.target.id.split('-'));
+    }
+  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
       if (!this.props.token) this.props.history.push('/');else this.props.loadRegionsThunk(this.props.token);
@@ -37292,7 +38261,7 @@ var RegionContainer = function (_React$Component) {
             name: this.state.name
           },
           dropdowns: {
-            dealerName: {
+            'dealer-name': {
               values: this.props.dealers.map(function (dlr) {
                 return dlr.name;
               }),
@@ -37300,13 +38269,17 @@ var RegionContainer = function (_React$Component) {
               select: this.state.dealerName
             }
           },
+          uploads: {},
           rows: this.props.regions,
           handleChange: this.handleChange,
           handleSubmit: this.handleSubmit,
           handleCancel: this.handleCancel,
           handleController: this.handleController,
           handleCreate: this.handleCreate,
-          handleDelete: this.handleDelete
+          handleDelete: this.handleDelete,
+          handleSort: this.handleSort,
+          reverse: this.props.reverse,
+          sort: this.props.sort
         })
       );
     }
@@ -37320,16 +38293,18 @@ var mapStateToProps = function mapStateToProps(state) {
     token: state.login.token,
     regions: state.region.regions,
     focus: state.region.focus,
+    sort: state.region.sort,
+    reverse: state.region.reverse,
     dealers: state.dlr.dealers
   };
 };
 
-var mapDispatchToProps = { loadRegionsThunk: _regionReducer.loadRegionsThunk, saveRegionThunk: _regionReducer.saveRegionThunk, createRegionThunk: _regionReducer.createRegionThunk, createRegion: _regionReducer.createRegion, focusRegion: _regionReducer.focusRegion };
+var mapDispatchToProps = { loadRegionsThunk: _regionReducer.loadRegionsThunk, saveRegionThunk: _regionReducer.saveRegionThunk, createRegionThunk: _regionReducer.createRegionThunk, createRegion: _regionReducer.createRegion, sortRegions: _regionReducer.sortRegions, focusRegion: _regionReducer.focusRegion };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(RegionContainer);
 
 /***/ }),
-/* 501 */
+/* 502 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37345,7 +38320,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _Menu = __webpack_require__(58);
 
@@ -37395,7 +38370,7 @@ var UsersContainer = function (_React$Component) {
     key: 'handleSort',
     value: function handleSort(e) {
       this.props.sortUsers(e.target.id.split('-'));
-      this.setState({ sortingBy: e.target.id });
+      // this.setState({sortingBy: e.target.id})
     }
   }, {
     key: 'componentWillMount',
@@ -37454,7 +38429,7 @@ var UsersContainer = function (_React$Component) {
               null,
               _react2.default.createElement(
                 'tr',
-                { className: 'user-header-bottom', key: 'head' },
+                { className: 'user-header-bottom' + (this.props.reverse ? ' reverse' : ''), key: 'head' },
                 _react2.default.createElement(
                   'td',
                   { id: 'fullName', className: this.props.sort.join('-') === "fullName" ? 'sorting' : 'sortable', onClick: this.handleSort },
@@ -37544,7 +38519,8 @@ var mapStateToProps = function mapStateToProps(state) {
     token: state.login.token,
     user: state.login.user,
     users: state.users.users,
-    sort: state.users.sort
+    sort: state.users.sort,
+    reverse: state.users.reverse
   };
 };
 
@@ -37553,7 +38529,7 @@ var mapDispatchToProps = { focusUser: _usersReducer.focusUser, createUser: _user
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UsersContainer);
 
 /***/ }),
-/* 502 */
+/* 503 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37569,13 +38545,13 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _axios = __webpack_require__(12);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _EditUser = __webpack_require__(503);
+var _EditUser = __webpack_require__(504);
 
 var _EditUser2 = _interopRequireDefault(_EditUser);
 
@@ -37622,6 +38598,10 @@ var UserContainer = function (_React$Component) {
         this.setState({
           branchId: 0
         });
+      } else if (e.target.name === 'managerId' && e.target.value == '0') {
+        this.setState({
+          managerId: null
+        });
       }
     }
   }, {
@@ -37652,13 +38632,27 @@ var UserContainer = function (_React$Component) {
     value: function render() {
       var _this3 = this;
 
+      var peckingOrder = function peckingOrder(a, b) {
+        // #ascendHigher
+        // if (a.level === 'Sales Rep') return true
+        // else if (a.level === 'Sales Manager' && b.level !== 'Sales Rep') return true
+        // else if (a.level === 'Branch Manager' && b.level !== 'Sales Rep' && b.level !== 'Sales Manager') return true
+        // else if (a.level === 'Region Manager' && (b.level === 'Senior Manager' || b.level === 'Region Manager')) return true
+        // else if (a.level === 'Senior Manager' && b.level === 'Senior Manager') return true
+        if (a.level === 'Sales Rep' && b.level !== 'Sales Rep') return true;else if (a.level === 'Sales Manager' && b.level !== 'Sales Rep' && b.level !== 'Sales Manager') return true;else if (a.level === 'Branch Manager' && (b.level === 'Senior Manager' || b.level === 'Region Manager')) return true;else if (a.level === 'Region Manager' && b.level === 'Senior Manager') return true;else if (a.level === 'Admin' && b.level === 'Admin') return true;else return false;
+      };
+      var sameTeams = function sameTeams(a, b) {
+        if ((b.level === 'Sales Manager' || 'Branch Manager') && a.branchId === b.branchId) return true;else if (b.level === 'Region Manager' && a.regionId === b.regionId) return true;else if (b.level === 'Senior Manager' || b.level === 'Admin') return true;else return false;
+      };
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(_EditUser2.default, {
           values: this.state,
           users: this.props.users.filter(function (usr) {
-            return usr.dealerId == _this3.state.dealerId && usr.id != _this3.state.id;
+            return usr.dealerId == _this3.state.dealerId && usr.id != _this3.state.id && peckingOrder(_this3.state, usr) && sameTeams(_this3.state, usr);
+          }).sort(function (a, b) {
+            if (a.fullName.toLowerCase() > b.fullName.toLowerCase()) return 1;else return -1;
           }),
           dealers: this.props.dealers,
           regions: this.props.regions.filter(function (reg) {
@@ -37693,7 +38687,7 @@ var mapDispatchToProps = { saveUserThunk: _usersReducer.saveUserThunk, createUse
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UserContainer);
 
 /***/ }),
-/* 503 */
+/* 504 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37887,6 +38881,11 @@ exports.default = function (_ref) {
                     'option',
                     { value: 'Sales Rep' },
                     'Sales Rep'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: 'Sales Manager' },
+                    'Sales Manager'
                   ),
                   _react2.default.createElement(
                     'option',
@@ -38136,7 +39135,7 @@ exports.default = function (_ref) {
 };
 
 /***/ }),
-/* 504 */
+/* 505 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38152,13 +39151,13 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRedux = __webpack_require__(20);
+var _reactRedux = __webpack_require__(21);
 
 var _axios = __webpack_require__(12);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _Alert = __webpack_require__(505);
+var _Alert = __webpack_require__(506);
 
 var _Alert2 = _interopRequireDefault(_Alert);
 
@@ -38212,7 +39211,7 @@ var mapDispatchToProps = { handleAlert: _alertReducer.handleAlert };
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AlertContainer);
 
 /***/ }),
-/* 505 */
+/* 506 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

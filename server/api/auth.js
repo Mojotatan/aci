@@ -28,7 +28,8 @@ const isAdmin = (req, res, next) => {
 // mail transport -- to send an email, call mailTransporter.sendMail(message)
 const mailTransporter = nodemailer.createTransport({
   host: 'sub5.mail.dreamhost.com',
-  auth: {user: 'team@myadmindev.xyz', pass: process.env.EMAIL_PW || fs.readFileSync('.devMail')},
+  // auth: {user: 'team@myadmindev.xyz', pass: process.env.EMAIL_PW || fs.readFileSync('.devMail')},
+  auth: {user: 'team@myadmindev.xyz', pass: 'Goldfish^2018'},
   port: 465,
   secure: true
 })

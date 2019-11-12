@@ -60,21 +60,20 @@ export const checkFor$ = num => {
   else return num
 }
 
-export const sortBy = field => {
+export const sortBy = (field, reverse) => {
+  let reverseConstant = reverse ? -1 : 1
   return (a, b) => {
     // handle cases where a field is empty
-    if (!match(field, a) && !match(field, b)) return a.id - b.id
-    if (!match(field, b)) return -1
-    if (!match(field, a)) return 1
+    if (!match(field, a) && !match(field, b)) return (a.id - b.id) * reverseConstant
+    if (!match(field, b)) return -1 * reverseConstant
+    if (!match(field, a)) return 1 * reverseConstant
 
     // sort based on field array
-    if (handleCase(match(field, a)) > handleCase(match(field, b))) return 1
-    if (handleCase(match(field, a)) < handleCase(match(field, b))) return -1
+    if (handleCase(match(field, a)) > handleCase(match(field, b))) return 1 * reverseConstant
+    if (handleCase(match(field, a)) < handleCase(match(field, b))) return -1 * reverseConstant
 
     // tiebreaker
-    return a.id - b.id
-
-    return 0
+    return (a.id - b.id) * reverseConstant
   }
 }
 
@@ -88,10 +87,18 @@ export const match = (arr, obj) => {
   else return match(arr.slice(1), obj[arr[0]])
 }
 
+// check if two one-dimensional arrays are equal
+export const areArraysEqual = (a, b) => {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false
+  }
+  return true
+}
+
 export const cleanHeader = key => {
   let clean = key
-  clean = clean[0].toUpperCase() + clean.slice(1)
-  if (clean.slice(-4) === 'Name' && clean.length > 4) clean = clean.slice(0, -4) + ' ' + clean.slice(-4)
+  clean = clean.split('-').map(word => word[0].toUpperCase() + word.slice(1)).join(' ')
   return clean
 }
 
@@ -132,7 +139,8 @@ export const round = n => {
   return monify(Math.round(checkFor$(n) * 100) / 100)
 }
 
-export const monify = n => {
+export const monify = (n, fallback) => {
+  if (!n && fallback) return fallback
   let str = String(n)
   let arr = str.split('.')
   arr[0] = arr[0].split('')

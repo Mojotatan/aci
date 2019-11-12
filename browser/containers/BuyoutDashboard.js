@@ -31,7 +31,7 @@ class BuyoutsContainer extends React.Component {
 
   handleSort(e) {
     this.props.sortByos(e.target.id.split('-'))
-    this.setState({sortingBy: e.target.id})
+    // this.setState({sortingBy: e.target.id})
   }
 
   handleResubmit(e) {
@@ -89,19 +89,24 @@ class BuyoutsContainer extends React.Component {
         <div className="col-sm-12 no-gutters margin-drop">
           <table className="app-table" id="thetable">
             <tbody>
-              <tr className="app-header-bottom" key="head">
+              <tr className={`app-header-bottom${(this.props.reverse) ? ' reverse' : ''}`} key="head">
                 <td id="date" className={(this.props.sort.join('-') === "date") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Date Submitted</td>
+                <td id="leases-0-number" className={(this.props.sort.join('-') === "leases-0-number") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Lease Number(s)</td>
                 <td id="customer-name" className={(this.props.sort.join('-') === "customer-name") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Customer Name</td>
                 <td id="customer-street" className={(this.props.sort.join('-') === "customer-street") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Address</td>
                 <td id="status" className={(this.props.sort.join('-') === "status") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Status</td>
                 <td id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Expiration Date</td>
                 <td id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Rep Name</td>
                 <td className="table-right"></td>
+                {(this.props.user.level !== 'Admin') ?
+                  <td className="table-right"></td> : null
+                }
               </tr>
               {this.props.byos.map((byo, index) => {
                 return (
                   <tr key={byo.id} className={(index % 2 === 0) ? 'even' : 'odd'} >
                     <td>{reformatDate(byo.date)}</td>
+                    <td>{(byo.leases) ? byo.leases.map(lease => lease.number).join(', ') : ''}</td>
                     <td>{(byo.customer) ? byo.customer.name : ''}</td>
                     <td>{(byo.customer) ? byo.customer.street : ''}</td>
                     <td className={`status ${byo.status}`}>{byo.status}</td>
@@ -117,6 +122,12 @@ class BuyoutsContainer extends React.Component {
                       <td id={byo.id} className="edit table-right" onClick={this.handleResubmit}>
                         Resubmit
                       </td>
+                    }
+                    {(this.props.user.level !== 'Admin') ?
+                      (byo.status !== 'Expired' && byo.status !== 'Draft') ?
+                        <td id={byo.id} className="edit table-right" onClick={this.handleResubmit}>Resubmit</td>
+                        : <td className="table-right"></td>
+                      : null
                     }
                   </tr>
                 )
@@ -134,7 +145,8 @@ const mapStateToProps = (state) => {
     token: state.login.token,
     user: state.login.user,
     byos: state.byo.byos,
-    sort: state.byo.sort
+    sort: state.byo.sort,
+    reverse: state.byo.reverse
   }
 }
 

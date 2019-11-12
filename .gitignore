@@ -6,6 +6,10 @@ npm-debug.log
 
 server/uploads
 
+server/temp
+
+public/assets/logo
+
 .configsecrets
 
 .devCert

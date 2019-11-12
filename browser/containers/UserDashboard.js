@@ -29,7 +29,7 @@ class UsersContainer extends React.Component {
 
   handleSort(e) {
     this.props.sortUsers(e.target.id.split('-'))
-    this.setState({sortingBy: e.target.id})
+    // this.setState({sortingBy: e.target.id})
   }
 
   componentWillMount() {
@@ -52,7 +52,7 @@ class UsersContainer extends React.Component {
         <div className="col-sm-12 no-gutters margin-drop">
           <table className="user-table">
             <tbody>
-              <tr className="user-header-bottom" key="head">
+              <tr className={`user-header-bottom${(this.props.reverse) ? ' reverse' : ''}`} key="head">
                 <td id="fullName" className={(this.props.sort.join('-') === "fullName") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Name</td>
                 <td id="email" className={(this.props.sort.join('-') === "email") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Email</td>
                 <td id="level" className={(this.props.sort.join('-') === "level") ? 'sorting' : 'sortable'} onClick={this.handleSort}>Level</td>
@@ -88,7 +88,8 @@ const mapStateToProps = (state) => {
     token: state.login.token,
     user: state.login.user,
     users: state.users.users,
-    sort: state.users.sort
+    sort: state.users.sort,
+    reverse: state.users.reverse
   }
 }
 

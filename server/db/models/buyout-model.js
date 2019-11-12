@@ -35,8 +35,8 @@ module.exports = db => db.define('Buyout', {
     type: Sequelize.ARRAY(Sequelize.STRING),
     defaultValue: []
   },
-  calcs: {
-    type: Sequelize.JSON
-  }
+  // calcs: {
+  //   type: Sequelize.JSON
+  // }
   
 })

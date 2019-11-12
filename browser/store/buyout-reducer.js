@@ -4,10 +4,10 @@ import {loadCustomersThunk} from './customer-reducer'
 import {loadLeasesThunk} from './lease-reducer'
 import {throwAlert} from './alert-reducer'
 
-import {sortBy, getDate} from '../utility'
+import {sortBy, areArraysEqual, getDate} from '../utility'
 
 // initial state
-const initialState = {byos: [], focus: null, sort: ['date']}
+const initialState = {byos: [], focus: null, sort: ['date'], reverse: false}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -15,7 +15,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_BYOS:
       newState.byos = action.byos
-      if (newState.sort) newState.byos.sort(sortBy(newState.sort))
+      if (newState.sort) newState.byos.sort(sortBy(newState.sort, newState.reverse))
       return newState
     case FOCUS_BYO:
       newState.focus = action.id
@@ -25,8 +25,13 @@ const reducer = (prevState = initialState, action) => {
       newState.focus = action.byo.id
       return newState
     case SORT_BYOS:
-      newState.sort = action.field
-      newState.byos.sort(sortBy(action.field))
+      if (areArraysEqual(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse
+      } else {
+        newState.reverse = false
+        newState.sort = action.field
+      }
+      newState.byos.sort(sortBy(action.field, newState.reverse))
       return newState
     case FLUSH_BYOS:
       newState.byos = []
@@ -77,6 +82,9 @@ export const loadByosThunk = (token, callback) => {
       // and a list of pdf associations
       res.data.byos.forEach((byo, index) => {
         byo.leases = res.data.leases[index]
+        byo.leases.forEach(lease => {
+          lease.workbook = JSON.parse(lease.workbook)
+        })
 
         let actions = res.data.actions[index]
         byo.actions = []
@@ -90,7 +98,7 @@ export const loadByosThunk = (token, callback) => {
           return (log.date <= getDate())
         })
 
-        byo.calcs = JSON.parse(byo.calcs)
+        // byo.calcs = JSON.parse(byo.calcs)
 
         byo.pdfs = res.data.pdfs[index]
       })
@@ -140,6 +148,7 @@ export const createByoThunk = (token, callback) => {
     .then(res => {
       if (res.status === 201) {
         let byo = res.data
+        // byo.calcs = JSON.parse(byo.calcs)
         byo.leases = []
         byo.actions = []
         byo.logs = []

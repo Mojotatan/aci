@@ -11,7 +11,7 @@ import {loadRegionsThunk, flushRegions} from '../store/region-reducer'
 import {loadCustomersThunk, flushCustomers} from '../store/customer-reducer'
 import {loadUsersThunk, flushUsers} from '../store/users-reducer'
 import {loadLeasesThunk, flushLeases} from '../store/lease-reducer'
-import {throwAlert} from '../store/alert-reducer'
+import {throwAlert, handleAlert} from '../store/alert-reducer'
 
 import Header from '../components/Header'
 import LogInForm from '../components/LogInForm'
@@ -64,6 +64,9 @@ class LogInContainer extends React.Component {
           this.props.loadRegionsThunk(res.data.token)
           this.props.loadUsersThunk(res.data.token)
         }
+
+        // wipe alerts on a successful login
+        this.props.handleAlert()
       }
       else {
         this.props.throwAlert('red', res.data)
@@ -90,6 +93,7 @@ class LogInContainer extends React.Component {
 
   logOut(e) {
     // empty redux store
+    this.props.handleAlert()
     this.props.flushToken()
     this.props.flushApps()
     this.props.flushByos()
@@ -147,7 +151,7 @@ const mapDispatchToProps = {
   loadCustomersThunk, flushCustomers,
   loadUsersThunk, flushUsers,
   loadLeasesThunk, flushLeases,
-  throwAlert
+  throwAlert, handleAlert
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LogInContainer))

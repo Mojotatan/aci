@@ -9,7 +9,7 @@ module.exports = db => db.define('User', {
     type: Sequelize.STRING
   },
   level: {
-    type: Sequelize.ENUM('Admin', 'Senior Manager', 'Region Manager', 'Branch Manager', 'Sales Rep'),
+    type: Sequelize.ENUM('Admin', 'Senior Manager', 'Region Manager', 'Branch Manager', 'Sales Manager', 'Sales Rep'),
     defaultValue: 'Sales Rep'
   },
   active: {

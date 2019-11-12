@@ -4,10 +4,10 @@ import {loadCustomersThunk} from './customer-reducer'
 import {loadLeasesThunk} from './lease-reducer'
 import {throwAlert} from './alert-reducer'
 
-import {sortBy, getDate} from '../utility'
+import {sortBy, areArraysEqual, getDate} from '../utility'
 
 // initial state
-const initialState = {apps: [], focus: null, sort: ['date']}
+const initialState = {apps: [], focus: null, sort: ['date'], reverse: false}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -15,7 +15,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_APPS:
       newState.apps = action.apps
-      if (newState.sort) newState.apps.sort(sortBy(newState.sort))
+      if (newState.sort) newState.apps.sort(sortBy(newState.sort, newState.reverse))
       return newState
     case FOCUS_APP:
       newState.focus = action.id
@@ -25,8 +25,13 @@ const reducer = (prevState = initialState, action) => {
       newState.focus = action.app.id
       return newState
     case SORT_APPS:
-      newState.sort = action.field
-      newState.apps.sort(sortBy(action.field))
+      if (areArraysEqual(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse
+      } else {
+        newState.reverse = false
+        newState.sort = action.field
+      }
+      newState.apps.sort(sortBy(action.field, newState.reverse))
       return newState
     case FLUSH_APPS:
       newState.apps = []
@@ -92,6 +97,8 @@ export const loadAppsThunk = (token, callback) => {
         app.logs = res.data.logs[index].filter(log => {
           return (log.date <= getDate())
         })
+
+        app.pdfs = res.data.pdfs[index]
       })
       dispatch(loadApps(res.data.apps))
       // dispatch(loadLeases(leases))

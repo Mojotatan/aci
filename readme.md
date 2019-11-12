@@ -111,6 +111,10 @@ If process.env variables are getting overwritten or otherwise misbehaving, set u
 7. Start Passenger
 
 8. [Follow this tutorial to set up SSL](https://medium.com/@yash.kulshrestha/using-lets-encrypt-with-express-e069c7abe625)
+```
+//chmod certbot-auto a+x
+sudo ./certbot-auto certonly --webroot -w ./public -d myadmindev.xyz
+```
 
 9. After you successfully generate web certificates, create symbolic links to them:
 ```
@@ -137,6 +141,9 @@ ln -s /path/to/key /path/to/web/directory/.ssl/privkey.pem
 ```
 
 11. TODO: automate certificate renewal
+```
+certbot-auto renew
+```
 
 12. Set up a cron job to automatically backup the database:
 ```
@@ -156,6 +163,7 @@ npm install
 ```
 
 2. Change dbUrl in server/db/index.js. You may have to manually add the email password as well.
+*Addendum* You might have to do this as root b/c of permissions issues.
 
 3. Restart Passenger
 
@@ -184,4 +192,51 @@ passenger start
 You can find the pid in the pid file or with
 ```
 ps aux | grep passenger
+```
+
+**How to deal with everything shutting down for no reason**
+
+So this happened on Dreamhost before and I don't know why.  Here's how I fixed it.
+
+0. If you for some reason can't log into the postgres user
+
+```
+adduser (postgres user)
+chown -R (postgres user) /usr/local/pgsql/data/
+```
+
+1. Log into postgres user and start database
+
+```
+su (postgres user)
+/usr/local/pgsql/bin/pg_ctl start -l /path/to/logfile -D /usr/local/pgsql/data/
+```
+
+You might have to recreate the impact_myadmin user
+
+```
+createuser -h localhost -U postgres
+```
+
+2. Create, delete, and recreate the aci database (idk why but I had to do this)
+
+```
+psql -h localhost -U postgres
+create database aci; drop database aci; create database aci;
+```
+
+3. Import the database dump file
+
+```
+psql -h localhost -U postgres aci < path/to/file
+```
+
+4. Start/Restart Passenger
+
+```
+passenger start
+```
+or
+```
+passenger-config restart-app
 ```

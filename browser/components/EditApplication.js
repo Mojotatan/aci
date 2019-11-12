@@ -8,6 +8,7 @@ export default ({
   errors,
   iAmAuthor,
   admin,
+  token,
   customers,
   leases,
   count,
@@ -23,6 +24,7 @@ export default ({
   handleChangeInCustomer,
   handleSave,
   handleSubmit,
+  handleResubmit,
   handleDelete,
   handleCheckbox,
   handleChangeCustomer,
@@ -36,13 +38,20 @@ export default ({
   handleSaveAndNotify,
   handleAdminMode,
   toggleAdminView,
-  toggleLightbox
+  toggleLightbox,
+  handleChangeInPDFNote,
+  handleDeletePDF,
+  handleChoosePDF,
+  handleUploadPDF,
+  handleAddAttachment,
+  handleRemoveAttachment
 }) => (
   (admin && values.adminView) ?
   (
   <AdminActivity
     mode={'app'}
     values={values}
+    token={token}
     count={count}
     handleChange={handleChange}
     handleNote={handleNote}
@@ -55,6 +64,12 @@ export default ({
     toggleAdminView={toggleAdminView}
     toggleLightbox={toggleLightbox}
     formatTerm={formatTerm}
+    handleChangeInPDFNote={handleChangeInPDFNote}
+    handleDeletePDF={handleDeletePDF}
+    handleChoosePDF={handleChoosePDF}
+    handleUploadPDF={handleUploadPDF}
+    handleAddAttachment={handleAddAttachment}
+    handleRemoveAttachment={handleRemoveAttachment}
   />
   )
   :
@@ -128,7 +143,7 @@ export default ({
           <div className="rowed-items">
             <label>Expiration Date</label>
             <div className="field-box">
-              {/* {(admin) ?
+              {(admin) ?
                 <input
                 onChange={handleChange}
                 name={'expiry'}
@@ -137,9 +152,9 @@ export default ({
                 />
                 :
                 <p>{values.expiry || ''}</p>
-              } */}
+              }
               {/* <p>{(values.actions && values.actions[0] && values.actions[0].sentToRep) ? values.actions[0].expiry : ''}</p> */}
-              <p>{values.expiry || ''}</p>
+              {/* <p>{values.expiry || ''}</p> */}
             </div>
           </div>
           <div className="rowed-items status">
@@ -946,6 +961,7 @@ export default ({
             <button type="submit" id="save-button">Save</button>
             {(values.status === 'Draft') ?
               <button onClick={handleSubmit} type="submit" id="submit-button">Submit</button>
+              // : <button onClick={handleResubmit} type="submit" id="submit-button">Resubmit</button>
               : null
             }
           </div>

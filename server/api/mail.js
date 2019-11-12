@@ -74,6 +74,12 @@ module.exports = require('express').Router()
         cid: 'logo'
       }]
     }
+    req.body.attachments.forEach(attachment => {
+      message.attachments.push({
+        filename: attachment.name,
+        path: path.resolve(__dirname, `../uploads/${attachment.id}/${attachment.name}`)
+      })
+    })
     mailTransporter.sendMail(message)
     .then(data => {
       res.send({accepted: true})

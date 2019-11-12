@@ -19,11 +19,15 @@ class ApplicationContainer extends React.Component {
         mailBody: '',
         mailSubject: '',
         mailCC: '',
+        mailAttachments: [],
+        focusedAttachment: '',
         mailDisabled: false,
         adminMode: false,
         adminView: (this.props.user) ? this.props.user.level === 'Admin' : false,
         lightbox: false,
-        expiryTemp: ''
+        expiryTemp: '',
+        upload: null,
+        note: ''
       },
       this.props.app,
     )
@@ -50,6 +54,7 @@ class ApplicationContainer extends React.Component {
     this.generateErrors = this.generateErrors.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleResubmit = this.handleResubmit.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
 
     this.handleCheckbox = this.handleCheckbox.bind(this)
@@ -66,6 +71,14 @@ class ApplicationContainer extends React.Component {
 
     this.toggleAdminView = this.toggleAdminView.bind(this)
     this.toggleLightbox = this.toggleLightbox.bind(this)
+
+    this.handleChangeInPDFNote = this.handleChangeInPDFNote.bind(this)
+    this.handleDeletePDF = this.handleDeletePDF.bind(this)
+    this.handleChoosePDF = this.handleChoosePDF.bind(this)
+    this.handleUploadPDF = this.handleUploadPDF.bind(this)
+
+    this.handleAddAttachment = this.handleAddAttachment.bind(this)
+    this.handleRemoveAttachment = this.handleRemoveAttachment.bind(this)
 
   }
 
@@ -264,6 +277,21 @@ class ApplicationContainer extends React.Component {
     }
   }
 
+  handleResubmit(e) {
+    // nevermind, not even using this
+    e.preventDefault()
+    this.props.saveAppThunk(
+      this.props.token,
+      [this.state, {
+        status: 'Draft',
+        date: null,
+        expiry: null,
+        amount: checkFor$(this.state.amount)
+      }],
+      [this.state.customer]
+    )
+  }
+
   handleDelete(e) {
     e.preventDefault()
     if (confirm('Are you sure you wish to delete this application?')) this.props.deleteAppThunk(this.props.token, this.state.id, () => {this.props.history.push('/applications')})
@@ -289,6 +317,7 @@ class ApplicationContainer extends React.Component {
       to: this.state.rep.email,
       // to: 'tatan42@gmail.com',
       cc: this.state.mailCC.split(', '),
+      attachments: this.state.mailAttachments,
       subject: this.state.mailSubject,
       html: this.state.mailBody
     })
@@ -298,7 +327,7 @@ class ApplicationContainer extends React.Component {
       this.setState({mailDisabled: false})
       if (res.data.accepted) {
         this.props.throwAlert('green', 'Message sent')
-        this.setState({mailSubject: '', mailBody: '', mailCC: ''})
+        this.setState({mailSubject: '', mailBody: '', mailCC: '', mailAttachments: []})
       }
       else this.props.throwAlert('red', 'Message not sent')
       
@@ -422,6 +451,63 @@ class ApplicationContainer extends React.Component {
     })
   }
 
+  handleDeletePDF(e) {
+    // let pdfs = Array.from(this.state.pdfs)
+        
+    // this.props.saveByoThunk(this.props.token, [this.state, {pdfNotes, pdfs}], [this.state.customer])
+    axios.delete(`/api/uploads/${e.target.id}?access_token=${this.props.token}`)
+    .then(res => {
+      console.log(res.data)
+      this.props.loadAppsThunk(this.props.token)
+    })
+  }
+
+  handleChangeInPDFNote(e) {
+    this.setState({note: e.target.value})
+  }
+  
+  handleChoosePDF(e) {
+    this.setState({upload: e.target.files[0]})
+  }
+
+  handleUploadPDF(e) {
+    e.preventDefault()
+    if (this.state.upload) {
+      let formData = new FormData()
+      formData.append('file', this.state.upload)
+      formData.append('note', this.state.note)
+      axios.post(`/api/uploads/app/${this.state.id}?access_token=${this.props.token}`, formData, {'content-type': 'multipart/form-data'})
+      .then(res => {
+        if (res.data.color) this.props.throwAlert(res.data.color, res.data.message)
+        else console.log(res.data)
+        this.props.loadAppsThunk(this.props.token)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+      this.setState({upload: null})
+    }
+  }
+
+  handleAddAttachment(e) {
+    e.preventDefault()
+    let attachments = this.state.mailAttachments
+    attachments.push(this.state.pdfs[Number(this.state.focusedAttachment)])
+    this.setState({
+      focusedAttachment: '',
+      mailAttachments: attachments
+    })
+  }
+
+  handleRemoveAttachment(e) {
+    e.preventDefault()
+    let attachments = this.state.mailAttachments
+    attachments = [...attachments.slice(0, Number(e.target.id)), ...attachments.slice(Number(e.target.id) + 1)]
+    this.setState({
+      mailAttachments: attachments
+    })
+  }
+
 
   componentWillReceiveProps(newProps){
     // console.log('component receiving props')
@@ -480,6 +566,7 @@ class ApplicationContainer extends React.Component {
         <EditApplication
           values={this.state}
           errors={errors}
+          token={this.props.token}
           iAmAuthor={(this.props.user) ? this.props.user.email === this.state.rep.email : false}
           admin={(this.props.user) ? this.props.user.level === 'Admin' : false}
           customers={(this.props.customers) ? this.props.customers.map(customer => customer.name) : null}
@@ -497,6 +584,7 @@ class ApplicationContainer extends React.Component {
           handleChangeInCustomer={this.handleChangeInCustomer}
           handleSave={(disabled) ? this.generateErrors(errors) : this.handleSave}
           handleSubmit={(disabled) ? this.generateErrors(errors) : this.handleSubmit}
+          handleResubmit={(disabled) ? this.generateErrors(errors) : this.handleResubmit}
           handleDelete={this.handleDelete}
           handleChangeCustomer={this.handleChangeCustomer}
           handleCheckbox={this.handleCheckbox}
@@ -511,6 +599,12 @@ class ApplicationContainer extends React.Component {
           handleAdminMode={this.handleAdminMode}
           toggleAdminView={this.toggleAdminView}
           toggleLightbox={this.toggleLightbox}
+          handleChangeInPDFNote={this.handleChangeInPDFNote}
+          handleDeletePDF={this.handleDeletePDF}
+          handleChoosePDF={this.handleChoosePDF}
+          handleUploadPDF={this.handleUploadPDF}
+          handleAddAttachment={this.handleAddAttachment}
+          handleRemoveAttachment={this.handleRemoveAttachment}
         />
       </div>
     )

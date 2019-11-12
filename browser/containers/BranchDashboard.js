@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import EditFields from '../components/EditFields'
 import Menu from './Menu'
 
-import {loadBranchesThunk, saveBranchThunk, createBranchThunk, createBranch, focusBranch} from '../store/branch-reducer'
+import {loadBranchesThunk, saveBranchThunk, createBranchThunk, createBranch, sortBranches, focusBranch} from '../store/branch-reducer'
 
 import axios from 'axios'
 
@@ -29,13 +29,14 @@ class BranchContainer extends React.Component {
     this.handleController = this.handleController.bind(this)
     this.handleCreate = this.handleCreate.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleSort = this.handleSort.bind(this)
   }
 
   handleChange(e) {
-    let [index, field] = e.target.name.split('-')
-
+    let name = e.target.name.split('-')
+    if (name.length > 2) name[2] = name[2][0].toUpperCase() + name[2].slice(1)
     this.setState({
-      [e.target.name.split('-')[1]]: e.target.value
+      [name.slice(1).join('')]: e.target.value
     })
   }
 
@@ -53,7 +54,6 @@ class BranchContainer extends React.Component {
         regionName: this.state.regionName
       })
     } else {
-      this.setState({create: false})
       this.props.saveBranchThunk(this.props.token, {
         id: this.props.branches[this.props.focus].id,
         name: this.state.name,
@@ -66,6 +66,7 @@ class BranchContainer extends React.Component {
         regionName: this.state.regionName
       })
     }
+    this.setState({create: false})
   }
 
   handleCancel(e) {
@@ -123,14 +124,20 @@ class BranchContainer extends React.Component {
     .catch(err => console.error(err))
   }
 
+  handleSort(e) {
+    // need to cancel any open forms b/c otherwise there are unintended side effects
+    if (this.props.focus) this.handleCancel()
+    this.props.sortBranches(e.target.id.split('-'))
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     else this.props.loadBranchesThunk(this.props.token)
   }
 
-  componentWillReceiveProps() {
-    // console.log('props received', this.state)
-  }
+  // componentWillReceiveProps() {
+  //   console.log('props received', this.state)
+  // }
 
   render() {
     return(
@@ -148,17 +155,20 @@ class BranchContainer extends React.Component {
             zip: this.state.zip
           }}
           dropdowns={{
-            dealerName: {
+            'dealer-name': {
+              id: 'dealer-name',
               values: this.props.dealers.map(dlr => dlr.name),
               match: ['dealer', 'name'],
               select: this.state.dealerName
             },
-            regionName: {
+            'region-name': {
+              id: 'region-name',
               values: this.props.regions.filter(reg => {if (reg.dealer) {return reg.dealer.name === this.state.dealerName} else return false}).map(reg => reg.name),
               match: ['region', 'name'],
               select: this.state.regionName
             }
           }}
+          uploads={{}}
           rows={this.props.branches}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
@@ -166,6 +176,9 @@ class BranchContainer extends React.Component {
           handleController={this.handleController}
           handleCreate={this.handleCreate}
           handleDelete={this.handleDelete}
+          handleSort={this.handleSort}
+          reverse={this.props.reverse}
+          sort={this.props.sort}
         />
       </div>
     )
@@ -177,11 +190,13 @@ const mapStateToProps = (state) => {
     token: state.login.token,
     branches: state.branch.branches,
     focus: state.branch.focus,
+    sort: state.branch.sort,
+    reverse: state.branch.reverse,
     dealers: state.dlr.dealers,
     regions: state.region.regions
   }
 }
 
-const mapDispatchToProps = {loadBranchesThunk, saveBranchThunk, createBranchThunk, createBranch, focusBranch}
+const mapDispatchToProps = {loadBranchesThunk, saveBranchThunk, createBranchThunk, createBranch, sortBranches, focusBranch}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BranchContainer)

@@ -7,7 +7,7 @@ module.exports = require('express').Router()
   .post('/new', isLoggedIn, (req, res) => {
     let me = whoAmI(req.body.token)
     Buyout.create({
-      calcs: JSON.stringify({percentage: '25', taxRate: '9'}),
+      comments: 'If you need release information, please indicate in the comment section.',
       repId: me.id
     })
     .then(newByo => {
@@ -113,7 +113,7 @@ module.exports = require('express').Router()
             }
           },
           include: ['machines'],
-          order: [['createdAt', 'ASC'], ['machines', 'createdAt', 'ASC']],
+          order: [['id', 'ASC'], ['machines', 'id', 'ASC']],
         })
       }))
     })
@@ -199,9 +199,9 @@ module.exports = require('express').Router()
         date: req.body.byo.date,
         expiry: req.body.byo.expiry,
         comments: req.body.byo.comments,
-        pdfs: req.body.byo.pdfs,
-        pdfNotes: req.body.byo.pdfNotes,
-        calcs: JSON.stringify(req.body.byo.calcs),
+        // pdfs: req.body.byo.pdfs,
+        // pdfNotes: req.body.byo.pdfNotes,
+        // calcs: JSON.stringify(req.body.byo.calcs),
         repId: me.id,
         appId: req.body.byo.appId
       })
@@ -211,9 +211,9 @@ module.exports = require('express').Router()
         date: req.body.byo.date,
         expiry: req.body.byo.expiry,
         comments: req.body.byo.comments,
-        pdfs: req.body.byo.pdfs,
-        pdfNotes: req.body.byo.pdfNotes,
-        calcs: JSON.stringify(req.body.byo.calcs),
+        // pdfs: req.body.byo.pdfs,
+        // pdfNotes: req.body.byo.pdfNotes,
+        // calcs: JSON.stringify(req.body.byo.calcs),
         // appId: req.body.appId
       }, {
       where: {
@@ -276,6 +276,7 @@ module.exports = require('express').Router()
             number: lse.number,
             company: lse.company,
             quote: lse.quote,
+            workbook: JSON.stringify({percentage: '25', upfrontTax: '0', monthlyTax: '9'}),
             buyoutId: theByo.id,
             dealerId: me.dealer
           })
@@ -284,6 +285,7 @@ module.exports = require('express').Router()
             number: lse.number,
             company: lse.company,
             quote: lse.quote,
+            workbook: JSON.stringify(lse.workbook),
             buyoutId: theByo.id,
             dealerId: me.dealer
           }, {

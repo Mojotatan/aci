@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import EditFields from '../components/EditFields'
 import Menu from './Menu'
 
-import {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, focusDealer} from '../store/dealer-reducer'
+import {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, sortDealers, focusDealer} from '../store/dealer-reducer'
 
 import axios from 'axios'
 
@@ -18,27 +18,53 @@ class DealerContainer extends React.Component {
       street: '',
       city: '',
       state: '',
-      zip: ''}
+      zip: '',
+      logo: '',
+      upload: null}
     )
 
     this.handleChange = this.handleChange.bind(this)
+    this.handleChoosePDF = this.handleChoosePDF.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleController = this.handleController.bind(this)
     this.handleCreate = this.handleCreate.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleSort = this.handleSort.bind(this)
   }
 
   handleChange(e) {
-    let [index, field] = e.target.name.split('-')
-
+    let name = e.target.name.split('-')
+    if (name.length > 2) name[2] = name[2][0].toUpperCase() + name[2].slice(1)
     this.setState({
-      [e.target.name.split('-')[1]]: e.target.value
+      [name.slice(1).join('')]: e.target.value
     })
+  }
+
+  handleChoosePDF(e) {
+    this.setState({upload: e.target.files[0]})
   }
 
   handleSubmit(e) {
     e.preventDefault()
+    let formData, callback
+
+    if (this.state.upload) {
+      formData = new FormData()
+      formData.append('file', this.state.upload)
+      callback = id => {
+        axios.post(`/api/uploads/logo/${id}?access_token=${this.props.token}`, formData, {'content-type': 'multipart/form-data'})
+        .then(res => {
+          if (res.data.color) this.props.throwAlert(res.data.color, res.data.message)
+          // else console.log(res.data)
+          this.props.loadDealersThunk(this.props.token)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+      }
+    }
+    
     if (this.state.create) {
       this.props.createDealerThunk(this.props.token, {
         name: this.state.name,
@@ -47,9 +73,8 @@ class DealerContainer extends React.Component {
         city: this.state.city,
         state: this.state.state,
         zip: this.state.zip
-      })
+      }, callback)
     } else {
-      this.setState({create: false})
       this.props.saveDealerThunk(this.props.token, {
         id: this.props.dealers[this.props.focus].id,
         name: this.state.name,
@@ -58,12 +83,13 @@ class DealerContainer extends React.Component {
         city: this.state.city,
         state: this.state.state,
         zip: this.state.zip
-      })
+      }, callback)
     }
+    this.setState({create: false})
   }
 
   handleCancel(e) {
-    this.setState({create: false})
+    this.setState({create: false, upload: null})
     this.props.focusDealer(null)
     this.props.loadDealersThunk(this.props.token)
   }
@@ -89,7 +115,8 @@ class DealerContainer extends React.Component {
       street: '',
       city: '',
       state: '',
-      zip: ''
+      zip: '',
+      logo: ''
     })
     this.props.createDealer({
       name: '',
@@ -97,7 +124,8 @@ class DealerContainer extends React.Component {
       street: '',
       city: '',
       state: '',
-      zip: ''
+      zip: '',
+      logo: ''
     })
   }
 
@@ -111,6 +139,12 @@ class DealerContainer extends React.Component {
     .catch(err => console.error(err))
   }
 
+  handleSort(e) {
+    // need to cancel any open forms b/c otherwise there are unintended side effects
+    if (this.props.focus) this.handleCancel()
+    this.props.sortDealers(e.target.id.split('-'))
+  }
+
   componentWillMount() {
     if (!this.props.token) this.props.history.push('/')
     else this.props.loadDealersThunk(this.props.token)
@@ -121,6 +155,7 @@ class DealerContainer extends React.Component {
   }
 
   render() {
+    // console.log(this.props)
     return(
       <div className="ex-table">
         <Menu />
@@ -136,13 +171,20 @@ class DealerContainer extends React.Component {
             zip: this.state.zip
           }}
           dropdowns={{}}
+          uploads={{
+            logo: this.state.logo
+          }}
           rows={this.props.dealers}
           handleChange={this.handleChange}
+          handleChoosePDF={this.handleChoosePDF}
           handleSubmit={this.handleSubmit}
           handleCancel={this.handleCancel}
           handleController={this.handleController}
           handleCreate={this.handleCreate}
           handleDelete={this.handleDelete}
+          handleSort={this.handleSort}
+          reverse={this.props.reverse}
+          sort={this.props.sort}
         />
       </div>
     )
@@ -153,10 +195,12 @@ const mapStateToProps = (state) => {
   return {
     token: state.login.token,
     dealers: state.dlr.dealers,
-    focus: state.dlr.focus
+    focus: state.dlr.focus,
+    sort: state.dlr.sort,
+    reverse: state.dlr.reverse
   }
 }
 
-const mapDispatchToProps = {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, focusDealer}
+const mapDispatchToProps = {loadDealersThunk, saveDealerThunk, createDealerThunk, createDealer, sortDealers, focusDealer}
 
 export default connect(mapStateToProps, mapDispatchToProps)(DealerContainer)

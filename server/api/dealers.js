@@ -1,3 +1,6 @@
+const formidable = require('formidable')
+const fs = require('fs')
+const path = require('path')
 const Op = require('sequelize').Op
 const {User, Dealer} = require('../db').db.models
 const {isLoggedIn, isAdmin} = require('./auth')
@@ -59,7 +62,7 @@ module.exports = require('express').Router()
       state: req.body.dealer.state,
       zip: req.body.dealer.zip
     }, {
-
+      returning: true
     })
     .then(newDealer => {
       res.send(newDealer)

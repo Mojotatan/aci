@@ -34,6 +34,10 @@ class UserContainer extends React.Component {
       this.setState({
         branchId: 0
       })
+    } else if (e.target.name === 'managerId' && e.target.value == '0') {
+      this.setState({
+        managerId: null
+      })
     }
   }
 
@@ -57,11 +61,37 @@ class UserContainer extends React.Component {
 
 
   render() {
+    let peckingOrder = (a, b) => {
+      // #ascendHigher
+      // if (a.level === 'Sales Rep') return true
+      // else if (a.level === 'Sales Manager' && b.level !== 'Sales Rep') return true
+      // else if (a.level === 'Branch Manager' && b.level !== 'Sales Rep' && b.level !== 'Sales Manager') return true
+      // else if (a.level === 'Region Manager' && (b.level === 'Senior Manager' || b.level === 'Region Manager')) return true
+      // else if (a.level === 'Senior Manager' && b.level === 'Senior Manager') return true
+      if (a.level === 'Sales Rep' && b.level !== 'Sales Rep') return true
+      else if (a.level === 'Sales Manager' && b.level !== 'Sales Rep' && b.level !== 'Sales Manager') return true
+      else if (a.level === 'Branch Manager' && (b.level === 'Senior Manager' || b.level === 'Region Manager')) return true
+      else if (a.level === 'Region Manager' && b.level === 'Senior Manager') return true
+      else if (a.level === 'Admin' && b.level === 'Admin') return true
+      else return false
+    }
+    let sameTeams = (a, b) => {
+      if ((b.level === 'Sales Manager' || 'Branch Manager') && a.branchId === b.branchId) return true
+      else if (b.level === 'Region Manager' && a.regionId === b.regionId) return true
+      else if (b.level === 'Senior Manager' || b.level === 'Admin') return true
+      else return false
+    }
     return(
       <div>
         <EditUser
           values={this.state}
-          users={this.props.users.filter(usr => (usr.dealerId == this.state.dealerId && usr.id != this.state.id))}
+          users={this.props.users.filter(usr => (
+            usr.dealerId == this.state.dealerId && usr.id != this.state.id
+            && peckingOrder(this.state, usr) && sameTeams(this.state, usr)
+          )).sort((a, b) => {
+            if (a.fullName.toLowerCase() > b.fullName.toLowerCase()) return 1
+            else return -1
+          })}
           dealers={this.props.dealers}
           regions={this.props.regions.filter(reg => (reg.dealerId == this.state.dealerId))}
           branches={this.props.branches.filter(bran => (bran.regionId == this.state.regionId))}

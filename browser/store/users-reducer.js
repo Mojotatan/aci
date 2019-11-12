@@ -3,10 +3,10 @@ import axios from 'axios'
 import {loadCustomersThunk} from './customer-reducer'
 import {throwAlert} from './alert-reducer'
 
-import {sortBy} from '../utility'
+import {sortBy, areArraysEqual} from '../utility'
 
 // initial state
-const initialState = {users: [], focus: null, sort: ['id']}
+const initialState = {users: [], focus: null, sort: ['id'], reverse: false}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -14,7 +14,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_USERS:
       newState.users = action.users
-      if (newState.sort && Array.isArray(newState.users)) newState.users.sort(sortBy(newState.sort))
+      if (newState.sort && Array.isArray(newState.users)) newState.users.sort(sortBy(newState.sort, newState.reverse))
       return newState
     case FOCUS_USER:
       newState.focus = action.index
@@ -25,8 +25,13 @@ const reducer = (prevState = initialState, action) => {
       newState.users[newState.focus].id = 'new'
       return newState
     case SORT_USERS:
-      newState.sort = action.field
-      if (Array.isArray(newState.users)) newState.users.sort(sortBy(action.field))
+      if (areArraysEqual(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse
+      } else {
+        newState.reverse = false
+        newState.sort = action.field
+      }
+      if (Array.isArray(newState.users)) newState.users.sort(sortBy(action.field, newState.reverse))
       return newState
     case FLUSH_USERS:
       newState.users = []

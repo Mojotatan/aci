@@ -26,6 +26,8 @@ export default ({
   handleChangeInMachine,
   handleRemoveMachine,
   handleNotify,
+  handleWorkbookNotify,
+  handleWorkbookNotifySend,
   handleNote,
   handleChangeAction,
   handleActionDelete,
@@ -36,10 +38,15 @@ export default ({
   toggleLightbox,
   toggleCalcView,
   handleCalcs,
+  handleCascade,
+  handleTaxes,
+  generatePdf,
   handleChangeInPDFNote,
   handleDeletePDF,
   handleChoosePDF,
-  handleUploadPDF
+  handleUploadPDF,
+  handleAddAttachment,
+  handleRemoveAttachment
 }) => (
   (admin && values.adminView) ?
   (
@@ -52,6 +59,8 @@ export default ({
       handleSave={handleSave}
       handleNote={handleNote}
       handleNotify={handleNotify}
+      handleWorkbookNotify={handleWorkbookNotify}
+      handleWorkbookNotifySend={handleWorkbookNotifySend}
       handleAdminMode={handleAdminMode}
       handleActionDelete={handleActionDelete}
       handleChangeAction={handleChangeAction}
@@ -61,11 +70,19 @@ export default ({
       toggleLightbox={toggleLightbox}
       toggleCalcView={toggleCalcView}
       handleCalcs={handleCalcs}
+      handleCascade={handleCascade}
+      handleTaxes={handleTaxes}
       toggleMachines={toggleMachines}
+      handleNewMachine={handleNewMachine}
+      handleChangeInMachine={handleChangeInMachine}
+      handleRemoveMachine={handleRemoveMachine}
+      generatePdf={generatePdf}
       handleChangeInPDFNote={handleChangeInPDFNote}
       handleDeletePDF={handleDeletePDF}
       handleChoosePDF={handleChoosePDF}
       handleUploadPDF={handleUploadPDF}
+      handleAddAttachment={handleAddAttachment}
+      handleRemoveAttachment={handleRemoveAttachment}
     />
   )
   :

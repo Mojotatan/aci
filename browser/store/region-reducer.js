@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+import {sortBy, areArraysEqual} from '../utility'
+
 // initial state
-const initialState = {regions: [], focus: null}
+const initialState = {regions: [], focus: null, sort: ['id'], reverse: false}
 
 // reducer
 const reducer = (prevState = initialState, action) => {
@@ -9,6 +11,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_REGIONS:
       newState.regions = action.regions
+      if (newState.sort) newState.regions.sort(sortBy(newState.sort, newState.reverse))
       return newState
     case FOCUS_REGION:
       newState.focus = action.index
@@ -21,6 +24,15 @@ const reducer = (prevState = initialState, action) => {
     case FLUSH_REGIONS:
       newState.regions = []
       newState.focus = null
+      return newState
+    case SORT_REGIONS:
+      if (areArraysEqual(newState.sort, action.field)) {
+        newState.reverse = !newState.reverse
+      } else {
+        newState.reverse = false
+        newState.sort = action.field
+      }
+      newState.regions.sort(sortBy(action.field, newState.reverse))
       return newState
     default:
       return newState
@@ -41,6 +53,12 @@ export const focusRegion = (index) => {
 const CREATE_REGION = 'CREATE_REGION'
 export const createRegion = (region) => {
   return {type: CREATE_REGION, region}
+}
+
+const SORT_REGIONS = 'SORT_REGIONS'
+export const sortRegions = (fieldArg) => {
+  let field = (typeof fieldArg === 'string') ? [fieldArg] : fieldArg
+  return {type: SORT_REGIONS, field}
 }
 
 const FLUSH_REGIONS = 'FLUSH_REGIONS'

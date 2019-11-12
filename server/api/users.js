@@ -19,6 +19,7 @@ module.exports = require('express').Router()
   })
 
   .put('/', isLoggedIn, isAdmin, (req, res) => {
+    let email
     let prom = (req.body.user.id === 'new') ?
       User.create({
         firstName: req.body.user.firstName,
@@ -30,9 +31,9 @@ module.exports = require('express').Router()
         dealerId: req.body.user.dealerId,
         regionId: req.body.user.regionId,
         branchId: req.body.user.branchId,
-        managerId: req.body.user.managerId || null
+        // managerId: req.body.user.managerId || null
       }, {
-  
+        returning: true
       })
       :
       (req.body.user.password) ?
@@ -49,6 +50,7 @@ module.exports = require('express').Router()
           branchId: req.body.user.branchId,
           managerId: req.body.user.managerId
         }, {
+          returning: true,
           where: {
             id: {
               [Op.eq]: req.body.user.id
@@ -68,6 +70,7 @@ module.exports = require('express').Router()
           branchId: req.body.user.branchId,
           managerId: req.body.user.managerId
         }, {
+          returning: true,
           where: {
             id: {
               [Op.eq]: req.body.user.id
@@ -75,6 +78,10 @@ module.exports = require('express').Router()
           }
         })
     prom.then(data => {
+      email = data[1][0].email
+    //   return data[1][0].setManager(null)
+    // })
+    // .then(() => {
       res.send('success')
       if (req.body.user.id === 'new') {
         let url = 'http://myadmindev.xyz/api/login/reset?access_token=' + jwt.sign({user: data.email}, cert, {expiresIn: '24h'})

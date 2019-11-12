@@ -95,6 +95,7 @@ export default ({
                 value={values.level}
                 >
                   <option value="Sales Rep">Sales Rep</option>
+                  <option value="Sales Manager">Sales Manager</option>
                   <option value="Branch Manager">Branch Manager</option>
                   <option value="Region Manager">Region Manager</option>
                   <option value="Senior Manager">Senior Manager</option>
