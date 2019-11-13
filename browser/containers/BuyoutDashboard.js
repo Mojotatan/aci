@@ -54,6 +54,7 @@ class BuyoutsContainer extends React.Component {
       this.props.token,
       [reByo, {
         status: 'Draft',
+        resubmission: true,
         date: null,
         expiry: null
       }],
@@ -109,7 +110,7 @@ class BuyoutsContainer extends React.Component {
                     <td>{(byo.leases) ? byo.leases.map(lease => lease.number).join(', ') : ''}</td>
                     <td>{(byo.customer) ? byo.customer.name : ''}</td>
                     <td>{(byo.customer) ? byo.customer.street : ''}</td>
-                    <td className={`status ${byo.status}`}>{byo.status}</td>
+                    <td className={`status ${byo.status}`}>{(byo.resubmission && byo.status === 'New') ? 'Resubmitted' : byo.status}</td>
                     <td>{reformatDate(byo.expiry)}</td>
                     <td>{(byo.rep) ? byo.rep.fullName : ''}</td>
                     {(this.props.user.level === 'Admin' || byo.status !== 'Expired') ?

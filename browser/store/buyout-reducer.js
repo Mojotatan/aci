@@ -131,7 +131,8 @@ export const saveByoThunk = (token, byo, customer, callback) => {
           axios.post('/api/mail/byoSubmit', {
             token,
             rep: byoArgs.rep,
-            customer: byoArgs.customer
+            customer: byoArgs.customer,
+            // resubmission: byoArgs.resubmission
           })
           .then(res => console.log(res.data))
           .catch(err => console.error(err))

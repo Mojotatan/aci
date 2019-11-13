@@ -130,7 +130,8 @@ export const saveAppThunk = (token, app, customer, callback) => {
           axios.post('/api/mail/appSubmit', {
             token,
             rep: appArgs.rep,
-            customer: appArgs.customer
+            customer: appArgs.customer,
+            // resubmission: appArgs.resubmission
           })
           .then(res => console.log(res.data))
           .catch(err => console.error(err))

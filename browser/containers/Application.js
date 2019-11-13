@@ -221,6 +221,8 @@ class ApplicationContainer extends React.Component {
     e.preventDefault()
     if (this.state.status !== 'Draft' && (!this.state.amount || !this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone)) {
       this.props.throwAlert('red', 'Please fill in all required fields')
+    } else if (this.state.status === 'Draft' && (!this.state.customer || !this.state.customer.name)) {
+      this.props.throwAlert('red', 'To save, you must fill in the customer name')
     } else {
 
       let custArr = (this.state.customerCreate) ? [this.state.customer, {id: 'new'}] : [this.state.customer]
