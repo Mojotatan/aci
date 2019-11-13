@@ -261,7 +261,6 @@ class BuyoutContainer extends React.Component {
     axios.post('/api/mail', {
       token: this.props.token,
       to: this.state.rep.email,
-      // to: 'tatan42@gmail.com',
       cc: this.state.mailCC.split(', '),
       attachments: this.state.mailAttachments,
       subject: this.state.mailSubject,
@@ -381,8 +380,7 @@ class BuyoutContainer extends React.Component {
 
     axios.post('/api/mail', {
       token: this.props.token,
-      // to: this.state.rep.email,
-      to: 'tatan42@gmail.com',
+      to: this.state.rep.email,
       cc: this.state.mailCC.split(', '),
       attachments: this.state.mailAttachments,
       subject: this.state.mailSubject,

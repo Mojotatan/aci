@@ -26,7 +26,6 @@ module.exports = require('express').Router()
         let message = {
           from: 'team@myadmindev.xyz',
           to: usr.email,
-          // to: 'tatan42@gmail.com',
           subject: 'Password Reset',
           // text: usr.email,
           html: contents + mailFooter,

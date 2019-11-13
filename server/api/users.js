@@ -89,7 +89,6 @@ module.exports = require('express').Router()
         let message = {
           from: 'team@myadmindev.xyz',
           to: data.email,
-          // to: 'tatan42@gmail.com',
           subject: 'Account Created at MyAdminCentral',
           html: contents + mailFooter,
           attachments: [{

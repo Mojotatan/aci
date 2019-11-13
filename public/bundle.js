@@ -30956,7 +30956,6 @@ var ApplicationContainer = function (_React$Component) {
       _axios2.default.post('/api/mail', {
         token: this.props.token,
         to: this.state.rep.email,
-        // to: 'tatan42@gmail.com',
         cc: this.state.mailCC.split(', '),
         attachments: this.state.mailAttachments,
         subject: this.state.mailSubject,
@@ -35901,7 +35900,6 @@ var BuyoutContainer = function (_React$Component) {
       _axios2.default.post('/api/mail', {
         token: this.props.token,
         to: this.state.rep.email,
-        // to: 'tatan42@gmail.com',
         cc: this.state.mailCC.split(', '),
         attachments: this.state.mailAttachments,
         subject: this.state.mailSubject,
@@ -36025,8 +36023,7 @@ var BuyoutContainer = function (_React$Component) {
 
       _axios2.default.post('/api/mail', {
         token: this.props.token,
-        // to: this.state.rep.email,
-        to: 'tatan42@gmail.com',
+        to: this.state.rep.email,
         cc: this.state.mailCC.split(', '),
         attachments: this.state.mailAttachments,
         subject: this.state.mailSubject,

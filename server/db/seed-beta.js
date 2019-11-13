@@ -396,7 +396,6 @@ db.sync({force: true})
     let message = {
       from: 'team@myadmindev.xyz',
       to: usr.email,
-      // to: 'tatan42@gmail.com',
       subject: 'Account Created at MyAdminCentral',
       html: contents
     }

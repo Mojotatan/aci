@@ -317,7 +317,6 @@ class ApplicationContainer extends React.Component {
     axios.post('/api/mail', {
       token: this.props.token,
       to: this.state.rep.email,
-      // to: 'tatan42@gmail.com',
       cc: this.state.mailCC.split(', '),
       attachments: this.state.mailAttachments,
       subject: this.state.mailSubject,
