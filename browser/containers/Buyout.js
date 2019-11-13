@@ -147,7 +147,9 @@ class BuyoutContainer extends React.Component {
   handleSave(e) {
     e.preventDefault()
 
-    if (this.state.customerCreate) {
+    if (!this.state.customer || !this.state.customer.name) {
+      this.props.throwAlert('red', 'To save, you must fill in the customer name')
+    } else if (this.state.customerCreate) {
       this.props.saveByoThunk(this.props.token, [this.state], [this.state.customer, {id: 'new'}])
     } else {
       this.props.saveByoThunk(this.props.token, [this.state], [this.state.customer])
