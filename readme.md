@@ -194,6 +194,29 @@ You can find the pid in the pid file or with
 ps aux | grep passenger
 ```
 
+**How to make changes to the database while live**
+1. Export the database into a dump file.
+
+```
+pg_dump aci > path/to/file
+```
+
+2. Edit the database schema in the dump file to match the new changes.
+
+3. Wipe the database.
+
+```
+psql -h localhost -U postgres
+drop database aci; create database aci;
+```
+
+4. Import the dump file into the database.
+
+```
+psql -h localhost -U postgres aci < path/to/file
+```
+
+
 **How to deal with everything shutting down for no reason**
 
 So this happened on Dreamhost before and I don't know why.  Here's how I fixed it.
