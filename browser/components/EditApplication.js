@@ -80,6 +80,10 @@ export default ({
       <div className="row">
         <div className="col-sm-12 pad-me">
           <Link to='/applications' id="back-button">‹ Back to Applications</Link>
+          {(admin) ?
+            <span id="cancel-button" onClick={toggleAdminView}>‹ Back to Admin View</span>
+            : null
+          }
         </div>
       </div>
       <div className="row">

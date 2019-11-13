@@ -902,6 +902,12 @@ button.disabled {
 	padding-bottom: 15px;
 	margin-bottom: 30px
 }
+.edit-apps-page .pad-me #cancel-button,
+.edit-byo-page .pad-me #cancel-button  {
+	color: #1066A3;
+	position: absolute;
+	right: 15px
+}
 
 .pdfs .row {
 	margin-top: 15px
