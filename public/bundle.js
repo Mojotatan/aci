@@ -3284,6 +3284,7 @@ var saveAppThunk = exports.saveAppThunk = function saveAppThunk(token, app, cust
             token: token,
             rep: appArgs.rep,
             customer: appArgs.customer
+            // resubmission: appArgs.resubmission
           }).then(function (res) {
             return console.log(res.data);
           }).catch(function (err) {
@@ -3492,6 +3493,7 @@ var saveByoThunk = exports.saveByoThunk = function saveByoThunk(token, byo, cust
             token: token,
             rep: byoArgs.rep,
             customer: byoArgs.customer
+            // resubmission: byoArgs.resubmission
           }).then(function (res) {
             return console.log(res.data);
           }).catch(function (err) {
@@ -30382,6 +30384,7 @@ var ApplicationsContainer = function (_React$Component) {
       // )
       this.props.saveAppThunk(this.props.token, [reApp, {
         status: 'Draft',
+        resubmission: true,
         date: null,
         expiry: null
       }], [reApp.customer], function (data) {
@@ -30494,6 +30497,7 @@ var ApplicationsContainer = function (_React$Component) {
                 { id: 'rep-fullName', className: this.props.sort.join('-') === "rep-fullName" ? 'rep sorting' : 'rep sortable', onClick: this.handleSort },
                 'Rep Name'
               ),
+              _react2.default.createElement('span', { className: 'options' }),
               _react2.default.createElement('span', { className: 'options' })
             ),
             this.props.apps.map(function (app, index) {
@@ -30524,7 +30528,7 @@ var ApplicationsContainer = function (_React$Component) {
                 _react2.default.createElement(
                   'span',
                   { className: 'status ' + app.status },
-                  app.status
+                  app.resubmission && app.status === 'New' ? 'Resubmitted' : app.status
                 ),
                 _react2.default.createElement(
                   'span',
@@ -30546,18 +30550,14 @@ var ApplicationsContainer = function (_React$Component) {
                   { className: 'rep' },
                   app.rep ? app.rep.fullName : ''
                 ),
-                _this4.props.user.level === 'Admin' || app.status !== 'Expired' ? _react2.default.createElement(
+                _react2.default.createElement(
                   'span',
                   { id: app.id, onClick: _this4.handleClick, className: 'options edit table-right' },
                   _this4.props.user.level === 'Admin' || app.status !== 'Working' ? 'Edit' : 'View'
-                ) : _react2.default.createElement(
+                ),
+                _this4.props.user.level !== 'Admin' && app.status !== 'Draft' ? _react2.default.createElement(
                   'span',
                   { id: app.id, className: 'options edit', onClick: _this4.handleResubmit },
-                  'Resubmit'
-                ),
-                _this4.props.user.level !== 'Admin' && app.status !== 'Expired' && app.status !== 'Draft' ? _react2.default.createElement(
-                  'span',
-                  { id: app.id, className: 'options floating-resubmit', onClick: _this4.handleResubmit },
                   'Resubmit'
                 ) : null
               );
@@ -30860,6 +30860,8 @@ var ApplicationContainer = function (_React$Component) {
       e.preventDefault();
       if (this.state.status !== 'Draft' && (!this.state.amount || !this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone)) {
         this.props.throwAlert('red', 'Please fill in all required fields');
+      } else if (this.state.status === 'Draft' && (!this.state.customer || !this.state.customer.name)) {
+        this.props.throwAlert('red', 'To save, you must fill in the customer name');
       } else {
 
         var custArr = this.state.customerCreate ? [this.state.customer, { id: 'new' }] : [this.state.customer];
@@ -31385,7 +31387,12 @@ exports.default = function (_ref) {
             _reactRouterDom.Link,
             { to: '/applications', id: 'back-button' },
             '\u2039 Back to Applications'
-          )
+          ),
+          admin ? _react2.default.createElement(
+            'span',
+            { id: 'cancel-button', onClick: toggleAdminView },
+            '\u2039 Back to Admin View'
+          ) : null
         )
       ),
       _react2.default.createElement(
@@ -31625,7 +31632,7 @@ exports.default = function (_ref) {
                 _react2.default.createElement(
                   'option',
                   { value: 'New' },
-                  'New'
+                  values.resubmission ? 'Resubmitted' : 'New'
                 ),
                 _react2.default.createElement(
                   'option',
@@ -31655,7 +31662,7 @@ exports.default = function (_ref) {
               ) : _react2.default.createElement(
                 'p',
                 null,
-                values.status
+                values.resubmission && values.status === 'New' ? 'Resubmitted' : values.status
               )
             )
           )
@@ -33099,7 +33106,7 @@ exports.default = function (_ref) {
           _react2.default.createElement(
             "p",
             null,
-            values.status
+            values.resubmission && values.status === 'New' ? 'Resubmitted' : values.status
           )
         )
       )
@@ -33768,7 +33775,7 @@ exports.default = function (_ref) {
           _react2.default.createElement(
             "p",
             null,
-            values.status
+            values.resubmission && values.status === 'New' ? 'Resubmitted' : values.status
           )
         )
       )
@@ -35381,6 +35388,7 @@ var BuyoutsContainer = function (_React$Component) {
       // )
       this.props.saveByoThunk(this.props.token, [reByo, {
         status: 'Draft',
+        resubmission: true,
         date: null,
         expiry: null
       }], [reByo.customer], function (data) {
@@ -35518,7 +35526,7 @@ var BuyoutsContainer = function (_React$Component) {
                   _react2.default.createElement(
                     'td',
                     { className: 'status ' + byo.status },
-                    byo.status
+                    byo.resubmission && byo.status === 'New' ? 'Resubmitted' : byo.status
                   ),
                   _react2.default.createElement(
                     'td',
@@ -35762,7 +35770,9 @@ var BuyoutContainer = function (_React$Component) {
     value: function handleSave(e) {
       e.preventDefault();
 
-      if (this.state.customerCreate) {
+      if (!this.state.customer || !this.state.customer.name) {
+        this.props.throwAlert('red', 'To save, you must fill in the customer name');
+      } else if (this.state.customerCreate) {
         this.props.saveByoThunk(this.props.token, [this.state], [this.state.customer, { id: 'new' }]);
       } else {
         this.props.saveByoThunk(this.props.token, [this.state], [this.state.customer]);
@@ -36427,7 +36437,12 @@ exports.default = function (_ref) {
             _reactRouterDom.Link,
             { to: '/buyouts', id: 'back-button' },
             '\u2039 Back to Buyouts'
-          )
+          ),
+          admin ? _react2.default.createElement(
+            'span',
+            { id: 'cancel-button', onClick: toggleAdminView },
+            '\u2039 Back to Admin View'
+          ) : null
         )
       ),
       _react2.default.createElement(
@@ -36640,7 +36655,7 @@ exports.default = function (_ref) {
                 _react2.default.createElement(
                   'option',
                   { value: 'New' },
-                  'New'
+                  values.resubmission ? 'Resubmitted' : 'New'
                 ),
                 _react2.default.createElement(
                   'option',
@@ -36660,7 +36675,7 @@ exports.default = function (_ref) {
               ) : _react2.default.createElement(
                 'p',
                 null,
-                values.status
+                values.resubmission && values.status === 'New' ? 'Resubmitted' : values.status
               )
             )
           ),
@@ -37321,7 +37336,7 @@ var getPdf = exports.getPdf = function getPdf(values) {
       // logos
       // console.log(aciLogo, dealerLogo)
       doc.image(aciLogo, docWidth - margin - 120, margin, { width: 120 });
-      if (dealerLogo) doc.image(dealerLogo, margin, margin, { width: 120 });
+      if (dealerLogo) doc.image(dealerLogo, margin, margin, { fit: [120, 50] });
       doc.font('Helvetica').fontSize(8);
       doc.text('myadmincentral.com', { align: 'right' });
 
