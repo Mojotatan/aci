@@ -44,7 +44,7 @@ export const getPdf = values => {
       // logos
       // console.log(aciLogo, dealerLogo)
       doc.image(aciLogo, docWidth - margin - 120, margin, {width: 120})
-      if (dealerLogo) doc.image(dealerLogo, margin, margin, {width: 120})
+      if (dealerLogo) doc.image(dealerLogo, margin, margin, {fit: [120, 50]})
       doc.font('Helvetica').fontSize(8)
       doc.text('myadmincentral.com', {align: 'right'})
 
