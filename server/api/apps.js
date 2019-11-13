@@ -258,6 +258,7 @@ module.exports = require('express').Router()
         funding: req.body.app.funding,
         repRate: req.body.app.repRate,
         comments: req.body.app.comments,
+        resubmission: req.body.app.resubmission || false
       }, {
       where: {
         id: {

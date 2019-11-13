@@ -169,7 +169,7 @@ export default ({
                 value={values.status}
                 >
                   <option value="Draft">Draft</option>
-                  <option value="New">New</option>
+                  <option value="New">{(values.resubmission) ? 'Resubmitted' : 'New'}</option>
                   <option value="Working">Working</option>
                   <option value="Hold">Hold</option>
                   <option value="Approved">Approved</option>
@@ -177,7 +177,7 @@ export default ({
                   <option value="Expired">Expired</option>
                 </select>
                 :
-                <p>{values.status}</p>
+                <p>{(values.resubmission && values.status === 'New') ? 'Resubmitted' : values.status}</p>
               }
             </div>
           </div>

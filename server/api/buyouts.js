@@ -211,6 +211,7 @@ module.exports = require('express').Router()
         date: req.body.byo.date,
         expiry: req.body.byo.expiry,
         comments: req.body.byo.comments,
+        resubmission: req.body.byo.resubmission || false,
         // pdfs: req.body.byo.pdfs,
         // pdfNotes: req.body.byo.pdfNotes,
         // calcs: JSON.stringify(req.body.byo.calcs),

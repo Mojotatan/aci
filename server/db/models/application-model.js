@@ -78,6 +78,9 @@ module.exports = db => db.define('Application', {
   repRate: {
     type: Sequelize.STRING
   },
-
+  resubmission: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  }
 
 })

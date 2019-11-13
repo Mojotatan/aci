@@ -35,6 +35,10 @@ module.exports = db => db.define('Buyout', {
     type: Sequelize.ARRAY(Sequelize.STRING),
     defaultValue: []
   },
+  resubmission: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  }
   // calcs: {
   //   type: Sequelize.JSON
   // }

@@ -23,7 +23,7 @@ export default ({values, count, formatTerm, toggleLightbox, toggleMachines}) => 
           <label>Status</label>
         </div>
         <div className="field-box">
-          <p>{values.status}</p>
+          <p>{(values.resubmission && values.status === 'New') ? 'Resubmitted' : values.status}</p>
         </div>
       </div>
     </div>

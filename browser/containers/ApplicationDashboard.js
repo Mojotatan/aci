@@ -54,6 +54,7 @@ class ApplicationsContainer extends React.Component {
       this.props.token,
       [reApp, {
         status: 'Draft',
+        resubmission: true,
         date: null,
         expiry: null
       }],
@@ -99,6 +100,7 @@ class ApplicationsContainer extends React.Component {
               <span id="expiry" className={(this.props.sort.join('-') === "expiry") ? 'expiry sorting' : 'expiry sortable'} onClick={this.handleSort}>Expiration Date</span>
               <span id="rep-fullName" className={(this.props.sort.join('-') === "rep-fullName") ? 'rep sorting' : 'rep sortable'} onClick={this.handleSort}>Rep Name</span>
               <span className="options"></span>
+              <span className="options"></span>
             </div>
             {this.props.apps.map((app, index) => {
 
@@ -108,25 +110,19 @@ class ApplicationsContainer extends React.Component {
                   <span className="customer">{(app.customer) ? app.customer.name : ''}</span>
                   <span className="address">{(app.customer) ? app.customer.street : ''}</span>
                   <span className="amount right-justify">{(app.amount) ? getPrettyNumber(app.amount, '$') : ''}</span>
-                  <span className={`status ${app.status}`}>{app.status}</span>
+                  <span className={`status ${app.status}`}>{(app.resubmission && app.status === 'New') ? 'Resubmitted' : app.status}</span>
                   <span className="company">{(app.actions && app.actions[0] && app.actions[0].sentToRep) ? app.actions[0].leasingCompany : ''}</span>
                   <span className="approval">{(app.actions && app.actions[0] && app.actions[0].sentToRep) ? app.actions[0].appNumber : ''}</span>
                   <span className="expiry">{reformatDate(app.expiry)}</span>
                   {/* <span className="expiry">{(app.actions && app.actions[0] && app.actions[0].sentToRep) ? reformatDate(app.actions[0].expiry) : ''}</span> */}
                   <span className="rep">{(app.rep) ? app.rep.fullName : ''}</span>
-                  {(this.props.user.level === 'Admin' || app.status !== 'Expired') ?
-                    <span id={app.id} onClick={this.handleClick} className="options edit table-right">
-                      {(this.props.user.level === 'Admin' || app.status !== 'Working') ?
-                        'Edit' : 'View'
-                      }
-                    </span>
-                    :
-                    <span id={app.id} className="options edit" onClick={this.handleResubmit}>
-                      Resubmit
-                    </span>
-                  }
-                  {(this.props.user.level !== 'Admin' && app.status !== 'Expired' && app.status !== 'Draft') ?
-                    <span id={app.id} className="options floating-resubmit" onClick={this.handleResubmit}>Resubmit</span>
+                  <span id={app.id} onClick={this.handleClick} className="options edit table-right">
+                    {(this.props.user.level === 'Admin' || app.status !== 'Working') ?
+                      'Edit' : 'View'
+                    }
+                  </span>
+                  {(this.props.user.level !== 'Admin' && app.status !== 'Draft') ?
+                    <span id={app.id} className="options edit" onClick={this.handleResubmit}>Resubmit</span>
                     : null
                   }
                 </div>

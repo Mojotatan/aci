@@ -283,16 +283,16 @@ input, textarea {
 	font-size: 14px
 }
 .app-table span.date {
-	width: 88px;
+	width: 76px;
 	margin-right: 14px;
 	margin-left: 24px
 }
 .app-table span.customer {
-	width: 132px;
+	width: 120px;
 	margin-right: 13px
 }
 .app-table span.address {
-	width: 140px;
+	width: 120px;
 	margin-right: 13px
 }
 .app-table span.amount {
@@ -300,15 +300,15 @@ input, textarea {
 	margin-right: 14px
 }
 .app-table span.status {
-	width: 64px;
+	width: 80px;
 	margin-right: 13px
 }
 .app-table span.company {
-	width: 156px;
+	width: 140px;
 	margin-right: 14px
 }
 .app-table span.approval {
-	width: 88px;
+	width: 76px;
 	margin-right: 14px
 }
 .app-table span.expiry {
@@ -316,17 +316,12 @@ input, textarea {
 	margin-right: 13px
 }
 .app-table span.rep {
-	width: 112px;
+	width: 104px;
 	margin-right: 14px
 }
 .app-table span.options {
-	width: 76px;
-	margin-right: 24px
-}
-.app-table .floating-resubmit {
-	position: absolute;
-	left: 100%;
-	padding-left: 20px
+	width: 70px;
+	margin-right: 12px
 }
 
 .app-table .even, .app-table .odd, .user-table .even, .user-table .odd {
