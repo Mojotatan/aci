@@ -76,8 +76,8 @@ class UserContainer extends React.Component {
       else return false
     }
     let sameTeams = (a, b) => {
-      if ((b.level === 'Sales Manager' || 'Branch Manager') && a.branchId === b.branchId) return true
-      else if (b.level === 'Region Manager' && a.regionId === b.regionId) return true
+      if ((b.level === 'Sales Manager' || 'Branch Manager') && a.branchId == b.branchId) return true
+      else if (b.level === 'Region Manager' && a.regionId == b.regionId) return true
       else if (b.level === 'Senior Manager' || b.level === 'Admin') return true
       else return false
     }

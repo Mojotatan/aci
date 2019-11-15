@@ -78,7 +78,8 @@ module.exports = require('express').Router()
           }
         })
     prom.then(data => {
-      email = data[1][0].email
+      if (Array.isArray(data)) email = data[1][0].email
+      else email = data.email
     //   return data[1][0].setManager(null)
     // })
     // .then(() => {
