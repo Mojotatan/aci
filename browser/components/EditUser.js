@@ -86,45 +86,6 @@ export default ({
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
-                <label>Level</label>
-              </div>
-              <div className="field-dropd-full">
-                <select
-                onChange={handleChange}
-                name="level"
-                value={values.level}
-                >
-                  <option value="Sales Rep">Sales Rep</option>
-                  <option value="Sales Manager">Sales Manager</option>
-                  <option value="Branch Manager">Branch Manager</option>
-                  <option value="Region Manager">Region Manager</option>
-                  <option value="Senior Manager">Senior Manager</option>
-                  <option value="Admin">Admin</option>
-                </select>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <div className="field-label">
-                <label>Manager</label>
-              </div>
-              <div className="field-dropd-full">
-                <select
-                onChange={handleChange}
-                name="managerId"
-                value={values.managerId || 0}
-                >
-                  <option value={0}></option>
-                  {users.map(usr => (
-                    <option key={`usr=${usr.id}`} value={usr.id}>{usr.fullName}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="field-label">
                 <label>Dealer</label>
               </div>
               <div className="field-dropd-full">
@@ -142,6 +103,28 @@ export default ({
             </div>
             <div className="col-sm-6">
               <div className="field-label">
+                <label>Level</label>
+              </div>
+              <div className="field-dropd-full">
+                <select
+                onChange={handleChange}
+                name="level"
+                value={values.level}
+                >
+                  <option value="Sales Rep">Sales Rep</option>
+                  <option value="Sales Manager">Sales Manager</option>
+                  <option value="Branch Manager">Branch Manager</option>
+                  <option value="Region Manager">Region Manager</option>
+                  <option value="Senior Manager">Senior Manager</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="field-label">
                 <label>Region</label>
               </div>
               <div className="field-dropd-full">
@@ -154,6 +137,21 @@ export default ({
                   {regions.map(reg => (
                     <option key={`reg-${reg.id}`} value={reg.id}>{reg.name}</option>
                   ))}
+                </select>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="field-label">
+                <label>Active</label>
+              </div>
+              <div className="field-dropd-full">
+                <select
+                onChange={handleChange}
+                name="active"
+                value={values.active}
+                >
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
                 </select>
               </div>
             </div>
@@ -194,16 +192,18 @@ export default ({
           <div className="row">
             <div className="col-sm-6">
               <div className="field-label">
-                <label>Active</label>
+                <label>Manager</label>
               </div>
               <div className="field-dropd-full">
                 <select
                 onChange={handleChange}
-                name="active"
-                value={values.active}
+                name="managerId"
+                value={values.managerId || 0}
                 >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
+                  <option value={0}></option>
+                  {users.map(usr => (
+                    <option key={`usr=${usr.id}`} value={usr.id}>{usr.fullName}</option>
+                  ))}
                 </select>
               </div>
             </div>

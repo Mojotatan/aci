@@ -91,18 +91,34 @@ module.exports = require('express').Router()
   })
 
   .post('/new', isLoggedIn, isAdmin, (req, res) => {
-    return Branch.create({
-      name: req.body.branch.name,
-      phone: req.body.branch.phone,
-      street: req.body.branch.street,
-      city: req.body.branch.city,
-      state: req.body.branch.state,
-      zip: req.body.branch.zip
-    }, {
-
+    let theBranch, theDealer
+    Promise.all([
+      Branch.create({
+        name: req.body.branch.name,
+        phone: req.body.branch.phone,
+        street: req.body.branch.street,
+        city: req.body.branch.city,
+        state: req.body.branch.state,
+        zip: req.body.branch.zip
+      }),
+      Dealer.findOne({where: {name: {[Op.eq]: req.body.branch.dealerName}}})
+    ])
+    .then(([newBranch, dealer]) => {
+      theBranch = newBranch
+      theDealer = dealer
+      return Region.findOne({where: {
+        name: {[Op.eq]: req.body.branch.regionName},
+        dealerId: {[Op.eq]: theDealer.id}
+      }})
     })
-    .then(newBranch => {
-      res.send(newBranch)
+    .then(theRegion => {
+      return Promise.all([
+        theBranch.setDealer(theDealer),
+        theBranch.setRegion(theRegion)
+      ])
+    })
+    .then(() => {
+      res.send('success')
     })
     .catch(err => {
       res.send({err})

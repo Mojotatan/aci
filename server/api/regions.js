@@ -69,7 +69,7 @@ module.exports = require('express').Router()
     .then(([newRegion, theDealer]) => {
       return newRegion.setDealer(theDealer)
     })
-    .then(success => {
+    .then(() => {
       res.send('success')
     })
     .catch(err => res.send({err}))
