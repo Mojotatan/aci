@@ -38654,7 +38654,7 @@ var UserContainer = function (_React$Component) {
         if (a.level === 'Sales Rep' && b.level !== 'Sales Rep') return true;else if (a.level === 'Sales Manager' && b.level !== 'Sales Rep' && b.level !== 'Sales Manager') return true;else if (a.level === 'Branch Manager' && (b.level === 'Senior Manager' || b.level === 'Region Manager')) return true;else if (a.level === 'Region Manager' && b.level === 'Senior Manager') return true;else if (a.level === 'Admin' && b.level === 'Admin') return true;else return false;
       };
       var sameTeams = function sameTeams(a, b) {
-        if ((b.level === 'Sales Manager' || 'Branch Manager') && a.branchId === b.branchId) return true;else if (b.level === 'Region Manager' && a.regionId === b.regionId) return true;else if (b.level === 'Senior Manager' || b.level === 'Admin') return true;else return false;
+        if ((b.level === 'Sales Manager' || 'Branch Manager') && a.branchId == b.branchId) return true;else if (b.level === 'Region Manager' && a.regionId == b.regionId) return true;else if (b.level === 'Senior Manager' || b.level === 'Admin') return true;else return false;
       };
       return _react2.default.createElement(
         'div',
@@ -38876,6 +38876,39 @@ exports.default = function (_ref) {
                 _react2.default.createElement(
                   'label',
                   null,
+                  'Dealer'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'field-dropd-full' },
+                _react2.default.createElement(
+                  'select',
+                  {
+                    onChange: handleChange,
+                    name: 'dealerId',
+                    value: values.dealerId || 0
+                  },
+                  _react2.default.createElement('option', { value: 0 }),
+                  dealers.map(function (dlr) {
+                    return _react2.default.createElement(
+                      'option',
+                      { key: 'dlr-' + dlr.id, value: dlr.id },
+                      dlr.name
+                    );
+                  })
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'col-sm-6' },
+              _react2.default.createElement(
+                'div',
+                { className: 'field-label' },
+                _react2.default.createElement(
+                  'label',
+                  null,
                   'Level'
                 )
               ),
@@ -38921,77 +38954,11 @@ exports.default = function (_ref) {
                   )
                 )
               )
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'col-sm-6' },
-              _react2.default.createElement(
-                'div',
-                { className: 'field-label' },
-                _react2.default.createElement(
-                  'label',
-                  null,
-                  'Manager'
-                )
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'field-dropd-full' },
-                _react2.default.createElement(
-                  'select',
-                  {
-                    onChange: handleChange,
-                    name: 'managerId',
-                    value: values.managerId || 0
-                  },
-                  _react2.default.createElement('option', { value: 0 }),
-                  users.map(function (usr) {
-                    return _react2.default.createElement(
-                      'option',
-                      { key: 'usr=' + usr.id, value: usr.id },
-                      usr.fullName
-                    );
-                  })
-                )
-              )
             )
           ),
           _react2.default.createElement(
             'div',
             { className: 'row' },
-            _react2.default.createElement(
-              'div',
-              { className: 'col-sm-6' },
-              _react2.default.createElement(
-                'div',
-                { className: 'field-label' },
-                _react2.default.createElement(
-                  'label',
-                  null,
-                  'Dealer'
-                )
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'field-dropd-full' },
-                _react2.default.createElement(
-                  'select',
-                  {
-                    onChange: handleChange,
-                    name: 'dealerId',
-                    value: values.dealerId || 0
-                  },
-                  _react2.default.createElement('option', { value: 0 }),
-                  dealers.map(function (dlr) {
-                    return _react2.default.createElement(
-                      'option',
-                      { key: 'dlr-' + dlr.id, value: dlr.id },
-                      dlr.name
-                    );
-                  })
-                )
-              )
-            ),
             _react2.default.createElement(
               'div',
               { className: 'col-sm-6' },
@@ -39022,6 +38989,41 @@ exports.default = function (_ref) {
                       reg.name
                     );
                   })
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'col-sm-6' },
+              _react2.default.createElement(
+                'div',
+                { className: 'field-label' },
+                _react2.default.createElement(
+                  'label',
+                  null,
+                  'Active'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'field-dropd-full' },
+                _react2.default.createElement(
+                  'select',
+                  {
+                    onChange: handleChange,
+                    name: 'active',
+                    value: values.active
+                  },
+                  _react2.default.createElement(
+                    'option',
+                    { value: 'Active' },
+                    'Active'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: 'Inactive' },
+                    'Inactive'
+                  )
                 )
               )
             )
@@ -39099,7 +39101,7 @@ exports.default = function (_ref) {
                 _react2.default.createElement(
                   'label',
                   null,
-                  'Active'
+                  'Manager'
                 )
               ),
               _react2.default.createElement(
@@ -39109,19 +39111,17 @@ exports.default = function (_ref) {
                   'select',
                   {
                     onChange: handleChange,
-                    name: 'active',
-                    value: values.active
+                    name: 'managerId',
+                    value: values.managerId || 0
                   },
-                  _react2.default.createElement(
-                    'option',
-                    { value: 'Active' },
-                    'Active'
-                  ),
-                  _react2.default.createElement(
-                    'option',
-                    { value: 'Inactive' },
-                    'Inactive'
-                  )
+                  _react2.default.createElement('option', { value: 0 }),
+                  users.map(function (usr) {
+                    return _react2.default.createElement(
+                      'option',
+                      { key: 'usr=' + usr.id, value: usr.id },
+                      usr.fullName
+                    );
+                  })
                 )
               )
             )
