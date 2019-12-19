@@ -152,3 +152,16 @@ export const monify = (n, fallback) => {
   else if (arr[1].length === 0) arr[1] = '00'
   return arr.join('.')
 }
+
+// more powerful version of checkFor$
+export const isThisEquivalentToANumber = str => {
+  if (typeof str !== 'string') return false
+  let digitValues = {
+    0: true, 1: true, 2: true, 3: true, 4: true,
+    5: true, 6: true, 7: true, 8: true, 9: true
+  }
+  let digits = str.split('').filter(char => {
+    return digitValues[char]
+  })
+  return (digits.length > 0) ? true : false
+}

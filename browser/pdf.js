@@ -1,4 +1,4 @@
-import {sum, product, round, monify} from './utility'
+import {sum, product, round, monify, isThisEquivalentToANumber} from './utility'
 
 const getDataUri = (url, callback) => {
   let image = new Image()
@@ -109,51 +109,67 @@ export const getPdf = values => {
     doc.font('Helvetica').text(values.expiry || '', margin + 25, 429)
     
     if (customer) {
+      let prefix = isThisEquivalentToANumber(workbook.customerBtk) ? '$' : ''
+      let postfix = workbook.customerBtk || '' // prevents undefined from being printed
       doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
       doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + workbook.customerBtk || '', margin + 25, 475)
+      doc.font('Helvetica').text(prefix + postfix, margin + 25, 475)
       // doc.font('Helvetica').text((workbook.customerBtk) ? '$' + workbook.customerBtk : 'N/A', margin + 25, 475)
 
+      prefix = isThisEquivalentToANumber(workbook.customerBtr) ? '$' : ''
+      postfix = workbook.customerBtr || ''
       doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
       doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + workbook.customerBtr || '', margin + 25, 521)
+      doc.font('Helvetica').text(prefix + postfix, margin + 25, 521)
       // doc.font('Helvetica').text((workbook.customerBtr) ? '$' + workbook.customerBtr : 'N/A', margin + 25, 521)
     } else {
-      doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
-      doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + round(sum(
-        workbook.companyBtk,
-        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
-        product(workbook.remainingTerm, workbook.passThroughService),
-        workbook.smua
-      )), margin + 25, 475)
+      if (Number(workbook.companyBtk) !== 0) {
+        doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
+        doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+        let text = isThisEquivalentToANumber(workbook.companyBtk) ? '$' + round(sum(
+          workbook.companyBtk,
+          product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+          product(workbook.remainingTerm, workbook.passThroughService),
+          workbook.smua
+        )) : workbook.companyBtk
+        doc.font('Helvetica').text(text, margin + 25, 475)
+      }
 
-      doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
-      doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + round(sum(
-        workbook.companyBtr,
-        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
-        product(workbook.remainingTerm, workbook.passThroughService),
-        workbook.smua
-      )), margin + 25, 521)
+      if (Number(workbook.companyBtr) !== 0) {
+        doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
+        doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+        let text = isThisEquivalentToANumber(workbook.companyBtr) ? '$' + round(sum(
+          workbook.companyBtr,
+          product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+          product(workbook.remainingTerm, workbook.passThroughService),
+          workbook.smua
+        )) : workbook.companyBtr
+        doc.font('Helvetica').text(text, margin + 25, 521)
+      }
 
-      doc.font('Helvetica-Bold').text('Upgrade to Keep:', margin + 15, 548)
-      doc.rect(margin + 15, 562, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + round(sum(
-        workbook.companyUtk,
-        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
-        product(workbook.remainingTerm, workbook.passThroughService),
-        workbook.smua
-      )), margin + 25, 567)
+      if (Number(workbook.companyUtk) !== 0) {
+        doc.font('Helvetica-Bold').text('Upgrade to Keep:', margin + 15, 548)
+        doc.rect(margin + 15, 562, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+        let text = isThisEquivalentToANumber(workbook.companyUtk) ? '$' + round(sum(
+          workbook.companyUtk,
+          product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+          product(workbook.remainingTerm, workbook.passThroughService),
+          workbook.smua
+        )) : workbook.companyUtk
+        doc.font('Helvetica').text(text, margin + 25, 567)
+      }
 
-      doc.font('Helvetica-Bold').text('Upgrade to Return:', margin + 15, 594)
-      doc.rect(margin + 15, 608, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + round(sum(
-        workbook.companyUtr,
-        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
-        product(workbook.remainingTerm, workbook.passThroughService),
-        workbook.smua
-      )), margin + 25, 613)
+      if (Number(workbook.companyUtr) !== 0) {
+        doc.font('Helvetica-Bold').text('Upgrade to Return:', margin + 15, 594)
+        doc.rect(margin + 15, 608, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+        let text = isThisEquivalentToANumber(workbook.companyUtr) ? '$' + round(sum(
+          workbook.companyUtr,
+          product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+          product(workbook.remainingTerm, workbook.passThroughService),
+          workbook.smua
+        )) : workbook.companyUtr
+        doc.font('Helvetica').text(text, margin + 25, 613)
+      }
     }
 
 
