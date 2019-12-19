@@ -88,6 +88,30 @@ export const sortBy = (field, reverse) => {
     return (a.id - b.id) * reverseConstant
   }
 }
+// sortBy but for Users so we can sort inactive users to bottom
+export const sortByUsers = (field, reverse) => {
+  let reverseConstant = reverse ? -1 : 1
+  return (a, b) => {
+    // inactive users
+    if (field[0] !== 'active') {
+      if (match(['active'], a) === 'Inactive' && match(['active'], b) === 'Inactive') return (a.id - b.id)
+      if (match(['active'], b) === 'Inactive') return -1
+      if (match(['active'], a) === 'Inactive') return 1
+    }
+    
+    // handle cases where a field is empty
+    if (!match(field, a) && !match(field, b)) return (a.id - b.id) * reverseConstant
+    if (!match(field, b)) return -1 * reverseConstant
+    if (!match(field, a)) return 1 * reverseConstant
+
+    // sort based on field array
+    if (handleCase(match(field, a)) > handleCase(match(field, b))) return 1 * reverseConstant
+    if (handleCase(match(field, a)) < handleCase(match(field, b))) return -1 * reverseConstant
+
+    // tiebreaker
+    return (a.id - b.id) * reverseConstant
+  }
+}
 
 const handleCase = variable => {
   return (typeof variable === 'string') ? variable.toLowerCase() : variable

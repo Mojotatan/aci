@@ -1,9 +1,8 @@
 import axios from 'axios'
 
-import {loadCustomersThunk} from './customer-reducer'
 import {throwAlert} from './alert-reducer'
 
-import {sortBy, areArraysEqual} from '../utility'
+import {sortByUsers, areArraysEqual} from '../utility'
 
 // initial state
 const initialState = {users: [], focus: null, sort: ['id'], reverse: false}
@@ -14,7 +13,7 @@ const reducer = (prevState = initialState, action) => {
   switch (action.type) {
     case LOAD_USERS:
       newState.users = action.users
-      if (newState.sort && Array.isArray(newState.users)) newState.users.sort(sortBy(newState.sort, newState.reverse))
+      if (newState.sort && Array.isArray(newState.users)) newState.users.sort(sortByUsers(newState.sort, newState.reverse))
       return newState
     case FOCUS_USER:
       newState.focus = action.index
@@ -31,7 +30,7 @@ const reducer = (prevState = initialState, action) => {
         newState.reverse = false
         newState.sort = action.field
       }
-      if (Array.isArray(newState.users)) newState.users.sort(sortBy(action.field, newState.reverse))
+      if (Array.isArray(newState.users)) newState.users.sort(sortByUsers(action.field, newState.reverse))
       return newState
     case FLUSH_USERS:
       newState.users = []
