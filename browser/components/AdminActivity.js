@@ -39,7 +39,8 @@ export default ({
   handleChoosePDF,
   handleUploadPDF,
   handleAddAttachment,
-  handleRemoveAttachment
+  handleRemoveAttachment,
+  handleCheckAttachment
 }) => (
   <div className="row edit-apps-page admin">
 
@@ -525,9 +526,9 @@ export default ({
                         <div className="pdfCheckbox">
                           <input
                             type="checkbox"
-                            id={pdf.id}
-                            //onChange
-                            //checked
+                            id={index}
+                            onChange={handleCheckAttachment}
+                            checked={values.checkedAttachments[index] || false}
                           />
                         </div>
                         : null

@@ -59,7 +59,7 @@ export default ({
                 value={values.focusedAttachment}
                 onChange={handleChange}
                 >
-                  <option key={0} value="">Select a pdf to upload</option>
+                  <option key={0} value="">Select a pdf to attach</option>
                   {values.pdfs.map((pdf, index) => (
                     <option key={index + 1} value={index}>{pdf.name}</option>
                   ))}

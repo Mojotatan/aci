@@ -13,4 +13,8 @@ module.exports = require('express').Router()
       fs.mkdirSync(path.resolve(__dirname, `../uploads/${newUpload.id}`))
       
     })
+    .catch(err => {
+      console.error(err)
+      res.status(500)
+    })
   })

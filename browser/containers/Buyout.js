@@ -21,6 +21,7 @@ class BuyoutContainer extends React.Component {
         mailSubject: '',
         mailCC: '',
         mailAttachments: [],
+        checkedAttachments: {},
         focusedAttachment: '',
         mailDisabled: false,
         adminMode: false,
@@ -85,6 +86,8 @@ class BuyoutContainer extends React.Component {
 
     this.handleAddAttachment = this.handleAddAttachment.bind(this)
     this.handleRemoveAttachment = this.handleRemoveAttachment.bind(this)
+
+    this.handleCheckAttachment = this.handleCheckAttachment.bind(this)
   }
 
   handleAppLink(e) {
@@ -365,11 +368,15 @@ class BuyoutContainer extends React.Component {
   }
 
   handleWorkbookNotify(e) {
+    let mailAttachments = []
+    Object.keys(this.state.checkedAttachments).forEach(index => {
+      if (this.state.checkedAttachments[index]) mailAttachments.push(this.state.pdfs[index])
+    })
     this.setState({
       adminMode: 'notifyByo',
       mailSubject: '',
       mailBody: '',
-      mailAttachments: [],
+      mailAttachments: mailAttachments,
       mailCC: (this.state.rep.manager) ? this.state.rep.manager.email : ''
     })
   }
@@ -544,6 +551,14 @@ class BuyoutContainer extends React.Component {
     })
   }
 
+  handleCheckAttachment(e) {
+    let checked = this.state.checkedAttachments
+    checked[e.target.id] = !checked[e.target.id]
+    this.setState({
+      checkedAttachments: checked
+    })
+  }
+
 
   componentWillReceiveProps(newProps){
     // console.log('component receiving props')
@@ -635,6 +650,7 @@ class BuyoutContainer extends React.Component {
           handleUploadPDF={this.handleUploadPDF}
           handleAddAttachment={this.handleAddAttachment}
           handleRemoveAttachment={this.handleRemoveAttachment}
+          handleCheckAttachment={this.handleCheckAttachment}
         />
       </div>
     )
