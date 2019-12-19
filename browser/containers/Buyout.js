@@ -367,7 +367,6 @@ class BuyoutContainer extends React.Component {
   handleWorkbookNotify(e) {
     this.setState({
       adminMode: 'notifyByo',
-      calcTarget: Number(e.target.id.slice(6)),
       mailSubject: '',
       mailBody: '',
       mailAttachments: [],
@@ -522,7 +521,7 @@ class BuyoutContainer extends React.Component {
       .catch(err => {
         console.error(err)
       })
-      this.setState({upload: null})
+      this.setState({upload: null, note: ''})
     }
   }
 

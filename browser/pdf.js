@@ -1,4 +1,4 @@
-import {sum, product, round, monify, isThisEquivalentToANumber} from './utility'
+import {getUglyDate, sum, product, round, monify, isThisEquivalentToANumber} from './utility'
 
 const getDataUri = (url, callback) => {
   let image = new Image()
@@ -341,7 +341,7 @@ export const getPdf = values => {
       let url = URL.createObjectURL(blob)
       a.href = url
   
-      a.download = `Lease-${values.leases[values.calcTarget].number}-${(customer) ? 'Customer' : 'Rep'}-Quote`
+      a.download = `${values.leases[values.calcTarget].number}-${values.customer.name}-${(customer) ? 'Customer' : 'Rep'}-${getUglyDate()}`
       document.body.appendChild(a)
       a.click()
       setTimeout(() => {

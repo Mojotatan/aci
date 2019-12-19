@@ -10,6 +10,18 @@ export const getDate = () => {
   return `${obj.year}-${obj.month}-${obj.day}`
 }
 
+export const getUglyDate = () => {
+  let now = new Date()
+  let obj = {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    day: now.getDate()
+  }
+  if (obj.month.toString().length === 1) obj.month = `0${obj.month}`
+  if (obj.day.toString().length === 1) obj.day = `0${obj.day}`
+  return `${obj.month}-${obj.day}-${obj.year}`
+}
+
 export const getPrettyDate = () => {
   let now = new Date()
   let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
