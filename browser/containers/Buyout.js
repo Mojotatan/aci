@@ -483,7 +483,7 @@ class BuyoutContainer extends React.Component {
   }
 
   generatePdf() {
-    getPdf(this.state)
+    getPdf(this.state, this.props.token)
   }
 
 

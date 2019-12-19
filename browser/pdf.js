@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {getUglyDate, sum, product, round, monify, isThisEquivalentToANumber} from './utility'
 
 const getDataUri = (url, callback) => {
@@ -14,7 +15,7 @@ const getDataUri = (url, callback) => {
   image.src = url
 }
 
-export const getPdf = values => {
+export const getPdf = (values, token) => {
   const workbook = values.leases[values.calcTarget].workbook
   const machines = values.leases[values.calcTarget].machines.filter(machine => !machine.delete)
 
@@ -337,6 +338,15 @@ export const getPdf = values => {
     doc.end()
     stream.on('finish', () => {
       let blob = stream.toBlob('application/pdf')
+
+      // axios.post('/api/uploads/generate/buyout', {
+      //   token: token,
+      //   buyout: values.byo.id,
+      //   // lease: values.leases[values.calcTarget].id,
+      //   pdf: blob,
+      //   name: `${values.leases[values.calcTarget].number}-${values.customer.name}-${(customer) ? 'Customer' : 'Rep'}-${getUglyDate()}.pdf`
+      // })
+
       let a = document.createElement('a')
       let url = URL.createObjectURL(blob)
       a.href = url
