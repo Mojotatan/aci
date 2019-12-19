@@ -9,7 +9,7 @@ import {focusApp} from '../store/app-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
 import {getDate, reformatDate, product, round} from '../utility'
-import {getPdf} from '../pdf'
+// import {getPdf} from '../pdf'
 
 class BuyoutContainer extends React.Component {
   constructor(props) {
@@ -490,7 +490,29 @@ class BuyoutContainer extends React.Component {
   }
 
   generatePdf() {
-    getPdf(this.state, this.props.token)
+    // getPdf(this.state, this.props.token)
+    axios.post('/api/pdf/new', {
+      token: this.props.token,
+      values: this.state,
+      version: 'customer'
+    })
+    .then(() => {
+      return axios.post('/api/pdf/new', {
+        token: this.props.token,
+        values: this.state,
+        version: 'rep'
+      })
+    })
+    .then(() => {
+      this.setState({
+        calcTarget: false,
+        calcView: false
+      })
+      this.props.loadByosThunk(this.props.token)
+    })
+    .catch(err => {
+      console.error(err)
+    })
   }
 
 

@@ -112,6 +112,14 @@ module.exports = require('express').Router()
     }
   })
 
+  // .post('/generate/buyout', isLoggedIn, isAdmin, (req, res) => {
+  //   Upload.create({buyoutId: req.body.buyout}, {returning: true})
+  //   .then(newUpload => {
+  //     fs.mkdirSync(path.resolve(__dirname, `../uploads/${newUpload.id}`))
+      
+  //   })
+  // })
+
   .get('/:id/:name', /*isLoggedIn, isAdmin,*/ (req, res) => {
     let me = whoAmI(req.query.access_token)
     if (!me) res.send('Please log in')
