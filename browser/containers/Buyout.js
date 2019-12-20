@@ -504,6 +504,14 @@ class BuyoutContainer extends React.Component {
       })
     })
     .then(() => {
+      return axios.post('/api/logs/new2', {
+        token: this.props.token,
+        date: getDate(),
+        activity: `<b>${this.props.user.fullName}<b> generated PDFs for lease ${this.state.leases[this.state.calcTarget].number}`,
+        byo: this.state.id
+      })
+    })
+    .then(() => {
       this.setState({
         calcTarget: false,
         calcView: false

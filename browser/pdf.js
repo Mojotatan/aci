@@ -1,3 +1,4 @@
+// PDF GENERATION WAS MOVED SERVER-SIDE; GO TO SERVER/API/PDF
 import axios from 'axios'
 import {getUglyDate, sum, product, round, monify, isThisEquivalentToANumber} from './utility'
 
