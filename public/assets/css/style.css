@@ -884,6 +884,9 @@ form .app-table-edit {
 .edit-fields-box.dealer .upload {
 	width: 22%
 }
+.edit-fields-box.dealer .upload img {
+	width: 100%
+}
 .edit-fields-box.dealer .tail-end {
 	width: 6%
 }
