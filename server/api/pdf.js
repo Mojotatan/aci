@@ -111,7 +111,7 @@ module.exports = require('express').Router()
         )
         if (values.rep.dealer && values.rep.dealer.logo) {
           doc.image(
-            path.resolve(__dirname, '../../public/assets/logo' + values.rep.dealer.logo),
+            path.resolve(__dirname, '../../public/assets/logo/' + values.rep.dealer.logo),
             margin, margin, {fit: [120, 50]}
           )
         }
