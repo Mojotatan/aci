@@ -9,7 +9,7 @@ import {focusApp} from '../store/app-reducer'
 import {throwAlert} from '../store/alert-reducer'
 
 import {getDate, reformatDate, product, round} from '../utility'
-import {getPdf} from '../pdf'
+// import {getPdf} from '../pdf'
 
 class BuyoutContainer extends React.Component {
   constructor(props) {
@@ -21,6 +21,7 @@ class BuyoutContainer extends React.Component {
         mailSubject: '',
         mailCC: '',
         mailAttachments: [],
+        checkedAttachments: {},
         focusedAttachment: '',
         mailDisabled: false,
         adminMode: false,
@@ -85,6 +86,8 @@ class BuyoutContainer extends React.Component {
 
     this.handleAddAttachment = this.handleAddAttachment.bind(this)
     this.handleRemoveAttachment = this.handleRemoveAttachment.bind(this)
+
+    this.handleCheckAttachment = this.handleCheckAttachment.bind(this)
   }
 
   handleAppLink(e) {
@@ -364,12 +367,15 @@ class BuyoutContainer extends React.Component {
   }
 
   handleWorkbookNotify(e) {
+    let mailAttachments = []
+    Object.keys(this.state.checkedAttachments).forEach(index => {
+      if (this.state.checkedAttachments[index]) mailAttachments.push(this.state.pdfs[index])
+    })
     this.setState({
       adminMode: 'notifyByo',
-      calcTarget: Number(e.target.id.slice(6)),
       mailSubject: '',
       mailBody: '',
-      mailAttachments: [],
+      mailAttachments: mailAttachments,
       mailCC: (this.state.rep.manager) ? this.state.rep.manager.email : ''
     })
   }
@@ -482,7 +488,37 @@ class BuyoutContainer extends React.Component {
   }
 
   generatePdf() {
-    getPdf(this.state)
+    // getPdf(this.state, this.props.token)
+    axios.post('/api/pdf/new', {
+      token: this.props.token,
+      values: this.state,
+      version: 'customer'
+    })
+    .then(() => {
+      return axios.post('/api/pdf/new', {
+        token: this.props.token,
+        values: this.state,
+        version: 'rep'
+      })
+    })
+    .then(() => {
+      return axios.post('/api/logs/new2', {
+        token: this.props.token,
+        date: getDate(),
+        activity: `<b>${this.props.user.fullName}<b> generated PDFs for lease ${this.state.leases[this.state.calcTarget].number}`,
+        byo: this.state.id
+      })
+    })
+    .then(() => {
+      this.setState({
+        calcTarget: false,
+        calcView: false
+      })
+      this.props.loadByosThunk(this.props.token)
+    })
+    .catch(err => {
+      console.error(err)
+    })
   }
 
 
@@ -520,7 +556,7 @@ class BuyoutContainer extends React.Component {
       .catch(err => {
         console.error(err)
       })
-      this.setState({upload: null})
+      this.setState({upload: null, note: ''})
     }
   }
 
@@ -540,6 +576,14 @@ class BuyoutContainer extends React.Component {
     attachments = [...attachments.slice(0, Number(e.target.id)), ...attachments.slice(Number(e.target.id) + 1)]
     this.setState({
       mailAttachments: attachments
+    })
+  }
+
+  handleCheckAttachment(e) {
+    let checked = this.state.checkedAttachments
+    checked[e.target.id] = !checked[e.target.id]
+    this.setState({
+      checkedAttachments: checked
     })
   }
 
@@ -634,6 +678,7 @@ class BuyoutContainer extends React.Component {
           handleUploadPDF={this.handleUploadPDF}
           handleAddAttachment={this.handleAddAttachment}
           handleRemoveAttachment={this.handleRemoveAttachment}
+          handleCheckAttachment={this.handleCheckAttachment}
         />
       </div>
     )

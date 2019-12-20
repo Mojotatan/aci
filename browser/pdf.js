@@ -1,4 +1,6 @@
-import {sum, product, round, monify} from './utility'
+// PDF GENERATION WAS MOVED SERVER-SIDE; GO TO SERVER/API/PDF
+import axios from 'axios'
+import {getUglyDate, sum, product, round, monify, isThisEquivalentToANumber} from './utility'
 
 const getDataUri = (url, callback) => {
   let image = new Image()
@@ -14,7 +16,7 @@ const getDataUri = (url, callback) => {
   image.src = url
 }
 
-export const getPdf = values => {
+export const getPdf = (values, token) => {
   const workbook = values.leases[values.calcTarget].workbook
   const machines = values.leases[values.calcTarget].machines.filter(machine => !machine.delete)
 
@@ -109,51 +111,67 @@ export const getPdf = values => {
     doc.font('Helvetica').text(values.expiry || '', margin + 25, 429)
     
     if (customer) {
+      let prefix = isThisEquivalentToANumber(workbook.customerBtk) ? '$' : ''
+      let postfix = workbook.customerBtk || '' // prevents undefined from being printed
       doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
       doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + workbook.customerBtk || '', margin + 25, 475)
+      doc.font('Helvetica').text(prefix + postfix, margin + 25, 475)
       // doc.font('Helvetica').text((workbook.customerBtk) ? '$' + workbook.customerBtk : 'N/A', margin + 25, 475)
 
+      prefix = isThisEquivalentToANumber(workbook.customerBtr) ? '$' : ''
+      postfix = workbook.customerBtr || ''
       doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
       doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + workbook.customerBtr || '', margin + 25, 521)
+      doc.font('Helvetica').text(prefix + postfix, margin + 25, 521)
       // doc.font('Helvetica').text((workbook.customerBtr) ? '$' + workbook.customerBtr : 'N/A', margin + 25, 521)
     } else {
-      doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
-      doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + round(sum(
-        workbook.companyBtk,
-        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
-        product(workbook.remainingTerm, workbook.passThroughService),
-        workbook.smua
-      )), margin + 25, 475)
+      if (Number(workbook.companyBtk) !== 0) {
+        doc.font('Helvetica-Bold').text('Buyout to Keep:', margin + 15, 456)
+        doc.rect(margin + 15, 470, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+        let text = isThisEquivalentToANumber(workbook.companyBtk) ? '$' + round(sum(
+          workbook.companyBtk,
+          product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+          product(workbook.remainingTerm, workbook.passThroughService),
+          workbook.smua
+        )) : workbook.companyBtk
+        doc.font('Helvetica').text(text, margin + 25, 475)
+      }
 
-      doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
-      doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + round(sum(
-        workbook.companyBtr,
-        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
-        product(workbook.remainingTerm, workbook.passThroughService),
-        workbook.smua
-      )), margin + 25, 521)
+      if (Number(workbook.companyBtr) !== 0) {
+        doc.font('Helvetica-Bold').text('Buyout to Return:', margin + 15, 502)
+        doc.rect(margin + 15, 516, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+        let text = isThisEquivalentToANumber(workbook.companyBtr) ? '$' + round(sum(
+          workbook.companyBtr,
+          product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+          product(workbook.remainingTerm, workbook.passThroughService),
+          workbook.smua
+        )) : workbook.companyBtr
+        doc.font('Helvetica').text(text, margin + 25, 521)
+      }
 
-      doc.font('Helvetica-Bold').text('Upgrade to Keep:', margin + 15, 548)
-      doc.rect(margin + 15, 562, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + round(sum(
-        workbook.companyUtk,
-        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
-        product(workbook.remainingTerm, workbook.passThroughService),
-        workbook.smua
-      )), margin + 25, 567)
+      if (Number(workbook.companyUtk) !== 0) {
+        doc.font('Helvetica-Bold').text('Upgrade to Keep:', margin + 15, 548)
+        doc.rect(margin + 15, 562, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+        let text = isThisEquivalentToANumber(workbook.companyUtk) ? '$' + round(sum(
+          workbook.companyUtk,
+          product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+          product(workbook.remainingTerm, workbook.passThroughService),
+          workbook.smua
+        )) : workbook.companyUtk
+        doc.font('Helvetica').text(text, margin + 25, 567)
+      }
 
-      doc.font('Helvetica-Bold').text('Upgrade to Return:', margin + 15, 594)
-      doc.rect(margin + 15, 608, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text('$' + round(sum(
-        workbook.companyUtr,
-        product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
-        product(workbook.remainingTerm, workbook.passThroughService),
-        workbook.smua
-      )), margin + 25, 613)
+      if (Number(workbook.companyUtr) !== 0) {
+        doc.font('Helvetica-Bold').text('Upgrade to Return:', margin + 15, 594)
+        doc.rect(margin + 15, 608, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+        let text = isThisEquivalentToANumber(workbook.companyUtr) ? '$' + round(sum(
+          workbook.companyUtr,
+          product(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100),
+          product(workbook.remainingTerm, workbook.passThroughService),
+          workbook.smua
+        )) : workbook.companyUtr
+        doc.font('Helvetica').text(text, margin + 25, 613)
+      }
     }
 
 
@@ -172,7 +190,9 @@ export const getPdf = values => {
 
     doc.font('Helvetica')
 
-    let machineCount = (machines.length > 8) ? 7 : 8
+    let firstPageLimit = (customer) ? 18 : 7
+
+    let machineCount = (machines.length > firstPageLimit + 1) ? firstPageLimit : firstPageLimit + 1
     machines.slice(0, machineCount).forEach((machine, index) => {
       let count = 258 + 20 * index
       if (index % 2 === 0) doc.rect(margin + quarterCol + 15, count, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
@@ -186,88 +206,89 @@ export const getPdf = values => {
         // doc.text('timallen.mp4', docWidth - margin - 15 - doc.widthOfString('Included in'), count + 5)
       }
     })
-    if (machineCount === 7) {
-      doc.text('Continued on next page', margin + quarterCol + 25, 403)
+    if (machineCount === firstPageLimit) {
+      doc.text('Continued on next page', margin + quarterCol + 25, (customer) ? 623 : 403)
     }
 
 
     // invoice box
-    doc.moveTo(margin + quarterCol, 432).lineTo(margin + docInnerWidth, 432).stroke('#ced0da')
-    doc.font('Helvetica-Bold')
-    doc.text('Current Invoice Breakdown:', margin + quarterCol + 15, 444)
-    doc.text('Upfront', margin + quarterCol + 15 + 242, 444)
-    doc.text('Monthly', margin + quarterCol + 15 + 314, 444)
+    if (!customer) {
+      doc.moveTo(margin + quarterCol, 432).lineTo(margin + docInnerWidth, 432).stroke('#ced0da')
+      doc.font('Helvetica-Bold')
+      doc.text('Current Invoice Breakdown:', margin + quarterCol + 15, 444)
+      doc.text('Upfront', margin + quarterCol + 15 + 242, 444)
+      doc.text('Monthly', margin + quarterCol + 15 + 314, 444)
 
-    doc.text('Payment', margin + quarterCol + 15 + 170, 460)
-    doc.text('Tax', margin + quarterCol + 15 + 242, 460)
-    doc.text('Tax', margin + quarterCol + 15 + 314, 460)
+      doc.text('Payment', margin + quarterCol + 15 + 170, 460)
+      doc.text('Tax', margin + quarterCol + 15 + 242, 460)
+      doc.text('Tax', margin + quarterCol + 15 + 314, 460)
 
-    doc.font('Helvetica')
-    
-    doc.rect(margin + quarterCol + 15, 474, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.text('Equipment Payment:', margin + quarterCol + 25, 479)
-    doc.text('$' + monify(workbook.currentEquipmentPayment, ' - '), margin + quarterCol + 15 + 170, 479)
-    doc.text('$' + monify(workbook.currentEquipmentPaymentUpfront, ' - '), margin + quarterCol + 15 + 242, 479)
-    doc.text('$' + monify(workbook.currentEquipmentPaymentMonthly, ' - '), margin + quarterCol + 15 + 314, 479)
+      doc.font('Helvetica')
+      
+      doc.rect(margin + quarterCol + 15, 474, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.text('Equipment Payment:', margin + quarterCol + 25, 479)
+      doc.text('$' + monify(workbook.currentEquipmentPayment, ' - '), margin + quarterCol + 15 + 170, 479)
+      doc.text('$' + monify(workbook.currentEquipmentPaymentUpfront, ' - '), margin + quarterCol + 15 + 242, 479)
+      doc.text('$' + monify(workbook.currentEquipmentPaymentMonthly, ' - '), margin + quarterCol + 15 + 314, 479)
 
-    doc.text('Service/MA Payment:', margin + quarterCol + 25, 499)
-    doc.text('$' + monify(workbook.currentServicePayment, ' - '), margin + quarterCol + 15 + 170, 499)
-    doc.text('$' + monify(workbook.currentServicePaymentUpfront, ' - '), margin + quarterCol + 15 + 242, 499)
-    doc.text('$' + monify(workbook.currentServicePaymentMonthly, ' - '), margin + quarterCol + 15 + 314, 499)
+      doc.text('Service/MA Payment:', margin + quarterCol + 25, 499)
+      doc.text('$' + monify(workbook.currentServicePayment, ' - '), margin + quarterCol + 15 + 170, 499)
+      doc.text('$' + monify(workbook.currentServicePaymentUpfront, ' - '), margin + quarterCol + 15 + 242, 499)
+      doc.text('$' + monify(workbook.currentServicePaymentMonthly, ' - '), margin + quarterCol + 15 + 314, 499)
 
-    doc.rect(margin + quarterCol + 15, 514, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.text('Fuel/Freight:', margin + quarterCol + 25, 519)
-    doc.text('$' + monify(workbook.fuelFreight, ' - '), margin + quarterCol + 15 + 170, 519)
-    doc.text('$' + monify(workbook.fuelFreightUpfront, ' - '), margin + quarterCol + 15 + 242, 519)
-    doc.text('$' + monify(workbook.fuelFreightMonthly, ' - '), margin + quarterCol + 15 + 314, 519)
+      doc.rect(margin + quarterCol + 15, 514, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.text('Fuel/Freight:', margin + quarterCol + 25, 519)
+      doc.text('$' + monify(workbook.fuelFreight, ' - '), margin + quarterCol + 15 + 170, 519)
+      doc.text('$' + monify(workbook.fuelFreightUpfront, ' - '), margin + quarterCol + 15 + 242, 519)
+      doc.text('$' + monify(workbook.fuelFreightMonthly, ' - '), margin + quarterCol + 15 + 314, 519)
 
-    doc.text('Late Charges:', margin + quarterCol + 25, 539)
-    doc.text('$' + monify(workbook.lateCharges, ' - '), margin + quarterCol + 15 + 170, 539)
-    doc.text('$' + monify(workbook.lateChargesUpfront, ' - '), margin + quarterCol + 15 + 242, 539)
-    doc.text('$' + monify(workbook.lateChargesMonthly, ' - '), margin + quarterCol + 15 + 314, 539)
+      doc.text('Late Charges:', margin + quarterCol + 25, 539)
+      doc.text('$' + monify(workbook.lateCharges, ' - '), margin + quarterCol + 15 + 170, 539)
+      doc.text('$' + monify(workbook.lateChargesUpfront, ' - '), margin + quarterCol + 15 + 242, 539)
+      doc.text('$' + monify(workbook.lateChargesMonthly, ' - '), margin + quarterCol + 15 + 314, 539)
 
-    doc.rect(margin + quarterCol + 15, 554, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-    doc.text('Misc. Items (see Notes):', margin + quarterCol + 25, 559)
-    doc.text('$' + monify(workbook.miscItems, ' - '), margin + quarterCol + 15 + 170, 559)
-    doc.text('$' + monify(workbook.miscItemsUpfront, ' - '), margin + quarterCol + 15 + 242, 559)
-    doc.text('$' + monify(workbook.miscItemsMonthly, ' - '), margin + quarterCol + 15 + 314, 559)
+      doc.rect(margin + quarterCol + 15, 554, halfCol + quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
+      doc.text('Misc. Items (see Notes):', margin + quarterCol + 25, 559)
+      doc.text('$' + monify(workbook.miscItems, ' - '), margin + quarterCol + 15 + 170, 559)
+      doc.text('$' + monify(workbook.miscItemsUpfront, ' - '), margin + quarterCol + 15 + 242, 559)
+      doc.text('$' + monify(workbook.miscItemsMonthly, ' - '), margin + quarterCol + 15 + 314, 559)
 
-    doc.moveTo(margin + quarterCol + 15, 583).lineTo(margin + docInnerWidth - 15, 583).stroke('#000000')
-    doc.text('$' + round(sum(
-      workbook.currentEquipmentPayment,
-      workbook.currentServicePayment,
-      workbook.fuelFreight,
-      workbook.lateCharges,
-      workbook.miscItems
-    )), margin + quarterCol + 15 + 170, 594)
-    doc.text('$' + round(sum(
-      workbook.currentEquipmentPaymentUpfront,
-      workbook.currentServicePaymentUpfront,
-      workbook.fuelFreightUpfront,
-      workbook.lateChargesUpfront,
-      workbook.miscItemsUpfront
-    )), margin + quarterCol + 15 + 242, 594)
-    doc.text('$' + round(sum(
-      workbook.currentEquipmentPaymentMonthly,
-      workbook.currentServicePaymentMonthly,
-      workbook.fuelFreightMonthly,
-      workbook.lateChargesMonthly,
-      workbook.miscItemsMonthly
-    )), margin + quarterCol + 15 + 314, 594)
+      doc.moveTo(margin + quarterCol + 15, 583).lineTo(margin + docInnerWidth - 15, 583).stroke('#000000')
+      doc.text('$' + round(sum(
+        workbook.currentEquipmentPayment,
+        workbook.currentServicePayment,
+        workbook.fuelFreight,
+        workbook.lateCharges,
+        workbook.miscItems
+      )), margin + quarterCol + 15 + 170, 594)
+      doc.text('$' + round(sum(
+        workbook.currentEquipmentPaymentUpfront,
+        workbook.currentServicePaymentUpfront,
+        workbook.fuelFreightUpfront,
+        workbook.lateChargesUpfront,
+        workbook.miscItemsUpfront
+      )), margin + quarterCol + 15 + 242, 594)
+      doc.text('$' + round(sum(
+        workbook.currentEquipmentPaymentMonthly,
+        workbook.currentServicePaymentMonthly,
+        workbook.fuelFreightMonthly,
+        workbook.lateChargesMonthly,
+        workbook.miscItemsMonthly
+      )), margin + quarterCol + 15 + 314, 594)
 
-    doc.rect(docWidth - margin - 15 - 160, 613, 80, 20).fillAndStroke('#edf5fd', '#ced0da').fillColor('#000000')
-    doc.moveTo(docWidth - margin - 15 - 80, 613).lineTo(docWidth - margin - 15, 613).lineTo(docWidth - margin - 15, 633).lineTo(docWidth - margin - 15 - 80, 633).stroke('#ced0da')
-    doc.font('Helvetica-Bold').text('TOTAL:', docWidth - margin - 15 - 160 + 10, 618)
+      doc.rect(docWidth - margin - 15 - 160, 613, 80, 20).fillAndStroke('#edf5fd', '#ced0da').fillColor('#000000')
+      doc.moveTo(docWidth - margin - 15 - 80, 613).lineTo(docWidth - margin - 15, 613).lineTo(docWidth - margin - 15, 633).lineTo(docWidth - margin - 15 - 80, 633).stroke('#ced0da')
+      doc.font('Helvetica-Bold').text('TOTAL:', docWidth - margin - 15 - 160 + 10, 618)
 
-    let total = round(sum(
-      workbook.currentEquipmentPayment, workbook.currentEquipmentPaymentUpfront, workbook.currentEquipmentPaymentMonthly,
-      workbook.currentServicePayment, workbook.currentServicePaymentUpfront, workbook.currentServicePaymentMonthly,
-      workbook.fuelFreight, workbook.fuelFreightUpfront, workbook.fuelFreightMonthly,
-      workbook.lateCharges, workbook.lateChargesUpfront, workbook.lateChargesMonthly,
-      workbook.miscItems, workbook.miscItemsUpfront, workbook.miscItemsMonthly
-    ))
-    doc.font('Helvetica').text('$' + total, docWidth - margin - 15 - 10 - doc.widthOfString('$' + total), 618)
-
+      let total = round(sum(
+        workbook.currentEquipmentPayment, workbook.currentEquipmentPaymentUpfront, workbook.currentEquipmentPaymentMonthly,
+        workbook.currentServicePayment, workbook.currentServicePaymentUpfront, workbook.currentServicePaymentMonthly,
+        workbook.fuelFreight, workbook.fuelFreightUpfront, workbook.fuelFreightMonthly,
+        workbook.lateCharges, workbook.lateChargesUpfront, workbook.lateChargesMonthly,
+        workbook.miscItems, workbook.miscItemsUpfront, workbook.miscItemsMonthly
+      ))
+      doc.font('Helvetica').text('$' + total, docWidth - margin - 15 - 10 - doc.widthOfString('$' + total), 618)
+    }
 
     // note box
     doc.rect(margin, 648, docInnerWidth, 94).stroke('#ced0da')
@@ -318,11 +339,20 @@ export const getPdf = values => {
     doc.end()
     stream.on('finish', () => {
       let blob = stream.toBlob('application/pdf')
+
+      // axios.post('/api/uploads/generate/buyout', {
+      //   token: token,
+      //   buyout: values.byo.id,
+      //   // lease: values.leases[values.calcTarget].id,
+      //   pdf: blob,
+      //   name: `${values.leases[values.calcTarget].number}-${values.customer.name}-${(customer) ? 'Customer' : 'Rep'}-${getUglyDate()}.pdf`
+      // })
+
       let a = document.createElement('a')
       let url = URL.createObjectURL(blob)
       a.href = url
   
-      a.download = `Lease-${values.leases[values.calcTarget].number}-${(customer) ? 'Customer' : 'Rep'}-Quote`
+      a.download = `${values.leases[values.calcTarget].number}-${values.customer.name}-${(customer) ? 'Customer' : 'Rep'}-${getUglyDate()}`
       document.body.appendChild(a)
       a.click()
       setTimeout(() => {

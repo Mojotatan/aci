@@ -46,7 +46,8 @@ export default ({
   handleChoosePDF,
   handleUploadPDF,
   handleAddAttachment,
-  handleRemoveAttachment
+  handleRemoveAttachment,
+  handleCheckAttachment
 }) => (
   (admin && values.adminView) ?
   (
@@ -83,6 +84,7 @@ export default ({
       handleUploadPDF={handleUploadPDF}
       handleAddAttachment={handleAddAttachment}
       handleRemoveAttachment={handleRemoveAttachment}
+      handleCheckAttachment={handleCheckAttachment}
     />
   )
   :

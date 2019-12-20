@@ -14,5 +14,6 @@ api
   .use('/uploads', require('./uploads'))
   .use('/users', require('./users'))
   .use('/logs', require('./logs'))
+  .use('/pdf', require('./pdf'))
 
 api.use((req, res) => res.status(404).end())

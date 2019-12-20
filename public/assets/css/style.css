@@ -619,10 +619,10 @@ input, textarea {
 }
 
 .flux-table .leaseNumber {
-	width: 30%
+	width: 25%
 }
 .flux-table .leaseCompany {
-	width: 25%
+	width: 45%
 }
 .flux-table .quote {
 	width: 15%
@@ -638,6 +638,82 @@ input, textarea {
 .flux-table .letEmKnow:hover {
 	text-decoration: underline
 }
+
+.flux-pdf {
+	margin-top: 30px
+}
+.flux-pdf .flux-top #save-button {
+	position: absolute;
+	top: 20px;
+	right: 20px
+}
+.flux-pdf .flux-top > div,
+.flux-pdf .even,
+.flux-pdf .odd {
+	padding-left: 8px
+}
+.flux-pdf .retracted {
+	height: auto
+}
+.flux-table .pdfCheckbox {
+	width: 3%
+}
+.flux-table .pdfLink {
+	width: 42%;
+	white-space: normal !important
+}
+.flux-table .pdfLink:first-child {
+	padding-left: 12px;
+	width: 45%
+}
+.flux-table .pdfNote {
+	width: 40%;
+	white-space: normal !important
+}
+.flux-table .pdfDelete {
+	width: 15%;
+	color: #1066A3;
+	cursor: pointer;
+	text-align: center
+}
+.flux-table .pdfDelete:hover {
+	text-decoration: underline
+}
+
+.flux-bottom {
+	background-color: #F1F4F8;
+	border-top: 1px solid black;
+	height: 143px
+}
+.flux-bottom form > * {
+	position: absolute
+}
+.flux-bottom span {
+	font-weight: bold
+}
+.flux-bottom input {
+	left: 15px;
+	width: 300px;
+	bottom: 53px;
+	transform: translateY(50%)
+}
+.flux-bottom label {
+	left: 340px;
+	bottom: 43px;
+	margin: 0
+}
+.flux-bottom textarea {
+	left: 395px;
+	width: 257px;
+	bottom: 30px;
+	height: 46px;
+	resize: none
+}
+.flux-bottom button {
+	right: 20px;
+	bottom: 30px
+}
+
 
 .index-number {
 	/* margin-top: 8px;

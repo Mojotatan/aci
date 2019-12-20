@@ -10,6 +10,18 @@ export const getDate = () => {
   return `${obj.year}-${obj.month}-${obj.day}`
 }
 
+export const getUglyDate = () => {
+  let now = new Date()
+  let obj = {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    day: now.getDate()
+  }
+  if (obj.month.toString().length === 1) obj.month = `0${obj.month}`
+  if (obj.day.toString().length === 1) obj.day = `0${obj.day}`
+  return `${obj.month}-${obj.day}-${obj.year}`
+}
+
 export const getPrettyDate = () => {
   let now = new Date()
   let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -63,6 +75,30 @@ export const checkFor$ = num => {
 export const sortBy = (field, reverse) => {
   let reverseConstant = reverse ? -1 : 1
   return (a, b) => {
+    // handle cases where a field is empty
+    if (!match(field, a) && !match(field, b)) return (a.id - b.id) * reverseConstant
+    if (!match(field, b)) return -1 * reverseConstant
+    if (!match(field, a)) return 1 * reverseConstant
+
+    // sort based on field array
+    if (handleCase(match(field, a)) > handleCase(match(field, b))) return 1 * reverseConstant
+    if (handleCase(match(field, a)) < handleCase(match(field, b))) return -1 * reverseConstant
+
+    // tiebreaker
+    return (a.id - b.id) * reverseConstant
+  }
+}
+// sortBy but for Users so we can sort inactive users to bottom
+export const sortByUsers = (field, reverse) => {
+  let reverseConstant = reverse ? -1 : 1
+  return (a, b) => {
+    // inactive users
+    if (field[0] !== 'active') {
+      if (match(['active'], a) === 'Inactive' && match(['active'], b) === 'Inactive') return (a.id - b.id)
+      if (match(['active'], b) === 'Inactive') return -1
+      if (match(['active'], a) === 'Inactive') return 1
+    }
+    
     // handle cases where a field is empty
     if (!match(field, a) && !match(field, b)) return (a.id - b.id) * reverseConstant
     if (!match(field, b)) return -1 * reverseConstant
@@ -151,4 +187,17 @@ export const monify = (n, fallback) => {
   else if (arr[1].length === 1) arr[1] += '0'
   else if (arr[1].length === 0) arr[1] = '00'
   return arr.join('.')
+}
+
+// more powerful version of checkFor$
+export const isThisEquivalentToANumber = str => {
+  if (typeof str !== 'string') return false
+  let digitValues = {
+    0: true, 1: true, 2: true, 3: true, 4: true,
+    5: true, 6: true, 7: true, 8: true, 9: true
+  }
+  let digits = str.split('').filter(char => {
+    return digitValues[char]
+  })
+  return (digits.length > 0) ? true : false
 }

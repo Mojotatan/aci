@@ -486,7 +486,7 @@ class ApplicationContainer extends React.Component {
       .catch(err => {
         console.error(err)
       })
-      this.setState({upload: null})
+      this.setState({upload: null, note: ''})
     }
   }
 

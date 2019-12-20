@@ -39,7 +39,8 @@ export default ({
   handleChoosePDF,
   handleUploadPDF,
   handleAddAttachment,
-  handleRemoveAttachment
+  handleRemoveAttachment,
+  handleCheckAttachment
 }) => (
   <div className="row edit-apps-page admin">
 
@@ -216,7 +217,7 @@ export default ({
                     <div className="leaseCompany">Lease Company</div>
                     <div className="quote">Quote</div>
                     <div className="calcs"></div>
-                    <div className="letEmKnow"></div>
+                    {/* <div className="letEmKnow"></div> */}
                   </div>
                 </div>
                 {(values.leases && values.leases.length > 0) ?
@@ -227,7 +228,7 @@ export default ({
                         <div className="leaseCompany">{lease.company}</div>
                         <div className="quote">{lease.quote}</div>
                         <div id={`lease-${index}`} className="calcs" onClick={toggleCalcView}>Calculations</div>
-                        <div id={`lease-${index}`} className="letEmKnow" onClick={handleWorkbookNotify}>Notify</div>
+                        {/* <div id={`lease-${index}`} className="letEmKnow" onClick={handleWorkbookNotify}>Notify</div> */}
                       </div>
                     </div>
                   ))
@@ -500,67 +501,54 @@ export default ({
           : null
         }
 
+
         <div className="row">
-          <div className="app-bg col-sm-12">
-            <h3>PDFs</h3>
-            <div className="row">
-              <div className="col-sm-3">
-                <div className="field-label">
-                  <label>PDF</label>
+          <div className="col-sm-12 flux-pdf no-gutters">
+            <div className="flux-table"> 
+              <div className="flux-top">
+                <span className="flux-float col-sm-6" align="left"><h2>PDFs</h2></span>
+                <div className="col-sm-12">
+                  {(mode === 'byo') ? <div className="pdfCheckbox"></div> : null}
+                  <div className="pdfLink">PDF</div>
+                  <div className="pdfNote">Notes</div>
+                  <div className="pdfDelete"></div>
                 </div>
+                {(mode === 'byo') ?
+                  <button id="save-button" onClick={handleWorkbookNotify}>Notify</button>
+                  : null
+                }
               </div>
-              <div className="col-sm-6">
-                <div className="field-label">
-                  <label>Notes</label>
-                </div>
-              </div>
-            </div>
-          {(values.pdfs) ?
-            <div className="pdfs">
-              {values.pdfs.map(pdf => (
-                <div key={`pdf-${pdf.id}`} className="row">
-                  <div className="col-sm-3">
-                    <div className="field-box">
-                      <p><a href={`/api/uploads/${pdf.id}/${pdf.name}?access_token=${token}`} download>{pdf.name}</a></p>
+              {(values.pdfs) ?
+                values.pdfs.map((pdf, index) => (
+                  <div key={pdf.id} className={(index % 2 === 0) ? 'even' : 'odd'}>
+                    <div className="retracted">
+                      {(mode === 'byo') ?
+                        <div className="pdfCheckbox">
+                          <input
+                            type="checkbox"
+                            id={index}
+                            onChange={handleCheckAttachment}
+                            checked={values.checkedAttachments[index] || false}
+                          />
+                        </div>
+                        : null
+                      }
+                      <div className="pdfLink"><a href={`/api/uploads/${pdf.id}/${pdf.name}?access_token=${token}`} download>{pdf.name}</a></div>
+                      <div className="pdfNote">{pdf.notes || ''}</div>
+                      <div id={pdf.id} className="pdfDelete" onClick={handleDeletePDF}>Delete</div>
                     </div>
                   </div>
-                  <div className="col-sm-6">
-                    <div className="field-box">
-                      <p>{pdf.notes || ''}</p>
-                    </div>
-                  </div>
-                  <div className="col-sm-3" align="center">
-                    <div className="field-box">
-                      <button id={pdf.id} className="fields-button" onClick={handleDeletePDF}>Delete</button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            : null
-          }
-          </div>
-          <div id="byo-desc" className="col-sm-12">
-            <div className="row">
-              <div className="col-sm-6">
-                {/* <div className="field-label">
-                  <label>Upload new PDF</label>
-                </div> */}
-                <h3>Upload New PDF</h3>
-                <div className="field-box">
-                  <form onSubmit={handleUploadPDF}>
-                    <div className="col-sm-12">
-                      <input className="upload-button" type="file" onChange={handleChoosePDF} accept="application/pdf" />
-                    </div>
-                    <div className="col-sm-12">
-                      <div className="field-label"><label>Note</label></div>
-                      <div className="field-box pdfs"><textarea onChange={handleChangeInPDFNote} value={values.note} /></div>
-                    </div>
-                    <div className="col-sm-12" align="right">
-                      <button id="save-button" type="submit">Submit</button>
-                    </div>
-                  </form>
-                </div>
+                ))
+                : <div className="even"><div className="retracted"></div></div>
+              }
+              <div className="flux-bottom">
+                <form onSubmit={handleUploadPDF}>
+                  <span className="flux-float col-sm-6" align="left">Upload New PDF</span>
+                  <input className="upload-button" type="file" onChange={handleChoosePDF} accept="application/pdf" />
+                  <label>Notes:</label>
+                  <textarea onChange={handleChangeInPDFNote} value={values.note} />
+                  <button id="save-button" type="submit">Submit</button>
+                </form>
               </div>
             </div>
           </div>
