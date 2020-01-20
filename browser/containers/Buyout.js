@@ -402,7 +402,8 @@ class BuyoutContainer extends React.Component {
       }
       else this.props.throwAlert('red', 'Message not sent')
 
-      return axios.post('/api/logs/new2', {token: this.props.token, date: getDate(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName} about lease ${this.state.leases[this.state.calcTarget].number}`, action: this.state.action, byo: this.state.id})
+      // log text changed to reflect the fact that we aren't actually notifying about a specific lease anymore
+      return axios.post('/api/logs/new2', {token: this.props.token, date: getDate(), activity: `<b>${this.props.user.fullName}<b> notified rep ${this.state.rep.fullName}`, action: this.state.action, byo: this.state.id})
       .then(res => {
         this.props.loadByosThunk(this.props.token)
         this.setState({adminMode: 'byo', calcTarget: null})
