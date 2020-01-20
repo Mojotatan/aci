@@ -119,7 +119,7 @@ module.exports = require('express').Router()
         doc.text('myadmincentral.com', {align: 'right'})
   
         doc.fillColor('#1066a3').font('Helvetica-Bold').fontSize(20)
-        doc.text('Sales Quote', margin, 110)
+        doc.text(customer ? 'Customer Quote' : 'Sales Quote', margin, 110)
   
   
         // by box
@@ -176,7 +176,7 @@ module.exports = require('express').Router()
   
       doc.font('Helvetica-Bold').text('Quote Good Through:', margin + 15, 410)
       doc.rect(margin + 15, 424, quarterCol - 30, 20).fillAndStroke('#f1f4f8', '#f1f4f8').fillColor('#000000')
-      doc.font('Helvetica').text(values.expiry || '', margin + 25, 429)
+      doc.font('Helvetica').text(workbook.quoteGoodThrough || '', margin + 25, 429)
       
       if (customer) {
         let prefix = isThisEquivalentToANumber(workbook.customerBtk) ? '$' : ''

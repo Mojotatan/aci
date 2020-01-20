@@ -234,6 +234,16 @@ export default ({
 
         <div className="app-bg col-sm-12">
           <h3>Quotes</h3>
+          <div className="row">
+            <div className="col-sm-3">
+              <div className="field-label">
+                <label>Quote Good Through</label>
+              </div>
+              <div className="field-box">
+                <input name="quoteGoodThrough" value={workbook.quoteGoodThrough || ''} onChange={handleCalcs} autoComplete="new-password" />
+              </div>
+            </div>
+          </div>
           <strong>Rep Numbers</strong>
           <div className="row">
             <div className="col-sm-6">
