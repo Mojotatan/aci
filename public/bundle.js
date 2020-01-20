@@ -34637,6 +34637,28 @@ exports.default = function (_ref) {
           'Quotes'
         ),
         _react2.default.createElement(
+          'div',
+          { className: 'row' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-3' },
+            _react2.default.createElement(
+              'div',
+              { className: 'field-label' },
+              _react2.default.createElement(
+                'label',
+                null,
+                'Quote Good Through'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field-box' },
+              _react2.default.createElement('input', { name: 'quoteGoodThrough', value: workbook.quoteGoodThrough || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            )
+          )
+        ),
+        _react2.default.createElement(
           'strong',
           null,
           'Rep Numbers'
