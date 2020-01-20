@@ -36068,7 +36068,8 @@ var BuyoutContainer = function (_React$Component) {
           _this9.setState({ mailSubject: '', mailBody: '', mailCC: '', mailAttachments: [] });
         } else _this9.props.throwAlert('red', 'Message not sent');
 
-        return _axios2.default.post('/api/logs/new2', { token: _this9.props.token, date: (0, _utility.getDate)(), activity: '<b>' + _this9.props.user.fullName + '<b> notified rep ' + _this9.state.rep.fullName + ' about lease ' + _this9.state.leases[_this9.state.calcTarget].number, action: _this9.state.action, byo: _this9.state.id }).then(function (res) {
+        // log text changed to reflect the fact that we aren't actually notifying about a specific lease anymore
+        return _axios2.default.post('/api/logs/new2', { token: _this9.props.token, date: (0, _utility.getDate)(), activity: '<b>' + _this9.props.user.fullName + '<b> notified rep ' + _this9.state.rep.fullName, action: _this9.state.action, byo: _this9.state.id }).then(function (res) {
           _this9.props.loadByosThunk(_this9.props.token);
           _this9.setState({ adminMode: 'byo', calcTarget: null });
         }).catch(function (err) {
