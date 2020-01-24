@@ -38347,7 +38347,7 @@ var UserContainer = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (UserContainer.__proto__ || Object.getPrototypeOf(UserContainer)).call(this, props));
 
-    _this.state = Object.assign({}, { password: '' }, _this.props.user);
+    _this.state = Object.assign({}, { password: '', level: 'Sales Rep' }, _this.props.user);
 
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleSave = _this.handleSave.bind(_this);
