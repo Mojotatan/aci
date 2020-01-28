@@ -50,14 +50,14 @@ module.exports = require('express').Router()
 
   // 2nd step to reset password: get new password from user
   .get('/reset', (req, res) => {
-    let valid = jwt.verify(req.query.access_token, cert)
-    console.log('valid?', valid)
-    if (!valid) {
-      console.error(err)
-      res.send('Invalid token')
-    } else {
-      res.render('resetForm.html', {user: valid.user, url: '/api/reset?access_token=' + req.query.access_token})
-    }
+    jwt.verify(req.query.access_token, cert, (err, decoded) => {
+      // console.log('valid?', err)
+      if (err) {
+        res.render('resetBadToken.html')
+      } else {
+        res.render('resetForm.html', {user: decoded.user, url: '/api/reset?access_token=' + req.query.access_token})
+      }
+    })
   })
 
   // 3rd step to reset password: save new password to db
