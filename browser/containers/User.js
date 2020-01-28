@@ -11,7 +11,7 @@ class UserContainer extends React.Component {
     super(props)
     this.state = Object.assign({},
       {password: '', level: 'Sales Rep'},
-      this.props.user
+      this.props.user,
     )
 
     this.handleChange = this.handleChange.bind(this)
