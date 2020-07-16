@@ -34217,66 +34217,74 @@ exports.default = function (_ref) {
       handleTaxes = _ref.handleTaxes,
       handleNewMachine = _ref.handleNewMachine,
       handleChangeInMachine = _ref.handleChangeInMachine,
-      handleRemoveMachine = _ref.handleRemoveMachine;
+      handleRemoveMachine = _ref.handleRemoveMachine,
+      onKeyPress = _ref.onKeyPress;
 
   var lease = values.leases[values.calcTarget];
   var workbook = lease.workbook;
+
+  onKeyPress = function onKeyPress(event) {
+    if (event.which === 13 /* Enter */) {
+        event.preventDefault();
+      }
+  };
+
   return _react2.default.createElement(
-    'div',
-    { className: 'col-sm-9' },
+    "div",
+    { className: "col-sm-9", onKeyPress: onKeyPress },
     _react2.default.createElement(
-      'form',
+      "form",
       null,
       _react2.default.createElement(
-        'div',
-        { className: 'app-bg col-sm-12 calcs' },
+        "div",
+        { className: "app-bg col-sm-12 calcs" },
         _react2.default.createElement(
-          'h3',
+          "h3",
           null,
-          'Lease Details'
+          "Lease Details"
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Lease Number'
+                "Lease Number"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
+              "div",
+              { className: "field-box" },
               _react2.default.createElement(
-                'div',
+                "div",
                 null,
                 lease.number
               )
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Lease Company'
+                "Lease Company"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
+              "div",
+              { className: "field-box" },
               _react2.default.createElement(
-                'div',
+                "div",
                 null,
                 lease.company
               )
@@ -34284,169 +34292,204 @@ exports.default = function (_ref) {
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Lease Start Date'
+                "Lease Start Date"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'startDate', value: workbook.startDate || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box" },
+              _react2.default.createElement("input", {
+                name: "startDate",
+                value: workbook.startDate || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3 col-sm-offset-3' },
+            "div",
+            { className: "col-sm-3 col-sm-offset-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Original Term'
+                "Original Term"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'originalTerm', value: workbook.originalTerm || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box" },
+              _react2.default.createElement("input", {
+                name: "originalTerm",
+                value: workbook.originalTerm || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Lease Plan End Date'
+                "Lease Plan End Date"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'endDate', value: workbook.endDate || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box" },
+              _react2.default.createElement("input", {
+                name: "endDate",
+                value: workbook.endDate || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3 col-sm-offset-3' },
+            "div",
+            { className: "col-sm-3 col-sm-offset-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Remaining Term'
+                "Remaining Term"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'remainingTerm', value: workbook.remainingTerm || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box" },
+              _react2.default.createElement("input", {
+                name: "remainingTerm",
+                value: workbook.remainingTerm || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Current Equipment Payment'
+                "Current Equipment Payment"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'currentEquipmentPayment', value: workbook.currentEquipmentPayment || '', onChange: handleCascade, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "currentEquipmentPayment",
+                value: workbook.currentEquipmentPayment || "",
+                onChange: handleCascade,
+                autoComplete: "new-password"
+              })
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Current Service/MA Payment'
+                "Current Service/MA Payment"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'currentServicePayment', value: workbook.currentServicePayment || '', onChange: handleCascade, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "currentServicePayment",
+                value: workbook.currentServicePayment || "",
+                onChange: handleCascade,
+                autoComplete: "new-password"
+              })
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Pass Through Service'
+                "Pass Through Service"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'passThroughService', value: workbook.passThroughService || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "passThroughService",
+                value: workbook.passThroughService || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3 col-sm-offset-3' },
+            "div",
+            { className: "col-sm-3 col-sm-offset-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Total Base Payment'
+                "Total Base Payment"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
+              "div",
+              { className: "field-box" },
               _react2.default.createElement(
-                'div',
+                "div",
                 null,
-                '$',
+                "$",
                 (0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentServicePayment, workbook.passThroughService)
               )
             )
@@ -34454,853 +34497,1000 @@ exports.default = function (_ref) {
         )
       ),
       _react2.default.createElement(
-        'div',
-        { className: 'app-bg col-sm-12' },
+        "div",
+        { className: "app-bg col-sm-12" },
         _react2.default.createElement(
-          'h3',
+          "h3",
           null,
-          'Company Numbers'
+          "Company Numbers"
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Upgrade to Keep'
+                "Upgrade to Keep"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'companyUtk', value: workbook.companyUtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "companyUtk",
+                value: workbook.companyUtk || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3 col-sm-offset-3' },
+            "div",
+            { className: "col-sm-3 col-sm-offset-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Buyout to Keep'
+                "Buyout to Keep"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'companyBtk', value: workbook.companyBtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "companyBtk",
+                value: workbook.companyBtk || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Upgrade to Return'
+                "Upgrade to Return"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'companyUtr', value: workbook.companyUtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "companyUtr",
+                value: workbook.companyUtr || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3 col-sm-offset-3' },
+            "div",
+            { className: "col-sm-3 col-sm-offset-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Buyout to Return'
+                "Buyout to Return"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'companyBtr', value: workbook.companyBtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "companyBtr",
+                value: workbook.companyBtr || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Percentage'
+                "Percentage"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box percentage' },
-              _react2.default.createElement('input', { name: 'percentage', value: workbook.percentage || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box percentage" },
+              _react2.default.createElement("input", {
+                name: "percentage",
+                value: workbook.percentage || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Service Recovery Amount'
+                "Service Recovery Amount"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
+              "div",
+              { className: "field-box" },
               _react2.default.createElement(
-                'div',
+                "div",
                 null,
-                '$',
+                "$",
                 (0, _utility.round)((0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100))
               )
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Pass Through Service'
+                "Pass Through Service"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
+              "div",
+              { className: "field-box" },
               _react2.default.createElement(
-                'div',
+                "div",
                 null,
-                '$',
+                "$",
                 (0, _utility.round)((0, _utility.product)(workbook.remainingTerm, workbook.passThroughService))
               )
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'MISC (SMUA)'
+                "MISC (SMUA)"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'smua', value: workbook.smua || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "smua",
+                value: workbook.smua || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           )
         )
       ),
       _react2.default.createElement(
-        'div',
-        { className: 'app-bg col-sm-12' },
+        "div",
+        { className: "app-bg col-sm-12" },
         _react2.default.createElement(
-          'h3',
+          "h3",
           null,
-          'Quotes'
+          "Quotes"
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Quote Good Through'
+                "Quote Good Through"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
-              _react2.default.createElement('input', { name: 'quoteGoodThrough', value: workbook.quoteGoodThrough || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box" },
+              _react2.default.createElement("input", {
+                name: "quoteGoodThrough",
+                value: workbook.quoteGoodThrough || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           )
         ),
         _react2.default.createElement(
-          'strong',
+          "strong",
           null,
-          'Rep Numbers'
+          "Rep Numbers"
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-6' },
+            "div",
+            { className: "col-sm-6" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Upgrade to Keep'
+                "Upgrade to Keep"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
+              "div",
+              { className: "field-box" },
               _react2.default.createElement(
-                'div',
+                "div",
                 null,
-                '$',
+                "$",
                 (0, _utility.round)((0, _utility.sum)(workbook.companyUtk, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua))
               )
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-6' },
+            "div",
+            { className: "col-sm-6" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Buyout to Keep'
+                "Buyout to Keep"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
+              "div",
+              { className: "field-box" },
               _react2.default.createElement(
-                'div',
+                "div",
                 null,
-                '$',
+                "$",
                 (0, _utility.round)((0, _utility.sum)(workbook.companyBtk, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua))
               )
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-6' },
+            "div",
+            { className: "col-sm-6" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Upgrade to Return'
+                "Upgrade to Return"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
+              "div",
+              { className: "field-box" },
               _react2.default.createElement(
-                'div',
+                "div",
                 null,
-                '$',
+                "$",
                 (0, _utility.round)((0, _utility.sum)(workbook.companyUtr, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua))
               )
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-6' },
+            "div",
+            { className: "col-sm-6" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Buyout to Return'
+                "Buyout to Return"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box' },
+              "div",
+              { className: "field-box" },
               _react2.default.createElement(
-                'div',
+                "div",
                 null,
-                '$',
+                "$",
                 (0, _utility.round)((0, _utility.sum)(workbook.companyBtr, (0, _utility.product)(workbook.remainingTerm, workbook.currentServicePayment, workbook.percentage / 100), (0, _utility.product)(workbook.remainingTerm, workbook.passThroughService), workbook.smua))
               )
             )
           )
         ),
         _react2.default.createElement(
-          'strong',
+          "strong",
           null,
-          'Customer Numbers'
+          "Customer Numbers"
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Buyout to Keep'
+                "Buyout to Keep"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'customerBtk', value: workbook.customerBtk || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "customerBtk",
+                value: workbook.customerBtk || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-3' },
+            "div",
+            { className: "col-sm-3" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-label' },
+              "div",
+              { className: "field-label" },
               _react2.default.createElement(
-                'label',
+                "label",
                 null,
-                'Buyout to Return'
+                "Buyout to Return"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'field-box monetary' },
-              _react2.default.createElement('input', { name: 'customerBtr', value: workbook.customerBtr || '', onChange: handleCalcs, autoComplete: 'new-password' })
+              "div",
+              { className: "field-box monetary" },
+              _react2.default.createElement("input", {
+                name: "customerBtr",
+                value: workbook.customerBtr || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
             )
           )
         )
       ),
       _react2.default.createElement(
-        'div',
-        { className: 'app-bg breakdown col-sm-12' },
+        "div",
+        { className: "app-bg breakdown col-sm-12" },
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2 col-sm-offset-6' },
-            _react2.default.createElement('input', { className: 'sm-input rightput', name: 'upfrontTax', value: workbook.upfrontTax || '', onChange: handleTaxes, autoComplete: 'new-password' }),
+            "div",
+            { className: "col-sm-2 col-sm-offset-6" },
+            _react2.default.createElement("input", {
+              className: "sm-input rightput",
+              name: "upfrontTax",
+              value: workbook.upfrontTax || "",
+              onChange: handleTaxes,
+              autoComplete: "new-password"
+            }),
             _react2.default.createElement(
-              'span',
+              "span",
               null,
-              '%'
+              "%"
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            _react2.default.createElement('input', { className: 'sm-input rightput', name: 'monthlyTax', value: workbook.monthlyTax || '', onChange: handleTaxes, autoComplete: 'new-password' }),
+            "div",
+            { className: "col-sm-2" },
+            _react2.default.createElement("input", {
+              className: "sm-input rightput",
+              name: "monthlyTax",
+              value: workbook.monthlyTax || "",
+              onChange: handleTaxes,
+              autoComplete: "new-password"
+            }),
             _react2.default.createElement(
-              'span',
+              "span",
               null,
-              '%'
+              "%"
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-4' },
+            "div",
+            { className: "col-sm-4" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              'Invoice Breakdown'
+              "Invoice Breakdown"
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            'Total'
+            "div",
+            { className: "col-sm-2" },
+            "Total"
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            'Upfront Tax'
+            "div",
+            { className: "col-sm-2" },
+            "Upfront Tax"
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            'Monthly Tax'
+            "div",
+            { className: "col-sm-2" },
+            "Monthly Tax"
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            'Total'
+            "div",
+            { className: "col-sm-2" },
+            "Total"
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-4' },
+            "div",
+            { className: "col-sm-4" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              'Equipment Payment'
+              "Equipment Payment"
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.sum)(workbook.currentEquipmentPayment)
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'currentEquipmentPaymentUpfront', value: workbook.currentEquipmentPaymentUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "currentEquipmentPaymentUpfront",
+              value: workbook.currentEquipmentPaymentUpfront || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'currentEquipmentPaymentMonthly', value: workbook.currentEquipmentPaymentMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "currentEquipmentPaymentMonthly",
+              value: workbook.currentEquipmentPaymentMonthly || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentEquipmentPaymentUpfront, workbook.currentEquipmentPaymentMonthly))
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-4' },
+            "div",
+            { className: "col-sm-4" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              'Service/MA Payment'
+              "Service/MA Payment"
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.sum)(workbook.currentServicePayment)
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'currentServicePaymentUpfront', value: workbook.currentServicePaymentUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "currentServicePaymentUpfront",
+              value: workbook.currentServicePaymentUpfront || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'currentServicePaymentMonthly', value: workbook.currentServicePaymentMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "currentServicePaymentMonthly",
+              value: workbook.currentServicePaymentMonthly || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.round)((0, _utility.sum)(workbook.currentServicePayment, workbook.currentServicePaymentUpfront, workbook.currentServicePaymentMonthly))
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-4' },
+            "div",
+            { className: "col-sm-4" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              'Fuel/Freight'
+              "Fuel/Freight"
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'fuelFreight', value: workbook.fuelFreight || '', onChange: handleCascade, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "fuelFreight",
+              value: workbook.fuelFreight || "",
+              onChange: handleCascade,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'fuelFreightUpfront', value: workbook.fuelFreightUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "fuelFreightUpfront",
+              value: workbook.fuelFreightUpfront || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'fuelFreightMonthly', value: workbook.fuelFreightMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "fuelFreightMonthly",
+              value: workbook.fuelFreightMonthly || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.round)((0, _utility.sum)(workbook.fuelFreight, workbook.fuelFreightUpfront, workbook.fuelFreightMonthly))
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-4' },
+            "div",
+            { className: "col-sm-4" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              'Late Charges'
+              "Late Charges"
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'lateCharges', value: workbook.lateCharges || '', onChange: handleCascade, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "lateCharges",
+              value: workbook.lateCharges || "",
+              onChange: handleCascade,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'lateChargesUpfront', value: workbook.lateChargesUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "lateChargesUpfront",
+              value: workbook.lateChargesUpfront || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'lateChargesMonthly', value: workbook.lateChargesMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "lateChargesMonthly",
+              value: workbook.lateChargesMonthly || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.round)((0, _utility.sum)(workbook.lateCharges, workbook.lateChargesUpfront, workbook.lateChargesMonthly))
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-4' },
+            "div",
+            { className: "col-sm-4" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              'Misc. Items *See Notes'
+              "Misc. Items *See Notes"
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'miscItems', value: workbook.miscItems || '', onChange: handleCascade, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "miscItems",
+              value: workbook.miscItems || "",
+              onChange: handleCascade,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'miscItemsUpfront', value: workbook.miscItemsUpfront || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "miscItemsUpfront",
+              value: workbook.miscItemsUpfront || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
-            '$',
-            _react2.default.createElement('input', { className: 'sm-input', name: 'miscItemsMonthly', value: workbook.miscItemsMonthly || '', onChange: handleCalcs, autoComplete: 'new-password' })
+            "div",
+            { className: "col-sm-2" },
+            "$",
+            _react2.default.createElement("input", {
+              className: "sm-input",
+              name: "miscItemsMonthly",
+              value: workbook.miscItemsMonthly || "",
+              onChange: handleCalcs,
+              autoComplete: "new-password"
+            })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.round)((0, _utility.sum)(workbook.miscItems, workbook.miscItemsUpfront, workbook.miscItemsMonthly))
             )
           )
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2 col-sm-offset-4' },
+            "div",
+            { className: "col-sm-2 col-sm-offset-4" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentServicePayment, workbook.fuelFreight, workbook.lateCharges, workbook.miscItems))
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPaymentUpfront, workbook.currentServicePaymentUpfront, workbook.fuelFreightUpfront, workbook.lateChargesUpfront, workbook.miscItemsUpfront))
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPaymentMonthly, workbook.currentServicePaymentMonthly, workbook.fuelFreightMonthly, workbook.lateChargesMonthly, workbook.miscItemsMonthly))
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-2' },
+            "div",
+            { className: "col-sm-2" },
             _react2.default.createElement(
-              'div',
+              "div",
               null,
-              '$',
+              "$",
               (0, _utility.round)((0, _utility.sum)(workbook.currentEquipmentPayment, workbook.currentEquipmentPaymentUpfront, workbook.currentEquipmentPaymentMonthly, workbook.currentServicePayment, workbook.currentServicePaymentUpfront, workbook.currentServicePaymentMonthly, workbook.fuelFreight, workbook.fuelFreightUpfront, workbook.fuelFreightMonthly, workbook.lateCharges, workbook.lateChargesUpfront, workbook.lateChargesMonthly, workbook.miscItems, workbook.miscItemsUpfront, workbook.miscItemsMonthly))
             )
           )
         )
       ),
       _react2.default.createElement(
-        'div',
-        { className: 'app-bg col-sm-12' },
+        "div",
+        { className: "app-bg col-sm-12", onKeyPress: onKeyPress },
         _react2.default.createElement(
-          'h3',
+          "h3",
           null,
-          'Equipment'
+          "Equipment"
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-12 no-gutters' },
+            "div",
+            { className: "col-sm-12 no-gutters" },
             _react2.default.createElement(
-              'div',
-              { className: 'col-sm-12 no-gutters labels machine-label' },
+              "div",
+              { className: "col-sm-12 no-gutters labels machine-label" },
               _react2.default.createElement(
-                'label',
-                { className: 'col-sm-2 condense-gutters' },
-                'Serial #'
+                "label",
+                { className: "col-sm-2 condense-gutters" },
+                "Serial #"
               ),
               _react2.default.createElement(
-                'label',
-                { className: 'col-sm-2 condense-gutters' },
-                'Make'
+                "label",
+                { className: "col-sm-2 condense-gutters" },
+                "Make"
               ),
               _react2.default.createElement(
-                'label',
-                { className: 'col-sm-3 condense-gutters' },
-                'Model'
+                "label",
+                { className: "col-sm-3 condense-gutters" },
+                "Model"
               ),
               _react2.default.createElement(
-                'label',
-                { className: 'col-sm-2 condense-gutters' },
-                'Location'
+                "label",
+                { className: "col-sm-2 condense-gutters" },
+                "Location"
               ),
               _react2.default.createElement(
-                'label',
-                { className: 'col-sm-2 condense-gutters' },
-                'Action'
+                "label",
+                { className: "col-sm-2 condense-gutters" },
+                "Action"
               )
             ),
             lease.machines.map(function (machine, index) {
               return !machine.delete ? _react2.default.createElement(
-                'div',
-                { key: 'lease-' + index + '-machine-' + index, className: 'col-sm-12 no-gutters machine-input' },
+                "div",
+                {
+                  key: "lease-" + index + "-machine-" + index,
+                  className: "col-sm-12 no-gutters machine-input"
+                },
                 _react2.default.createElement(
-                  'div',
-                  { className: 'col-sm-2 condense-gutters' },
-                  _react2.default.createElement('input', {
+                  "div",
+                  { className: "col-sm-2 condense-gutters" },
+                  _react2.default.createElement("input", {
                     onChange: handleChangeInMachine,
-                    id: values.calcTarget + '-' + index + '-serial',
-                    value: machine.serial || '',
-                    autoComplete: 'new-password'
+                    id: values.calcTarget + "-" + index + "-serial",
+                    value: machine.serial || "",
+                    autoComplete: "new-password"
                   })
                 ),
                 _react2.default.createElement(
-                  'div',
-                  { className: 'col-sm-2 condense-gutters' },
-                  _react2.default.createElement('input', {
+                  "div",
+                  { className: "col-sm-2 condense-gutters" },
+                  _react2.default.createElement("input", {
                     onChange: handleChangeInMachine,
-                    id: values.calcTarget + '-' + index + '-make',
-                    value: machine.make || '',
-                    autoComplete: 'new-password'
+                    id: values.calcTarget + "-" + index + "-make",
+                    value: machine.make || "",
+                    autoComplete: "new-password"
                   })
                 ),
                 _react2.default.createElement(
-                  'div',
-                  { className: 'col-sm-3 condense-gutters' },
-                  _react2.default.createElement('input', {
+                  "div",
+                  { className: "col-sm-3 condense-gutters" },
+                  _react2.default.createElement("input", {
                     onChange: handleChangeInMachine,
-                    id: values.calcTarget + '-' + index + '-model',
-                    value: machine.model || '',
-                    autoComplete: 'new-password'
+                    id: values.calcTarget + "-" + index + "-model",
+                    value: machine.model || "",
+                    autoComplete: "new-password"
                   })
                 ),
                 _react2.default.createElement(
-                  'div',
-                  { className: 'col-sm-2 condense-gutters' },
-                  _react2.default.createElement('input', {
+                  "div",
+                  { className: "col-sm-2 condense-gutters" },
+                  _react2.default.createElement("input", {
                     onChange: handleChangeInMachine,
-                    id: values.calcTarget + '-' + index + '-location',
-                    value: machine.location || '',
-                    autoComplete: 'new-password'
+                    id: values.calcTarget + "-" + index + "-location",
+                    value: machine.location || "",
+                    autoComplete: "new-password"
                   })
                 ),
                 _react2.default.createElement(
-                  'div',
-                  { className: 'col-sm-2 condense-gutters' },
+                  "div",
+                  { className: "col-sm-2 condense-gutters" },
                   _react2.default.createElement(
-                    'select',
+                    "select",
                     {
                       onChange: handleChangeInMachine,
-                      id: values.calcTarget + '-' + index + '-action',
-                      value: machine.action || '',
-                      autoComplete: 'new-password'
+                      id: values.calcTarget + "-" + index + "-action",
+                      value: machine.action || "",
+                      autoComplete: "new-password"
                     },
                     _react2.default.createElement(
-                      'option',
-                      { value: 'Release' },
-                      'Release'
+                      "option",
+                      { value: "Release" },
+                      "Release"
                     ),
                     _react2.default.createElement(
-                      'option',
-                      { value: 'Upgrade to Keep' },
-                      'Upgrade to Keep'
+                      "option",
+                      { value: "Upgrade to Keep" },
+                      "Upgrade to Keep"
                     ),
                     _react2.default.createElement(
-                      'option',
-                      { value: 'Upgrade to Return' },
-                      'Upgrade to Return'
+                      "option",
+                      { value: "Upgrade to Return" },
+                      "Upgrade to Return"
                     ),
                     _react2.default.createElement(
-                      'option',
-                      { value: 'Buyout to Keep' },
-                      'Buyout to Keep'
+                      "option",
+                      { value: "Buyout to Keep" },
+                      "Buyout to Keep"
                     ),
                     _react2.default.createElement(
-                      'option',
-                      { value: 'Buyout to Return' },
-                      'Buyout to Return'
+                      "option",
+                      { value: "Buyout to Return" },
+                      "Buyout to Return"
                     ),
                     _react2.default.createElement(
-                      'option',
-                      { value: 'Leave on Lease' },
-                      'Leave on Lease'
+                      "option",
+                      { value: "Leave on Lease" },
+                      "Leave on Lease"
                     )
                   )
                 ),
                 _react2.default.createElement(
-                  'div',
-                  { className: 'col-sm-1' },
-                  _react2.default.createElement('button', { value: values.calcTarget + '-' + index, onClick: handleRemoveMachine, className: 'remove-button' })
+                  "div",
+                  { className: "col-sm-1" },
+                  _react2.default.createElement("button", {
+                    value: values.calcTarget + "-" + index,
+                    onClick: handleRemoveMachine,
+                    className: "remove-button"
+                  })
                 )
               ) : null;
             }),
             _react2.default.createElement(
-              'div',
+              "div",
               null,
               _react2.default.createElement(
-                'button',
-                { id: values.calcTarget + '-newMachine', onClick: handleNewMachine, className: 'machine add-button' },
-                'Add Machine'
+                "button",
+                {
+                  id: values.calcTarget + "-newMachine",
+                  onClick: handleNewMachine,
+                  className: "machine add-button"
+                },
+                "Add Machine"
               )
             )
           )
         )
       ),
       _react2.default.createElement(
-        'div',
-        { className: 'app-bg col-sm-12' },
+        "div",
+        { className: "app-bg col-sm-12" },
         _react2.default.createElement(
-          'h3',
+          "h3",
           null,
-          'Notes'
+          "Notes"
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           _react2.default.createElement(
-            'div',
-            { className: 'col-sm-12' },
+            "div",
+            { className: "col-sm-12" },
             _react2.default.createElement(
-              'div',
-              { className: 'field-desc' },
-              _react2.default.createElement('textarea', {
-                name: 'notes',
-                value: workbook.notes || '',
-                onChange: handleCalcs, autoComplete: 'new-password'
+              "div",
+              { className: "field-desc" },
+              _react2.default.createElement("textarea", {
+                name: "notes",
+                value: workbook.notes || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
               })
             )
           )
@@ -35661,20 +35851,20 @@ var BuyoutContainer = function (_React$Component) {
 
     _this.state = Object.assign({}, {
       customerCreate: _this.props.byo && _this.props.byo.customer ? false : true,
-      mailBody: '',
-      mailSubject: '',
-      mailCC: '',
+      mailBody: "",
+      mailSubject: "",
+      mailCC: "",
       mailAttachments: [],
       checkedAttachments: {},
-      focusedAttachment: '',
+      focusedAttachment: "",
       mailDisabled: false,
       adminMode: false,
-      adminView: _this.props.user ? _this.props.user.level === 'Admin' : false,
+      adminView: _this.props.user ? _this.props.user.level === "Admin" : false,
       calcView: false,
       lightbox: false,
-      expiryTemp: '',
+      expiryTemp: "",
       upload: null,
-      note: '',
+      note: "",
       calcTarget: null
     }, _this.props.byo);
 
@@ -35730,30 +35920,31 @@ var BuyoutContainer = function (_React$Component) {
     _this.handleRemoveAttachment = _this.handleRemoveAttachment.bind(_this);
 
     _this.handleCheckAttachment = _this.handleCheckAttachment.bind(_this);
+    _this.onKeyPress = _this.onKeyPress.bind(_this);
     return _this;
   }
 
   _createClass(BuyoutContainer, [{
-    key: 'handleAppLink',
+    key: "handleAppLink",
     value: function handleAppLink(e) {
       this.props.focusApp(Number(e.target.id));
     }
   }, {
-    key: 'handleChange',
+    key: "handleChange",
     value: function handleChange(e) {
       // console.log('state', this.state)
       // console.log('props', this.props)
       this.setState(_defineProperty({}, e.target.name, e.target.value));
     }
   }, {
-    key: 'handleChangeInCustomer',
+    key: "handleChangeInCustomer",
     value: function handleChangeInCustomer(e) {
       this.setState({
         customer: Object.assign({}, this.state.customer, _defineProperty({}, e.target.name, e.target.value))
       });
     }
   }, {
-    key: 'handleChangeCustomer',
+    key: "handleChangeCustomer",
     value: function handleChangeCustomer(e) {
       var name = e.target.value;
       var fill = this.props.customers.filter(function (customer) {
@@ -35770,7 +35961,7 @@ var BuyoutContainer = function (_React$Component) {
       }
     }
   }, {
-    key: 'validateFields',
+    key: "validateFields",
     value: function validateFields() {
       var errors = {};
       if (this.state.customer && this.state.customer.zip) errors.zip = this.state.customer.zip.search(/\d\d\d\d\d|\d\d\d\d\d-\d\d\d\d/) === -1 ? true : false;
@@ -35779,7 +35970,7 @@ var BuyoutContainer = function (_React$Component) {
       return errors;
     }
   }, {
-    key: 'generateErrors',
+    key: "generateErrors",
     value: function generateErrors(errors) {
       var _this2 = this;
 
@@ -35789,133 +35980,132 @@ var BuyoutContainer = function (_React$Component) {
 
       return function (e) {
         e.preventDefault();
-        _this2.props.throwAlert('red', 'Problem with the ' + fields.join(', ') + ' field' + (fields.length > 1 ? 's' : ''));
+        _this2.props.throwAlert("red", "Problem with the " + fields.join(", ") + " field" + (fields.length > 1 ? "s" : ""));
       };
     }
   }, {
-    key: 'handleSave',
+    key: "handleSave",
     value: function handleSave(e) {
       e.preventDefault();
 
       if (!this.state.customer || !this.state.customer.name) {
-        this.props.throwAlert('red', 'To save, you must fill in the customer name');
+        this.props.throwAlert("red", "To save, you must fill in the customer name");
       } else if (this.state.customerCreate) {
-        this.props.saveByoThunk(this.props.token, [this.state], [this.state.customer, { id: 'new' }]);
+        this.props.saveByoThunk(this.props.token, [this.state], [this.state.customer, { id: "new" }]);
       } else {
         this.props.saveByoThunk(this.props.token, [this.state], [this.state.customer]);
       }
     }
   }, {
-    key: 'handleSubmit',
+    key: "handleSubmit",
     value: function handleSubmit(e) {
       e.preventDefault();
 
       if (!this.state.customer || !this.state.customer.name || !this.state.customer.street || !this.state.customer.city || !this.state.customer.state || !this.state.customer.zip || !this.state.customer.phone) {
-        this.props.throwAlert('red', 'Please fill in all required fields');
+        this.props.throwAlert("red", "Please fill in all required fields");
       } else {
-
         if (this.state.customerCreate) {
-          this.props.saveByoThunk(this.props.token, [this.state, { status: 'New', date: (0, _utility.getDate)() }], [this.state.customer, { id: 'new' }]);
+          this.props.saveByoThunk(this.props.token, [this.state, { status: "New", date: (0, _utility.getDate)() }], [this.state.customer, { id: "new" }]);
         } else {
-          this.props.saveByoThunk(this.props.token, [this.state, { status: 'New', date: (0, _utility.getDate)() }], [this.state.customer]);
+          this.props.saveByoThunk(this.props.token, [this.state, { status: "New", date: (0, _utility.getDate)() }], [this.state.customer]);
         }
 
-        this.props.history.push('/buyouts');
+        this.props.history.push("/buyouts");
       }
     }
   }, {
-    key: 'handleDelete',
+    key: "handleDelete",
     value: function handleDelete(e) {
       var _this3 = this;
 
       e.preventDefault();
-      if (confirm('Are you sure you wish to delete this buyout?')) this.props.deleteByoThunk(this.props.token, this.state.id, function () {
-        _this3.props.history.push('/buyouts');
+      if (confirm("Are you sure you wish to delete this buyout?")) this.props.deleteByoThunk(this.props.token, this.state.id, function () {
+        _this3.props.history.push("/buyouts");
       });
     }
   }, {
-    key: 'handleChangeInLease',
+    key: "handleChangeInLease",
     value: function handleChangeInLease(e) {
-      var name = e.target.id.split('-');
+      var name = e.target.id.split("-");
       var leases = Array.from(this.state.leases);
       leases[name[0]][name[1]] = e.target.value;
-      if (e.target.value === 'Partial') leases[name[0]].displayMachines = true;
-      this.setState({ 'leases': leases });
+      if (e.target.value === "Partial") leases[name[0]].displayMachines = true;
+      this.setState({ leases: leases });
     }
   }, {
-    key: 'handleNewLease',
+    key: "handleNewLease",
     value: function handleNewLease(e) {
       e.preventDefault();
       var leases = Array.from(this.state.leases);
       leases.push({
-        id: 'new',
-        number: '',
-        company: '',
+        id: "new",
+        number: "",
+        company: "",
         machines: [],
         buyoutId: this.state.id
       });
-      this.setState({ 'leases': leases });
+      this.setState({ leases: leases });
     }
   }, {
-    key: 'handleRemoveLease',
+    key: "handleRemoveLease",
     value: function handleRemoveLease(e) {
       e.preventDefault();
       var leases = Array.from(this.state.leases);
       // leases = [...leases.slice(0, e.target.value), ...leases.slice(e.target.value + 1)]
       leases[e.target.value].delete = true;
-      this.setState({ 'leases': leases });
+      this.setState({ leases: leases });
     }
   }, {
-    key: 'toggleMachines',
+    key: "toggleMachines",
     value: function toggleMachines(e) {
       e.preventDefault();
-      var index = e.target.id.split('-')[0];
+      var index = e.target.id.split("-")[0];
       var leases = Array.from(this.state.leases);
       leases[index].displayMachines = !leases[index].displayMachines;
       this.setState({
-        'leases': leases
+        leases: leases
       });
     }
   }, {
-    key: 'handleChangeInMachine',
+    key: "handleChangeInMachine",
     value: function handleChangeInMachine(e) {
-      var name = e.target.id.split('-');
+      var name = e.target.id.split("-");
       var leases = Array.from(this.state.leases);
       leases[name[0]].machines[name[1]][name[2]] = e.target.value;
-      this.setState({ 'leases': leases });
+      this.setState({ leases: leases });
     }
   }, {
-    key: 'handleNewMachine',
+    key: "handleNewMachine",
     value: function handleNewMachine(e) {
       e.preventDefault();
-      var index = e.target.id.slice('-')[0];
+      var index = e.target.id.slice("-")[0];
       var leases = Array.from(this.state.leases);
       if (!Array.isArray(leases[index].machines)) leases[index].machines = [];
       leases[index].machines.push({
-        id: 'new',
-        serial: '',
-        make: '',
-        model: '',
-        location: '',
-        action: 'Release',
+        id: "new",
+        serial: "",
+        make: "",
+        model: "",
+        location: "",
+        action: "Release",
         LeaseId: leases[index].id
       });
-      this.setState({ 'leases': leases });
+      this.setState({ leases: leases });
     }
   }, {
-    key: 'handleRemoveMachine',
+    key: "handleRemoveMachine",
     value: function handleRemoveMachine(e) {
       e.preventDefault();
-      var index = e.target.value.split('-');
+      var index = e.target.value.split("-");
       var leases = Array.from(this.state.leases);
       leases[index[0]].machines[index[1]].delete = true;
-      this.setState({ 'leases': leases });
+      this.setState({ leases: leases });
     }
 
     // For Admin section
 
   }, {
-    key: 'handleNotify',
+    key: "handleNotify",
     value: function handleNotify(e) {
       var _this4 = this;
 
@@ -35925,10 +36115,10 @@ var BuyoutContainer = function (_React$Component) {
 
       var expiryDate = void 0;
 
-      _axios2.default.post('/api/mail', {
+      _axios2.default.post("/api/mail", {
         token: this.props.token,
         to: this.state.rep.email,
-        cc: this.state.mailCC.split(', '),
+        cc: this.state.mailCC.split(", "),
         attachments: this.state.mailAttachments,
         subject: this.state.mailSubject,
         html: this.state.mailBody
@@ -35937,43 +36127,58 @@ var BuyoutContainer = function (_React$Component) {
         // console.log('rejected:', res.data.rejected)
         _this4.setState({ mailDisabled: false });
         if (res.data.accepted) {
-          _this4.props.throwAlert('green', 'Message sent');
-          _this4.setState({ mailSubject: '', mailBody: '', mailCC: '', mailAttachments: [] });
-        } else _this4.props.throwAlert('red', 'Message not sent');
+          _this4.props.throwAlert("green", "Message sent");
+          _this4.setState({
+            mailSubject: "",
+            mailBody: "",
+            mailCC: "",
+            mailAttachments: []
+          });
+        } else _this4.props.throwAlert("red", "Message not sent");
 
-        return _axios2.default.post('/api/logs/new', { token: _this4.props.token, date: (0, _utility.getDate)(), activity: '<b>' + _this4.props.user.fullName + '<b> notified rep ' + _this4.state.rep.fullName + ' that application ' + _this4.state.action.appNumber + ' to ' + _this4.state.action.leasingCompany + ' was ' + _this4.state.action.status, action: _this4.state.action, byo: _this4.state.id, expiry: _this4.state.expiryTemp });
+        return _axios2.default.post("/api/logs/new", {
+          token: _this4.props.token,
+          date: (0, _utility.getDate)(),
+          activity: "<b>" + _this4.props.user.fullName + "<b> notified rep " + _this4.state.rep.fullName + " that application " + _this4.state.action.appNumber + " to " + _this4.state.action.leasingCompany + " was " + _this4.state.action.status,
+          action: _this4.state.action,
+          byo: _this4.state.id,
+          expiry: _this4.state.expiryTemp
+        });
       }).then(function (res) {
         var overallStatus = void 0;
-        if (_this4.state.action.status === 'Working') overallStatus = 'Working';else if (_this4.state.action.status === 'Approved') overallStatus = 'Approved';else if (_this4.state.action.status === 'Declined') overallStatus = 'Declined';
+        if (_this4.state.action.status === "Working") overallStatus = "Working";else if (_this4.state.action.status === "Approved") overallStatus = "Approved";else if (_this4.state.action.status === "Declined") overallStatus = "Declined";
 
         if (overallStatus) return _this4.props.saveByoThunk(_this4.props.token, [_this4.state, { status: overallStatus, expiry: _this4.state.expiryTemp }], [_this4.state.customer]);else return _this4.props.saveByoThunk(_this4.props.token, [_this4.state, { expiry: _this4.state.expiryTemp }], [_this4.state.customer]);
       }).then(function (res) {
-        _this4.setState({ adminMode: false, expiryTemp: '' });
+        _this4.setState({ adminMode: false, expiryTemp: "" });
       }).catch(function (err) {
         return console.error(err);
       });
     }
   }, {
-    key: 'handleNote',
+    key: "handleNote",
     value: function handleNote(e) {
       var actions = Array.from(this.state.actions);
       actions[Number(e.target.id)].show = actions[Number(e.target.id)].show ? false : true;
       this.setState({ actions: actions });
     }
   }, {
-    key: 'handleChangeAction',
+    key: "handleChangeAction",
     value: function handleChangeAction(e) {
       var action = Object.assign({}, this.state.action);
       action[e.target.name] = e.target.value;
       this.setState({ action: action });
     }
   }, {
-    key: 'handleActionDelete',
+    key: "handleActionDelete",
     value: function handleActionDelete(e) {
       var _this5 = this;
 
-      if (confirm('Are you sure you wish to delete this application?')) {
-        _axios2.default.put('/api/actions/delete', { token: this.props.token, action: this.state.actions[e.target.id] }).then(function (res) {
+      if (confirm("Are you sure you wish to delete this application?")) {
+        _axios2.default.put("/api/actions/delete", {
+          token: this.props.token,
+          action: this.state.actions[e.target.id]
+        }).then(function (res) {
           _this5.props.loadAppsThunk(_this5.props.token);
         }).catch(function (err) {
           return console.error(err);
@@ -35981,56 +36186,62 @@ var BuyoutContainer = function (_React$Component) {
       }
     }
   }, {
-    key: 'handleSaveAction',
+    key: "handleSaveAction",
     value: function handleSaveAction(e) {
       var _this6 = this;
 
       e.preventDefault();
-      _axios2.default.put('/api/actions/', { token: this.props.token, action: this.state.action }).then(function (res) {
+      _axios2.default.put("/api/actions/", {
+        token: this.props.token,
+        action: this.state.action
+      }).then(function (res) {
         _this6.props.loadByosThunk(_this6.props.token);
         // this.props.throwAlert('green', 'Success')
         _this6.setState({ adminMode: false });
       }).catch(function (err) {
         console.error(err);
-        _this6.props.throwAlert('red', 'Something went wrong');
+        _this6.props.throwAlert("red", "Something went wrong");
       });
     }
   }, {
-    key: 'handleSaveAndNotify',
+    key: "handleSaveAndNotify",
     value: function handleSaveAndNotify(e) {
       var _this7 = this;
 
       e.preventDefault();
-      _axios2.default.put('/api/actions/', { token: this.props.token, action: Object.assign({}, this.state.action, { sentToRep: (0, _utility.getDate)() }) }).then(function (res) {
-        var soonToBeSubject = '';
-        var soonToBeBody = '';
-        if (_this7.state.action.status === 'Approved') {
-          soonToBeSubject = 'Buyout Approved for ' + _this7.state.action.legalName;
-          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour buyout for ' + _this7.state.customer.name + ' has been approved with ' + _this7.state.action.leasingCompany + ' under application number ' + _this7.state.action.appNumber + '.\n\nThe legal name is ' + _this7.state.action.legalName + '.\n\nPlease be sure to use the correct legal name on all of your lease paperwork.\n\nThanks,\n' + _this7.props.user.firstName;
-        } else if (_this7.state.action.status === 'Hold') {
-          soonToBeSubject = 'Buyout On Hold for ' + _this7.state.customer.name;
-          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour buyout for ' + _this7.state.customer.name + ' is on hold. We have tried all of our options and we will need the following items to proceed.\n\n    \u2022 2 years of Audited Financials or\n    \u2022 2 years of Tax Returns\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n' + _this7.props.user.firstName;
-        } else if (_this7.state.action.status === 'Declined') {
-          soonToBeSubject = 'Buyout Declined for ' + _this7.state.customer.name;
-          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour buyout for ' + _this7.state.customer.name + ' has been declined by all lenders. We will need the following items in order to try again.\n\n    \u2022Personal Guarantee Information\n        \u2022 Owner\'s full name\n        \u2022 Owner\'s Address\n        \u2022 Owner\'s Social Security #\n        \u2022 Owner\'s Birth Date\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n' + _this7.props.user.firstName;
+      _axios2.default.put("/api/actions/", {
+        token: this.props.token,
+        action: Object.assign({}, this.state.action, { sentToRep: (0, _utility.getDate)() })
+      }).then(function (res) {
+        var soonToBeSubject = "";
+        var soonToBeBody = "";
+        if (_this7.state.action.status === "Approved") {
+          soonToBeSubject = "Buyout Approved for " + _this7.state.action.legalName;
+          soonToBeBody = "Dear " + _this7.state.rep.fullName + ",\n\nYour buyout for " + _this7.state.customer.name + " has been approved with " + _this7.state.action.leasingCompany + " under application number " + _this7.state.action.appNumber + ".\n\nThe legal name is " + _this7.state.action.legalName + ".\n\nPlease be sure to use the correct legal name on all of your lease paperwork.\n\nThanks,\n" + _this7.props.user.firstName;
+        } else if (_this7.state.action.status === "Hold") {
+          soonToBeSubject = "Buyout On Hold for " + _this7.state.customer.name;
+          soonToBeBody = "Dear " + _this7.state.rep.fullName + ",\n\nYour buyout for " + _this7.state.customer.name + " is on hold. We have tried all of our options and we will need the following items to proceed.\n\n    \u2022 2 years of Audited Financials or\n    \u2022 2 years of Tax Returns\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n" + _this7.props.user.firstName;
+        } else if (_this7.state.action.status === "Declined") {
+          soonToBeSubject = "Buyout Declined for " + _this7.state.customer.name;
+          soonToBeBody = "Dear " + _this7.state.rep.fullName + ",\n\nYour buyout for " + _this7.state.customer.name + " has been declined by all lenders. We will need the following items in order to try again.\n\n    \u2022Personal Guarantee Information\n        \u2022 Owner's full name\n        \u2022 Owner's Address\n        \u2022 Owner's Social Security #\n        \u2022 Owner's Birth Date\n\nPlease send this information to team@myadmincentral.com. If you have any questions just let us know.\n\nThanks,\n" + _this7.props.user.firstName;
         } else {
-          soonToBeSubject = 'Update for Buyout for ' + _this7.state.customer.name;
-          soonToBeBody = 'Dear ' + _this7.state.rep.fullName + ',\n\nYour buyout\'s status has been set to ' + _this7.state.action.status + '.\n\nThanks,\n' + _this7.props.user.firstName;
+          soonToBeSubject = "Update for Buyout for " + _this7.state.customer.name;
+          soonToBeBody = "Dear " + _this7.state.rep.fullName + ",\n\nYour buyout's status has been set to " + _this7.state.action.status + ".\n\nThanks,\n" + _this7.props.user.firstName;
         }
         _this7.setState({
           expiryTemp: res.data,
-          adminMode: 'notify',
+          adminMode: "notify",
           mailSubject: soonToBeSubject,
           mailBody: soonToBeBody,
           mailAttachments: []
         });
       }).catch(function (err) {
         console.error(err);
-        _this7.props.throwAlert('red', 'Something went wrong');
+        _this7.props.throwAlert("red", "Something went wrong");
       });
     }
   }, {
-    key: 'handleWorkbookNotify',
+    key: "handleWorkbookNotify",
     value: function handleWorkbookNotify(e) {
       var _this8 = this;
 
@@ -36039,88 +36250,99 @@ var BuyoutContainer = function (_React$Component) {
         if (_this8.state.checkedAttachments[index]) mailAttachments.push(_this8.state.pdfs[index]);
       });
       this.setState({
-        adminMode: 'notifyByo',
-        mailSubject: '',
-        mailBody: '',
+        adminMode: "notifyByo",
+        mailSubject: "",
+        mailBody: "",
         mailAttachments: mailAttachments,
-        mailCC: this.state.rep.manager ? this.state.rep.manager.email : ''
+        mailCC: this.state.rep.manager ? this.state.rep.manager.email : ""
       });
     }
   }, {
-    key: 'handleWorkbookNotifySend',
+    key: "handleWorkbookNotifySend",
     value: function handleWorkbookNotifySend(e) {
       var _this9 = this;
 
       e.preventDefault();
       this.setState({ mailDisabled: true });
 
-      _axios2.default.post('/api/mail', {
+      _axios2.default.post("/api/mail", {
         token: this.props.token,
         to: this.state.rep.email,
-        cc: this.state.mailCC.split(', '),
+        cc: this.state.mailCC.split(", "),
         attachments: this.state.mailAttachments,
         subject: this.state.mailSubject,
         html: this.state.mailBody
       }).then(function (res) {
         _this9.setState({ mailDisabled: false });
         if (res.data.accepted) {
-          _this9.props.throwAlert('green', 'Message sent');
-          _this9.setState({ mailSubject: '', mailBody: '', mailCC: '', mailAttachments: [] });
-        } else _this9.props.throwAlert('red', 'Message not sent');
+          _this9.props.throwAlert("green", "Message sent");
+          _this9.setState({
+            mailSubject: "",
+            mailBody: "",
+            mailCC: "",
+            mailAttachments: []
+          });
+        } else _this9.props.throwAlert("red", "Message not sent");
 
         // log text changed to reflect the fact that we aren't actually notifying about a specific lease anymore
-        return _axios2.default.post('/api/logs/new2', { token: _this9.props.token, date: (0, _utility.getDate)(), activity: '<b>' + _this9.props.user.fullName + '<b> notified rep ' + _this9.state.rep.fullName, action: _this9.state.action, byo: _this9.state.id }).then(function (res) {
+        return _axios2.default.post("/api/logs/new2", {
+          token: _this9.props.token,
+          date: (0, _utility.getDate)(),
+          activity: "<b>" + _this9.props.user.fullName + "<b> notified rep " + _this9.state.rep.fullName,
+          action: _this9.state.action,
+          byo: _this9.state.id
+        }).then(function (res) {
           _this9.props.loadByosThunk(_this9.props.token);
-          _this9.setState({ adminMode: 'byo', calcTarget: null });
+          _this9.setState({ adminMode: "byo", calcTarget: null });
         }).catch(function (err) {
           return console.error(err);
         });
       });
     }
   }, {
-    key: 'handleAdminMode',
+    key: "handleAdminMode",
     value: function handleAdminMode(e) {
       // console.log('trigger', e.target.id)
-      if (e.target.id === 'cancel-button' || e.target.id === 'cancel') {
+      if (e.target.id === "cancel-button" || e.target.id === "cancel") {
         this.setState({ adminMode: false });
-      } else if (e.target.id === 'submit-button' || e.target.id === 'app-button') {
+      } else if (e.target.id === "submit-button" || e.target.id === "app-button") {
         this.setState({
-          adminMode: 'action',
+          adminMode: "action",
           action: {
-            id: 'new',
+            id: "new",
             date: (0, _utility.getDate)(),
             buyoutId: this.state.id
           }
         });
-      } else if (e.target.id === 'cancel-notify') {
+      } else if (e.target.id === "cancel-notify") {
         this.setState({
-          adminMode: 'byo',
+          adminMode: "byo",
           calcTarget: null
         });
       } else {
-        var index = e.target.id.split('-')[1];
+        var index = e.target.id.split("-")[1];
         this.setState({
-          adminMode: 'action',
+          adminMode: "action",
           action: Object.assign({}, this.state.actions[index], { index: index })
         });
       }
     }
   }, {
-    key: 'toggleAdminView',
+    key: "toggleAdminView",
     value: function toggleAdminView(e) {
       this.setState({
         adminView: !this.state.adminView
       });
     }
   }, {
-    key: 'toggleLightbox',
+    key: "toggleLightbox",
     value: function toggleLightbox(e) {
       this.setState({
         lightbox: !this.state.lightbox
       });
     }
   }, {
-    key: 'toggleCalcView',
+    key: "toggleCalcView",
     value: function toggleCalcView(e) {
       e.preventDefault();
       var currentView = this.state.calcView;
@@ -36133,56 +36355,63 @@ var BuyoutContainer = function (_React$Component) {
       }
     }
   }, {
-    key: 'handleCalcs',
+    key: "handleCalcs",
     value: function handleCalcs(e) {
       var leases = Array.from(this.state.leases);
       leases[this.state.calcTarget].workbook[e.target.name] = e.target.value;
-      this.setState({ 'leases': leases });
+      this.setState({ leases: leases });
     }
   }, {
-    key: 'handleCascade',
+    key: "handleCascade",
     value: function handleCascade(e) {
       var name = e.target.name;
       var leases = Array.from(this.state.leases);
       leases[this.state.calcTarget].workbook[name] = e.target.value;
-      leases[this.state.calcTarget].workbook[name + 'Upfront'] = (0, _utility.round)((0, _utility.product)(e.target.value, leases[this.state.calcTarget].workbook.upfrontTax / 100));
-      leases[this.state.calcTarget].workbook[name + 'Monthly'] = (0, _utility.round)((0, _utility.product)(e.target.value, leases[this.state.calcTarget].workbook.monthlyTax / 100));
-      this.setState({ 'leases': leases });
+      leases[this.state.calcTarget].workbook[name + "Upfront"] = (0, _utility.round)((0, _utility.product)(e.target.value, leases[this.state.calcTarget].workbook.upfrontTax / 100));
+      leases[this.state.calcTarget].workbook[name + "Monthly"] = (0, _utility.round)((0, _utility.product)(e.target.value, leases[this.state.calcTarget].workbook.monthlyTax / 100));
+      this.setState({ leases: leases });
     }
   }, {
-    key: 'handleTaxes',
+    key: "handleTaxes",
     value: function handleTaxes(e) {
-      var type = e.target.name === 'upfrontTax' ? 'Upfront' : 'Monthly';
+      var type = e.target.name === "upfrontTax" ? "Upfront" : "Monthly";
       var leases = Array.from(this.state.leases);
       leases[this.state.calcTarget].workbook[e.target.name] = e.target.value;
-      leases[this.state.calcTarget].workbook['currentEquipmentPayment' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.currentEquipmentPayment, e.target.value / 100));
-      leases[this.state.calcTarget].workbook['currentServicePayment' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.currentServicePayment, e.target.value / 100));
-      leases[this.state.calcTarget].workbook['fuelFreight' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.fuelFreight, e.target.value / 100));
-      leases[this.state.calcTarget].workbook['lateCharges' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.lateCharges, e.target.value / 100));
-      leases[this.state.calcTarget].workbook['miscItems' + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.miscItems, e.target.value / 100));
-      this.setState({ 'leases': leases });
+      leases[this.state.calcTarget].workbook["currentEquipmentPayment" + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.currentEquipmentPayment, e.target.value / 100));
+      leases[this.state.calcTarget].workbook["currentServicePayment" + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.currentServicePayment, e.target.value / 100));
+      leases[this.state.calcTarget].workbook["fuelFreight" + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.fuelFreight, e.target.value / 100));
+      leases[this.state.calcTarget].workbook["lateCharges" + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.lateCharges, e.target.value / 100));
+      leases[this.state.calcTarget].workbook["miscItems" + type] = (0, _utility.round)((0, _utility.product)(leases[this.state.calcTarget].workbook.miscItems, e.target.value / 100));
+      this.setState({ leases: leases });
     }
   }, {
-    key: 'generatePdf',
+    key: "onKeyPress",
+    value: function onKeyPress(event) {
+      if (event.which === 13 /* Enter */) {
+          event.preventDefault();
+        }
+    }
+  }, {
+    key: "generatePdf",
     value: function generatePdf() {
       var _this10 = this;
 
       // getPdf(this.state, this.props.token)
-      _axios2.default.post('/api/pdf/new', {
+      _axios2.default.post("/api/pdf/new", {
         token: this.props.token,
         values: this.state,
-        version: 'customer'
+        version: "customer"
       }).then(function () {
-        return _axios2.default.post('/api/pdf/new', {
+        return _axios2.default.post("/api/pdf/new", {
           token: _this10.props.token,
           values: _this10.state,
-          version: 'rep'
+          version: "rep"
         });
       }).then(function () {
-        return _axios2.default.post('/api/logs/new2', {
+        return _axios2.default.post("/api/logs/new2", {
           token: _this10.props.token,
           date: (0, _utility.getDate)(),
-          activity: '<b>' + _this10.props.user.fullName + '<b> generated PDFs for lease ' + _this10.state.leases[_this10.state.calcTarget].number,
+          activity: "<b>" + _this10.props.user.fullName + "<b> generated PDFs for lease " + _this10.state.leases[_this10.state.calcTarget].number,
           byo: _this10.state.id
         });
       }).then(function () {
@@ -36196,60 +36425,60 @@ var BuyoutContainer = function (_React$Component) {
       });
     }
   }, {
-    key: 'handleDeletePDF',
+    key: "handleDeletePDF",
     value: function handleDeletePDF(e) {
       var _this11 = this;
 
       // let pdfs = Array.from(this.state.pdfs)
 
       // this.props.saveByoThunk(this.props.token, [this.state, {pdfNotes, pdfs}], [this.state.customer])
-      _axios2.default.delete('/api/uploads/' + e.target.id + '?access_token=' + this.props.token).then(function (res) {
+      _axios2.default.delete("/api/uploads/" + e.target.id + "?access_token=" + this.props.token).then(function (res) {
         console.log(res.data);
         _this11.props.loadByosThunk(_this11.props.token);
       });
     }
   }, {
-    key: 'handleChangeInPDFNote',
+    key: "handleChangeInPDFNote",
     value: function handleChangeInPDFNote(e) {
       this.setState({ note: e.target.value });
     }
   }, {
-    key: 'handleChoosePDF',
+    key: "handleChoosePDF",
     value: function handleChoosePDF(e) {
       this.setState({ upload: e.target.files[0] });
     }
   }, {
-    key: 'handleUploadPDF',
+    key: "handleUploadPDF",
     value: function handleUploadPDF(e) {
       var _this12 = this;
 
       e.preventDefault();
       if (this.state.upload) {
         var formData = new FormData();
-        formData.append('file', this.state.upload);
-        formData.append('note', this.state.note);
-        _axios2.default.post('/api/uploads/buyout/' + this.state.id + '?access_token=' + this.props.token, formData, { 'content-type': 'multipart/form-data' }).then(function (res) {
+        formData.append("file", this.state.upload);
+        formData.append("note", this.state.note);
+        _axios2.default.post("/api/uploads/buyout/" + this.state.id + "?access_token=" + this.props.token, formData, { "content-type": "multipart/form-data" }).then(function (res) {
           if (res.data.color) _this12.props.throwAlert(res.data.color, res.data.message);else console.log(res.data);
           _this12.props.loadByosThunk(_this12.props.token);
         }).catch(function (err) {
           console.error(err);
         });
-        this.setState({ upload: null, note: '' });
+        this.setState({ upload: null, note: "" });
       }
     }
   }, {
-    key: 'handleAddAttachment',
+    key: "handleAddAttachment",
     value: function handleAddAttachment(e) {
       e.preventDefault();
       var attachments = this.state.mailAttachments;
       attachments.push(this.state.pdfs[Number(this.state.focusedAttachment)]);
       this.setState({
-        focusedAttachment: '',
+        focusedAttachment: "",
         mailAttachments: attachments
       });
     }
   }, {
-    key: 'handleRemoveAttachment',
+    key: "handleRemoveAttachment",
     value: function handleRemoveAttachment(e) {
       e.preventDefault();
       var attachments = this.state.mailAttachments;
@@ -36259,7 +36488,7 @@ var BuyoutContainer = function (_React$Component) {
       });
     }
   }, {
-    key: 'handleCheckAttachment',
+    key: "handleCheckAttachment",
     value: function handleCheckAttachment(e) {
       var checked = this.state.checkedAttachments;
       checked[e.target.id] = !checked[e.target.id];
@@ -36268,7 +36497,7 @@ var BuyoutContainer = function (_React$Component) {
       });
     }
   }, {
-    key: 'componentWillReceiveProps',
+    key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(newProps) {
       // console.log('component receiving props')
       this.setState({
@@ -36287,9 +36516,9 @@ var BuyoutContainer = function (_React$Component) {
       });
     }
   }, {
-    key: 'componentWillMount',
+    key: "componentWillMount",
     value: function componentWillMount() {
-      if (!this.props.token) this.props.history.push('/');else {
+      if (!this.props.token) this.props.history.push("/");else {
         // console.log('state', this.state)
         var actions = Array.from(this.state.actions);
         actions.forEach(function (action) {
@@ -36304,7 +36533,7 @@ var BuyoutContainer = function (_React$Component) {
       }
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       // console.log('state', this.state)
       var errors = this.validateFields();
@@ -36315,14 +36544,14 @@ var BuyoutContainer = function (_React$Component) {
       var actionDisabled = Object.keys(errors).expiry;
 
       return _react2.default.createElement(
-        'div',
+        "div",
         null,
         _react2.default.createElement(_EditBuyout2.default, {
           values: this.state,
           errors: errors,
           token: this.props.token // token needed to make request for pdf -- not preferable
           , iAmAuthor: this.props.user ? this.props.user.email === this.state.rep.email : false,
-          admin: this.props.user ? this.props.user.level === 'Admin' : false,
+          admin: this.props.user ? this.props.user.level === "Admin" : false,
           customers: this.props.customers ? this.props.customers.map(function (customer) {
             return customer.name;
           }) : null,
@@ -36385,7 +36614,13 @@ var mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-var mapDispatchToProps = { saveByoThunk: _buyoutReducer.saveByoThunk, loadByosThunk: _buyoutReducer.loadByosThunk, deleteByoThunk: _buyoutReducer.deleteByoThunk, focusApp: _appReducer.focusApp, throwAlert: _alertReducer.throwAlert };
+var mapDispatchToProps = {
+  saveByoThunk: _buyoutReducer.saveByoThunk,
+  loadByosThunk: _buyoutReducer.loadByosThunk,
+  deleteByoThunk: _buyoutReducer.deleteByoThunk,
+  focusApp: _appReducer.focusApp,
+  throwAlert: _alertReducer.throwAlert
+};
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BuyoutContainer);
 
