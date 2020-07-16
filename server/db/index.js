@@ -1,8 +1,6 @@
 // Define db
 const Sequelize = require("sequelize");
-let dbUrl =
-  process.env.DATABASE_URL ||
-  "postgres://postgres:Chicago123.@localhost:5432/aci";
+let dbUrl = process.env.DATABASE_URL || "postgres://localhost:5432/aci";
 // change dbUrl in production
 
 let db = new Sequelize(dbUrl, { logging: false });
