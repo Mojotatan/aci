@@ -35541,7 +35541,7 @@ exports.default = function (_ref) {
         _react2.default.createElement(
           "h3",
           null,
-          "Notes"
+          "Customer Notes"
         ),
         _react2.default.createElement(
           "div",
@@ -35555,6 +35555,33 @@ exports.default = function (_ref) {
               _react2.default.createElement("textarea", {
                 name: "notes",
                 value: workbook.notes || "",
+                onChange: handleCalcs,
+                autoComplete: "new-password"
+              })
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "app-bg col-sm-12" },
+        _react2.default.createElement(
+          "h3",
+          null,
+          "Rep Notes"
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "row" },
+          _react2.default.createElement(
+            "div",
+            { className: "col-sm-12" },
+            _react2.default.createElement(
+              "div",
+              { className: "field-desc" },
+              _react2.default.createElement("textarea", {
+                name: "repnotes",
+                value: workbook.repnotes || "",
                 onChange: handleCalcs,
                 autoComplete: "new-password"
               })

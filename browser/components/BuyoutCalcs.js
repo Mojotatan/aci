@@ -896,13 +896,28 @@ export default ({
         </div>
 
         <div className='app-bg col-sm-12'>
-          <h3>Notes</h3>
+          <h3>Customer Notes</h3>
           <div className='row'>
             <div className='col-sm-12'>
               <div className='field-desc'>
                 <textarea
                   name='notes'
                   value={workbook.notes || ""}
+                  onChange={handleCalcs}
+                  autoComplete='new-password'
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className='app-bg col-sm-12'>
+          <h3>Rep Notes</h3>
+          <div className='row'>
+            <div className='col-sm-12'>
+              <div className='field-desc'>
+                <textarea
+                  name='repnotes'
+                  value={workbook.repnotes || ""}
                   onChange={handleCalcs}
                   autoComplete='new-password'
                 />
