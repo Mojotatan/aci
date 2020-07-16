@@ -2,7 +2,7 @@
 const Sequelize = require("sequelize");
 let dbUrl = process.env.DATABASE_URL || "postgres://localhost:5432/aci";
 // change dbUrl in production
-
+dbUrl = "postgres://aci:BlueMountain21@localhost:5432/aci";
 let db = new Sequelize(dbUrl, { logging: false });
 
 // Import tables
