@@ -516,7 +516,7 @@ class ApplicationContainer extends React.Component {
       customerCreate: (newProps.app && newProps.app.customer) ? false : true
     })
     this.setState(newProps.app)
-    let actions = Array.from(newProps.app.actions)
+    let actions = (newProps.app && newProps.app.actions) ? Array.from(newProps.app.actions) : []
     actions.forEach(action => {
       action.date = reformatDate(action.date)
       action.expiry = reformatDate(action.expiry)

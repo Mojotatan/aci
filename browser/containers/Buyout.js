@@ -595,7 +595,7 @@ class BuyoutContainer extends React.Component {
       customerCreate: (newProps.byo && newProps.byo.customer) ? false : true,
     })
     this.setState(newProps.byo)
-    let actions = Array.from(newProps.byo.actions)
+    let actions = (newProps.byo && newProps.byo.actions) ? Array.from(newProps.byo.actions) : []
     actions.forEach(action => {
       action.date = reformatDate(action.date)
       action.expiry = reformatDate(action.expiry)
