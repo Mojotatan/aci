@@ -31173,9 +31173,9 @@ var ApplicationContainer = function (_React$Component) {
         action.expiry = (0, _utility.reformatDate)(action.expiry);
       });
       this.setState({
-        date: (0, _utility.reformatDate)(newProps.app.date),
-        expiry: (0, _utility.reformatDate)(newProps.app.expiry),
-        amount: (0, _utility.getPrettyNumber)(newProps.app.amount),
+        date: newProps.app ? (0, _utility.reformatDate)(newProps.app.date) : '',
+        expiry: newProps.app ? (0, _utility.reformatDate)(newProps.app.expiry) : '',
+        amount: newProps.app ? (0, _utility.getPrettyNumber)(newProps.app.amount) : '',
         actions: actions
       });
     }
@@ -36281,8 +36281,8 @@ var BuyoutContainer = function (_React$Component) {
         action.expiry = (0, _utility.reformatDate)(action.expiry);
       });
       this.setState({
-        date: (0, _utility.reformatDate)(newProps.byo.date),
-        expiry: (0, _utility.reformatDate)(newProps.byo.expiry),
+        date: newProps.byo ? (0, _utility.reformatDate)(newProps.byo.date) : '',
+        expiry: newProps.byo ? (0, _utility.reformatDate)(newProps.byo.expiry) : '',
         actions: actions
       });
     }
