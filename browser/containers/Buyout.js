@@ -603,8 +603,8 @@ class BuyoutContainer extends React.Component {
       action.expiry = reformatDate(action.expiry)
     })
     this.setState({
-      date: reformatDate(newProps.byo.date),
-      expiry: reformatDate(newProps.byo.expiry),
+      date: newProps.byo ? reformatDate(newProps.byo.date) : '',
+      expiry: newProps.byo ? reformatDate(newProps.byo.expiry) : '',
       actions
     })
   }
