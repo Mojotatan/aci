@@ -522,9 +522,9 @@ class ApplicationContainer extends React.Component {
       action.expiry = reformatDate(action.expiry)
     })
     this.setState({
-      date: reformatDate(newProps.app.date),
-      expiry: reformatDate(newProps.app.expiry),
-      amount: getPrettyNumber(newProps.app.amount),
+      date: newProps.app ? reformatDate(newProps.app.date) : '',
+      expiry: newProps.app ? reformatDate(newProps.app.expiry) : '',
+      amount: newProps.app ? getPrettyNumber(newProps.app.amount) : '',
       actions
     })
   }
