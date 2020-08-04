@@ -31167,7 +31167,7 @@ var ApplicationContainer = function (_React$Component) {
         customerCreate: newProps.app && newProps.app.customer ? false : true
       });
       this.setState(newProps.app);
-      var actions = Array.from(newProps.app.actions);
+      var actions = newProps.app && newProps.app.actions ? Array.from(newProps.app.actions) : [];
       actions.forEach(function (action) {
         action.date = (0, _utility.reformatDate)(action.date);
         action.expiry = (0, _utility.reformatDate)(action.expiry);
@@ -36275,7 +36275,7 @@ var BuyoutContainer = function (_React$Component) {
         customerCreate: newProps.byo && newProps.byo.customer ? false : true
       });
       this.setState(newProps.byo);
-      var actions = Array.from(newProps.byo.actions);
+      var actions = newProps.byo && newProps.byo.actions ? Array.from(newProps.byo.actions) : [];
       actions.forEach(function (action) {
         action.date = (0, _utility.reformatDate)(action.date);
         action.expiry = (0, _utility.reformatDate)(action.expiry);
