@@ -227,7 +227,7 @@ module.exports = require("express")
           );
           doc.text(
             values.leases[values.calcTarget].number || "",
-            margin + 435,
+            margin + 433,
             172
           );
           doc.text(workbook.startDate || "", margin + 241, 205);
@@ -451,7 +451,7 @@ module.exports = require("express")
           doc.text("Serial Number", margin + quarterCol + 250 + 25, 244);
         } else {
           doc.text("Machine:", margin + quarterCol + 70, 244);
-          doc.text("Location:", margin + quarterCol + 125, 244);
+          doc.text("Location:", margin + quarterCol + 140, 244);
           doc.text("Serial Number", 385, 244);
           doc.text("Plan", docWidth - margin - 15 - 82, 244);
         }
@@ -493,7 +493,7 @@ module.exports = require("express")
             doc.text(machine.make || "", margin + quarterCol + 70, count + 5);
             doc.text(
               machine.location || "",
-              margin + quarterCol + 125,
+              margin + quarterCol + 140,
               count + 5
             );
             doc.text(machine.serial || "", 385, count + 5);
