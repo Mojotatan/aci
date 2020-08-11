@@ -227,11 +227,11 @@ module.exports = require("express")
           );
           doc.text(
             values.leases[values.calcTarget].number || "",
-            margin + 437,
+            margin + 435,
             172
           );
           doc.text(workbook.startDate || "", margin + 241, 205);
-          doc.text(workbook.endDate || "", margin + 420, 205);
+          doc.text(workbook.endDate || "", margin + 418, 205);
         };
         header();
 
@@ -445,12 +445,14 @@ module.exports = require("express")
           .stroke("#ced0da");
         doc.font("Helvetica-Bold");
         doc.text("Gear:", margin + quarterCol + 15, 244);
-        doc.text("Machine:", margin + quarterCol + 90, 244);
-        doc.text("Location:", margin + quarterCol + 175, 244);
         if (values.leases[values.calcTarget].quote === "Full") {
+          doc.text("Machine:", margin + quarterCol + 90, 244);
+          doc.text("Location:", margin + quarterCol + 175, 244);
           doc.text("Serial Number", margin + quarterCol + 250 + 25, 244);
         } else {
-          doc.text("Serial Number", 357, 244);
+          doc.text("Machine:", margin + quarterCol + 70, 244);
+          doc.text("Location:", margin + quarterCol + 125, 244);
+          doc.text("Serial Number", 385, 244);
           doc.text("Plan", docWidth - margin - 15 - 82, 244);
         }
 
@@ -475,20 +477,26 @@ module.exports = require("express")
               .fillAndStroke("#f1f4f8", "#f1f4f8")
               .fillColor("#000000");
           doc.text(machine.model || "", margin + quarterCol + 15, count + 5);
-          doc.text(machine.make || "", margin + quarterCol + 90, count + 5);
-          doc.text(
-            machine.location || "",
-            margin + quarterCol + 175,
-            count + 5
-          );
           if (values.leases[values.calcTarget].quote === "Full") {
+            doc.text(machine.make || "", margin + quarterCol + 90, count + 5);
+            doc.text(
+              machine.location || "",
+              margin + quarterCol + 175,
+              count + 5
+            );
             doc.text(
               machine.serial || "",
               margin + quarterCol + 250 + 25,
               count + 5
             );
           } else {
-            doc.text(machine.serial || "", 357, count + 5);
+            doc.text(machine.make || "", margin + quarterCol + 70, count + 5);
+            doc.text(
+              machine.location || "",
+              margin + quarterCol + 125,
+              count + 5
+            );
+            doc.text(machine.serial || "", 385, count + 5);
             doc.text(machine.action, docWidth - margin - 15 - 82, count + 5);
           }
         });
