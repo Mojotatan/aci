@@ -450,8 +450,8 @@ module.exports = require("express")
           doc.text("Location:", margin + quarterCol + 175, 244);
           doc.text("Serial Number", margin + quarterCol + 250 + 25, 244);
         } else {
-          doc.text("Machine:", margin + quarterCol + 70, 244);
-          doc.text("Location:", margin + quarterCol + 135, 244);
+          doc.text("Machine:", margin + quarterCol + 75, 244);
+          doc.text("Location:", margin + quarterCol + 145, 244);
           doc.text("Serial Number", 385, 244);
           doc.text("Plan", docWidth - margin - 15 - 82, 244);
         }
@@ -464,6 +464,7 @@ module.exports = require("express")
           machines.length > firstPageLimit + 1
             ? firstPageLimit
             : firstPageLimit + 1;
+        doc.fontSize(9);
         machines.slice(0, machineCount).forEach((machine, index) => {
           let count = 258 + 20 * index;
           if (index % 2 === 0)
@@ -490,16 +491,17 @@ module.exports = require("express")
               count + 5
             );
           } else {
-            doc.text(machine.make || "", margin + quarterCol + 70, count + 5);
+            doc.text(machine.make || "", margin + quarterCol + 75, count + 5);
             doc.text(
               machine.location || "",
-              margin + quarterCol + 135,
+              margin + quarterCol + 145,
               count + 5
             );
             doc.text(machine.serial || "", 385, count + 5);
             doc.text(machine.action, docWidth - margin - 15 - 82, count + 5);
           }
         });
+        doc.fontSize(10);
         if (machineCount === firstPageLimit) {
           doc.text(
             "Continued on next page",
