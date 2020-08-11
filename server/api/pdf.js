@@ -180,14 +180,11 @@ module.exports = require("express")
           doc.text("Customer Name:", margin + 15, 145);
           doc.text("Customer Address:", margin + 179, 145);
           doc.text("Leasing Company:", margin + 358, 145);
+          doc.text("Lease Number:", margin + 358, 172);
 
           doc.text("Quote Type:", margin + 15, 205);
-          doc.text("Lease Number:", margin + 179, 205);
-          if (!customer) {
-            doc.text("Lease Start:", margin + 358, 205);
-            doc.font("Helvetica");
-            doc.text(workbook.startDate, margin + 420, 205);
-          }
+          doc.text("Lease Start:", margin + 179, 205);
+          doc.text("Lease End:", margin + 358, 205);
           doc
             .rect(
               values.leases[values.calcTarget].quote === "Full"
@@ -215,24 +212,26 @@ module.exports = require("express")
           doc.text("Partial", margin + 135, 205);
 
           if (values.customer) {
-            doc.text(values.customer.name || "", margin + 15, 159, {
+            doc.text(values.customer.name || "", margin + 15, 158, {
               width: 154,
             });
-            doc.text(values.customer.address || "", margin + 179, 159, {
+            doc.text(values.customer.address || "", margin + 179, 158, {
               width: 169,
             });
           }
           doc.text(
             values.leases[values.calcTarget].company || "",
             margin + 358,
-            159,
-            { width: 144 }
+            158
+            // { width: 144 }
           );
           doc.text(
             values.leases[values.calcTarget].number || "",
-            margin + 258,
-            205
+            margin + 437,
+            172
           );
+          doc.text(workbook.startDate || "", margin + 241, 205);
+          doc.text(workbook.endDate || "", margin + 420, 205);
         };
         header();
 
@@ -307,21 +306,21 @@ module.exports = require("express")
             .fillColor("#000000");
           doc.font("Helvetica").text(prefix + postfix, margin + 25, 521);
 
-          doc.font("Helvetica-Bold").text("Lease Start:", margin + 15, 545);
-          doc
-            .rect(margin + 15, 559, quarterCol - 30, 20)
-            .fillAndStroke("#f1f4f8", "#f1f4f8")
-            .fillColor("#000000");
-          doc
-            .font("Helvetica")
-            .text(workbook.startDate || "", margin + 25, 564);
+          // doc.font("Helvetica-Bold").text("Lease Start:", margin + 15, 545);
+          // doc
+          //   .rect(margin + 15, 559, quarterCol - 30, 20)
+          //   .fillAndStroke("#f1f4f8", "#f1f4f8")
+          //   .fillColor("#000000");
+          // doc
+          //   .font("Helvetica")
+          //   .text(workbook.startDate || "", margin + 25, 564);
 
-          doc.font("Helvetica-Bold").text("Lease End:", margin + 15, 588);
-          doc
-            .rect(margin + 15, 602, quarterCol - 30, 20)
-            .fillAndStroke("#f1f4f8", "#f1f4f8")
-            .fillColor("#000000");
-          doc.font("Helvetica").text(workbook.endDate || "", margin + 25, 607);
+          // doc.font("Helvetica-Bold").text("Lease End:", margin + 15, 588);
+          // doc
+          //   .rect(margin + 15, 602, quarterCol - 30, 20)
+          //   .fillAndStroke("#f1f4f8", "#f1f4f8")
+          //   .fillColor("#000000");
+          // doc.font("Helvetica").text(workbook.endDate || "", margin + 25, 607);
         } else {
           if (Number(workbook.companyBtk) !== 0) {
             doc
