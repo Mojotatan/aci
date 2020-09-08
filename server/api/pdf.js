@@ -267,7 +267,14 @@ module.exports = require("express")
           .fillAndStroke("#f1f4f8", "#f1f4f8")
           .fillColor("#000000");
         doc.text(
-          "$" + workbook.currentEquipmentPayment || "",
+          "$" +
+          round(
+            sum(
+              workbook.currentEquipmentPayment,
+              workbook.currentServicePayment,
+              workbook.passThroughService
+            )
+          ),
           margin + 25,
           383
         );
