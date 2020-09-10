@@ -88,7 +88,7 @@ module.exports = require('express').Router()
         let url = 'https://maclogin.com/api/login/reset?access_token=' + jwt.sign({user: data.email}, cert, {expiresIn: '24h'})
         let contents = `<p>A new account has been created for you at MyAdminCentral</p><p>To set the password on this account, click <a href="${url}">${url}</a></p><p>If this link does not work, please visit <a>MyAdminCentral</a> and click "I forgot my password".`
         let message = {
-          from: 'team@maclogin.com',
+          from: 'team@myadmindev.xyz',
           to: data.email,
           subject: 'Account Created at MyAdminCentral',
           html: contents + mailFooter,
