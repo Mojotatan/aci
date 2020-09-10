@@ -4,7 +4,7 @@ const {isLoggedIn, isAdmin, whoAmI, mailTransporter, mailFooter} = require('./au
 module.exports = require('express').Router()
   .post('/appSubmit', isLoggedIn, (req, res) => {
     let message = {
-      from: 'team@myadmindev.xyz',
+      from: 'team@maclogin.com',
       // to: req.body.rep.email,
       to: 'tatan42@gmail.com',
       // bcc: ['team@myadmincentral.com'],
@@ -34,7 +34,7 @@ module.exports = require('express').Router()
 
   .post('/byoSubmit', isLoggedIn, (req, res) => {
     let message = {
-      from: 'team@myadmindev.xyz',
+      from: 'team@maclogin.com',
       // to: req.body.rep.email,
       to: 'tatan42@gmail.com',
       // bcc: ['team@myadmincentral.com'],
@@ -65,7 +65,7 @@ module.exports = require('express').Router()
   .post('/', isLoggedIn, isAdmin, (req, res) => {
     let me = whoAmI(req.body.token)
     let message = {
-      from: 'team@myadmindev.xyz',
+      from: 'team@maclogin.com',
       to: req.body.to,
       // cc: req.body.cc,
       // bcc: ['team@myadmincentral.com'],

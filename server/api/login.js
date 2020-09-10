@@ -24,7 +24,7 @@ module.exports = require('express').Router()
         let url = 'localhost:1337/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '60m'})
         let contents = `<p>To reset the password for your account with MyAdminCentral, click <a href="${url}">${url}</a></p><p>If you did not trigger this password reset, ignore this email.</p>`
         let message = {
-          from: 'team@myadmindev.xyz',
+          from: 'team@maclogin.com',
           // to: usr.email,
           to: 'tatan42@gmail.com',
           subject: 'Password Reset',
