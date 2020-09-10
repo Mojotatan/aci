@@ -21,10 +21,10 @@ module.exports = require('express').Router()
       if (!usr) res.send({message: ['red', 'No such user email exists']})
       else {
         // jwt.sign
-        let url = 'http://myadmindev.xyz/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '60m'})
+        let url = 'https://maclogin.com/api/login/reset?access_token=' + jwt.sign({user: usr.email}, cert, {expiresIn: '60m'})
         let contents = `<p>To reset the password for your account with MyAdminCentral, click <a href="${url}">${url}</a></p><p>If you did not trigger this password reset, ignore this email.</p>`
         let message = {
-          from: 'team@myadmindev.xyz',
+          from: 'team@maclogin.com',
           to: usr.email,
           subject: 'Password Reset',
           // text: usr.email,

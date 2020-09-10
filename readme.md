@@ -111,7 +111,7 @@ If process.env variables are getting overwritten or otherwise misbehaving, set u
 7. [Follow this tutorial to set up SSL](https://medium.com/@yash.kulshrestha/using-lets-encrypt-with-express-e069c7abe625)
 ```
 //chmod certbot-auto a+x
-sudo ./certbot-auto certonly --webroot -w ./public -d myadmindev.xyz
+sudo ./certbot-auto certonly --webroot -w ./public -d maclogin.com
 ```
 
 8. After you successfully generate web certificates, create symbolic links to them:
