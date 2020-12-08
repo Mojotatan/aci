@@ -38427,7 +38427,7 @@ var UserContainer = function (_React$Component) {
           users: this.props.users.filter(function (usr) {
             return usr.dealerId == _this3.state.dealerId && usr.id != _this3.state.id && peckingOrder(_this3.state, usr) && sameTeams(_this3.state, usr);
           }).sort(function (a, b) {
-            if (a.fullName.toLowerCase() > b.fullName.toLowerCase()) return 1;else return -1;
+            if (!a.fullName) return -1;else if (!b.fullName) return 1;else if (a.fullName.toLowerCase() > b.fullName.toLowerCase()) return 1;else return -1;
           }),
           dealers: this.props.dealers,
           regions: this.props.regions.filter(function (reg) {
