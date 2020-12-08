@@ -31,7 +31,7 @@ module.exports = require('express').Router()
         dealerId: req.body.user.dealerId,
         regionId: req.body.user.regionId,
         branchId: req.body.user.branchId,
-        managerId: req.body.user.managerId || 0
+        managerId: req.body.user.managerId
       }, {
         returning: true
       })
