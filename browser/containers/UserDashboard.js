@@ -20,9 +20,12 @@ class UsersContainer extends React.Component {
     this.props.history.push('/edit-user')
   }
 
-  handleNewUser(e) {
+  handleNewUser() {
     this.props.createUser({
-      id: 'new'
+      id: 'new',
+      firstName: '',
+      lastName: '',
+      phone: ''
     })
     this.props.history.push('/edit-user')
   }
