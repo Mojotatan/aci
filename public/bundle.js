@@ -38132,9 +38132,12 @@ var UsersContainer = function (_React$Component) {
     }
   }, {
     key: 'handleNewUser',
-    value: function handleNewUser(e) {
+    value: function handleNewUser() {
       this.props.createUser({
-        id: 'new'
+        id: 'new',
+        firstName: '',
+        lastName: '',
+        phone: ''
       });
       this.props.history.push('/edit-user');
     }
